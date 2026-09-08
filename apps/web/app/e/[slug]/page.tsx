@@ -120,7 +120,8 @@ export default async function EventPage({ params }: Params) {
 
         <aside className="lg:sticky lg:top-6 lg:self-start">
           <RegisterCard eventId={event.id} eventName={event.name} ticketTypes={ticketTypes} fields={fields}
-            collectPhone={event.collectPhone} requiresApproval={event.requiresApproval} soldOut={soldOut} />
+            collectPhone={event.collectPhone} requiresApproval={event.requiresApproval} soldOut={soldOut}
+            guestsEnabled={event.guestsEnabled} maxGuests={event.maxGuests} />
         </aside>
       </div>
     </article>

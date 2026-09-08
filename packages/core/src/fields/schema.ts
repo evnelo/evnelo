@@ -38,13 +38,13 @@ function fieldSchema(f: FieldDef): z.ZodTypeAny {
 }
 
 /**
- * Builds a zod schema for the answers of one scope (order | attendee) for a given
+ * Builds a zod schema for the answers of one scope (order | attendee | guest) for a given
  * ticket type. Hidden fields (by condition) are stripped and never validated —
  * the server is the source of truth, so this runs on submit as well as in the browser.
  */
 export function buildAnswersSchema(
   fields: FieldDef[],
-  opts: { scope: "order" | "attendee"; ticketTypeId?: string },
+  opts: { scope: RegistrationField["scope"]; ticketTypeId?: string },
 ) {
   const applicable = fields
     .filter((f) => f.scope === opts.scope)

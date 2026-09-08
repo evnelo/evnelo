@@ -109,6 +109,10 @@ export const events = mysqlTable(
     capacity: int("capacity"),
     waitlistEnabled: boolean("waitlist_enabled").notNull().default(false),
     collectPhone: boolean("collect_phone").notNull().default(false),
+    // guests: each guest is an attendee row (own ticket) linked to the host via attendees.guestOfAttendeeId,
+    // charged at the host's ticket type price, and asked the "guest"-scoped registration fields
+    guestsEnabled: boolean("guests_enabled").notNull().default(false),
+    maxGuests: int("max_guests").notNull().default(1),
     feePassThrough: boolean("fee_pass_through").notNull().default(false),
     refundPolicy: text("refund_policy"),
     socialLinks: json("social_links").$type<SocialLink[]>().notNull().default([]),
@@ -232,7 +236,7 @@ export const registrationFields = mysqlTable(
     ]).notNull(),
     options: json("options").$type<FieldOption[]>(),
     required: boolean("required").notNull().default(false),
-    scope: mysqlEnum("scope", ["order", "attendee"]).notNull().default("attendee"),
+    scope: mysqlEnum("scope", ["order", "attendee", "guest"]).notNull().default("attendee"),
     ticketTypeIds: json("ticket_type_ids").$type<string[]>(), // null = all
     condition: json("condition").$type<ConditionGroup>(),
     position: int("position").notNull().default(0),
@@ -296,8 +300,9 @@ export const attendees = mysqlTable(
     orderId: ref("order_id").notNull(),
     ticketTypeId: ref("ticket_type_id").notNull(),
     userId: ref("user_id"),
+    guestOfAttendeeId: ref("guest_of_attendee_id"), // set on +1s; null on the host attendee
     name: varchar("name", { length: 120 }).notNull(),
-    email: varchar("email", { length: 255 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(), // guests without their own email carry the host's
     phone: varchar("phone", { length: 32 }), // E.164
     smsOptIn: boolean("sms_opt_in").notNull().default(false),
     remindersOptOut: boolean("reminders_opt_out").notNull().default(false),
@@ -309,7 +314,7 @@ export const attendees = mysqlTable(
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
-  (t) => [index("att_event").on(t.eventId, t.status), index("att_email").on(t.eventId, t.email)],
+  (t) => [index("att_event").on(t.eventId, t.status), index("att_email").on(t.eventId, t.email), index("att_guest_of").on(t.guestOfAttendeeId)],
 );
 
 export const tickets = mysqlTable(

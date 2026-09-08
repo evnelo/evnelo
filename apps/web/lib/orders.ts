@@ -5,6 +5,33 @@ import { newId } from "@ot/core";
 import { randomBytes } from "node:crypto";
 import { db } from "./db";
 
+type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+/**
+ * One ticket per attendee (guests included). Confirmation goes to each distinct email in the
+ * party: a guest without their own address shares the host's, and the host's confirmation
+ * carries every ticket in the order.
+ */
+async function issueTickets(tx: Tx, organizationId: string, rows: (typeof attendees.$inferSelect)[]) {
+  const notified = new Set<string>();
+  for (const a of rows) {
+    await tx.insert(tickets).values({ id: newId(), attendeeId: a.id, eventId: a.eventId, token: randomBytes(24).toString("base64url") });
+    if (!notified.has(a.email)) {
+      notified.add(a.email);
+      await tx.insert(notifications).values({
+        id: newId(), organizationId, eventId: a.eventId, attendeeId: a.id,
+        channel: "email", template: "registration_confirmation", recipient: a.email,
+      });
+    }
+    if (a.phone && a.smsOptIn) {
+      await tx.insert(notifications).values({
+        id: newId(), organizationId, eventId: a.eventId, attendeeId: a.id,
+        channel: "sms", template: "confirmation", recipient: a.phone,
+      });
+    }
+  }
+}
+
 /**
  * Move an order to paid, convert holds to sales, issue tickets, queue confirmations.
  * Accepts `pending` and `expired` orders: Stripe can confirm a PaymentIntent after the
@@ -29,19 +56,7 @@ export async function markOrderPaid(paymentIntentId: string) {
     }
 
     const orderAttendees = await tx.select().from(attendees).where(eq(attendees.orderId, order.id));
-    for (const a of orderAttendees) {
-      await tx.insert(tickets).values({ id: newId(), attendeeId: a.id, eventId: a.eventId, token: randomBytes(24).toString("base64url") });
-      await tx.insert(notifications).values({
-        id: newId(), organizationId: order.organizationId, eventId: a.eventId, attendeeId: a.id,
-        channel: "email", template: "registration_confirmation", recipient: a.email,
-      });
-      if (a.phone && a.smsOptIn) {
-        await tx.insert(notifications).values({
-          id: newId(), organizationId: order.organizationId, eventId: a.eventId, attendeeId: a.id,
-          channel: "sms", template: "confirmation", recipient: a.phone,
-        });
-      }
-    }
+    await issueTickets(tx, order.organizationId, orderAttendees);
   });
 }
 
@@ -98,16 +113,11 @@ export async function fulfilFreeOrder(orderId: string) {
     const [order] = await tx.select().from(orders).where(eq(orders.id, orderId)).limit(1);
     if (!order) return;
     const rows = await tx.select().from(attendees).where(eq(attendees.orderId, orderId));
-    for (const a of rows) {
-      if (a.status === "pending_approval") {
-        await tx.insert(notifications).values({ id: newId(), organizationId: order.organizationId, eventId: a.eventId, attendeeId: a.id, channel: "email", template: "approval_pending", recipient: a.email });
-        continue;
-      }
-      await tx.insert(tickets).values({ id: newId(), attendeeId: a.id, eventId: a.eventId, token: randomBytes(24).toString("base64url") });
-      await tx.insert(notifications).values({ id: newId(), organizationId: order.organizationId, eventId: a.eventId, attendeeId: a.id, channel: "email", template: "registration_confirmation", recipient: a.email });
-      if (a.phone && a.smsOptIn) {
-        await tx.insert(notifications).values({ id: newId(), organizationId: order.organizationId, eventId: a.eventId, attendeeId: a.id, channel: "sms", template: "confirmation", recipient: a.phone });
-      }
+    const pending = rows.filter((a) => a.status === "pending_approval");
+    for (const a of pending) {
+      if (a.guestOfAttendeeId) continue; // the host hears about the whole party
+      await tx.insert(notifications).values({ id: newId(), organizationId: order.organizationId, eventId: a.eventId, attendeeId: a.id, channel: "email", template: "approval_pending", recipient: a.email });
     }
+    await issueTickets(tx, order.organizationId, rows.filter((a) => a.status !== "pending_approval"));
   });
 }

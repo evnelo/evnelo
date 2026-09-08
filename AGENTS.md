@@ -42,7 +42,9 @@ If turbo fails with `Malformed Mach-o file`, a truncated hoisted copy exists at 
 - All datetimes are UTC in MySQL (`timezone: "Z"` on the pool); events carry an IANA `timezone` for display.
 - Custom registration fields: rule tree in `registration_fields.condition`; visibility resolved by `visibleFieldKeys`; `buildAnswersSchema` is the single zod schema used by the browser form and by `POST /api/orders`. Hidden fields are stripped, never validated. A field may only depend on fields positioned before it.
 - Inventory: `ticket_types.sold` and `held`. Free orders increment `sold` immediately; paid orders increment `held` for a 10-minute hold and move to `sold` in `markOrderPaid` (Stripe webhook). Reservation is a conditional UPDATE, not a SELECT then INSERT. `releaseOrder` gives a hold back (PaymentIntent creation failed, `payment_intent.canceled`, or expiry); `expireHolds` sweeps lapsed holds and runs before every new order until a job runner exists. A late `payment_intent.succeeded` on an `expired` order still issues tickets.
-- One live registration per email per event, enforced in `POST /api/orders` (emails are lowercased). Cancelled/rejected attendees and expired/failed/refunded orders don't count.
+- One live registration per email per event, enforced in `POST /api/orders` (emails are lowercased). Cancelled/rejected attendees and expired/failed/refunded orders don't count. Guest emails count too.
+- Guests: `events.guestsEnabled` + `events.maxGuests`. `POST /api/orders` takes `guests: [{ name, email?, answers }]`; each guest becomes an `attendees` row with `guestOfAttendeeId` set, its own ticket, the host's ticket type and price (order quantity = 1 + guests), and answers validated against `scope: "guest"` fields. A guest without an email carries the host's email and gets no separate confirmation row. Don't model guests as a count on the host; per-person tickets are what make check-in and capacity work.
+- Wallet passes: `lib/wallet/` builds an Apple `.pkpass` (passkit-generator) and a Google "save" JWT (jose). Both are gated by `appleWalletConfigured` / `googleWalletConfigured` from `lib/env.ts`; routes 404 when keys are absent. Pass artwork is a flat placeholder until org artwork upload exists.
 - Notifications are rows in `notifications` (status `queued`); nothing sends yet. Do not send email/SMS inline from request handlers.
 - Visibility: `public` is indexed, `unlisted` is link-only with `noindex`, `private` requires membership or invite. `canView`/`robotsFor`/`isDiscoverable` in `packages/core/src/visibility.ts` are the only place these rules live.
 - UI: shadcn primitives in `apps/web/components/ui`, theme tokens in `apps/web/app/globals.css`. Fraunces for display type (`.display`), Geist for UI. House accent is green; per-event accent via `--accent-event`. No gradients, glassmorphism, or purple.
@@ -59,8 +61,12 @@ If turbo fails with `Malformed Mach-o file`, a truncated hoisted copy exists at 
    Then check `orders`, `attendees`, `tickets`, `notifications` in MySQL (`docker exec openticket-db-1 mysql -uopenticket -popenticket openticket`).
 3. Stripe locally: `stripe listen --forward-to localhost:3000/api/webhooks/stripe` and set `STRIPE_WEBHOOK_SECRET`.
 
+## Docs to keep current
+
+When you ship or change behaviour, update in the same commit: the README status list, `docs/PRD.md` where a product decision changed, and this file's conventions/gaps sections.
+
 ## Known gaps (as of 2026-09-08)
 
 Not implemented yet, though some are linked from the UI: auth and `/login`, `/dashboard`, org page `/o/{slug}`, `/api/v1/*` (so the MCP server has nothing to talk to), notification worker and job runner, Payment Element step after order creation, check-in scanner, event editor. See the README status list before adding anything, and update it when you ship a piece.
 
-Ticket QR codes are rendered locally at `/t/{token}/qr` (SVG). Calendar files come from `/api/calendar/{slug}.ics` for public and unlisted events only.
+Ticket QR codes are rendered locally at `/t/{token}/qr` (SVG). Calendar files come from `/api/calendar/{slug}.ics` for public and unlisted events only. Wallet passes: `/t/{token}/wallet/apple` and `/t/{token}/wallet/google`.

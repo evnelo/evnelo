@@ -7,6 +7,7 @@ const fields = [
   { key: "role_other", label: "Which role?", type: "short_text", required: true, options: null, condition: { op: "and", rules: [{ fieldKey: "role", op: "eq", value: "other" }] }, position: 1, scope: "attendee", ticketTypeIds: null },
   { key: "diet", label: "Dietary needs", type: "multi_select", required: false, options: [{ value: "veg", label: "Vegetarian" }, { value: "gf", label: "Gluten-free" }], condition: null, position: 2, scope: "attendee", ticketTypeIds: ["vip"] },
   { key: "terms", label: "I agree", type: "consent", required: true, options: null, condition: null, position: 3, scope: "order", ticketTypeIds: null },
+  { key: "guest_diet", label: "Guest dietary needs", type: "short_text", required: false, options: null, condition: null, position: 4, scope: "guest", ticketTypeIds: null },
 ] as any[];
 
 describe("conditions", () => {
@@ -52,6 +53,13 @@ describe("answers schema", () => {
     const required = buildAnswersSchema([{ ...fields[2], required: true }], { scope: "attendee", ticketTypeId: "vip" });
     expect(required.safeParse({ diet: false }).success).toBe(false);
     expect(required.safeParse({ diet: ["gf"] }).success).toBe(true);
+  });
+  it("scopes guest questions separately from the host's", () => {
+    const guest = buildAnswersSchema(fields, { scope: "guest", ticketTypeId: "general" });
+    const r = guest.safeParse({ guest_diet: "vegan", role: "other" }); // host-only "role" is ignored for guests
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data).toEqual({ guest_diet: "vegan" });
+    expect(schema.safeParse({ role: "dev", guest_diet: "x" }).success && !("guest_diet" in (schema.parse({ role: "dev", guest_diet: "x" }) as object))).toBe(true);
   });
   it("validates order-scope consent separately", () => {
     const order = buildAnswersSchema(fields, { scope: "order" });

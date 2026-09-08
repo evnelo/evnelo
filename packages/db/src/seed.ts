@@ -53,6 +53,7 @@ await db.insert(events).values({
   locationType: "in_person", venueName: "Casa Cultural", address: "Rua Augusta 1500", city: "São Paulo", country: "BR",
   lat: "-23.5578", lng: "-46.6606",
   visibility: "public", status: "published", publishedAt: new Date(), capacity: 80, collectPhone: true,
+  guestsEnabled: true, maxGuests: 2,
   socialLinks: [{ platform: "website", url: "https://example.com/meetup" }, { platform: "discord", url: "https://discord.gg/example" }],
 });
 await db.insert(ticketTypes).values({ id: ulid(), eventId: freeId, name: "General admission", priceMinor: 0, currency: "BRL", quantity: 80 });
@@ -73,6 +74,9 @@ await db.insert(registrationFields).values([
   { id: ulid(), eventId: freeId, key: "diet", label: "Dietary needs", type: "multi_select", required: false, scope: "attendee", position: 2,
     options: [{ value: "veg", label: "Vegetarian" }, { value: "vegan", label: "Vegan" }, { value: "gf", label: "Gluten-free" }] },
   { id: ulid(), eventId: freeId, key: "code_of_conduct", label: "I agree to the code of conduct", type: "consent", required: true, scope: "order", position: 3 },
+  { id: ulid(), eventId: freeId, key: "guest_diet", label: "Dietary needs", type: "multi_select", required: false, scope: "guest", position: 4,
+    options: [{ value: "veg", label: "Vegetarian" }, { value: "vegan", label: "Vegan" }, { value: "gf", label: "Gluten-free" }] },
+  { id: ulid(), eventId: freeId, key: "guest_first_time", label: "First time at the meetup?", type: "checkbox", required: false, scope: "guest", position: 5 },
 ]);
 
 /* ---- paid, public, online, two ticket types ---- */
@@ -83,7 +87,7 @@ await db.insert(events).values({
   coverImageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600",
   timezone: "America/New_York", startsAt: days(21, 14), endsAt: days(21, 18),
   locationType: "online", onlineUrl: "https://meet.example.com/workshop",
-  visibility: "public", status: "published", publishedAt: new Date(), feePassThrough: true,
+  visibility: "public", status: "published", publishedAt: new Date(), feePassThrough: true, guestsEnabled: true, maxGuests: 1,
   refundPolicy: "Full refund up to 48 hours before the workshop.",
 });
 await db.insert(ticketTypes).values([

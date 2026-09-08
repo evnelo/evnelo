@@ -15,6 +15,13 @@
       "when": 1788909115135,
       "tag": "0001_talented_kulan_gath",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1788909684995,
+      "tag": "0002_faulty_gamora",
+      "breakpoints": true
     }
   ]
 }

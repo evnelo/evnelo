@@ -1,7 +1,7 @@
 # PRD — Open-Source Event Ticketing Platform
 
 **Working name:** _TBD_ (referred to below as "the Platform")
-**Status:** Draft v0.1
+**Status:** Draft v0.2 (guests and wallet passes added 2026-09-08)
 **Date:** 2026-09-08
 **Owner:** Mauricio Giordano
 
@@ -145,6 +145,7 @@ Event fields (all P0 unless noted):
   - **Conditional logic:** show field X when field Y {equals, not equals, contains, is empty, is not empty} value. Conditions can chain (AND/OR groups, one level deep in v1). Required-ness is only enforced when the field is visible.
 - P0 Default fields always present: name, email; phone is opt-in per event (needed for SMS)
 - P0 Per-attendee vs per-order answers (buying 3 tickets can collect 3 names)
+- P0 **Guests (+1s).** Per-event toggle "allow guests" with "max guests per registration" (default 1). A guest is a full attendee record linked to the host attendee (`attendees.guest_of_attendee_id`) with their **own ticket and QR**, so check-in and capacity count every person. Guests answer a dedicated **guest** question set (fields with scope `guest`), not the host's questions. Guest email is optional: with one, the guest gets their own ticket email; without, the ticket is delivered to the host. On paid events each guest is charged the **host's ticket type price** (the order is simply quantity 1 + guests on one ticket type), so fees, refunds and holds need no special casing. Approval-required events approve or reject the whole party with the host. A guest's email is subject to the same one-registration-per-email rule as a registrant.
 - P0 Field answers exportable as CSV, filterable in the dashboard, exposed via API
 - P1 Field library reusable across events in an org
 
@@ -161,6 +162,7 @@ Event fields (all P0 unless noted):
 ### 7.6 Tickets & check-in
 
 - P0 Each attendee gets a ticket with a signed QR code; ticket page at `/t/{token}` with add-to-calendar (Google, Apple/ICS, Outlook)
+- P0 **Add to Apple Wallet / Google Wallet.** Apple: signed `.pkpass` event ticket generated on the instance (Pass Type ID certificate + WWDR cert from the operator's Apple Developer account). Google: "Save to Google Wallet" JWT link signed with a service account (issuer id from the Google Wallet console); the class and object are embedded in the JWT so no API round-trip is needed. Both are optional and hidden until the keys are configured; Cloud ships them enabled. QR payload is the same `/t/{token}` URL so one scanner handles paper, screen and wallet.
 - P0 Web check-in scanner (camera-based, works offline for a short window, syncs back)
 - P0 Manual check-in by search; undo check-in
 - P0 Live check-in counter on the event dashboard
@@ -252,7 +254,7 @@ All business logic lives in `packages/core` and is consumed by three thin transp
 
 ### 8.3 Data model (core tables)
 
-`users`, `organizations`, `organization_members`, `events`, `event_hosts`, `event_sponsors`, `event_social_links`, `sponsor_social_links`, `tags`, `event_tags`, `ticket_types`, `discount_codes`, `registration_fields`, `registration_field_conditions`, `orders`, `order_items`, `attendees`, `attendee_field_answers`, `tickets`, `check_ins`, `invites`, `waitlist_entries`, `notifications` (log of every email/SMS with provider id + status), `sms_unlocks` (event_id, paid_at, stripe_payment_id), `api_keys`, `webhooks`, `webhook_deliveries`, `stripe_accounts`.
+`users`, `organizations`, `organization_members`, `events`, `event_hosts`, `event_sponsors`, `event_social_links`, `sponsor_social_links`, `tags`, `event_tags`, `ticket_types`, `discount_codes`, `registration_fields`, `registration_field_conditions`, `orders`, `order_items`, `attendees` (guests link to their host via `guest_of_attendee_id`), `attendee_field_answers`, `tickets`, `check_ins`, `invites`, `waitlist_entries`, `notifications` (log of every email/SMS with provider id + status), `sms_unlocks` (event_id, paid_at, stripe_payment_id), `api_keys`, `webhooks`, `webhook_deliveries`, `stripe_accounts`.
 
 Notes:
 - Money stored as integer minor units + ISO currency.

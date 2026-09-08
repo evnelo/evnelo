@@ -19,8 +19,8 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
   const { attendee, event } = row;
   const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: event.timezone }).format(event.startsAt);
   const day = new Intl.DateTimeFormat("en-US", { day: "numeric", timeZone: event.timezone }).format(event.startsAt);
-  // QR encodes the ticket URL; scanner verifies the token server-side
-  const qr = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(`${process.env.APP_URL}/t/${token}`)}`;
+  // QR encodes the ticket URL (rendered by /t/{token}/qr); the scanner verifies the token server-side
+  const qr = `/t/${token}/qr`;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
@@ -42,7 +42,7 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
           </dl>
         </div>
         <div className="ticket-perforation flex flex-col items-center justify-center gap-3 p-6">
-          <img src={qr} alt="Ticket QR code" width={220} height={220} className="rounded-md bg-white p-2" />
+          <img src={qr} alt="Ticket QR code" width={220} height={220} className="size-[220px] rounded-md bg-white p-2" />
           <span className="text-xs opacity-60">Show this at the door</span>
         </div>
       </div>

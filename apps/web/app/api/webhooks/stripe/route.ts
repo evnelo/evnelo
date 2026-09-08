@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import { orders, smsUnlocks } from "@ot/db";
+import { smsUnlocks } from "@ot/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
+import { applyRefund, markOrderPaid, releaseOrderByPaymentIntent } from "@/lib/orders";
 
 export const runtime = "nodejs";
 
@@ -31,16 +32,19 @@ export async function POST(req: Request) {
           .where(eq(smsUnlocks.eventId, pi.metadata.smsUnlockEventId));
         break;
       }
-      const { markOrderPaid } = await import("@/lib/orders");
       await markOrderPaid(pi.id);
       break;
     }
     case "payment_intent.payment_failed": {
-      await db.update(orders).set({ status: "failed" }).where(eq(orders.stripePaymentIntentId, event.data.object.id));
+      // One attempt failed (declined card etc.). The PaymentIntent is still confirmable
+      // with another method, so the order stays pending until its hold expires.
+      break;
+    }
+    case "payment_intent.canceled": {
+      await releaseOrderByPaymentIntent(event.data.object.id, "failed");
       break;
     }
     case "charge.refunded": {
-      const { applyRefund } = await import("@/lib/orders");
       await applyRefund(event.data.object);
       break;
     }

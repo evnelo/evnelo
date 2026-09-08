@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, isNull, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { attendees, events, orders, orderItems, organizations, registrationFields, ticketTypes } from "@ot/db";
 import { buildAnswersSchema, computeOrder, currentEdition, newId } from "@ot/core";
 import { db } from "@/lib/db";
+import { env } from "@/lib/env";
 import { createOrderPaymentIntent } from "@/lib/stripe";
+import { expireHolds, fulfilFreeOrder, releaseOrder } from "@/lib/orders";
 
 export const runtime = "nodejs";
 const HOLD_MINUTES = 10;
@@ -14,7 +16,7 @@ const body = z.object({
   ticketTypeId: z.string().length(26),
   quantity: z.number().int().min(1).max(10).default(1),
   name: z.string().trim().min(1),
-  email: z.string().trim().email(),
+  email: z.string().trim().email().toLowerCase(),
   phone: z.string().trim().optional().or(z.literal("")),
   smsOptIn: z.boolean().optional(),
   attendee: z.record(z.unknown()).default({}),
@@ -26,6 +28,7 @@ const body = z.object({
  * Free → attendees confirmed immediately (or pending approval) and order status "free".
  * Paid → inventory held for 10 min, PaymentIntent returned for the Payment Element.
  * Inventory is guarded with a conditional UPDATE so flash sales can't oversell.
+ * One live registration per email per event.
  */
 export async function POST(req: Request) {
   const parsed = body.safeParse(await req.json().catch(() => null));
@@ -52,9 +55,23 @@ export async function POST(req: Request) {
   const edition = currentEdition();
   const fees = computeOrder([{ unitPriceMinor: tt.priceMinor, quantity: input.quantity, taxRateBps: tt.taxRateBps }], { edition, feePassThrough: event.feePassThrough });
   const isFree = fees.totalMinor === 0;
+  if (!isFree && !env.STRIPE_SECRET_KEY) return NextResponse.json({ error: "This event can't take payments yet. Contact the host." }, { status: 503 });
   const orderId = newId();
 
+  // no job runner yet: lapsed holds are reclaimed here so they don't block the next buyer
+  await expireHolds().catch((e) => console.error("expireHolds", e));
+
   const result = await db.transaction(async (tx) => {
+    // one live registration per email per event (cancelled/rejected attendees and dead orders don't count)
+    const [dup] = await tx.select({ id: attendees.id }).from(attendees)
+      .innerJoin(orders, eq(attendees.orderId, orders.id))
+      .where(and(
+        eq(attendees.eventId, event.id), eq(attendees.email, input.email), isNull(attendees.deletedAt),
+        notInArray(attendees.status, ["cancelled", "rejected"]), notInArray(orders.status, ["expired", "failed", "refunded"]),
+      ))
+      .limit(1);
+    if (dup) return { duplicate: true as const };
+
     // atomic inventory reservation
     const reserve = await tx.update(ticketTypes)
       .set(isFree ? { sold: sql`${ticketTypes.sold} + ${input.quantity}` } : { held: sql`${ticketTypes.held} + ${input.quantity}` })
@@ -78,20 +95,27 @@ export async function POST(req: Request) {
       phone: input.phone || null, smsOptIn: Boolean(input.smsOptIn && input.phone),
       status: event.requiresApproval ? "pending_approval" : "confirmed", answers: att.data,
     });
-    return { soldOut: false as const };
+    return { ok: true as const };
   });
-  if (result.soldOut) return NextResponse.json({ error: "That ticket just sold out." }, { status: 409 });
+  if ("duplicate" in result) return NextResponse.json({ error: "This email is already registered for this event." }, { status: 409 });
+  if ("soldOut" in result) return NextResponse.json({ error: "That ticket just sold out." }, { status: 409 });
 
   if (isFree) {
-    const { fulfilFreeOrder } = await import("@/lib/orders");
     await fulfilFreeOrder(orderId);
     return NextResponse.json({ orderId });
   }
 
-  const pi = await createOrderPaymentIntent({
-    orderId, amountMinor: fees.totalMinor, currency: tt.currency, platformFeeMinor: fees.platformFeeMinor,
-    stripeAccountId: org?.stripeAccountId, receiptEmail: input.email,
-  });
+  let pi;
+  try {
+    pi = await createOrderPaymentIntent({
+      orderId, amountMinor: fees.totalMinor, currency: tt.currency, platformFeeMinor: fees.platformFeeMinor,
+      stripeAccountId: org?.stripeAccountId, receiptEmail: input.email,
+    });
+  } catch (e) {
+    console.error("createOrderPaymentIntent", e);
+    await releaseOrder(orderId, "failed"); // give the hold back, don't strand inventory
+    return NextResponse.json({ error: "Payments are unavailable right now. Please try again in a few minutes." }, { status: 503 });
+  }
   await db.update(orders).set({ stripePaymentIntentId: pi.id }).where(eq(orders.id, orderId));
   return NextResponse.json({ orderId, clientSecret: pi.client_secret, stripeAccountId: org?.stripeAccountId ?? null });
 }

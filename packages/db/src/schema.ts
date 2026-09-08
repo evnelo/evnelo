@@ -275,6 +275,7 @@ export const orders = mysqlTable(
   (t) => [
     index("ord_event").on(t.eventId, t.status),
     index("ord_email").on(t.email),
+    index("ord_hold").on(t.status, t.holdExpiresAt), // expireHolds sweep
     uniqueIndex("ord_pi").on(t.stripePaymentIntentId),
   ],
 );

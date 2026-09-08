@@ -1,4 +1,4 @@
-import { and, eq, lt, sql } from "drizzle-orm";
+import { and, eq, inArray, isNull, lt, sql } from "drizzle-orm";
 import type Stripe from "stripe";
 import { attendees, notifications, orders, orderItems, ticketTypes, tickets } from "@ot/db";
 import { newId } from "@ot/core";
@@ -98,13 +98,44 @@ export async function expireHolds(limit = 100) {
   return released;
 }
 
+/**
+ * Stripe charge.refunded. Partial refunds only record the amount (the organizer decides
+ * which attendee, if any, loses a seat). A full refund cancels the whole party: tickets
+ * revoked so they no longer scan, seats returned to inventory, refund email queued.
+ */
 export async function applyRefund(charge: Stripe.Charge) {
   const piId = typeof charge.payment_intent === "string" ? charge.payment_intent : charge.payment_intent?.id;
   if (!piId) return;
   const full = charge.amount_refunded >= charge.amount;
-  await db.update(orders)
-    .set({ refundedMinor: charge.amount_refunded, status: full ? "refunded" : "partially_refunded" })
-    .where(and(eq(orders.stripePaymentIntentId, piId)));
+  await db.transaction(async (tx) => {
+    const [order] = await tx.select().from(orders).where(eq(orders.stripePaymentIntentId, piId)).for("update");
+    if (!order) return;
+    await tx.update(orders)
+      .set({ refundedMinor: charge.amount_refunded, status: full ? "refunded" : "partially_refunded" })
+      .where(eq(orders.id, order.id));
+    if (!full || order.status === "refunded") return; // idempotent: cancel the party once
+
+    const now = new Date();
+    const party = await tx.select().from(attendees).where(and(eq(attendees.orderId, order.id), isNull(attendees.deletedAt)));
+    if (party.length) {
+      await tx.update(tickets).set({ revokedAt: now }).where(and(inArray(tickets.attendeeId, party.map((a) => a.id)), isNull(tickets.revokedAt)));
+      await tx.update(attendees).set({ status: "cancelled" }).where(eq(attendees.orderId, order.id));
+    }
+    // seats go back only if this order had actually consumed them
+    if (order.status === "paid" || order.status === "partially_refunded") {
+      const items = await tx.select().from(orderItems).where(eq(orderItems.orderId, order.id));
+      for (const item of items) {
+        await tx.update(ticketTypes).set({ sold: sql`GREATEST(${ticketTypes.sold} - ${item.quantity}, 0)` }).where(eq(ticketTypes.id, item.ticketTypeId));
+      }
+    }
+    const host = party.find((a) => !a.guestOfAttendeeId) ?? party[0];
+    if (host) {
+      await tx.insert(notifications).values({
+        id: newId(), organizationId: order.organizationId, eventId: order.eventId, attendeeId: host.id,
+        channel: "email", template: "refund_issued", recipient: order.email,
+      });
+    }
+  });
 }
 
 /** Free orders skip Stripe: issue tickets and queue confirmations right away (unless approval is required). */

@@ -6,7 +6,7 @@ Full product spec: `docs/PRD.md`.
 
 ## Stack
 
-TypeScript everywhere. Next.js 15 (App Router, React 19), shadcn/ui on Tailwind v4 with a custom theme, MySQL 8 via Drizzle, Stripe (Payment Element + Connect), Vonage SMS, Resend email. pnpm + Turborepo monorepo.
+TypeScript everywhere. Next.js 15 (App Router, React 19), shadcn/ui on Tailwind v4 with a custom theme, MySQL 8 via Drizzle, Stripe (Payment Element + Connect), Vonage SMS (Messages API with an application key, or the legacy API key), Resend email. pnpm + Turborepo monorepo.
 
 ```
 apps/web          Next.js app: public pages, dashboard, REST API, webhooks
@@ -54,7 +54,7 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] Custom fields: required/optional, per-ticket-type, conditional show/hide with builder-time validation; one zod schema used in the browser and on the server; separate question sets for the registrant, the order, and each guest
 - [x] Guests (+1s): per-event toggle and limit; each guest is an attendee with their own ticket and QR, charged at the host's ticket price
 - [x] Theme tokens, shadcn primitives, event page, registration modal, ticket page, discovery grid
-- [x] Order creation with atomic inventory holds, hold release/expiry, one live registration per email, PaymentIntent with Connect application fee, Stripe webhook, free-order fulfilment
+- [x] Order creation with atomic inventory holds, hold release/expiry, one live registration per email, PaymentIntent with Connect application fee, Stripe webhook (paid, cancelled, refunded: full refunds revoke tickets and return seats), free-order fulfilment. Verified end to end in Stripe test mode.
 - [x] Ticket QR rendered locally, `.ics` calendar file, Apple Wallet (`.pkpass`) and Google Wallet passes (optional, key-gated)
 - [x] MCP server skeleton (tools mapped to the REST API)
 - [ ] Auth (Auth.js) and organizer dashboard

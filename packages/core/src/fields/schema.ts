@@ -18,13 +18,18 @@ function fieldSchema(f: FieldDef): z.ZodTypeAny {
     case "url": s = z.string().trim().url(); break;
     case "date": s = z.string().regex(/^\d{4}-\d{2}-\d{2}$/); break;
     case "select": s = optionValues.length ? z.enum(optionValues) : z.string(); break;
-    case "multi_select": s = z.array(optionValues.length ? z.enum(optionValues) : z.string()); break;
+    case "multi_select": {
+      // checkbox groups arrive as `false` (none checked) or a single string (one ref) from form libraries
+      const item = optionValues.length ? z.enum(optionValues) : z.string();
+      s = z.preprocess((v) => (v === false || v == null || v === "" ? [] : typeof v === "string" ? [v] : v), z.array(item));
+      break;
+    }
     case "checkbox": s = z.boolean(); break;
     case "consent": s = z.literal(true, { errorMap: () => ({ message: "Required" }) }); break;
     case "file": s = z.string().url(); break;
   }
   if (f.required) {
-    if (f.type === "multi_select") s = (s as z.ZodArray<z.ZodTypeAny>).min(1, "Choose at least one");
+    if (f.type === "multi_select") s = s.refine((v) => Array.isArray(v) && v.length > 0, "Choose at least one");
     if (f.type === "checkbox") s = z.literal(true, { errorMap: () => ({ message: "Required" }) });
     if (s instanceof z.ZodString) s = s.min(1, "Required");
     return s;
@@ -56,7 +61,8 @@ export function buildAnswersSchema(
         for (const issue of r.error.issues) ctx.addIssue({ ...issue, path: [f.key, ...issue.path] });
         continue;
       }
-      if (r.data !== undefined && r.data !== "" && r.data !== null) out[f.key] = r.data;
+      const empty = r.data === undefined || r.data === "" || r.data === null || (Array.isArray(r.data) && r.data.length === 0);
+      if (!empty) out[f.key] = r.data;
     }
     return out;
   });

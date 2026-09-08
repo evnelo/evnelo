@@ -41,6 +41,18 @@ describe("answers schema", () => {
     expect(r.success).toBe(true);
     if (r.success) expect(r.data).toEqual({ role: "dev" });
   });
+  it("treats an empty checkbox group (false from the form) as no answer", () => {
+    const vip = buildAnswersSchema(fields, { scope: "attendee", ticketTypeId: "vip" });
+    const r = vip.safeParse({ role: "dev", diet: false });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data).toEqual({ role: "dev" });
+    const one = vip.safeParse({ role: "dev", diet: "veg" });
+    if (one.success) expect(one.data.diet).toEqual(["veg"]);
+    expect(one.success).toBe(true);
+    const required = buildAnswersSchema([{ ...fields[2], required: true }], { scope: "attendee", ticketTypeId: "vip" });
+    expect(required.safeParse({ diet: false }).success).toBe(false);
+    expect(required.safeParse({ diet: ["gf"] }).success).toBe(true);
+  });
   it("validates order-scope consent separately", () => {
     const order = buildAnswersSchema(fields, { scope: "order" });
     expect(order.safeParse({}).success).toBe(false);

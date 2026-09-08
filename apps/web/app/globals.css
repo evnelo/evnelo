@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+/* Fraunces Variable = display serif for event names; Geist = UI. Both bundled from npm in layout.tsx */
+
+:root {
+  /* base */
+  --background: #f5f5f3;
+  --foreground: #000000;
+  --muted: #ebebe7;
+  --muted-foreground: #6a6b66;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --border: #dcdcd6;
+  --input: #dcdcd6;
+  --ring: #16603a;
+
+  /* house accent: gate green */
+  --primary: #16603a;
+  --primary-foreground: #f5f5f3;
+  --secondary: #ebebe7;
+  --secondary-foreground: #000000;
+  --accent: #e4efe7;
+  --accent-foreground: #0f4228;
+  --destructive: #a8341f;
+  --destructive-foreground: #f5f5f3;
+
+  /* organizer-overridable per event */
+  --accent-event: var(--primary);
+  --accent-event-foreground: var(--primary-foreground);
+
+  /* the ticket object */
+  --ticket-paper: #f1e6b2;
+  --ticket-ink: #2b2407;
+  --ticket-perforation: #c9bd85;
+
+  --radius: 0.625rem;
+}
+
+.dark {
+  --background: #161817;
+  --foreground: #ececE7;
+  --muted: #232624;
+  --muted-foreground: #9a9c96;
+  --card: #1d201e;
+  --card-foreground: #ececE7;
+  --popover: #1d201e;
+  --popover-foreground: #ececE7;
+  --border: #2e3230;
+  --input: #2e3230;
+  --ring: #3da46b;
+  --primary: #3da46b;
+  --primary-foreground: #0b1a11;
+  --secondary: #232624;
+  --secondary-foreground: #ececE7;
+  --accent: #1b2f24;
+  --accent-foreground: #9fdcb9;
+  --destructive: #d4553b;
+  --destructive-foreground: #161817;
+  --ticket-paper: #e5d89f;
+  --ticket-ink: #2b2407;
+  --ticket-perforation: #b8ab74;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-event: var(--accent-event);
+  --color-event-foreground: var(--accent-event-foreground);
+  --color-ticket-paper: var(--ticket-paper);
+  --color-ticket-ink: var(--ticket-ink);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces Variable", Georgia, serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "ss01", "cv11";
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* display type: large, tight, soft optical axis */
+  .display {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 144, "SOFT" 60, "WONK" 0;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  /* calendar leaf: month over day, like a tear-off desk calendar */
+  .date-leaf {
+    @apply inline-flex flex-col items-center rounded-md border bg-card overflow-hidden;
+    min-width: 3.25rem;
+  }
+  .date-leaf > span:first-child {
+    @apply w-full text-center text-xs font-medium bg-event text-event-foreground py-0.5 tracking-wide;
+  }
+  .date-leaf > span:last-child {
+    @apply text-2xl leading-none py-1.5 font-display;
+    font-variation-settings: "opsz" 36, "SOFT" 40;
+  }
+
+  /* the ticket object: paper stub with a perforated edge before the QR */
+  .ticket {
+    @apply relative rounded-xl text-ticket-ink;
+    background: var(--ticket-paper);
+    box-shadow: 0 1px 0 rgb(0 0 0 / 0.06), 0 12px 32px -16px rgb(43 36 7 / 0.35);
+  }
+  .ticket-perforation {
+    position: relative;
+    border-left: 2px dashed var(--ticket-perforation);
+  }
+  .ticket-perforation::before,
+  .ticket-perforation::after {
+    content: "";
+    position: absolute;
+    left: -11px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--background);
+  }
+  .ticket-perforation::before { top: -10px; }
+  .ticket-perforation::after { bottom: -10px; }
+
+  /* sponsor strip: logos rest monochrome, colour on hover */
+  .sponsor-logo {
+    filter: grayscale(1) contrast(0.9);
+    opacity: 0.7;
+    transition: filter 150ms, opacity 150ms;
+  }
+  .sponsor-logo:hover, .sponsor-logo:focus-visible {
+    filter: none;
+    opacity: 1;
+  }
+}

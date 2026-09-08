@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: openticket
+      MYSQL_USER: openticket
+      MYSQL_PASSWORD: openticket
+      MYSQL_ROOT_PASSWORD: root
+    ports: ["3306:3306"]
+    volumes: ["mysql-data:/var/lib/mysql"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      retries: 20
+  app:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: mysql://openticket:openticket@db:3306/openticket
+    ports: ["3000:3000"]
+    depends_on:
+      db: { condition: service_healthy }
+    volumes: ["uploads:/app/uploads"]
+volumes:
+  mysql-data:
+  uploads:

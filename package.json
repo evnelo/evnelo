@@ -9,7 +9,8 @@
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "db:generate": "pnpm --filter @ot/db generate",
-    "db:migrate": "pnpm --filter @ot/db migrate"
+    "db:migrate": "pnpm --filter @ot/db migrate",
+    "db:seed": "pnpm --filter @ot/db seed"
   },
   "devDependencies": {
     "turbo": "^2.3.3",

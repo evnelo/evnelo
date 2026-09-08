@@ -12,7 +12,8 @@
   "scripts": {
     "generate": "drizzle-kit generate",
     "migrate": "tsx src/migrate.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed": "tsx src/seed.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.38.3",
@@ -22,6 +23,7 @@
     "drizzle-kit": "^0.30.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
-    "@types/node": "^22.10.2"
+    "@types/node": "^22.10.2",
+    "ulid": "^2.3.0"
   }
 }

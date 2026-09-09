@@ -31,12 +31,14 @@ class VonageSms implements SmsProvider {
     );
   }
   async send(to: string, text: string) {
+    // Vonage wants digits only for numeric senders and recipients; alphanumeric ids pass through
     const dest = to.replace(/^\+/, "");
+    const from = env.VONAGE_FROM.replace(/^\+/, "");
     if (smsAuthMode === "application") {
-      const res = await this.client.messages.send({ channel: "sms", message_type: "text", to: dest, from: env.VONAGE_FROM, text } as any);
+      const res = await this.client.messages.send({ channel: "sms", message_type: "text", to: dest, from, text } as any);
       return { providerMessageId: res.messageUUID ?? "" };
     }
-    const res = await this.client.sms.send({ to: dest, from: env.VONAGE_FROM, text });
+    const res = await this.client.sms.send({ to: dest, from, text });
     const msg = res.messages[0];
     if (!msg || msg.status !== "0") throw new Error(`Vonage: ${msg?.errorText ?? "unknown error"}`);
     return { providerMessageId: msg.messageId ?? "" };

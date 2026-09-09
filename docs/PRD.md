@@ -9,7 +9,7 @@
 
 ## 1. Summary
 
-The Platform is an open-source alternative to Luma, Partiful and Eventbrite. Anyone can self-host it with their own Stripe, Vonage and Resend keys and run free or paid events end to end. A cloud edition, operated by us, offers the same product with hosting, a public discovery dashboard, and a fee model that undercuts incumbents: **0.99% on paid tickets, nothing on free tickets**, with the option to bring your own Stripe account so the customer keeps control of their money and their payout schedule.
+The Platform is an open-source alternative to Luma, Partiful and Eventbrite. Anyone can self-host it with their own Stripe, Telnyx and Resend keys and run free or paid events end to end. A cloud edition, operated by us, offers the same product with hosting, a public discovery dashboard, and a fee model that undercuts incumbents: **0.99% on paid tickets, nothing on free tickets**, with the option to bring your own Stripe account so the customer keeps control of their money and their payout schedule.
 
 Aesthetically it sits in the Luma family (clean, image-forward event pages, low friction registration) while having its own identity: warmer, more editorial, and deliberately not another dark-mode-gradient app.
 
@@ -43,7 +43,7 @@ Aesthetically it sits in the Luma family (clean, image-forward event pages, low 
 |---|---|---|
 | Hosting | User's infra | Ours |
 | Stripe | User's own keys (required for paid events) | Bring your own account via Stripe Connect, or use platform account |
-| SMS | User's own Vonage (or Twilio) keys | Included per pricing rules |
+| SMS | User's own Telnyx keys | Included per pricing rules |
 | Email | User's own Resend key | Included, free |
 | Discovery dashboard | Local to that instance (optional, off by default) | Global, public |
 | Platform fee | None | 0.99% on paid tickets |
@@ -175,7 +175,7 @@ Email (Resend), all transactional, P0:
 - Registration confirmation (with ticket), order receipt, approval / rejection, waitlist promoted, event reminder (24h and 1h; organizer chooses), event updated (time/venue change), event cancelled, refund issued, magic-link login, org invite
 - Organizer-authored "update to attendees" message — plain transactional blast limited to registered attendees, rate-limited, must be event-related
 
-SMS (Vonage), transactional, P0:
+SMS (Telnyx), transactional, P0:
 
 - Confirmation + ticket link, reminder, event update/cancellation
 - Requires attendee phone opt-in at registration; STOP handling and country compliance (sender ID rules per country)
@@ -220,10 +220,9 @@ Attendee preferences: per-attendee unsubscribe from reminders; confirmations alw
 
 ### 7.12 Self-hosting
 
-- P0 Single Docker image + `docker-compose.yml` (app + MySQL). Env vars: `DATABASE_URL`, `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, `VONAGE_API_KEY`, `VONAGE_API_SECRET`, `VONAGE_FROM`, `RESEND_API_KEY`, `EMAIL_FROM`, `APP_URL`, `AUTH_SECRET`, `STORAGE_*` (S3-compatible or local)
+- P0 Single Docker image + `docker-compose.yml` (app + MySQL). Env vars: `DATABASE_URL`, `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, `TELNYX_API_KEY`, `TELNYX_FROM`, `RESEND_API_KEY`, `EMAIL_FROM`, `APP_URL`, `AUTH_SECRET`, `STORAGE_*` (S3-compatible or local)
 - P0 First-run setup wizard creates the owner and org
 - P0 Migrations run on boot; health endpoint
-- P1 Twilio as an alternative SMS provider behind the same interface
 - P1 One-click deploy templates (Railway, Render, Fly, Coolify)
 
 ## 8. Technical architecture
@@ -238,7 +237,7 @@ Attendee preferences: per-attendee unsubscribe from reminders; confirmations alw
 | Forms | react-hook-form + zod; the custom-field builder and renderer share one zod schema generator |
 | Database | **MySQL 8** with Drizzle ORM (typed schema, SQL-first migrations); on Cloud, PlanetScale or Aurora MySQL |
 | Payments | **Stripe** (Payment Element, Connect Standard + Express, webhooks, Tax P1) |
-| SMS | **Vonage** Messages API behind a `SmsProvider` interface (Twilio adapter P1) |
+| SMS | **Telnyx** Messaging API behind a `SmsProvider` interface (plain HTTP, no SDK) |
 | Email | **Resend** with React Email templates |
 | Auth | Auth.js (magic link, Google); API keys hashed at rest |
 | Jobs | MySQL-backed queue (reminders, webhook delivery, SMS/email sending) — no Redis dependency for self-hosters; BullMQ optional on Cloud |
@@ -284,7 +283,7 @@ Notes:
 ### 8.7 Security & compliance
 
 - Signed QR tokens (HMAC, per-ticket, revocable)
-- Webhook signature verification (Stripe, Vonage, Resend)
+- Webhook signature verification (Stripe, Telnyx, Resend)
 - API keys: prefix + SHA-256 hash, scopes, last-used tracking, rotation
 - Rate limits on registration, login, API
 - Abuse controls on Cloud: new orgs limited until first successful paid event or manual review; spam-event detection on discovery; report button
@@ -337,11 +336,11 @@ Design deliverables before build: token sheet, event page, registration modal, t
 
 **M1 — Free events (weeks 4–7):** event CRUD with all fields (venue, tags, social, cover, logo, sponsors), visibility modes, registration with custom fields + conditionals, email confirmations, tickets with QR, check-in, organizer dashboard. Self-hosted Docker image. _Internal launch._
 
-**M2 — Paid events (weeks 8–11):** ticket types, Stripe Payment Element, Connect Standard/Express, 0.99% fee logic, refunds, discount codes, receipts. SMS via Vonage with the free/paid gate and $5 unlock.
+**M2 — Paid events (weeks 8–11):** ticket types, Stripe Payment Element, Connect Standard/Express, 0.99% fee logic, refunds, discount codes, receipts. SMS via Telnyx with the free/paid gate and $5 unlock.
 
 **M3 — Discovery & API (weeks 12–14):** public discover page, SEO, sitemaps, REST API + OpenAPI + SDK, webhooks, MCP server. _Public beta of Cloud + open-source repo goes public._
 
-**M4 — Polish & fast follows (weeks 15+):** approvals, waitlist, event templates, Twilio adapter, embeddable widget, Portuguese locale, one-click deploys.
+**M4 — Polish & fast follows (weeks 15+):** approvals, waitlist, event templates, embeddable widget, Portuguese locale, one-click deploys.
 
 ## 12. Open questions
 

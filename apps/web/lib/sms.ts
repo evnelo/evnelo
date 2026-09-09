@@ -1,48 +1,35 @@
-import { Vonage } from "@vonage/server-sdk";
-import { Auth } from "@vonage/auth";
-import { readFileSync } from "node:fs";
-import { env, smsConfigured, smsAuthMode } from "./env";
+import { env, smsConfigured } from "./env";
 
 export interface SmsProvider {
   send(to: string, text: string): Promise<{ providerMessageId: string }>;
 }
 
-/** PEM from env: inline (with "\n" escapes), base64-encoded, or a file path. */
-function privateKeyPem(v: string) {
-  if (v.includes("-----BEGIN")) return v.replace(/\\n/g, "\n");
-  const decoded = Buffer.from(v, "base64").toString("utf8");
-  if (decoded.includes("-----BEGIN")) return decoded;
-  return readFileSync(v, "utf8");
-}
-
 /**
- * Vonage behind the SmsProvider interface (Twilio adapter is P1).
- * Two auth styles: an Application ID + private key (Messages API, JWT auth, the current
- * Vonage default) or the legacy API key + secret (SMS API).
+ * Telnyx Messaging API behind the SmsProvider interface. Plain fetch: one endpoint, one
+ * bearer key, no SDK. `from` is an E.164 number owned in Telnyx or an alphanumeric sender
+ * id (needs a messaging profile that allows it, and is not accepted by US carriers).
  */
-class VonageSms implements SmsProvider {
-  private client: Vonage;
-  constructor() {
-    this.client = new Vonage(
-      smsAuthMode === "application"
-        ? new Auth({ applicationId: env.VONAGE_APPLICATION_ID!, privateKey: privateKeyPem(env.VONAGE_PRIVATE_KEY!) })
-        : new Auth({ apiKey: env.VONAGE_API_KEY!, apiSecret: env.VONAGE_API_SECRET! }),
-    );
-  }
+class TelnyxSms implements SmsProvider {
   async send(to: string, text: string) {
-    const dest = to.replace(/^\+/, "");
-    if (smsAuthMode === "application") {
-      const res = await this.client.messages.send({ channel: "sms", message_type: "text", to: dest, from: env.VONAGE_FROM, text } as any);
-      return { providerMessageId: res.messageUUID ?? "" };
-    }
-    const res = await this.client.sms.send({ to: dest, from: env.VONAGE_FROM, text });
-    const msg = res.messages[0];
-    if (!msg || msg.status !== "0") throw new Error(`Vonage: ${msg?.errorText ?? "unknown error"}`);
-    return { providerMessageId: msg.messageId ?? "" };
+    const res = await fetch("https://api.telnyx.com/v2/messages", {
+      method: "POST",
+      headers: { authorization: `Bearer ${env.TELNYX_API_KEY}`, "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify({
+        from: env.TELNYX_FROM,
+        to,
+        text,
+        type: "SMS",
+        ...(env.TELNYX_MESSAGING_PROFILE_ID ? { messaging_profile_id: env.TELNYX_MESSAGING_PROFILE_ID } : {}),
+        // delivery-status webhook_url lands with the notification worker
+      }),
+    });
+    const body = (await res.json().catch(() => ({}))) as { data?: { id?: string }; errors?: { title?: string; detail?: string }[] };
+    if (!res.ok) throw new Error(`Telnyx ${res.status}: ${body.errors?.map((e) => e.detail ?? e.title).join("; ") ?? "unknown error"}`);
+    return { providerMessageId: body.data?.id ?? "" };
   }
 }
 
-export const sms: SmsProvider | null = smsConfigured ? new VonageSms() : null;
+export const sms: SmsProvider | null = smsConfigured ? new TelnyxSms() : null;
 
 /** Fixed transactional templates: variables only, no marketing copy. */
 export const smsTemplates = {

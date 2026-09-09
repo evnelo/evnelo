@@ -41,12 +41,6 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.1
         version: 1.3.3(@types/react@19.2.18)(react@19.2.8)
-      '@vonage/auth':
-        specifier: ^1.12.0
-        version: 1.18.0
-      '@vonage/server-sdk':
-        specifier: ^3.19.0
-        version: 3.30.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1488,14 +1482,8 @@ packages:
     cpu: [arm64]
     os: [win32]
 
-  '@types/debug@4.1.13':
-    resolution: {integrity: sha512-KSVgmQmzMwPlmtljOomayoR89W4FynCAi3E8PPs7vmDVPe84hT+vGPKkJfThkmXs0x0jAaa9U8uW8bbfyS2fWw==, tarball: https://registry.npmjs.org/@types/debug/-/debug-4.1.13.tgz}
-
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==, tarball: https://registry.npmjs.org/@types/estree/-/estree-1.0.9.tgz}
-
-  '@types/ms@2.1.0':
-    resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==, tarball: https://registry.npmjs.org/@types/ms/-/ms-2.1.0.tgz}
 
   '@types/node@22.20.1':
     resolution: {integrity: sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==, tarball: https://registry.npmjs.org/@types/node/-/node-22.20.1.tgz}
@@ -1543,86 +1531,6 @@ packages:
   '@vitest/utils@2.1.9':
     resolution: {integrity: sha512-v0psaMSkNJ3A2NMrUEHFRzJtDPFn+/VWZ5WxImB21T9fjucJRmS7xCS3ppEnARb9y11OAzaD+P2Ps+b+BGX5iQ==, tarball: https://registry.npmjs.org/@vitest/utils/-/utils-2.1.9.tgz}
 
-  '@vonage/accounts@1.23.0':
-    resolution: {integrity: sha512-6J2vEqkEHukaI6so9XgyklIQ+KHEHTugs99icLvnYj6H8HIX/ydUqRpTteO3BTbrFDUImFJgSceJxDFtzGpROA==, tarball: https://registry.npmjs.org/@vonage/accounts/-/accounts-1.23.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/applications@1.23.0':
-    resolution: {integrity: sha512-5M961/ho7BHmSazI+jfrJhAz5Bwn8StNTC/Afir0vUQhKKchPJYZrH3zG0idO6W2qAY5PxMIOiJ8OjrVrFQ1zA==, tarball: https://registry.npmjs.org/@vonage/applications/-/applications-1.23.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/auth@1.18.0':
-    resolution: {integrity: sha512-WBaH8dKO1FmfPvwWD+dGBPjpdB53CyZEgdpJOD4Sk1jm8yQZihRPCpSESCJlDInj5AANXysZfI5fMQCESOqa3Q==, tarball: https://registry.npmjs.org/@vonage/auth/-/auth-1.18.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/conversations@1.17.0':
-    resolution: {integrity: sha512-1h5vAIH1Z47XTmXPPrWNFrtLbhd+Yr/YNgz8CXfEDsFquZUlVVdBQmMpytxp9ddgzoelnDZjr8KuJBnCW/plcQ==, tarball: https://registry.npmjs.org/@vonage/conversations/-/conversations-1.17.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/jwt@1.17.0':
-    resolution: {integrity: sha512-ykV14M/WUuA7bp801qvVhS+5pd+5X0HlbyPcieOzWHn6X/Z9uX5VIIVltTU+lgbz2dTS4x5kYNpnEiPOhFU4eg==, tarball: https://registry.npmjs.org/@vonage/jwt/-/jwt-1.17.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/messages@1.27.0':
-    resolution: {integrity: sha512-x/zdLmH7Lsk+Y0HuMaaiowG/VY4f5/T2esWckr9BcD202VxxSZLuu2rMKQuPK28E9SmrBukMbdXdZ19aLyuNNQ==, tarball: https://registry.npmjs.org/@vonage/messages/-/messages-1.27.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/number-insights@1.23.0':
-    resolution: {integrity: sha512-i2gEISxLpWtGYQwSUWfheBXe3Pa81OgsL1DgDLS7IxIyin7f0EruhTsedCp1KcKZgnt8E1KAPI3m6cIlcryNag==, tarball: https://registry.npmjs.org/@vonage/number-insights/-/number-insights-1.23.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/numbers@1.25.0':
-    resolution: {integrity: sha512-tOQvtLoM+p2tPZcqRLLD15Mc0bSFNvV7o3I0ojL9OasoYDSymHyIL5mhyrNI3Mh78XOctLuoW2io+uC0VQiHQg==, tarball: https://registry.npmjs.org/@vonage/numbers/-/numbers-1.25.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/pricing@1.23.0':
-    resolution: {integrity: sha512-1VmJRhLeRobRfNQcrqw9sO8SLHKYVbTmi4egQYDGFEUY5N45hWOGYtKn9YLqhgsh5SB6vvYtVnbw0jRq0NAW/A==, tarball: https://registry.npmjs.org/@vonage/pricing/-/pricing-1.23.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/redact@1.22.0':
-    resolution: {integrity: sha512-PIr4ygDhy+z3G+gwA+s+lhmp/suSbIHqzvHtEUvM9jSEPpBVT0wcHxVxeRnkE5/ywOCbpUHHwiOGm/4IsawXYg==, tarball: https://registry.npmjs.org/@vonage/redact/-/redact-1.22.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/reports@1.2.0':
-    resolution: {integrity: sha512-xs5Aw4XoEz2sHj0R0G91eiplk5G2s2yMak1Qtu978n5Se9Yfev71chg+eF3MKa8Hd36cn793gkn/g8eFOx5LnA==, tarball: https://registry.npmjs.org/@vonage/reports/-/reports-1.2.0.tgz}
-    engines: {node: '>=20'}
-
-  '@vonage/server-client@1.23.0':
-    resolution: {integrity: sha512-i9uZBwxqMc4G9iWQA2PC/I+pvyfF3R1kFNw3MyC0HtR5KJsprbUIueSDumDxB+gEbPhDaBENR6XTkESkRqHKYw==, tarball: https://registry.npmjs.org/@vonage/server-client/-/server-client-1.23.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/server-sdk@3.30.0':
-    resolution: {integrity: sha512-qjbMAhuHNeMSInxE4y6UeMXTLEOHU9Xt8iGNNoJqFwErVWLOPMbAv7+kJLoM8ZyjVEEx6ML46PkgFL6gzRZarA==, tarball: https://registry.npmjs.org/@vonage/server-sdk/-/server-sdk-3.30.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/sms@1.24.0':
-    resolution: {integrity: sha512-qh92QFSaJzVsP4hLI5LSVViP2AwidZ+ND/iC5slC/wivt8nl75TEcUxE3tMas3k9VBhUhDF41+XVSgvfT4n1iQ==, tarball: https://registry.npmjs.org/@vonage/sms/-/sms-1.24.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/users@1.17.0':
-    resolution: {integrity: sha512-Yz7+GUPnVYwah1vBvWFD3V94Ier5Knf9M9hOqB6GlkkqMmiuEG6wCx2Zup3AwdcPUqbuEvjiTuPK6GMzOOsDnA==, tarball: https://registry.npmjs.org/@vonage/users/-/users-1.17.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/verify2@1.22.0':
-    resolution: {integrity: sha512-QoRUGP2bIcn4t8IkHyrv97HJMwaxNoOiH1YEMF41rSSkqOXnaiU6j/LybYyrhzT1s3fH+FpciID3bGI8FmI9Xg==, tarball: https://registry.npmjs.org/@vonage/verify2/-/verify2-1.22.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/verify@1.23.0':
-    resolution: {integrity: sha512-mVzU46rQhrMtnJJe3ONQ+NwmXC+qkQM5AQSGG4OCnCS66ALgY0PLbNGGCaS5bnt+gcnY6A3SytEtLUoI+dbQ5w==, tarball: https://registry.npmjs.org/@vonage/verify/-/verify-1.23.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/vetch@1.14.0':
-    resolution: {integrity: sha512-ULuYsA//oSD6YM0zIeacNRM+cmSWqo7fzr+kneoUiGgjHZxv+NCWKq2vlXRTx6bK4WZ/YOhW1wzumvVKLfBKlw==, tarball: https://registry.npmjs.org/@vonage/vetch/-/vetch-1.14.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/video@1.31.0':
-    resolution: {integrity: sha512-So13NCR438Pvg/UzY/YNC7uAr+mzNQBXmN8WxZwWwIeaQ4K32Ban/WKMkoQwjLPTdEcogdVr3UeO2mUXN1JjJg==, tarball: https://registry.npmjs.org/@vonage/video/-/video-1.31.0.tgz}
-    engines: {node: '>=22'}
-
-  '@vonage/voice@1.24.0':
-    resolution: {integrity: sha512-hdnF1+WQHscz564rpGZtOYey0IpUbA7ZwRzJWjprG4OFWrFWgAHeZQx+lp4qyovcvbncRJZ8/mOXCW6AI/cDvA==, tarball: https://registry.npmjs.org/@vonage/voice/-/voice-1.24.0.tgz}
-    engines: {node: '>=22'}
-
   accepts@2.0.0:
     resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==, tarball: https://registry.npmjs.org/accepts/-/accepts-2.0.0.tgz}
     engines: {node: '>= 0.6'}
@@ -1661,9 +1569,6 @@ packages:
   body-parser@2.3.0:
     resolution: {integrity: sha512-2cGmJupaNgg+QUwVLAucDuWuoMZ6EX9iHDRswZ5lsNYEmwPaRknMPCLZz07yTzVq/83p4o/wzbDZbBrTvGGTIw==, tarball: https://registry.npmjs.org/body-parser/-/body-parser-2.3.0.tgz}
     engines: {node: '>=18'}
-
-  buffer-equal-constant-time@1.0.1:
-    resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==, tarball: https://registry.npmjs.org/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz}
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==, tarball: https://registry.npmjs.org/buffer-from/-/buffer-from-1.1.2.tgz}
@@ -1900,9 +1805,6 @@ packages:
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==, tarball: https://registry.npmjs.org/dunder-proto/-/dunder-proto-1.0.1.tgz}
     engines: {node: '>= 0.4'}
-
-  ecdsa-sig-formatter@1.0.11:
-    resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==, tarball: https://registry.npmjs.org/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.11.tgz}
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==, tarball: https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz}
@@ -2141,16 +2043,6 @@ packages:
   json-schema-typed@8.0.2:
     resolution: {integrity: sha512-fQhoXdcvc3V28x7C7BMs4P5+kNlgUURe2jmUT1T//oBRMDrqy1QPelJimwZGo7Hg9VPV3EQV5Bnq4hbFy2vetA==, tarball: https://registry.npmjs.org/json-schema-typed/-/json-schema-typed-8.0.2.tgz}
 
-  jsonwebtoken@9.0.3:
-    resolution: {integrity: sha512-MT/xP0CrubFRNLNKvxJ2BYfy53Zkm++5bX9dtuPbqAeQpTVe0MQTFhao8+Cp//EmJp244xt6Drw/GVEGCUj40g==, tarball: https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-9.0.3.tgz}
-    engines: {node: '>=12', npm: '>=6'}
-
-  jwa@2.0.1:
-    resolution: {integrity: sha512-hRF04fqJIP8Abbkq5NKGN0Bbr3JxlQ+qhZufXVr0DvujKy93ZCbXZMHDL4EOtodSbCWxOqR8MS1tXA5hwqCXDg==, tarball: https://registry.npmjs.org/jwa/-/jwa-2.0.1.tgz}
-
-  jws@4.0.1:
-    resolution: {integrity: sha512-EKI/M/yqPncGUUh44xz0PxSidXFr/+r0pA70+gIYhjv+et7yxM+s29Y+VGDkovRofQem0fs7Uvf4+YmAdyRduA==, tarball: https://registry.npmjs.org/jws/-/jws-4.0.1.tgz}
-
   leac@0.6.0:
     resolution: {integrity: sha512-y+SqErxb8h7nE/fiEX07jsbuhrpO9lL8eca7/Y1nuWV2moNlXhyd59iDGcRf6moVyDMbmTNzL40SUyrFU/yDpg==, tarball: https://registry.npmjs.org/leac/-/leac-0.6.0.tgz}
 
@@ -2227,27 +2119,6 @@ packages:
   locate-path@5.0.0:
     resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==, tarball: https://registry.npmjs.org/locate-path/-/locate-path-5.0.0.tgz}
     engines: {node: '>=8'}
-
-  lodash.includes@4.3.0:
-    resolution: {integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==, tarball: https://registry.npmjs.org/lodash.includes/-/lodash.includes-4.3.0.tgz}
-
-  lodash.isboolean@3.0.3:
-    resolution: {integrity: sha512-Bz5mupy2SVbPHURB98VAcw+aHh4vRV5IPNhILUCsOzRmsTmSQ17jIuqopAentWoehktxGd9e/hbIXq980/1QJg==, tarball: https://registry.npmjs.org/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz}
-
-  lodash.isinteger@4.0.4:
-    resolution: {integrity: sha512-DBwtEWN2caHQ9/imiNeEA5ys1JoRtRfY3d7V9wkqtbycnAmTvRRmbHKDV4a0EYc678/dia0jrte4tjYwVBaZUA==, tarball: https://registry.npmjs.org/lodash.isinteger/-/lodash.isinteger-4.0.4.tgz}
-
-  lodash.isnumber@3.0.3:
-    resolution: {integrity: sha512-QYqzpfwO3/CWf3XP+Z+tkQsfaLL/EnUlXWVkIk5FUPc4sBdTehEqZONuyRt2P67PXAk+NXmTBcc97zw9t1FQrw==, tarball: https://registry.npmjs.org/lodash.isnumber/-/lodash.isnumber-3.0.3.tgz}
-
-  lodash.isplainobject@4.0.6:
-    resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==, tarball: https://registry.npmjs.org/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz}
-
-  lodash.isstring@4.0.1:
-    resolution: {integrity: sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw==, tarball: https://registry.npmjs.org/lodash.isstring/-/lodash.isstring-4.0.1.tgz}
-
-  lodash.once@4.1.1:
-    resolution: {integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==, tarball: https://registry.npmjs.org/lodash.once/-/lodash.once-4.1.1.tgz}
 
   long@5.3.2:
     resolution: {integrity: sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==, tarball: https://registry.npmjs.org/long/-/long-5.3.2.tgz}
@@ -2517,9 +2388,6 @@ packages:
     resolution: {integrity: sha512-nLTrUKm2UyiL7rlhapu/Zl45FwNgkZGaCpZbIHajDYgwlJCOzLSk+cIPAnsEqV955GjILJnKbdQC1nVPz+gAYQ==, tarball: https://registry.npmjs.org/router/-/router-2.2.0.tgz}
     engines: {node: '>= 18'}
 
-  safe-buffer@5.2.1:
-    resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==, tarball: https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz}
-
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==, tarball: https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz}
 
@@ -2670,9 +2538,6 @@ packages:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==, tarball: https://registry.npmjs.org/toidentifier/-/toidentifier-1.0.1.tgz}
     engines: {node: '>=0.6'}
 
-  ts-xor@1.3.0:
-    resolution: {integrity: sha512-RLXVjliCzc1gfKQFLRpfeD0rrWmjnSTgj7+RFhoq3KRkUYa8LE/TIidYOzM5h+IdFBDSjjSgk9Lto9sdMfDFEA==, tarball: https://registry.npmjs.org/ts-xor/-/ts-xor-1.3.0.tgz}
-
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==, tarball: https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz}
 
@@ -2724,10 +2589,6 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
-
-  uuid@14.0.1:
-    resolution: {integrity: sha512-6ZxzVpzDXDa3bJWaHilVayA+BH/1zmxCJoVgvmqJnid/gPoKHxUrS/aC/T6LGQtNHT+XHG9fXPJB4d+IrU30Ew==, tarball: https://registry.npmjs.org/uuid/-/uuid-14.0.1.tgz}
-    hasBin: true
 
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==, tarball: https://registry.npmjs.org/vary/-/vary-1.1.2.tgz}
@@ -3691,13 +3552,7 @@ snapshots:
   '@turbo/windows-arm64@2.10.12':
     optional: true
 
-  '@types/debug@4.1.13':
-    dependencies:
-      '@types/ms': 2.1.0
-
   '@types/estree@1.0.9': {}
-
-  '@types/ms@2.1.0': {}
 
   '@types/node@22.20.1':
     dependencies:
@@ -3759,165 +3614,6 @@ snapshots:
       loupe: 3.2.1
       tinyrainbow: 1.2.0
 
-  '@vonage/accounts@1.23.0':
-    dependencies:
-      '@vonage/server-client': 1.23.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/applications@1.23.0':
-    dependencies:
-      '@vonage/server-client': 1.23.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/auth@1.18.0':
-    dependencies:
-      '@vonage/jwt': 1.17.0
-      debug: 4.4.3
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/conversations@1.17.0':
-    dependencies:
-      '@vonage/messages': 1.27.0
-      '@vonage/server-client': 1.23.0
-      '@vonage/users': 1.17.0
-      '@vonage/voice': 1.24.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/jwt@1.17.0':
-    dependencies:
-      debug: 4.4.3
-      jsonwebtoken: 9.0.3
-      uuid: 14.0.1
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/messages@1.27.0':
-    dependencies:
-      '@vonage/server-client': 1.23.0
-      '@vonage/vetch': 1.14.0
-      debug: 4.4.3
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/number-insights@1.23.0':
-    dependencies:
-      '@vonage/auth': 1.18.0
-      '@vonage/server-client': 1.23.0
-      '@vonage/vetch': 1.14.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/numbers@1.25.0':
-    dependencies:
-      '@vonage/auth': 1.18.0
-      '@vonage/server-client': 1.23.0
-      '@vonage/vetch': 1.14.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/pricing@1.23.0':
-    dependencies:
-      '@vonage/auth': 1.18.0
-      '@vonage/server-client': 1.23.0
-      '@vonage/vetch': 1.14.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/redact@1.22.0':
-    dependencies:
-      '@vonage/server-client': 1.23.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/reports@1.2.0':
-    dependencies:
-      '@vonage/server-client': 1.23.0
-      '@vonage/vetch': 1.14.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/server-client@1.23.0':
-    dependencies:
-      '@vonage/auth': 1.18.0
-      '@vonage/vetch': 1.14.0
-      debug: 4.4.3
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/server-sdk@3.30.0':
-    dependencies:
-      '@vonage/accounts': 1.23.0
-      '@vonage/applications': 1.23.0
-      '@vonage/auth': 1.18.0
-      '@vonage/conversations': 1.17.0
-      '@vonage/messages': 1.27.0
-      '@vonage/number-insights': 1.23.0
-      '@vonage/numbers': 1.25.0
-      '@vonage/pricing': 1.23.0
-      '@vonage/redact': 1.22.0
-      '@vonage/reports': 1.2.0
-      '@vonage/server-client': 1.23.0
-      '@vonage/sms': 1.24.0
-      '@vonage/users': 1.17.0
-      '@vonage/verify': 1.23.0
-      '@vonage/verify2': 1.22.0
-      '@vonage/video': 1.31.0
-      '@vonage/voice': 1.24.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/sms@1.24.0':
-    dependencies:
-      '@vonage/auth': 1.18.0
-      '@vonage/server-client': 1.23.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/users@1.17.0':
-    dependencies:
-      '@vonage/server-client': 1.23.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/verify2@1.22.0':
-    dependencies:
-      '@vonage/server-client': 1.23.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/verify@1.23.0':
-    dependencies:
-      '@vonage/auth': 1.18.0
-      '@vonage/server-client': 1.23.0
-      '@vonage/vetch': 1.14.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/vetch@1.14.0': {}
-
-  '@vonage/video@1.31.0':
-    dependencies:
-      '@vonage/auth': 1.18.0
-      '@vonage/jwt': 1.17.0
-      '@vonage/server-client': 1.23.0
-      '@vonage/vetch': 1.14.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vonage/voice@1.24.0':
-    dependencies:
-      '@types/debug': 4.1.13
-      '@vonage/server-client': 1.23.0
-      '@vonage/vetch': 1.14.0
-      debug: 4.4.3
-      ts-xor: 1.3.0
-    transitivePeerDependencies:
-      - supports-color
-
   accepts@2.0.0:
     dependencies:
       mime-types: 3.0.2
@@ -3961,8 +3657,6 @@ snapshots:
       type-is: 2.1.0
     transitivePeerDependencies:
       - supports-color
-
-  buffer-equal-constant-time@1.0.1: {}
 
   buffer-from@1.1.2: {}
 
@@ -4096,10 +3790,6 @@ snapshots:
       call-bind-apply-helpers: 1.0.2
       es-errors: 1.3.0
       gopd: 1.2.0
-
-  ecdsa-sig-formatter@1.0.11:
-    dependencies:
-      safe-buffer: 5.2.1
 
   ee-first@1.1.1: {}
 
@@ -4443,30 +4133,6 @@ snapshots:
 
   json-schema-typed@8.0.2: {}
 
-  jsonwebtoken@9.0.3:
-    dependencies:
-      jws: 4.0.1
-      lodash.includes: 4.3.0
-      lodash.isboolean: 3.0.3
-      lodash.isinteger: 4.0.4
-      lodash.isnumber: 3.0.3
-      lodash.isplainobject: 4.0.6
-      lodash.isstring: 4.0.1
-      lodash.once: 4.1.1
-      ms: 2.1.3
-      semver: 7.8.5
-
-  jwa@2.0.1:
-    dependencies:
-      buffer-equal-constant-time: 1.0.1
-      ecdsa-sig-formatter: 1.0.11
-      safe-buffer: 5.2.1
-
-  jws@4.0.1:
-    dependencies:
-      jwa: 2.0.1
-      safe-buffer: 5.2.1
-
   leac@0.6.0: {}
 
   lightningcss-android-arm64@1.32.0:
@@ -4521,20 +4187,6 @@ snapshots:
   locate-path@5.0.0:
     dependencies:
       p-locate: 4.1.0
-
-  lodash.includes@4.3.0: {}
-
-  lodash.isboolean@3.0.3: {}
-
-  lodash.isinteger@4.0.4: {}
-
-  lodash.isnumber@3.0.3: {}
-
-  lodash.isplainobject@4.0.6: {}
-
-  lodash.isstring@4.0.1: {}
-
-  lodash.once@4.1.1: {}
 
   long@5.3.2: {}
 
@@ -4805,8 +4457,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  safe-buffer@5.2.1: {}
-
   safer-buffer@2.1.2: {}
 
   scheduler@0.27.0: {}
@@ -4973,8 +4623,6 @@ snapshots:
 
   toidentifier@1.0.1: {}
 
-  ts-xor@1.3.0: {}
-
   tslib@2.8.1: {}
 
   tsx@4.23.13:
@@ -5020,8 +4668,6 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@types/react': 19.2.18
-
-  uuid@14.0.1: {}
 
   vary@1.1.2: {}
 

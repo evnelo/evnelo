@@ -35,6 +35,13 @@ Env: copy `.env.example` to `.env` at the repo root. `next.config.ts`, `migrate.
 
 If turbo fails with `Malformed Mach-o file`, a truncated hoisted copy exists at `node_modules/@turbo/`; `rm -rf node_modules/@turbo` fixes it.
 
+## Where things live
+
+- `packages/core/src/services/*`: every business operation as `fn(db, ...)`. Zod inputs (`eventInput`, `ticketTypeInput`, `registrationFieldsInput`, `organizationInput`) live next to them and are reused by server actions; the REST API and MCP should reuse them too. Import from `@ot/core/services` on the server only. Browser-safe constants and helpers (`slugify`, `can`, `FIELD_TYPES`, `SOCIAL_PLATFORMS`) come from `@ot/core`.
+- `apps/web/app/(public)`: public pages with the marketing header. `apps/web/app/dashboard`: organizer UI with its own layout; `actions.ts` holds every server action, each of which re-checks the session and org membership (`requireOrg`, `requireEvent` in `lib/dashboard.ts`).
+- `apps/web/auth.ts`: Auth.js config; `lib/auth/adapter.ts` maps Auth.js onto our tables; `lib/auth/session.ts` has `currentUser`, `requireUser`, `requireOrg`. The current org is a cookie (`ot_org`), defaulting to the first membership.
+- Dashboard client components are in `components/dashboard`. Forms post JSON to server actions and show `ActionResult` messages; datetime-local inputs are wall-clock in the event's time zone (`lib/tz.ts`).
+
 ## Conventions
 
 - IDs are 26-char ULIDs generated in code (`newId()` from `@ot/core`, `ulid()` in db scripts). No DB foreign keys; integrity is enforced in the service layer.
@@ -44,6 +51,8 @@ If turbo fails with `Malformed Mach-o file`, a truncated hoisted copy exists at 
 - Inventory: `ticket_types.sold` and `held`. Free orders increment `sold` immediately; paid orders increment `held` for a 10-minute hold and move to `sold` in `markOrderPaid` (Stripe webhook). Reservation is a conditional UPDATE, not a SELECT then INSERT. `releaseOrder` gives a hold back (PaymentIntent creation failed, `payment_intent.canceled`, or expiry); `expireHolds` sweeps lapsed holds and runs before every new order until a job runner exists. A late `payment_intent.succeeded` on an `expired` order still issues tickets.
 - Refunds: `applyRefund` (charge.refunded) records partial refunds only; a full refund cancels the party, revokes its tickets, returns seats to `sold`, and queues `refund_issued`. Idempotent on replay.
 - SMS: `lib/sms.ts` wraps Vonage behind `SmsProvider`. Application ID + private key (Messages API) is preferred; API key + secret (legacy SMS API) still works. `smsAuthMode` in `lib/env.ts` picks one.
+- Correlated subqueries in drizzle `sql` templates must reference the outer table by raw name (`events.id`, `orders.id`); `${events.id}` renders as a bare `id` inside a single-table select and MySQL binds it to the inner table.
+- Roles: `can(role, action)` in core is the only permission table. Server actions check it; pages hide controls with the same call. Never trust a hidden button.
 - One live registration per email per event, enforced in `POST /api/orders` (emails are lowercased). Cancelled/rejected attendees and expired/failed/refunded orders don't count. Guest emails count too.
 - Guests: `events.guestsEnabled` + `events.maxGuests`. `POST /api/orders` takes `guests: [{ name, email?, answers }]`; each guest becomes an `attendees` row with `guestOfAttendeeId` set, its own ticket, the host's ticket type and price (order quantity = 1 + guests), and answers validated against `scope: "guest"` fields. A guest without an email carries the host's email and gets no separate confirmation row. Don't model guests as a count on the host; per-person tickets are what make check-in and capacity work.
 - Wallet passes: `lib/wallet/` builds an Apple `.pkpass` (passkit-generator) and a Google "save" JWT (jose). Both are gated by `appleWalletConfigured` / `googleWalletConfigured` from `lib/env.ts`; routes 404 when keys are absent. Pass artwork is a flat placeholder until org artwork upload exists.
@@ -70,8 +79,8 @@ If turbo fails with `Malformed Mach-o file`, a truncated hoisted copy exists at 
 
 When you ship or change behaviour, update in the same commit: the README status list, `docs/PRD.md` where a product decision changed, and this file's conventions/gaps sections.
 
-## Known gaps (as of 2026-09-08)
+## Known gaps (as of 2026-09-09)
 
-Not implemented yet, though some are linked from the UI: auth and `/login`, `/dashboard`, org page `/o/{slug}`, `/api/v1/*` (so the MCP server has nothing to talk to), Payment Element step after order creation, check-in scanner, event editor. Not yet queued anywhere: `event_updated`, `event_cancelled`, approval/rejection and waitlist emails (they need the dashboard flows that trigger them). See the README status list before adding anything, and update it when you ship a piece.
+Not implemented yet: `/api/v1/*` (so the MCP server has nothing to talk to), Payment Element step after order creation (paid registrations get a client secret and stop), check-in scanner, image uploads, waitlist, discount codes UI, Stripe Connect onboarding for Cloud, an org switcher beyond the cookie default. Test data: `pnpm db:seed` creates the demo org but no user; sign in with any email and create your own org. See the README status list before adding anything, and update it when you ship a piece.
 
 Ticket QR codes are rendered locally at `/t/{token}/qr` (SVG). Calendar files come from `/api/calendar/{slug}.ics` for public and unlisted events only. Wallet passes: `/t/{token}/wallet/apple` and `/t/{token}/wallet/google`.

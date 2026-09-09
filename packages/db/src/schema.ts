@@ -449,6 +449,26 @@ export const webhookDeliveries = mysqlTable(
 
 /* ---------- auth (Auth.js) ---------- */
 
+// OAuth accounts linked to a user (Google today). Column names follow the Auth.js adapter contract.
+export const accounts = mysqlTable(
+  "accounts",
+  {
+    id: id(),
+    userId: ref("user_id").notNull(),
+    type: varchar("type", { length: 20 }).notNull(), // oauth | oidc | email
+    provider: varchar("provider", { length: 40 }).notNull(),
+    providerAccountId: varchar("provider_account_id", { length: 120 }).notNull(),
+    refreshToken: text("refresh_token"),
+    accessToken: text("access_token"),
+    expiresAt: int("expires_at"),
+    tokenType: varchar("token_type", { length: 40 }),
+    scope: varchar("scope", { length: 300 }),
+    idToken: text("id_token"),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex("acc_provider").on(t.provider, t.providerAccountId), index("acc_user").on(t.userId)],
+);
+
 export const sessions = mysqlTable("sessions", {
   token: char("token", { length: 64 }).primaryKey(),
   userId: ref("user_id").notNull(),
@@ -518,3 +538,6 @@ export type RegistrationField = typeof registrationFields.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type Attendee = typeof attendees.$inferSelect;
 export type Notification = typeof notifications.$inferSelect;
+export type User = typeof users.$inferSelect;
+export type Organization = typeof organizations.$inferSelect;
+export type OrganizationMember = typeof organizationMembers.$inferSelect;

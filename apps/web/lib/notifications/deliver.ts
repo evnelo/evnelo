@@ -13,6 +13,9 @@ import RegistrationConfirmation, { registrationConfirmationSubject } from "@/ema
 import ApprovalPending, { approvalPendingSubject } from "@/emails/approval-pending";
 import RefundIssued, { refundIssuedSubject } from "@/emails/refund-issued";
 import EventReminder, { eventReminderSubject } from "@/emails/event-reminder";
+import RegistrationRejected, { registrationRejectedSubject } from "@/emails/registration-rejected";
+import EventUpdated, { eventUpdatedSubject } from "@/emails/event-updated";
+import EventCancelled, { eventCancelledSubject } from "@/emails/event-cancelled";
 
 export type DeliveryResult = { providerMessageId: string } | { skipped: true; reason: string };
 
@@ -90,6 +93,19 @@ async function deliverEmail(n: Notification): Promise<DeliveryResult> {
       const props = { brand, event: emailEvent, when: reminderWhen(hours), tickets: emailTickets, unsubscribeUrl: unsubscribeUrl(attendee.id) };
       element = React.createElement(EventReminder, props); subject = eventReminderSubject(props); break;
     }
+    case "registration_rejected": {
+      const props = { brand, event: emailEvent, attendeeName: attendee.name, paid: order.status === "paid" || order.status === "partially_refunded" };
+      element = React.createElement(RegistrationRejected, props); subject = registrationRejectedSubject(props); break;
+    }
+    case "event_updated": {
+      const changes = ((n.data as { changes?: { schedule: boolean; venue: boolean } } | null)?.changes) ?? { schedule: true, venue: true };
+      const props = { brand, event: emailEvent, attendeeName: attendee.name, changes };
+      element = React.createElement(EventUpdated, props); subject = eventUpdatedSubject(props); break;
+    }
+    case "event_cancelled": {
+      const props = { brand, event: emailEvent, attendeeName: attendee.name, paid: order.status === "paid" || order.status === "partially_refunded" };
+      element = React.createElement(EventCancelled, props); subject = eventCancelledSubject(props); break;
+    }
     default:
       return { skipped: true, reason: `unknown email template ${n.template}` };
   }
@@ -112,9 +128,13 @@ async function deliverSms(n: Notification): Promise<DeliveryResult> {
   if (!gate.allowed) return { skipped: true, reason: gate.reason };
 
   const ticket = party.find((p) => p.attendee.id === attendee.id)?.ticket ?? party[0]?.ticket;
+  const eventUrl = `${env.APP_URL}/e/${event.slug}`;
+  let text: string;
+  if (n.template === "updated") text = smsTemplates.updated({ event: event.name, url: eventUrl });
+  else if (n.template === "cancelled") text = smsTemplates.cancelled({ event: event.name });
+  else {
   if (!ticket) return { skipped: true, reason: "no live ticket" };
   const ticketUrl = `${env.APP_URL}/t/${ticket.token}`;
-  let text: string;
   switch (n.template) {
     case "confirmation": text = smsTemplates.confirmation({ event: event.name, ticketUrl }); break;
     case "reminder": {
@@ -124,6 +144,7 @@ async function deliverSms(n: Notification): Promise<DeliveryResult> {
       text = smsTemplates.reminder({ event: event.name, when: reminderWhen(hours), ticketUrl }); break;
     }
     default: return { skipped: true, reason: `unknown sms template ${n.template}` };
+  }
   }
   return sms!.send(attendee.phone, text);
 }

@@ -103,7 +103,7 @@ Priority: **P0** = required for launch, **P1** = fast follow, **P2** = later.
 
 ### 7.1 Accounts & organizations
 
-- P0 Email magic-link + Google OAuth sign-in. Optional password.
+- P0 Email magic-link + Google OAuth sign-in. Optional password. _(Decided 2026-09-09: no password at all in v1; Auth.js with JWT sessions, magic link is the primary path, Google optional per instance.)_
 - P0 Organizations (workspaces). A user can belong to many; every event belongs to one org.
 - P0 Roles: Owner, Admin, Member (create/edit events), Check-in staff (scan only).
 - P0 Org profile: name, slug, logo, website, social links. Org public page lists its public events.
@@ -221,7 +221,7 @@ Attendee preferences: per-attendee unsubscribe from reminders; confirmations alw
 ### 7.12 Self-hosting
 
 - P0 Single Docker image + `docker-compose.yml` (app + MySQL). Env vars: `DATABASE_URL`, `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, `VONAGE_API_KEY`, `VONAGE_API_SECRET`, `VONAGE_FROM`, `RESEND_API_KEY`, `EMAIL_FROM`, `APP_URL`, `AUTH_SECRET`, `STORAGE_*` (S3-compatible or local)
-- P0 First-run setup wizard creates the owner and org
+- P0 First-run setup wizard creates the owner and org _(implemented as: first sign-in lands on /onboarding, which creates the organization and makes the signer its owner; no separate wizard)_
 - P0 Migrations run on boot; health endpoint
 - P1 One-click deploy templates (Railway, Render, Fly, Coolify)
 

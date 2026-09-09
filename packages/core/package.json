@@ -11,12 +11,17 @@
   },
   "dependencies": {
     "@ot/db": "workspace:*",
+    "drizzle-orm": "^0.38.3",
     "ulid": "^2.3.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/node": "^22.10.2",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.8",
-    "@types/node": "^22.10.2"
+    "vitest": "^2.1.8"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./services": "./src/services/index.ts"
   }
 }

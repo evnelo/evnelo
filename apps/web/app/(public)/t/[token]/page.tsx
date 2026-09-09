@@ -28,6 +28,9 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
+      {event.status === "cancelled" && (
+        <p className="mb-4 rounded-md border border-destructive/30 bg-destructive/5 px-4 py-2 text-sm text-destructive">This event has been cancelled. This ticket is no longer valid.</p>
+      )}
       <div className="ticket grid sm:grid-cols-[1fr_15rem]">
         <div className="p-6 sm:p-8">
           <div className="flex items-start gap-4">

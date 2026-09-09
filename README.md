@@ -23,7 +23,7 @@ docker compose up db -d      # MySQL 8 on :3306
 pnpm install
 pnpm db:migrate              # migrations are committed; pnpm db:generate after schema changes
 pnpm db:seed                 # optional demo org + events
-pnpm dev                     # http://localhost:3000
+pnpm dev                     # http://localhost:3000 — sign in at /login; in development the magic link is also printed to the console
 ```
 
 Or everything in Docker: `docker compose up --build`.
@@ -65,12 +65,14 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] Order creation with atomic inventory holds, hold release/expiry, one live registration per email, PaymentIntent with Connect application fee, Stripe webhook (paid, cancelled, refunded: full refunds revoke tickets and return seats), free-order fulfilment. Verified end to end in Stripe test mode.
 - [x] Ticket QR rendered locally, `.ics` calendar file, Apple Wallet (`.pkpass`) and Google Wallet passes (optional, key-gated)
 - [x] MCP server skeleton (tools mapped to the REST API)
-- [ ] Auth (Auth.js) and organizer dashboard
+- [x] Auth: magic-link email sign-in (Auth.js, React Email), Google when configured; first sign-in creates the organization; org roles (owner, admin, member, check-in) with invites by email
+- [x] Organizer dashboard: events list with registrations, revenue and check-ins; event editor (venue, visibility, approval, guests, reminders, hosts, sponsors, tags, links); ticket types; registration form builder with conditional questions; attendees with search, approve/reject/cancel and CSV export; orders with Stripe refunds; org settings and members; public organization page `/o/{slug}`
+- [x] Service layer in `packages/core/services` shared by the dashboard, the coming REST API, and the MCP server
 - [ ] REST API `/api/v1` handlers + OpenAPI spec
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [ ] Payment Element step after order creation
 - [ ] Check-in scanner
-- [ ] Event editor UI (fields builder, sponsors, hosts, guest settings, reminder hours)
+- [ ] Image uploads (covers, logos, avatars are URLs for now)
 
 Contributor and agent notes: `AGENTS.md`.
 

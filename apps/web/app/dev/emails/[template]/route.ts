@@ -5,6 +5,11 @@ import RegistrationConfirmation from "@/emails/registration-confirmation";
 import ApprovalPending from "@/emails/approval-pending";
 import RefundIssued from "@/emails/refund-issued";
 import EventReminder from "@/emails/event-reminder";
+import RegistrationRejected from "@/emails/registration-rejected";
+import EventUpdated from "@/emails/event-updated";
+import EventCancelled from "@/emails/event-cancelled";
+import MagicLink from "@/emails/magic-link";
+import OrgInvite from "@/emails/org-invite";
 
 export const runtime = "nodejs";
 
@@ -28,6 +33,11 @@ const samples: Record<string, () => React.ReactElement> = {
   approval_pending: () => React.createElement(ApprovalPending, { brand, event, attendeeName: "Ana", partySize: 2 }),
   refund_issued: () => React.createElement(RefundIssued, { brand, event, attendeeName: "Ana", amount: "$86.40", ticketCount: 2 }),
   reminder: () => React.createElement(EventReminder, { brand, event: { ...event, onlineUrl: "https://meet.example.com/abc" }, when: "tomorrow", tickets, unsubscribeUrl: "#" }),
+  registration_rejected: () => React.createElement(RegistrationRejected, { brand, event, attendeeName: "Ana", paid: false }),
+  event_updated: () => React.createElement(EventUpdated, { brand, event, attendeeName: "Ana", changes: { schedule: true, venue: false } }),
+  event_cancelled: () => React.createElement(EventCancelled, { brand, event, attendeeName: "Ana", paid: true }),
+  magic_link: () => React.createElement(MagicLink, { brand: { ...brand, orgName: "OpenTicket" }, url: "#", host: "localhost:3000" }),
+  org_invite: () => React.createElement(OrgInvite, { brand: { ...brand, orgName: "OpenTicket" }, url: "#", orgName: "Demo Collective", role: "Admin", invitedBy: "Mauricio" }),
 };
 
 export async function GET(req: Request, { params }: { params: Promise<{ template: string }> }) {

@@ -22,6 +22,13 @@
       "when": 1788909684995,
       "tag": "0002_faulty_gamora",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1788975545504,
+      "tag": "0003_lethal_wolfsbane",
+      "breakpoints": true
     }
   ]
 }

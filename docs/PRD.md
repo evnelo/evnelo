@@ -279,6 +279,7 @@ Notes:
 - Every send goes through `notifications` table → queue → provider adapter → provider webhook updates status (delivered / bounced / failed)
 - SMS gate: `event.isPaid || smsUnlocks.exists(event) || edition === self_hosted`
 - Templates: React Email for email; short, variable-only templates for SMS (160-char budget, no links shortened through third parties — use `/t/{token}`)
+- Job runner (decided 2026-09-09): no Redis. The web process polls `notifications` every 10s (`JOBS_INLINE`), claiming rows with a conditional UPDATE so multiple replicas are safe; serverless deployments call `POST /api/jobs/run` from a cron. Reminders are upserted per attendee/hour/channel with a dedupe key so moving an event reschedules them. Guests sharing the host's email are covered by the host's emails (one email per address, listing every ticket).
 
 ### 8.7 Security & compliance
 

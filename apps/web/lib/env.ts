@@ -15,7 +15,10 @@ const schema = z.object({
   VONAGE_PRIVATE_KEY: z.string().optional(),
   VONAGE_FROM: z.string().default("OpenTicket"),
   RESEND_API_KEY: z.string().optional(),
+  RESEND_WEBHOOK_SECRET: z.string().optional(), // whsec_… from Resend → Webhooks, verifies delivery events
   EMAIL_FROM: z.string().default("OpenTicket <tickets@example.com>"),
+  VONAGE_SIGNATURE_SECRET: z.string().optional(), // dashboard → Settings → signature secret; verifies status/inbound webhooks
+  JOBS_INLINE: z.enum(["true", "false"]).default("true"), // run the notification loop inside the web process
   // wallet passes (optional)
   APPLE_PASS_TYPE_ID: z.string().optional(),
   APPLE_TEAM_ID: z.string().optional(),

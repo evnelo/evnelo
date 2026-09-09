@@ -370,16 +370,25 @@ export const notifications = mysqlTable(
     channel: mysqlEnum("channel", ["email", "sms"]).notNull(),
     template: varchar("template", { length: 60 }).notNull(),
     recipient: varchar("recipient", { length: 255 }).notNull(),
-    status: mysqlEnum("status", ["queued", "sent", "delivered", "bounced", "failed", "skipped"])
+    // queued → sending (claimed by a worker) → sent → delivered | bounced; failed after retries; skipped by the SMS gate
+    status: mysqlEnum("status", ["queued", "sending", "sent", "delivered", "bounced", "failed", "skipped"])
       .notNull()
       .default("queued"),
+    data: json("data").$type<Record<string, unknown>>(), // template variables (e.g. reminder hours)
+    dedupeKey: varchar("dedupe_key", { length: 120 }), // e.g. reminder:{attendeeId}:{hours}:{channel}
+    attempts: int("attempts").notNull().default(0),
     providerMessageId: varchar("provider_message_id", { length: 120 }),
     error: varchar("error", { length: 300 }),
     scheduledFor: datetime("scheduled_for", { fsp: 3 }).notNull().default(sql`CURRENT_TIMESTAMP(3)`),
     sentAt: datetime("sent_at", { fsp: 3 }),
     createdAt: createdAt(),
   },
-  (t) => [index("nt_queue").on(t.status, t.scheduledFor), index("nt_event").on(t.eventId, t.template)],
+  (t) => [
+    index("nt_queue").on(t.status, t.scheduledFor),
+    index("nt_event").on(t.eventId, t.template),
+    index("nt_provider").on(t.providerMessageId),
+    uniqueIndex("nt_dedupe").on(t.dedupeKey),
+  ],
 );
 
 // Cloud: a free event pays $5 once to unlock unlimited transactional SMS
@@ -508,3 +517,4 @@ export type TicketType = typeof ticketTypes.$inferSelect;
 export type RegistrationField = typeof registrationFields.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type Attendee = typeof attendees.$inferSelect;
+export type Notification = typeof notifications.$inferSelect;

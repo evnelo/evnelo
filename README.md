@@ -37,6 +37,14 @@ pnpm test        # vitest — fee model, SMS gating, conditional fields
 pnpm typecheck
 ```
 
+## Notifications
+
+Every email and SMS is a row in `notifications`; a worker drains the queue. Self-hosted, the worker runs inside the web process every 10 seconds (`JOBS_INLINE=true`, the default). On serverless hosts set `JOBS_INLINE=false` and call `POST /api/jobs/run` with `Authorization: Bearer $AUTH_SECRET` from a cron every minute.
+
+Templates are React Email components in `apps/web/emails`; preview them in development at `/dev/emails/registration_confirmation`, `/dev/emails/reminder`, `/dev/emails/approval_pending`, `/dev/emails/refund_issued` (add `?text=1` for the plain-text part).
+
+Delivery status comes back through webhooks: point Resend at `/api/webhooks/resend` (set `RESEND_WEBHOOK_SECRET`) and, in the Vonage application, set the status URL to `/api/webhooks/vonage/status` and the inbound URL to `/api/webhooks/vonage/inbound` (STOP/START handling; `VONAGE_SIGNATURE_SECRET` verifies both).
+
 ## Wallet passes
 
 Optional. Set the `APPLE_*` variables (Pass Type ID certificate, key, Apple WWDR cert, team id) to serve `.pkpass` files at `/t/{token}/wallet/apple`, and `GOOGLE_WALLET_ISSUER_ID` plus a service-account JSON to serve "Save to Google Wallet" links at `/t/{token}/wallet/google`. The buttons only appear on the ticket page when the keys are present.
@@ -59,10 +67,10 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] MCP server skeleton (tools mapped to the REST API)
 - [ ] Auth (Auth.js) and organizer dashboard
 - [ ] REST API `/api/v1` handlers + OpenAPI spec
-- [ ] Notification worker (email/SMS senders, reminders) and job runner
+- [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [ ] Payment Element step after order creation
 - [ ] Check-in scanner
-- [ ] Event editor UI (fields builder, sponsors, hosts, guest settings)
+- [ ] Event editor UI (fields builder, sponsors, hosts, guest settings, reminder hours)
 
 Contributor and agent notes: `AGENTS.md`.
 

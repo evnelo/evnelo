@@ -10,3 +10,4 @@ export * from "./events";
 export * from "./tickets";
 export * from "./fields";
 export * from "./attendees";
+export * from "./api";

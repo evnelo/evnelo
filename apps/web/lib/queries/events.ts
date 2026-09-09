@@ -1,5 +1,6 @@
-import { and, asc, eq, gte, isNull } from "drizzle-orm";
+import { and, asc, eq, isNull } from "drizzle-orm";
 import { events, eventHosts, eventSponsors, registrationFields, ticketTypes, tags, eventTags, organizations } from "@ot/db";
+import { listPublicEvents } from "@ot/core/services";
 import { db } from "@/lib/db";
 
 export async function getPublicEventBySlug(slug: string) {
@@ -16,17 +17,6 @@ export async function getPublicEventBySlug(slug: string) {
   return { event, org: org!, hosts, sponsors, ticketTypes: types, fields, tags: eventTagRows };
 }
 
-export async function listDiscoverableEvents(opts: { city?: string; limit?: number } = {}) {
-  const where = [eq(events.visibility, "public"), eq(events.status, "published"), isNull(events.deletedAt), gte(events.endsAt, new Date())];
-  if (opts.city) where.push(eq(events.city, opts.city));
-  return db
-    .select({
-      id: events.id, slug: events.slug, name: events.name, coverImageUrl: events.coverImageUrl, startsAt: events.startsAt,
-      timezone: events.timezone, city: events.city, locationType: events.locationType, orgName: organizations.name,
-    })
-    .from(events)
-    .innerJoin(organizations, eq(events.organizationId, organizations.id))
-    .where(and(...where))
-    .orderBy(asc(events.startsAt))
-    .limit(opts.limit ?? 48);
+export function listDiscoverableEvents(opts: { city?: string; limit?: number } = {}) {
+  return listPublicEvents(db, opts);
 }

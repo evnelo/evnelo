@@ -1,0 +1,1 @@
+CREATE INDEX `arl_window` ON `api_rate_limits` (`window_start`);

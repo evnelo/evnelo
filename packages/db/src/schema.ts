@@ -38,23 +38,27 @@ export const users = mysqlTable("users", {
   updatedAt: updatedAt(),
 });
 
-export const organizations = mysqlTable("organizations", {
-  id: id(),
-  slug: varchar("slug", { length: 60 }).notNull().unique(),
-  name: varchar("name", { length: 120 }).notNull(),
-  logoUrl: varchar("logo_url", { length: 500 }),
-  website: varchar("website", { length: 300 }),
-  accentColor: char("accent_color", { length: 7 }),
-  socialLinks: json("social_links").$type<SocialLink[]>().notNull().default([]),
-  // Stripe: cloud edition connects via Connect; self-hosted uses env keys
-  stripeAccountId: varchar("stripe_account_id", { length: 60 }),
-  stripeAccountType: mysqlEnum("stripe_account_type", ["standard", "express"]),
-  stripeChargesEnabled: boolean("stripe_charges_enabled").notNull().default(false),
-  feePassThrough: boolean("fee_pass_through").notNull().default(false), // default for new events
-  deletedAt: datetime("deleted_at", { fsp: 3 }),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-});
+export const organizations = mysqlTable(
+  "organizations",
+  {
+    id: id(),
+    slug: varchar("slug", { length: 60 }).notNull().unique(),
+    name: varchar("name", { length: 120 }).notNull(),
+    logoUrl: varchar("logo_url", { length: 500 }),
+    website: varchar("website", { length: 300 }),
+    accentColor: char("accent_color", { length: 7 }),
+    socialLinks: json("social_links").$type<SocialLink[]>().notNull().default([]),
+    // Stripe: cloud edition connects via Connect; self-hosted uses env keys
+    stripeAccountId: varchar("stripe_account_id", { length: 60 }),
+    stripeAccountType: mysqlEnum("stripe_account_type", ["standard", "express"]),
+    stripeChargesEnabled: boolean("stripe_charges_enabled").notNull().default(false),
+    feePassThrough: boolean("fee_pass_through").notNull().default(false), // default for new events
+    deletedAt: datetime("deleted_at", { fsp: 3 }),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index("org_name").on(t.name)],
+);
 
 export const organizationMembers = mysqlTable(
   "organization_members",
@@ -126,6 +130,7 @@ export const events = mysqlTable(
     index("ev_org").on(t.organizationId),
     index("ev_discover").on(t.visibility, t.status, t.startsAt),
     index("ev_city").on(t.city, t.startsAt),
+    index("ev_name").on(t.name),
   ],
 );
 
@@ -151,12 +156,16 @@ export const eventSponsors = mysqlTable("event_sponsors", {
   position: int("position").notNull().default(0),
 });
 
-export const tags = mysqlTable("tags", {
-  id: id(),
-  slug: varchar("slug", { length: 60 }).notNull().unique(),
-  name: varchar("name", { length: 60 }).notNull(),
-  curated: boolean("curated").notNull().default(false),
-});
+export const tags = mysqlTable(
+  "tags",
+  {
+    id: id(),
+    slug: varchar("slug", { length: 60 }).notNull().unique(),
+    name: varchar("name", { length: 60 }).notNull(),
+    curated: boolean("curated").notNull().default(false),
+  },
+  (t) => [index("tag_name").on(t.name)],
+);
 
 export const eventTags = mysqlTable(
   "event_tags",
@@ -419,6 +428,31 @@ export const apiKeys = mysqlTable(
     createdAt: createdAt(),
   },
   (t) => [index("ak_org").on(t.organizationId)],
+);
+
+export const apiIdempotencyKeys = mysqlTable(
+  "api_idempotency_keys",
+  {
+    id: id(),
+    apiKeyId: ref("api_key_id").notNull(),
+    key: varchar("key", { length: 120 }).notNull(),
+    requestHash: char("request_hash", { length: 64 }).notNull(),
+    responseStatus: int("response_status"),
+    responseBody: json("response_body").$type<unknown>(),
+    expiresAt: datetime("expires_at", { fsp: 3 }).notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [uniqueIndex("aik_key").on(t.apiKeyId, t.key), index("aik_expiry").on(t.expiresAt)],
+);
+
+export const apiRateLimits = mysqlTable(
+  "api_rate_limits",
+  {
+    apiKeyId: ref("api_key_id").notNull(),
+    windowStart: datetime("window_start", { fsp: 3 }).notNull(),
+    count: int("count").notNull().default(1),
+  },
+  (t) => [primaryKey({ columns: [t.apiKeyId, t.windowStart] }), index("arl_window").on(t.windowStart)],
 );
 
 export const webhooks = mysqlTable("webhooks", {

@@ -9,9 +9,11 @@ const schema = z.object({
   STRIPE_PUBLISHABLE_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   STRIPE_CONNECT_CLIENT_ID: z.string().optional(),
-  TELNYX_API_KEY: z.string().optional(),
-  TELNYX_FROM: z.string().optional(), // E.164 number or alphanumeric sender id
-  TELNYX_MESSAGING_PROFILE_ID: z.string().optional(),
+  VONAGE_API_KEY: z.string().optional(),
+  VONAGE_API_SECRET: z.string().optional(),
+  VONAGE_APPLICATION_ID: z.string().optional(),
+  VONAGE_PRIVATE_KEY: z.string().optional(),
+  VONAGE_FROM: z.string().default("OpenTicket"),
   RESEND_API_KEY: z.string().optional(),
   EMAIL_FROM: z.string().default("OpenTicket <tickets@example.com>"),
   // wallet passes (optional)
@@ -26,7 +28,9 @@ const schema = z.object({
 });
 
 export const env = schema.parse(process.env);
-export const smsConfigured = Boolean(env.TELNYX_API_KEY && env.TELNYX_FROM);
+export const smsAuthMode: "application" | "basic" | null =
+  env.VONAGE_APPLICATION_ID && env.VONAGE_PRIVATE_KEY ? "application" : env.VONAGE_API_KEY && env.VONAGE_API_SECRET ? "basic" : null;
+export const smsConfigured = smsAuthMode !== null;
 export const emailConfigured = Boolean(env.RESEND_API_KEY);
 export const appleWalletConfigured = Boolean(env.APPLE_PASS_TYPE_ID && env.APPLE_TEAM_ID && env.APPLE_PASS_CERT && env.APPLE_PASS_KEY && env.APPLE_WWDR_CERT);
 export const googleWalletConfigured = Boolean(env.GOOGLE_WALLET_ISSUER_ID && env.GOOGLE_WALLET_SERVICE_ACCOUNT);

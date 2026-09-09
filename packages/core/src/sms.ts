@@ -3,7 +3,7 @@ import { SMS_UNLOCK_PRICE_MINOR } from "./fees";
 
 /**
  * SMS gate (PRD §5.2):
- *  - self-hosted: always allowed (organizer brings Telnyx keys)
+ *  - self-hosted: always allowed (organizer brings Vonage keys)
  *  - cloud + paid event: included
  *  - cloud + free event: requires the $5 unlock for that event
  * Plus fair-use: max messages per attendee per event.

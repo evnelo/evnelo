@@ -1,12 +1,12 @@
 # OpenTicket (working name)
 
-Open-source event ticketing. An alternative to Luma, Partiful and Eventbrite that you can self-host with your own Stripe, Telnyx and Resend keys, or use on the cloud edition at 0.99% on paid tickets and nothing on free ones.
+Open-source event ticketing. An alternative to Luma, Partiful and Eventbrite that you can self-host with your own Stripe, Vonage and Resend keys, or use on the cloud edition at 0.99% on paid tickets and nothing on free ones.
 
 Full product spec: `docs/PRD.md`.
 
 ## Stack
 
-TypeScript everywhere. Next.js 15 (App Router, React 19), shadcn/ui on Tailwind v4 with a custom theme, MySQL 8 via Drizzle, Stripe (Payment Element + Connect), Telnyx SMS, Resend email. pnpm + Turborepo monorepo.
+TypeScript everywhere. Next.js 15 (App Router, React 19), shadcn/ui on Tailwind v4 with a custom theme, MySQL 8 via Drizzle, Stripe (Payment Element + Connect), Vonage SMS (Messages API with an application key, or the legacy API key), Resend email. pnpm + Turborepo monorepo.
 
 ```
 apps/web          Next.js app: public pages, dashboard, REST API, webhooks
@@ -18,7 +18,7 @@ packages/mcp      MCP server (stdio) over the REST API
 ## Run it
 
 ```bash
-cp .env.example .env         # fill in keys; Stripe/Telnyx/Resend are optional for free events without SMS/email
+cp .env.example .env         # fill in keys; Stripe/Vonage/Resend are optional for free events without SMS/email
 docker compose up db -d      # MySQL 8 on :3306
 pnpm install
 pnpm db:migrate              # migrations are committed; pnpm db:generate after schema changes

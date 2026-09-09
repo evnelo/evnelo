@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { events, eventTags, tags, type Database, type Event } from "@ot/db";
-import { createEvent, updateEvent, type EventInput } from "../services/events";
+import { createEvent, eventInput, updateEvent, type EventInput } from "../services/events";
 
 const input: EventInput = {
   name: "Production API",
@@ -21,6 +21,15 @@ const input: EventInput = {
   hosts: [],
   sponsors: [],
 };
+
+describe("event URL validation", () => {
+  it("accepts only well-formed HTTP and HTTPS URLs", () => {
+    expect(eventInput.safeParse({ ...input, onlineUrl: "https://example.test/event" }).success).toBe(true);
+    expect(eventInput.safeParse({ ...input, onlineUrl: "http://" }).success).toBe(false);
+    expect(eventInput.safeParse({ ...input, onlineUrl: "ftp://example.test/event" }).success).toBe(false);
+    expect(eventInput.parse({ ...input, onlineUrl: "" }).onlineUrl).toBeNull();
+  });
+});
 
 describe("event creation transactions", () => {
   it("performs every event creation write inside one transaction", async () => {

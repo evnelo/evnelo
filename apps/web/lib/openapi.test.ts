@@ -12,6 +12,10 @@ describe("OpenAPI contract", () => {
     expect(schemas.CreateEventInput.properties.socialLinks.items.$ref).toBe("#/components/schemas/SocialLink");
     expect(schemas.CreateEventInput.properties.hosts.items.$ref).toBe("#/components/schemas/Host");
     expect(schemas.CreateEventInput.properties.sponsors.items.$ref).toBe("#/components/schemas/Sponsor");
+    expect(schemas.CreateEventInput.properties.onlineUrl.oneOf).toContainEqual({
+      type: "string", format: "uri", pattern: "^[hH][tT][tT][pP][sS]?://", maxLength: 500,
+    });
+    expect(schemas.CreateEventInput.properties.onlineUrl.oneOf).toContainEqual({ type: "string", const: "" });
   });
 
   it("documents bounded JSON body failures", () => {

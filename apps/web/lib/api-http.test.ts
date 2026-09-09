@@ -60,17 +60,26 @@ describe("API HTTP boundaries", () => {
     await expect(readJsonBody(wrongType, 1024)).rejects.toMatchObject({ status: 415, code: "unsupported_media_type" });
   });
 
-  it("derives stable, non-identifying public rate-limit buckets", () => {
+  it("ignores forwarding headers until one trusted proxy header is configured", () => {
     const first = new Request("https://example.test", { headers: { "x-forwarded-for": "203.0.113.8, 10.0.0.1" } });
     const same = new Request("https://example.test", { headers: { "x-forwarded-for": "203.0.113.8" } });
     const other = new Request("https://example.test", { headers: { "x-forwarded-for": "203.0.113.9" } });
 
     expect(publicRateLimitBucket(first)).toBe(publicRateLimitBucket(same));
-    expect(publicRateLimitBucket(first)).not.toBe(publicRateLimitBucket(other));
+    expect(publicRateLimitBucket(first)).toBe(publicRateLimitBucket(other));
     expect(publicRateLimitBucket(first)).toHaveLength(26);
     expect(publicRateLimitBucket(first)).not.toContain("203.0.113.8");
     expect(PUBLIC_API_GLOBAL_BUCKET).toHaveLength(26);
     expect(PUBLIC_API_GLOBAL_BUCKET).not.toBe(publicRateLimitBucket(first));
+  });
+
+  it("uses only the explicitly configured trusted proxy header", () => {
+    const first = new Request("https://example.test", { headers: { "cf-connecting-ip": "192.0.2.1", "x-forwarded-for": "203.0.113.8, 10.0.0.1" } });
+    const same = new Request("https://example.test", { headers: { "cf-connecting-ip": "192.0.2.2", "x-forwarded-for": "203.0.113.8" } });
+    const other = new Request("https://example.test", { headers: { "cf-connecting-ip": "192.0.2.1", "x-forwarded-for": "203.0.113.9" } });
+
+    expect(publicRateLimitBucket(first, "x-forwarded-for")).toBe(publicRateLimitBucket(same, "x-forwarded-for"));
+    expect(publicRateLimitBucket(first, "x-forwarded-for")).not.toBe(publicRateLimitBucket(other, "x-forwarded-for"));
   });
 
   it("formats standard rate-limit headers", () => {

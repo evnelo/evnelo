@@ -114,14 +114,23 @@ export async function consumeApiRateLimit(db: Database, apiKeyId: string, limit 
   const windowStart = new Date(now);
   windowStart.setUTCSeconds(0, 0);
   await db.delete(apiRateLimits).where(lt(apiRateLimits.windowStart, windowStart));
-  await db.insert(apiRateLimits).values({ apiKeyId, windowStart, count: 1 }).onDuplicateKeyUpdate({ set: { count: sql`${apiRateLimits.count} + 1` } });
-  const [row] = await db.select({ count: apiRateLimits.count }).from(apiRateLimits)
-    .where(and(eq(apiRateLimits.apiKeyId, apiKeyId), eq(apiRateLimits.windowStart, windowStart))).limit(1);
-  const resetAt = new Date(windowStart.getTime() + 60_000);
-  const rateLimit = { limit, remaining: Math.max(0, limit - (row?.count ?? 1)), resetAt };
-  if ((row?.count ?? 1) > limit) {
-    const retryAfter = Math.max(1, Math.ceil((resetAt.getTime() - now.getTime()) / 1000));
-    throw new ApiRequestError(429, "rate_limit_exceeded", "API rate limit exceeded.", rateLimit, retryAfter);
-  }
-  return rateLimit;
+  return db.transaction(async (tx) => {
+    await tx.insert(apiRateLimits).values({ apiKeyId, windowStart, count: 0 })
+      .onDuplicateKeyUpdate({ set: { count: sql`${apiRateLimits.count}` } });
+    const [row] = await tx.select({ count: apiRateLimits.count }).from(apiRateLimits)
+      .where(and(eq(apiRateLimits.apiKeyId, apiKeyId), eq(apiRateLimits.windowStart, windowStart)))
+      .for("update")
+      .limit(1);
+    const count = row?.count ?? 0;
+    const resetAt = new Date(windowStart.getTime() + 60_000);
+    if (count >= limit) {
+      const rateLimit = { limit, remaining: 0, resetAt };
+      const retryAfter = Math.max(1, Math.ceil((resetAt.getTime() - now.getTime()) / 1000));
+      throw new ApiRequestError(429, "rate_limit_exceeded", "API rate limit exceeded.", rateLimit, retryAfter);
+    }
+    const nextCount = count + 1;
+    await tx.update(apiRateLimits).set({ count: nextCount })
+      .where(and(eq(apiRateLimits.apiKeyId, apiKeyId), eq(apiRateLimits.windowStart, windowStart)));
+    return { limit, remaining: limit - nextCount, resetAt };
+  });
 }

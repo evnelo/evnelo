@@ -12,7 +12,15 @@ import { queueEmailPerAddress } from "./fulfilment";
 /* ---------- input ---------- */
 
 const text = (max: number) => z.string().trim().max(max).transform((v) => v || null).nullable().optional();
-const urlOrEmpty = (max: number) => z.string().trim().max(max).refine((v) => !v || /^https?:\/\//.test(v), "Must start with http:// or https://").transform((v) => v || null).nullable().optional();
+const urlOrEmpty = (max: number) => z.string().trim().max(max).refine((value) => {
+  if (!value) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}, "Must be a valid http:// or https:// URL").transform((v) => v || null).nullable().optional();
 
 import { SOCIAL_PLATFORMS } from "../constants";
 export const socialLinkInput = z.object({ platform: z.enum(SOCIAL_PLATFORMS), url: z.string().trim().url() });

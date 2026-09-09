@@ -1,6 +1,14 @@
 import { SOCIAL_PLATFORMS } from "@ot/core";
 
 const jsonContent = (schema: Record<string, unknown>) => ({ "application/json": { schema } });
+const nullableHttpUrl = (maxLength: number) => ({
+  oneOf: [
+    { type: "string", format: "uri", pattern: "^[hH][tT][tT][pP][sS]?://", maxLength },
+    { type: "string", const: "" },
+    { type: "null" },
+  ],
+  description: "Must use http:// or https://. An empty string is normalized to null.",
+});
 const rateLimitResponseHeaders = {
   "X-RateLimit-Limit": { $ref: "#/components/headers/RateLimitLimit" },
   "X-RateLimit-Remaining": { $ref: "#/components/headers/RateLimitRemaining" },
@@ -126,15 +134,15 @@ export const openApiDocument = {
         type: "object", additionalProperties: false, required: ["name"],
         properties: {
           name: { type: "string", minLength: 1, maxLength: 120 }, title: { type: ["string", "null"], maxLength: 120 },
-          avatarUrl: { type: ["string", "null"], format: "uri", maxLength: 500 },
+          avatarUrl: nullableHttpUrl(500),
           socialLinks: { type: "array", items: { $ref: "#/components/schemas/SocialLink" }, default: [] },
         },
       },
       Sponsor: {
         type: "object", additionalProperties: false, required: ["name"],
         properties: {
-          name: { type: "string", minLength: 1, maxLength: 120 }, logoUrl: { type: ["string", "null"], format: "uri", maxLength: 500 },
-          tier: { type: ["string", "null"], maxLength: 60 }, website: { type: ["string", "null"], format: "uri", maxLength: 300 },
+          name: { type: "string", minLength: 1, maxLength: 120 }, logoUrl: nullableHttpUrl(500),
+          tier: { type: ["string", "null"], maxLength: 60 }, website: nullableHttpUrl(300),
           socialLinks: { type: "array", items: { $ref: "#/components/schemas/SocialLink" }, default: [] },
         },
       },
@@ -155,10 +163,10 @@ export const openApiDocument = {
         required: ["name", "timezone", "startsAt", "endsAt"],
         properties: {
           name: { type: "string", minLength: 2, maxLength: 160 }, slug: { type: "string", pattern: "^[a-z0-9-]{3,80}$" }, descriptionMd: { type: ["string", "null"], maxLength: 20000 },
-          coverImageUrl: { type: ["string", "null"], format: "uri", maxLength: 500 }, logoUrl: { type: ["string", "null"], format: "uri", maxLength: 500 },
+          coverImageUrl: nullableHttpUrl(500), logoUrl: nullableHttpUrl(500),
           timezone: { type: "string", minLength: 1, maxLength: 64 }, startsAt: { type: "string", format: "date-time" }, endsAt: { type: "string", format: "date-time" },
           locationType: { type: "string", enum: ["in_person", "online", "hybrid"], default: "in_person" }, venueName: { type: ["string", "null"], maxLength: 160 }, address: { type: ["string", "null"], maxLength: 300 }, city: { type: ["string", "null"], maxLength: 100 }, country: { type: ["string", "null"], pattern: "^[A-Z]{2}$" },
-          lat: { type: ["string", "null"], maxLength: 20 }, lng: { type: ["string", "null"], maxLength: 20 }, onlineUrl: { type: ["string", "null"], format: "uri", maxLength: 500 },
+          lat: { type: ["string", "null"], maxLength: 20 }, lng: { type: ["string", "null"], maxLength: 20 }, onlineUrl: nullableHttpUrl(500),
           visibility: { type: "string", enum: ["public", "unlisted", "private"], default: "public" }, requiresApproval: { type: "boolean", default: false },
           capacity: { type: ["integer", "null"], minimum: 1 }, waitlistEnabled: { type: "boolean", default: false }, collectPhone: { type: "boolean", default: false },
           guestsEnabled: { type: "boolean", default: false }, maxGuests: { type: "integer", minimum: 1, maximum: 20, default: 1 }, feePassThrough: { type: "boolean", default: false },

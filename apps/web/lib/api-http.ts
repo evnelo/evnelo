@@ -61,11 +61,19 @@ export async function readJsonBody(request: Request, maxBytes = MAX_API_BODY_BYT
   }
 }
 
-function clientAddress(request: Request): string {
-  return request.headers.get("cf-connecting-ip")?.trim()
-    || request.headers.get("x-real-ip")?.trim()
-    || request.headers.get("x-forwarded-for")?.split(",", 1)[0]?.trim()
-    || "unknown";
+export type TrustedProxyHeader = "cf-connecting-ip" | "x-real-ip" | "x-forwarded-for";
+
+function configuredTrustedProxyHeader(): TrustedProxyHeader | undefined {
+  const value = process.env.API_TRUSTED_PROXY_HEADER?.trim().toLowerCase();
+  if (value === "cf-connecting-ip" || value === "x-real-ip" || value === "x-forwarded-for") return value;
+  return undefined;
+}
+
+function clientAddress(request: Request, trustedProxyHeader?: TrustedProxyHeader): string {
+  if (!trustedProxyHeader) return "unattributed";
+  const value = request.headers.get(trustedProxyHeader)?.trim();
+  if (!value) return "unattributed";
+  return trustedProxyHeader === "x-forwarded-for" ? value.split(",", 1)[0]!.trim() || "unattributed" : value;
 }
 
 function hashedRateLimitBucket(identity: string): string {
@@ -75,8 +83,8 @@ function hashedRateLimitBucket(identity: string): string {
 
 export const PUBLIC_API_GLOBAL_BUCKET = hashedRateLimitBucket("openticket:public-api:global");
 
-export function publicRateLimitBucket(request: Request): string {
-  return hashedRateLimitBucket(`openticket:public-api:client:${clientAddress(request)}`);
+export function publicRateLimitBucket(request: Request, trustedProxyHeader = configuredTrustedProxyHeader()): string {
+  return hashedRateLimitBucket(`openticket:public-api:client:${clientAddress(request, trustedProxyHeader)}`);
 }
 
 export function rateLimitHeaders(rateLimit: ApiRateLimit): HeadersInit {

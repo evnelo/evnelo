@@ -28,6 +28,8 @@ pnpm dev                     # http://localhost:3000 — sign in at /login; in d
 
 Or everything in Docker: `docker compose up --build`.
 
+Upgrades that include discovery-index migrations can rebuild MySQL indexes. On a large existing installation, check free disk space and run `pnpm db:migrate` in a maintenance window before deploying the new web process.
+
 Stripe webhooks locally: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`.
 
 ## Tests
@@ -48,7 +50,7 @@ The first `/api/v1` slice is available for event discovery and organizer automat
 - `GET /api/v1/events/{id}` — get an organization event with ticket types, tags, hosts, sponsors, and registration fields
 - `GET /api/v1/openapi.json` — OpenAPI 3.1 document for the implemented endpoints
 
-Organization endpoints use `Authorization: Bearer ot_live_...` with `read` or `write` scopes and enforce a per-key limit of 120 requests per minute. Rate-limit headers are returned on every request that consumes quota. JSON request bodies are capped at 256 KiB. Public discovery uses indexed MySQL full-text search and is limited to 60 requests per minute per client plus a 3,000-request global ceiling; deployments behind a proxy must overwrite `CF-Connecting-IP`, `X-Real-IP`, or `X-Forwarded-For` rather than forwarding client-supplied values. API keys are SHA-256 hashed at rest. API-key management UI and the remaining resources used by the MCP skeleton are still pending.
+Organization endpoints use `Authorization: Bearer ot_live_...` with `read` or `write` scopes and enforce a per-key limit of 120 requests per minute. Rate-limit headers are returned on every request that consumes quota. JSON request bodies are capped at 256 KiB. Public discovery uses indexed MySQL full-text search and is limited to 60 requests per minute per client plus a 3,000-request global ceiling. Forwarded IP headers are ignored by default; behind a trusted proxy, set `API_TRUSTED_PROXY_HEADER` to the single header that proxy overwrites. API keys are SHA-256 hashed at rest. API-key management UI and the remaining resources used by the MCP skeleton are still pending.
 
 ## Notifications
 

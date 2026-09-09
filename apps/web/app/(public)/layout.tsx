@@ -8,17 +8,17 @@ export default async function PublicLayout({ children }: { children: React.React
     <>
       <header className="border-b">
         <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="font-display text-xl" style={{ fontVariationSettings: '"opsz" 24, "SOFT" 100' }}>
+          <Link href="/" className="shrink-0 whitespace-nowrap font-display text-lg sm:text-xl" style={{ fontVariationSettings: '"opsz" 24, "SOFT" 100' }}>
             OpenTicket
           </Link>
-          <div className="flex items-center gap-5 text-sm">
-            <Link href="/discover" className="hover:underline underline-offset-4">Discover</Link>
+          <div className="flex items-center gap-3 text-sm sm:gap-5">
+            <Link href="/discover" className="hidden hover:underline underline-offset-4 sm:inline">Discover</Link>
             {user ? (
               <Link href="/dashboard" className="rounded-md border px-3 py-1.5 hover:bg-muted">Dashboard</Link>
             ) : (
               <>
-                <Link href="/login" className="hover:underline underline-offset-4">Host an event</Link>
-                <Link href="/login" className="rounded-md border px-3 py-1.5 hover:bg-muted">Sign in</Link>
+                <Link href="/login" className="whitespace-nowrap hover:underline underline-offset-4"><span className="sm:hidden">Host</span><span className="hidden sm:inline">Host an event</span></Link>
+                <Link href="/login" className="shrink-0 whitespace-nowrap rounded-md border px-2.5 py-1.5 hover:bg-muted sm:px-3">Sign in</Link>
               </>
             )}
           </div>

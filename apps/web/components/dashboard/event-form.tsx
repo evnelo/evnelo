@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, X } from "lucide-react";
+import { ChevronDown, Plus, X } from "lucide-react";
 import { SOCIAL_PLATFORMS, slugify } from "@ot/core";
 import { TIMEZONES, utcToZonedLocal, zonedLocalToUtc } from "@/lib/tz";
 import { publicEventPath } from "@/lib/urls";
@@ -14,6 +14,8 @@ import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FormMessage } from "@/components/ui/form-field";
 import { saveEventAction } from "@/app/dashboard/actions";
+import { AddressAutocomplete } from "@/components/dashboard/address-autocomplete";
+import { ImageUploadField } from "@/components/dashboard/image-upload-field";
 
 type Link = { platform: string; url: string };
 type Host = { name: string; title: string; avatarUrl: string; socialLinks: Link[] };
@@ -89,16 +91,23 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug }:
 
   return (
     <form onSubmit={(e) => { e.preventDefault(); submit(); }} className="space-y-6 pb-24">
-      <Section title="Basics">
+      <Section title="Basics" description="The minimum details people need to recognize your event.">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Event name" htmlFor="name" className="sm:col-span-2"><Input id="name" value={v.name} onChange={(e) => set("name", e.target.value)} required maxLength={160} autoFocus={mode === "create"} /></Field>
-          <Field label="URL" htmlFor="slug" help={publicEventPath(organizationSlug, v.slug || "…")}><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9-]{3,80}" /></Field>
-          <Field label="Tags" htmlFor="tags" optional help="Comma separated. Used for discovery."><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="design, meetup" /></Field>
-          <Field label="Description" htmlFor="desc" optional help="Markdown is supported." className="sm:col-span-2"><Textarea id="desc" rows={8} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
-          <Field label="Cover image URL" htmlFor="cover" optional help="16:9 works best. Uploads are coming; paste a URL for now."><Input id="cover" type="url" value={v.coverImageUrl} onChange={(e) => set("coverImageUrl", e.target.value)} placeholder="https://" /></Field>
-          <Field label="Logo URL" htmlFor="logo" optional help="Overrides the organization logo on this event."><Input id="logo" type="url" value={v.logoUrl} onChange={(e) => set("logoUrl", e.target.value)} placeholder="https://" /></Field>
+          <Field label="Event URL" htmlFor="slug" help={publicEventPath(organizationSlug, v.slug || "…")} className="sm:col-span-2"><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9-]{3,80}" /></Field>
         </div>
       </Section>
+
+      <CollapsibleSection title="Details & images" description="Description, discovery tags, cover art and logo." defaultOpen={Boolean(v.descriptionMd || v.tags || v.coverImageUrl || v.logoUrl)}>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field label="Description" htmlFor="desc" optional help="Markdown is supported." className="sm:col-span-2"><Textarea id="desc" rows={6} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
+          <Field label="Tags" htmlFor="tags" optional help="Comma separated. Used for discovery." className="sm:col-span-2"><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="design, meetup" /></Field>
+          <div className="sm:col-span-2 grid gap-5 md:grid-cols-[minmax(0,1fr)_10rem]">
+            <ImageUploadField label="Cover image" value={v.coverImageUrl} onChange={(url) => set("coverImageUrl", url)} />
+            <ImageUploadField label="Event logo" value={v.logoUrl} onChange={(url) => set("logoUrl", url)} aspect="square" />
+          </div>
+        </div>
+      </CollapsibleSection>
 
       <Section title="When">
         <div className="grid gap-5 sm:grid-cols-3">
@@ -118,12 +127,16 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug }:
         <div className="grid gap-5 sm:grid-cols-2">
           {v.locationType !== "online" && (
             <>
-              <Field label="Venue" htmlFor="venue"><Input id="venue" value={v.venueName} onChange={(e) => set("venueName", e.target.value)} /></Field>
-              <Field label="Address" htmlFor="address"><Input id="address" value={v.address} onChange={(e) => set("address", e.target.value)} /></Field>
-              <Field label="City" htmlFor="city"><Input id="city" value={v.city} onChange={(e) => set("city", e.target.value)} /></Field>
-              <Field label="Country" htmlFor="country" help="Two-letter code, e.g. BR"><Input id="country" value={v.country} onChange={(e) => set("country", e.target.value.toUpperCase())} maxLength={2} /></Field>
-              <Field label="Latitude" htmlFor="lat" optional><Input id="lat" value={v.lat} onChange={(e) => set("lat", e.target.value)} placeholder="-23.5578" /></Field>
-              <Field label="Longitude" htmlFor="lng" optional><Input id="lng" value={v.lng} onChange={(e) => set("lng", e.target.value)} placeholder="-46.6606" /></Field>
+              <Field label="Venue" htmlFor="venue" className="sm:col-span-2"><Input id="venue" value={v.venueName} onChange={(e) => set("venueName", e.target.value)} placeholder="Venue name" /></Field>
+              <Field label="Address" htmlFor="address" className="sm:col-span-2">
+                <AddressAutocomplete
+                  value={v.address}
+                  onChange={(address) => setV((current) => ({ ...current, address, lat: "", lng: "" }))}
+                  onSelect={(suggestion) => setV((current) => ({ ...current, address: suggestion.address, city: suggestion.city, country: suggestion.country, lat: suggestion.lat, lng: suggestion.lng }))}
+                />
+              </Field>
+              <Field label="City" htmlFor="city"><Input id="city" value={v.city} onChange={(e) => setV((current) => ({ ...current, city: e.target.value, lat: "", lng: "" }))} /></Field>
+              <Field label="Country code" htmlFor="country" help="Two-letter code, e.g. BR"><Input id="country" maxLength={2} value={v.country} onChange={(e) => setV((current) => ({ ...current, country: e.target.value.toUpperCase(), lat: "", lng: "" }))} placeholder="US" /></Field>
             </>
           )}
           {v.locationType !== "in_person" && (
@@ -137,16 +150,21 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug }:
           <Field label="Visibility" htmlFor="vis" help={v.visibility === "public" ? "Listed on Discover and indexed by search engines." : v.visibility === "unlisted" ? "Anyone with the link; not listed or indexed." : "Only people with an invite link."}>
             <Select id="vis" value={v.visibility} onChange={(e) => set("visibility", e.target.value as Values["visibility"])}><option value="public">Public</option><option value="unlisted">Unlisted</option><option value="private">Private</option></Select>
           </Field>
-          <Field label="Capacity" htmlFor="cap" optional help="Total across all ticket types. Leave empty for unlimited."><Input id="cap" type="number" min={1} value={v.capacity} onChange={(e) => set("capacity", e.target.value)} /></Field>
-          <Toggle label="Approve each registration manually" help="People see “request to join”; you approve or reject from Attendees." checked={v.requiresApproval} onChange={(c) => set("requiresApproval", c)} />
-          <Toggle label="Ask for a phone number" help="Optional field with SMS opt-in for the ticket and reminders." checked={v.collectPhone} onChange={(c) => set("collectPhone", c)} />
-          <Toggle label="Allow guests (+1)" help="Each guest gets their own ticket at the same price and answers the guest questions." checked={v.guestsEnabled} onChange={(c) => set("guestsEnabled", c)} />
+          <Field label="Capacity" htmlFor="cap" optional help="Leave empty for unlimited."><Input id="cap" type="number" min={1} value={v.capacity} onChange={(e) => set("capacity", e.target.value)} /></Field>
+        </div>
+      </Section>
+
+      <CollapsibleSection title="Registration options" description="Approval, guests, reminders, fees and refund policy." defaultOpen={Boolean(v.requiresApproval || v.collectPhone || v.guestsEnabled || v.waitlistEnabled || v.feePassThrough || v.refundPolicy)}>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Toggle label="Approve each registration manually" help="People request to join; approve or reject them from Attendees." checked={v.requiresApproval} onChange={(c) => set("requiresApproval", c)} />
+          <Toggle label="Ask for a phone number" help="Optional field with SMS opt-in for tickets and reminders." checked={v.collectPhone} onChange={(c) => set("collectPhone", c)} />
+          <Toggle label="Allow guests (+1)" help="Each guest gets a separate ticket." checked={v.guestsEnabled} onChange={(c) => set("guestsEnabled", c)} />
           {v.guestsEnabled && <Field label="Max guests per registration" htmlFor="maxg"><Input id="maxg" type="number" min={1} max={20} value={v.maxGuests} onChange={(e) => set("maxGuests", Number(e.target.value) || 1)} /></Field>}
           <Toggle label="Waitlist when sold out" help="Coming soon." checked={v.waitlistEnabled} onChange={(c) => set("waitlistEnabled", c)} />
-          <Toggle label="Buyer pays the service fee" help="Cloud only: the 0.99% appears as a line item instead of coming out of your payout." checked={v.feePassThrough} onChange={(c) => set("feePassThrough", c)} />
+          <Toggle label="Buyer pays the service fee" help="Cloud edition: show the 0.99% as a line item." checked={v.feePassThrough} onChange={(c) => set("feePassThrough", c)} />
           <Field label="Refund policy" htmlFor="refund" optional help="Shown at checkout for paid tickets." className="sm:col-span-2"><Textarea id="refund" rows={3} value={v.refundPolicy} onChange={(e) => set("refundPolicy", e.target.value)} /></Field>
         </div>
-        <div className="mt-5">
+        <div className="mt-5 border-t pt-5">
           <p className="text-sm font-medium">Reminders</p>
           <div className="mt-2 flex flex-wrap items-center gap-5 text-sm">
             <label className="flex items-center gap-2"><input type="checkbox" checked={v.reminder24} onChange={(e) => set("reminder24", e.target.checked)} className="size-4 accent-[var(--primary)]" /> 24 hours before</label>
@@ -154,11 +172,11 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug }:
             <label className="flex items-center gap-2">Also <Input value={v.reminderCustom} onChange={(e) => set("reminderCustom", e.target.value)} placeholder="48, 3" className="h-8 w-24" aria-label="Custom reminder hours" /> hours before</label>
           </div>
         </div>
-      </Section>
+      </CollapsibleSection>
 
-      <Section title="Links" description="Shown on the event page.">{links(v.socialLinks, (l) => set("socialLinks", l))}</Section>
+      <CollapsibleSection title="Links" description="Social links shown on the event page." defaultOpen={v.socialLinks.length > 0}>{links(v.socialLinks, (l) => set("socialLinks", l))}</CollapsibleSection>
 
-      <Section title="Hosts" description="People shown on the event page.">
+      <CollapsibleSection title="Hosts" description="People shown on the event page." defaultOpen={v.hosts.length > 0}>
         <div className="space-y-3">
           {v.hosts.map((h, i) => (
             <div key={i} className="grid gap-2 rounded-md border bg-muted/30 p-3 sm:grid-cols-[1fr_1fr_1fr_auto]">
@@ -170,9 +188,9 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug }:
           ))}
           <Button type="button" variant="outline" size="sm" onClick={() => set("hosts", [...v.hosts, { name: "", title: "", avatarUrl: "", socialLinks: [] }])}><Plus className="size-4" /> Add host</Button>
         </div>
-      </Section>
+      </CollapsibleSection>
 
-      <Section title="Sponsors" description="Logos appear in a strip on the event page, in this order.">
+      <CollapsibleSection title="Sponsors" description="Logos appear on the event page in this order." defaultOpen={v.sponsors.length > 0}>
         <div className="space-y-3">
           {v.sponsors.map((s, i) => (
             <div key={i} className="grid gap-2 rounded-md border bg-muted/30 p-3 sm:grid-cols-[1fr_8rem_1fr_1fr_auto]">
@@ -185,7 +203,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug }:
           ))}
           <Button type="button" variant="outline" size="sm" onClick={() => set("sponsors", [...v.sponsors, { name: "", logoUrl: "", tier: "", website: "", socialLinks: [] }])}><Plus className="size-4" /> Add sponsor</Button>
         </div>
-      </Section>
+      </CollapsibleSection>
 
       <div className="fixed inset-x-0 bottom-0 z-10 border-t bg-background/95 backdrop-blur lg:left-[15rem]">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 lg:px-8">
@@ -203,6 +221,22 @@ function Section({ title, description, children }: { title: string; description?
       <CardHeader><CardTitle className="text-base">{title}</CardTitle>{description && <CardDescription>{description}</CardDescription>}</CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
+  );
+}
+
+function CollapsibleSection({ title, description, children, defaultOpen = false }: { title: string; description?: string; children: React.ReactNode; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <details className="group rounded-lg border bg-card text-card-foreground" open={open} onToggle={(event) => setOpen(event.currentTarget.open)} onInvalid={() => setOpen(true)}>
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-4 [&::-webkit-details-marker]:hidden">
+        <span>
+          <span className="block text-sm font-medium">{title}</span>
+          {description && <span className="mt-1 block text-sm text-muted-foreground">{description}</span>}
+        </span>
+        <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+      </summary>
+      <div className="border-t p-4">{children}</div>
+    </details>
   );
 }
 

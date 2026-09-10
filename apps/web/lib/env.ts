@@ -19,6 +19,8 @@ const schema = z.object({
   EMAIL_FROM: z.string().default("OpenTicket <tickets@example.com>"),
   VONAGE_SIGNATURE_SECRET: z.string().optional(), // dashboard → Settings → signature secret; verifies status/inbound webhooks
   JOBS_INLINE: z.enum(["true", "false"]).default("true"), // run the notification loop inside the web process
+  MAPBOX_TOKEN: z.string().optional(),
+  UPLOAD_DIR: z.string().optional(),
   // Google sign-in (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),

@@ -13,6 +13,8 @@ import { env } from "@/lib/env";
 import { ORG_COOKIE, requireOrg } from "@/lib/auth/session";
 import { requireEvent } from "@/lib/dashboard";
 import { renderEmail, sendEmail } from "@/lib/email";
+import { searchAddresses, type AddressSuggestion } from "@/lib/geocoding";
+import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { stripe } from "@/lib/stripe";
 import OrgInvite, { orgInviteSubject } from "@/emails/org-invite";
 
@@ -75,6 +77,18 @@ export async function deleteEventAction(eventId: string) {
   if (event.status === "published") throw new Error("Unpublish or cancel the event before deleting it.");
   await svc.deleteEvent(db, eventId);
   redirect("/dashboard");
+}
+
+export async function searchAddressesAction(query: string): Promise<{ ok: true; data: AddressSuggestion[] } | { ok: false; error: string }> {
+  const { user } = await requireOrg("edit_events");
+  const normalized = query.trim().slice(0, 160);
+  if (normalized.length < 3) return { ok: true, data: [] };
+  if (!(await consumeSharedRateLimit("geocode", user.id, 30, 60_000))) return { ok: false, error: "Too many address searches. Wait a minute and try again." };
+  try {
+    return { ok: true, data: await searchAddresses(normalized, fetch, env.MAPBOX_TOKEN) };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : "Address search is temporarily unavailable." };
+  }
 }
 
 /* ---------- ticket types ---------- */

@@ -89,7 +89,7 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [ ] Payment Element step after order creation
 - [ ] Check-in scanner
-- [ ] Image uploads (covers, logos, avatars are URLs for now)
+- [ ] Complete image uploads: event covers and logos upload to local storage; organization logos, host avatars, and sponsor logos still accept URLs
 
 Contributor and agent notes: `AGENTS.md`.
 

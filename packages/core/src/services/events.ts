@@ -82,6 +82,7 @@ function isDuplicateEntryError(error: unknown): boolean {
   return error instanceof Error && "code" in error && error.code === "ER_DUP_ENTRY";
 }
 
+/** Slugs are unique within an organization (ev_org_slug); collisions get a short suffix, retried on ER_DUP_ENTRY. */
 async function insertEventWithUniqueSlug(db: DbOrTx, orgId: string, input: EventInput) {
   const base = input.slug ?? slugify(input.name);
   for (let attempt = 0; attempt < 6; attempt++) {
@@ -309,4 +310,26 @@ export async function getEventStats(db: Database, eventId: string) {
     currency: row?.currency ?? byTicketType[0]?.currency ?? "USD",
     byTicketType, byDay: byDay.map((d) => ({ day: String(d.day), count: Number(d.count) })),
   };
+}
+
+/** Public lookup by the canonical pair. Event slugs are only unique within an organization. */
+export async function getEventByOrgAndSlug(db: DbOrTx, organizationSlug: string, eventSlug: string) {
+  const [row] = await db.select({ event: events, org: organizations }).from(events)
+    .innerJoin(organizations, eq(events.organizationId, organizations.id))
+    .where(and(eq(organizations.slug, organizationSlug), eq(events.slug, eventSlug), isNull(events.deletedAt), isNull(organizations.deletedAt)))
+    .limit(1);
+  return row ?? null;
+}
+
+/**
+ * Legacy /e/{slug} links predate per-organization slugs. If exactly one live event carries the
+ * slug it is unambiguous; otherwise the oldest one is the event the old link was minted for.
+ */
+export async function findEventForLegacySlug(db: DbOrTx, eventSlug: string) {
+  const [row] = await db.select({ event: events, org: organizations }).from(events)
+    .innerJoin(organizations, eq(events.organizationId, organizations.id))
+    .where(and(eq(events.slug, eventSlug), isNull(events.deletedAt), isNull(organizations.deletedAt)))
+    .orderBy(asc(events.createdAt))
+    .limit(1);
+  return row ?? null;
 }

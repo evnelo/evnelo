@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { appleWalletConfigured, googleWalletConfigured } from "@/lib/env";
 import { formatDateRange } from "@/lib/utils";
 import { publicEventPath } from "@/lib/urls";
+import { calendarPath } from "@/lib/calendar";
 
 export const metadata = { robots: "noindex,nofollow" };
 
@@ -60,7 +61,7 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
         </div>
       </div>
       <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm">
-        <a href={`/api/calendar/${event.slug}.ics`} className="underline underline-offset-4">Add to calendar</a>
+        <a href={calendarPath(row.organizationSlug, event.slug)} className="underline underline-offset-4">Add to calendar</a>
         <a href={publicEventPath(row.organizationSlug, event.slug)} className="underline underline-offset-4">Event page</a>
         {(appleWalletConfigured || googleWalletConfigured) && (
           <span className="ml-auto flex gap-2">

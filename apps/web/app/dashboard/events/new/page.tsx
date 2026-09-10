@@ -1,5 +1,6 @@
 import { requireOrg } from "@/lib/auth/session";
 import { EventForm } from "@/components/dashboard/event-form";
+import { storageConfigured } from "@/lib/storage";
 
 export default async function NewEventPage() {
   const { org } = await requireOrg("edit_events", "/dashboard/events/new");
@@ -8,7 +9,7 @@ export default async function NewEventPage() {
       <h1 className="display text-3xl">New event</h1>
       <p className="mt-1 text-sm text-muted-foreground">Saved as a draft. Add tickets and questions, then publish when it's ready.</p>
       <div className="mt-6">
-        <EventForm mode="create" organizationSlug={org.slug} defaults={{ feePassThrough: org.feePassThrough }} />
+        <EventForm mode="create" organizationSlug={org.slug} uploadsEnabled={storageConfigured} defaults={{ feePassThrough: org.feePassThrough }} />
       </div>
     </div>
   );

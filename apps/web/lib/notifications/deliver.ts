@@ -8,6 +8,7 @@ import { renderEmail, sendEmail } from "@/lib/email";
 import { sms, smsTemplates } from "@/lib/sms";
 import { formatDateRange, formatMoney } from "@/lib/utils";
 import { publicEventPath } from "@/lib/urls";
+import { calendarPath } from "@/lib/calendar";
 import { unsubscribeUrl } from "./unsubscribe";
 import type { EmailBrand, EmailEvent, EmailTicket } from "@/emails/layout";
 import RegistrationConfirmation, { registrationConfirmationSubject } from "@/emails/registration-confirmation";
@@ -49,7 +50,7 @@ async function loadContext(n: Notification) {
     name: event.name, url: eventUrl, when: formatDateRange(event.startsAt, event.endsAt, event.timezone),
     where: event.locationType === "online" ? "Online" : [event.venueName, event.address, event.city].filter(Boolean).join(", "),
     onlineUrl: event.locationType !== "in_person" && attendee.status === "confirmed" ? event.onlineUrl : null,
-    calendarUrl: `${env.APP_URL}/api/calendar/${event.slug}.ics`,
+    calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}`,
   };
   const emailTickets: EmailTicket[] = party
     .sort((a, b) => (a.attendee.guestOfAttendeeId ? 1 : 0) - (b.attendee.guestOfAttendeeId ? 1 : 0))

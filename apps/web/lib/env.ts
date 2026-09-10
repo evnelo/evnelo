@@ -26,7 +26,13 @@ const schema = z.object({
   MAPBOX_TOKEN: z.string().optional(),
   // which proxy header carries the real client IP; unset = clients are not told apart (only global limits)
   API_TRUSTED_PROXY_HEADER: z.preprocess((v) => (typeof v === "string" ? v.trim().toLowerCase() || undefined : v), z.enum(["cf-connecting-ip", "x-real-ip", "x-forwarded-for"]).optional()),
-  UPLOAD_DIR: z.string().optional(),
+  // image storage: direct-to-S3 uploads (or any S3-compatible bucket via S3_ENDPOINT); CloudFront rewrites public URLs
+  AWS_ACCESS_KEY_ID: z.string().optional(),
+  AWS_SECRET_ACCESS_KEY: z.string().optional(),
+  AWS_REGION: z.string().optional(),
+  S3_BUCKET: z.string().optional(),
+  S3_ENDPOINT: z.string().url().optional(),
+  CLOUDFRONT_DOMAIN: z.string().optional(),
   // Google sign-in (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
@@ -41,7 +47,8 @@ const schema = z.object({
   GOOGLE_WALLET_SERVICE_ACCOUNT: z.string().optional(),
 });
 
-export const env = schema.parse(process.env);
+// .env files often carry `KEY=` placeholders: treat empty values as unset so optional URLs/enums validate.
+export const env = schema.parse(Object.fromEntries(Object.entries(process.env).map(([k, v]) => [k, v === "" ? undefined : v])));
 // Auth.js derives magic-link and callback URLs from the request host unless AUTH_URL is set; in
 // production that must come from the operator, never from an attacker-controlled Host header.
 if (process.env.NODE_ENV === "production" && !process.env.APP_URL) throw new Error("APP_URL must be set in production (it anchors sign-in links and payment return URLs).");

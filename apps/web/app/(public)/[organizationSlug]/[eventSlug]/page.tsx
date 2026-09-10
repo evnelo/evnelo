@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { MapPin, Video } from "lucide-react";
 import { canView, robotsFor } from "@ot/core";
-import { getPublicEventBySlug } from "@/lib/queries/events";
+import { getPublicEvent, getPublicEventByLegacySlug } from "@/lib/queries/events";
 import { formatDateRange } from "@/lib/utils";
 import { organizationPath, publicEventPath, serializeJsonLd } from "@/lib/urls";
 import { SocialLinks } from "@/components/event/social-links";
@@ -13,7 +13,7 @@ type Params = { params: Promise<{ organizationSlug: string; eventSlug: string }>
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { organizationSlug, eventSlug } = await params;
-  const data = await getPublicEventBySlug(eventSlug, organizationSlug);
+  const data = await getPublicEvent(organizationSlug, eventSlug);
   if (!data || !canView(data.event, { isMember: false, hasInvite: false })) return {};
   const { event, org } = data;
   const canonical = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
@@ -29,10 +29,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function EventPage({ params }: Params) {
   const { organizationSlug, eventSlug } = await params;
-  const data = await getPublicEventBySlug(eventSlug, organizationSlug);
+  const data = await getPublicEvent(organizationSlug, eventSlug);
   if (!data) {
-    // event slugs are globally unique: an org rename must not break links already sent in emails and tickets
-    const moved = await getPublicEventBySlug(eventSlug);
+    // an organization rename must not break links already sent in emails and tickets
+    const moved = await getPublicEventByLegacySlug(eventSlug);
     if (moved && canView(moved.event, { isMember: false, hasInvite: false })) permanentRedirect(publicEventPath(moved.org.slug, moved.event.slug));
     notFound();
   }

@@ -53,6 +53,10 @@ The first `/api/v1` slice is available for event discovery and organizer automat
 
 Create keys under Dashboard → Settings → API keys (owners and admins). Organization endpoints use `Authorization: Bearer ot_live_...` with `read` or `write` scopes and enforce a per-key limit of 120 requests per minute; failed authentication attempts are throttled separately. Rate-limit headers (`X-RateLimit-*`, reset as unix seconds) are returned on every request that consumes quota, and list endpoints paginate with `limit`/`offset` plus `pagination.nextOffset`. JSON request bodies are capped at 256 KiB. Public discovery uses indexed MySQL full-text search behind a 3,000-request-per-minute global ceiling; set `API_TRUSTED_PROXY_HEADER` to the header your proxy writes (`cf-connecting-ip`, `x-real-ip` or `x-forwarded-for`, last hop) to add a 60-per-minute limit per client. API keys are SHA-256 hashed at rest and shown once at creation. The remaining resources used by the MCP skeleton are still pending.
 
+## Image storage
+
+Uploads never pass through the web process: the browser asks `/api/uploads` for a presigned S3 POST and sends the file to the bucket directly, then confirms so the server can verify size and type. Set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` and `S3_BUCKET`; add `S3_ENDPOINT` for R2, MinIO or another S3-compatible store, and `CLOUDFRONT_DOMAIN` to serve images through CloudFront. The bucket needs a CORS rule allowing `POST` from your `APP_URL`, and objects under `uploads/` must be publicly readable (bucket policy, or CloudFront in front of a private bucket). Without these variables the editor accepts image URLs instead.
+
 ## Notifications
 
 Every email and SMS is a row in `notifications`; a worker drains the queue. Self-hosted, the worker runs inside the web process every 10 seconds (`JOBS_INLINE=true`, the default). On serverless hosts set `JOBS_INLINE=false` and call `POST /api/jobs/run` with `Authorization: Bearer $AUTH_SECRET` from a cron every minute.
@@ -113,14 +117,14 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] Ticket QR rendered locally, `.ics` calendar file, Apple Wallet (`.pkpass`) and Google Wallet passes (optional, key-gated)
 - [x] MCP server skeleton (tools mapped to the REST API)
 - [x] Auth: magic-link email sign-in (Auth.js, React Email), Google when configured; first sign-in creates the organization; org roles (owner, admin, member, check-in) with invites by email
-- [x] Organizer dashboard: events list with registrations, revenue and check-ins; event editor (venue, visibility, approval, guests, reminders, hosts, sponsors, tags, links); ticket types; registration form builder with conditional questions; attendees with search, approve/reject/cancel and CSV export; orders with Stripe refunds; org settings and members; public organization page `/o/{slug}`
+- [x] Organizer dashboard: events list with registrations, revenue and check-ins; event editor (venue, visibility, approval, guests, reminders, hosts, sponsors, tags, links); ticket types; registration form builder with conditional questions; attendees with search, approve/reject/cancel and CSV export; orders with Stripe refunds; org settings and members; public organization page `/o/{slug}` and event pages at `/{org}/{event}` (event slugs are unique per organization)
 - [x] Service layer in `packages/core/services` shared by the dashboard, the coming REST API, and the MCP server
 - [x] REST API foundation: public event search plus authenticated event list/get/create, scoped API keys managed from Settings, per-key and auth-failure rate limits, pagination, transactional idempotency for event creation, a published OpenAPI 3.1 document, and an interactive Scalar API reference
 - [ ] Complete REST API resource coverage, generated TypeScript SDK, and outbound webhooks
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [x] Stripe Payment Element after order creation: signed redirect recovery, server-confirmed success, a `processing` state for delayed payment methods with hourly reconciliation against Stripe, and hold expiry that cancels the PaymentIntent before releasing seats (a payment that lands after seats were released is refunded automatically)
 - [ ] Check-in scanner
-- [ ] Complete image uploads: event covers and logos upload to local storage (`UPLOAD_DIR`, defaults to `./uploads`); organization logos, host avatars, and sponsor logos still accept URLs; S3-compatible storage pending
+- [x] Image uploads go straight from the browser to S3 (or any S3-compatible bucket) with a presigned POST; CloudFront URLs when configured; event covers and logos today, organization logos, host avatars and sponsor logos still accept URLs
 
 Contributor and agent notes: `AGENTS.md`.
 

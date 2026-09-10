@@ -45,7 +45,7 @@ function initial(d: EventDefaults, tz: string): Values {
   };
 }
 
-export function EventForm({ mode, eventId, status, defaults, organizationSlug }: { mode: "create" | "edit"; eventId?: string; status?: string; defaults: EventDefaults; organizationSlug: string }) {
+export function EventForm({ mode, eventId, status, defaults, organizationSlug, uploadsEnabled }: { mode: "create" | "edit"; eventId?: string; status?: string; defaults: EventDefaults; organizationSlug: string; uploadsEnabled: boolean }) {
   const browserTz = useMemo(() => (typeof Intl !== "undefined" ? Intl.DateTimeFormat().resolvedOptions().timeZone : "UTC"), []);
   const [v, setV] = useState<Values>(() => initial(defaults, browserTz));
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
@@ -108,8 +108,8 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug }:
           <Field label="Description" htmlFor="desc" optional help="Markdown is supported." className="sm:col-span-2"><Textarea id="desc" rows={6} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
           <Field label="Tags" htmlFor="tags" optional help="Comma separated. Used for discovery." className="sm:col-span-2"><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="design, meetup" /></Field>
           <div className="sm:col-span-2 grid gap-5 md:grid-cols-[minmax(0,1fr)_10rem]">
-            <ImageUploadField label="Cover image" value={v.coverImageUrl} onChange={(url) => set("coverImageUrl", url)} />
-            <ImageUploadField label="Event logo" value={v.logoUrl} onChange={(url) => set("logoUrl", url)} aspect="square" />
+            <ImageUploadField label="Cover image" value={v.coverImageUrl} onChange={(url) => set("coverImageUrl", url)} uploadsEnabled={uploadsEnabled} />
+            <ImageUploadField label="Event logo" value={v.logoUrl} onChange={(url) => set("logoUrl", url)} aspect="square" uploadsEnabled={uploadsEnabled} />
           </div>
         </div>
       </CollapsibleSection>

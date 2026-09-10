@@ -89,7 +89,7 @@ export const events = mysqlTable(
   {
     id: id(),
     organizationId: ref("organization_id").notNull(),
-    slug: varchar("slug", { length: 80 }).notNull().unique(),
+    slug: varchar("slug", { length: 80 }).notNull(), // unique per organization (ev_org_slug); pages live at /{org}/{event}
     name: varchar("name", { length: 160 }).notNull(),
     descriptionMd: text("description_md"),
     coverImageUrl: varchar("cover_image_url", { length: 500 }),
@@ -127,6 +127,7 @@ export const events = mysqlTable(
     updatedAt: updatedAt(),
   },
   (t) => [
+    uniqueIndex("ev_org_slug").on(t.organizationId, t.slug),
     index("ev_org").on(t.organizationId),
     index("ev_discover").on(t.visibility, t.status, t.startsAt),
     index("ev_city").on(t.city, t.startsAt),

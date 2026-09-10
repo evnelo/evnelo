@@ -17,11 +17,8 @@ services:
     env_file: .env
     environment:
       DATABASE_URL: mysql://openticket:openticket@db:3306/openticket
-      UPLOAD_DIR: /app/uploads
     ports: ["3000:3000"]
     depends_on:
       db: { condition: service_healthy }
-    volumes: ["uploads:/app/uploads"]
 volumes:
   mysql-data:
-  uploads:

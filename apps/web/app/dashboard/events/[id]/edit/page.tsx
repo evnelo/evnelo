@@ -2,6 +2,7 @@ import { getEventWithRelations } from "@ot/core/services";
 import { db } from "@/lib/db";
 import { requireEvent } from "@/lib/dashboard";
 import { EventForm } from "@/components/dashboard/event-form";
+import { storageConfigured } from "@/lib/storage";
 
 export default async function EditEventPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -12,7 +13,7 @@ export default async function EditEventPage({ params }: { params: Promise<{ id: 
     <EventForm
       mode="edit"
       eventId={id}
-      organizationSlug={org.slug}
+      organizationSlug={org.slug} uploadsEnabled={storageConfigured}
       status={e.status}
       defaults={{
         name: e.name, slug: e.slug, descriptionMd: e.descriptionMd ?? "", coverImageUrl: e.coverImageUrl ?? "", logoUrl: e.logoUrl ?? "",

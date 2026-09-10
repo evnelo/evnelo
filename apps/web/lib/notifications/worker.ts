@@ -5,7 +5,6 @@ import { db } from "@/lib/db";
 import { deliver } from "./deliver";
 import { expireHolds, reconcileProcessingOrders } from "@/lib/orders";
 import { purgeApiHousekeeping } from "@ot/core/services";
-import { sweepOrphanUploads } from "@/lib/upload-sweep";
 
 /**
  * The job runner. No Redis: everything is rows in `notifications`, claimed with a
@@ -104,9 +103,7 @@ export async function processNotifications(limit = 50) {
 }
 
 const SCHEDULE_EVERY_MS = 60_000;
-const SWEEP_EVERY_MS = 6 * 60 * 60_000;
 let lastScheduled = 0;
-let lastSwept = 0;
 
 /** One pass of everything. Safe to call from a timer, a cron hit, or a test. Reminder scheduling runs at most once a minute. */
 export async function runJobs(opts: { force?: boolean } = {}) {
@@ -119,10 +116,6 @@ export async function runJobs(opts: { force?: boolean } = {}) {
     scheduled = await scheduleReminders();
     reconciled = await reconcileProcessingOrders().catch((e) => { console.error("[jobs] reconcileProcessingOrders", e); return 0; });
     await purgeApiHousekeeping(db).catch((e) => console.error("[jobs] purgeApiHousekeeping", e));
-    if (Date.now() - lastSwept >= SWEEP_EVERY_MS) {
-      await sweepOrphanUploads().catch((e) => console.error("[jobs] sweepOrphanUploads", e));
-      lastSwept = Date.now();
-    }
     lastScheduled = Date.now();
   }
   const processed = await processNotifications();

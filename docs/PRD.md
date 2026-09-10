@@ -113,7 +113,7 @@ Priority: **P0** = required for launch, **P1** = fast follow, **P2** = later.
 
 Event fields (all P0 unless noted):
 
-- Name, slug (`/{organizationSlug}/{eventSlug}`), start/end datetime with timezone, optional multi-day sessions (P1)
+- Name, slug (`/{organizationSlug}/{eventSlug}`; event slugs are unique within an organization, so two organizations can both run `/summit`), start/end datetime with timezone, optional multi-day sessions (P1)
 - Description — rich text (headings, lists, links, images, embeds) with Markdown import/export
 - Venue: in-person (address, map, geocoded lat/lng), online (link revealed after registration), or hybrid
 - Cover image (16:9 and square crop), company/host logo
@@ -241,7 +241,7 @@ Attendee preferences: per-attendee unsubscribe from reminders; confirmations alw
 | Email | **Resend** with React Email templates |
 | Auth | Auth.js (magic link, Google); API keys hashed at rest |
 | Jobs | MySQL-backed queue (reminders, webhook delivery, SMS/email sending) — no Redis dependency for self-hosters; BullMQ optional on Cloud |
-| Storage | S3-compatible (R2 on Cloud, local disk fallback) for images |
+| Storage | S3-compatible (R2 on Cloud), direct browser uploads via presigned POST, CloudFront in front; no local-disk mode |
 | Search | MySQL full-text for v1; Meilisearch optional adapter for Cloud discovery |
 | Maps | Mapbox/Google geocoding behind an interface; static map on event page |
 | Testing | Vitest, Playwright for checkout and check-in flows, Stripe test clocks |

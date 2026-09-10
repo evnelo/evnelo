@@ -23,7 +23,8 @@ describe("payment resume tokens", () => {
 
   it("rejects tampered and expired tokens", async () => {
     const token = await signPaymentResume(payload, secret);
-    await expect(verifyPaymentResume(`${token.slice(0, -1)}x`, secret, new Date("2030-01-01T00:05:00.000Z"))).rejects.toThrow();
+    const tampered = `${token.slice(0, -1)}${token.endsWith("x") ? "y" : "x"}`; // always differs from the original
+    await expect(verifyPaymentResume(tampered, secret, new Date("2030-01-01T00:05:00.000Z"))).rejects.toThrow();
     await expect(verifyPaymentResume(token, secret, new Date("2030-01-01T00:11:00.000Z"))).rejects.toThrow();
   });
 });

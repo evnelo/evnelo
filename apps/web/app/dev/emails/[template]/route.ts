@@ -21,7 +21,7 @@ const brand = { orgName: "Demo Collective", orgLogoUrl: null, accent: null, appU
 const event = {
   name: "Design Systems Meetup, September edition", url: "http://localhost:3000/demo-collective/design-systems-meetup",
   when: "Tuesday, September 22, 6:00 PM to 9:00 PM", where: "Casa Cultural, Rua Augusta 1500, São Paulo", onlineUrl: null,
-  calendarUrl: "http://localhost:3000/api/calendar/design-systems-meetup.ics",
+  calendarUrl: "http://localhost:3000/api/calendar/demo/design-systems-meetup.ics",
 };
 const qr = "https://api.qrserver.com/v1/create-qr-code/?size=224x224&data=sample"; // preview only; real emails use /t/{token}/qr?format=png
 const tickets = [

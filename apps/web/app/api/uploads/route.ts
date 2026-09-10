@@ -1,85 +1,54 @@
-import { randomBytes } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
 import { NextResponse } from "next/server";
-import { sql } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { z } from "zod";
 import { env } from "@/lib/env";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { uploadAccess } from "@/lib/upload-access";
-import {
-  ImageUploadError,
-  MAX_IMAGE_BYTES,
-  MAX_ORGANIZATION_UPLOAD_BYTES,
-  hasTrustedRequestOrigin,
-  organizationUploadBytes,
-  processImageUpload,
-  readBoundedRequestBody,
-  uploadDirectory,
-} from "@/lib/uploads";
+import { readJsonBody } from "@/lib/api-http";
+import { IMAGE_TYPES, MAX_IMAGE_BYTES, keyFromPublicUrl, presignImageUpload, storageConfigured, verifyUploadedImage, type ImageType } from "@/lib/storage";
 
 export const runtime = "nodejs";
 
+const presignInput = z.object({ contentType: z.enum(Object.keys(IMAGE_TYPES) as [ImageType, ...ImageType[]]), size: z.number().int().min(1).max(MAX_IMAGE_BYTES) });
+const confirmInput = z.object({ url: z.string().url() });
+
+function trustedOrigin(request: Request) {
+  const expected = new URL(env.APP_URL).origin;
+  const origin = request.headers.get("origin");
+  if (origin) return origin === expected;
+  const referer = request.headers.get("referer");
+  try { return !!referer && new URL(referer).origin === expected; } catch { return false; }
+}
+
+/**
+ * POST /api/uploads → a presigned S3 POST the browser uses to upload the image directly.
+ * The policy pins the key prefix (this organization), the content type and the size.
+ */
 export async function POST(request: Request) {
-  const expectedOrigin = new URL(env.APP_URL).origin;
-  if (!hasTrustedRequestOrigin(request, expectedOrigin)) return NextResponse.json({ error: "Invalid upload origin." }, { status: 403 });
+  if (!storageConfigured) return NextResponse.json({ error: "Image uploads aren't configured on this instance (S3). Paste an image URL instead." }, { status: 503 });
+  if (!trustedOrigin(request)) return NextResponse.json({ error: "Invalid upload origin." }, { status: 403 });
   const access = await uploadAccess();
   if (!access.ok) return NextResponse.json({ error: access.error }, { status: access.status });
-  if (!(await consumeSharedRateLimit("upload", access.user.id, 20, 60 * 60_000))) {
-    return NextResponse.json({ error: "Upload limit reached. Try again later." }, { status: 429 });
-  }
-  let boundedBody: Uint8Array;
+  if (!(await consumeSharedRateLimit("upload", access.user.id, 30, 60 * 60_000))) return NextResponse.json({ error: "Upload limit reached. Try again later." }, { status: 429 });
+  const parsed = presignInput.safeParse(await readJsonBody(request, 1_024).catch(() => null));
+  if (!parsed.success) return NextResponse.json({ error: "Upload a JPEG, PNG or WebP image of 5 MB or less." }, { status: 400 });
   try {
-    boundedBody = await readBoundedRequestBody(request, MAX_IMAGE_BYTES + 256 * 1024);
-  } catch {
-    return NextResponse.json({ error: "Images must be 5 MB or smaller." }, { status: 413 });
-  }
-
-  let file: File;
-  try {
-    const body = boundedBody.buffer.slice(boundedBody.byteOffset, boundedBody.byteOffset + boundedBody.byteLength) as ArrayBuffer;
-    const boundedRequest = new Request(request.url, { method: "POST", headers: request.headers, body });
-    const formData = await boundedRequest.formData();
-    const candidate = formData.get("file");
-    if (!(candidate instanceof File)) throw new Error("Choose an image to upload.");
-    file = candidate;
-  } catch {
-    return NextResponse.json({ error: "Choose an image to upload." }, { status: 400 });
-  }
-
-  let image: Buffer;
-  try {
-    image = await processImageUpload(file);
+    return NextResponse.json(await presignImageUpload(access.org.id, parsed.data.contentType));
   } catch (error) {
-    return NextResponse.json({ error: error instanceof ImageUploadError ? error.message : "Invalid image." }, { status: 422 });
+    console.error("[uploads] presign failed", error);
+    return NextResponse.json({ error: "Image storage is unavailable right now." }, { status: 503 });
   }
+}
 
-  const directory = uploadDirectory(env.UPLOAD_DIR);
-  try {
-    await mkdir(directory, { recursive: true });
-  } catch (error) {
-    console.error("[uploads] UPLOAD_DIR is not writable", directory, error);
-    return NextResponse.json({ error: "Image storage isn't writable on this instance. Ask the operator to check UPLOAD_DIR." }, { status: 503 });
-  }
-  try {
-    return await db.transaction(async (tx) => {
-      // per-organization quota under an advisory lock; the orphan sweep runs from the job loop, not here
-      const lockName = `openticket:upload:${access.org.id}`;
-      const [lockRows] = await tx.execute(sql`SELECT GET_LOCK(${lockName}, 5) AS acquired`);
-      if (Number(((lockRows as unknown) as Array<{ acquired: number | string }>)[0]?.acquired ?? 0) !== 1) throw new Error("Upload storage is busy.");
-      try {
-        const used = await organizationUploadBytes(directory, access.org.id);
-        if (used + image.length > MAX_ORGANIZATION_UPLOAD_BYTES) {
-          return NextResponse.json({ error: "Organization image storage is full. Remove unused images and try again." }, { status: 507 });
-        }
-        const filename = `${access.org.id}-${randomBytes(16).toString("hex")}.webp`;
-        await writeFile(`${directory}/${filename}`, image, { flag: "wx" });
-        return NextResponse.json({ url: `${env.APP_URL}/api/uploads/${filename}` }, { status: 201 });
-      } finally {
-        await tx.execute(sql`SELECT RELEASE_LOCK(${lockName})`);
-      }
-    });
-  } catch (error) {
-    console.error("[uploads] unable to store image", error);
-    return NextResponse.json({ error: "The image could not be stored. Try again." }, { status: 500 });
-  }
+/** PUT /api/uploads → after the browser's S3 POST: verify the object and return the URL to store. */
+export async function PUT(request: Request) {
+  if (!storageConfigured) return NextResponse.json({ error: "Image uploads aren't configured on this instance." }, { status: 503 });
+  if (!trustedOrigin(request)) return NextResponse.json({ error: "Invalid upload origin." }, { status: 403 });
+  const access = await uploadAccess();
+  if (!access.ok) return NextResponse.json({ error: access.error }, { status: access.status });
+  const parsed = confirmInput.safeParse(await readJsonBody(request, 2_048).catch(() => null));
+  const key = parsed.success ? keyFromPublicUrl(parsed.data.url) : null;
+  if (!key || !key.startsWith(`uploads/${access.org.id}/`)) return NextResponse.json({ error: "That file isn't one of this organization's uploads." }, { status: 400 });
+  const result = await verifyUploadedImage(key);
+  if (!result.ok) return NextResponse.json({ error: result.reason }, { status: 422 });
+  return NextResponse.json({ url: result.url });
 }

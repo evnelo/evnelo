@@ -9,6 +9,12 @@ try {
   // no root .env (e.g. Docker/CI inject env directly)
 }
 
+// Tailscale Serve and some reverse proxies forward requests to localhost. Auth.js otherwise
+// derives localhost callback cookies and redirects even though APP_URL is public.
+if (!process.env.AUTH_URL && process.env.APP_URL) {
+  process.env.AUTH_URL = process.env.APP_URL;
+}
+
 const config: NextConfig = {
   transpilePackages: ["@ot/core", "@ot/db"],
   images: { remotePatterns: [{ protocol: "https", hostname: "**" }] },

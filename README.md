@@ -49,6 +49,7 @@ The first `/api/v1` slice is available for event discovery and organizer automat
 - `POST /api/v1/events` — create a draft event; accepts an optional `Idempotency-Key` retained for 24 hours
 - `GET /api/v1/events/{id}` — get an organization event with ticket types, tags, hosts, sponsors, and registration fields
 - `GET /api/v1/openapi.json` — OpenAPI 3.1 document for the implemented endpoints
+- `GET /api/v1/docs` — interactive Scalar API reference backed by the published OpenAPI document
 
 Organization endpoints use `Authorization: Bearer ot_live_...` with `read` or `write` scopes and enforce a per-key limit of 120 requests per minute. Rate-limit headers are returned on every request that consumes quota. JSON request bodies are capped at 256 KiB. Public discovery uses indexed MySQL full-text search and is limited to 60 requests per minute per client plus a 3,000-request global ceiling. Forwarded IP headers are ignored by default; behind a trusted proxy, set `API_TRUSTED_PROXY_HEADER` to the single header that proxy overwrites. API keys are SHA-256 hashed at rest. API-key management UI and the remaining resources used by the MCP skeleton are still pending.
 
@@ -83,7 +84,7 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] Auth: magic-link email sign-in (Auth.js, React Email), Google when configured; first sign-in creates the organization; org roles (owner, admin, member, check-in) with invites by email
 - [x] Organizer dashboard: events list with registrations, revenue and check-ins; event editor (venue, visibility, approval, guests, reminders, hosts, sponsors, tags, links); ticket types; registration form builder with conditional questions; attendees with search, approve/reject/cancel and CSV export; orders with Stripe refunds; org settings and members; public organization page `/o/{slug}`
 - [x] Service layer in `packages/core/services` shared by the dashboard, the coming REST API, and the MCP server
-- [x] REST API foundation: public event search plus authenticated event list/get/create, scoped API keys, per-key rate limits, transactional idempotency for event creation, and a published OpenAPI 3.1 document
+- [x] REST API foundation: public event search plus authenticated event list/get/create, scoped API keys, per-key rate limits, transactional idempotency for event creation, a published OpenAPI 3.1 document, and an interactive Scalar API reference
 - [ ] Complete REST API resource coverage, API-key management UI, generated TypeScript SDK, and outbound webhooks
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [ ] Payment Element step after order creation

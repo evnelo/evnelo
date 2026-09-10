@@ -23,6 +23,10 @@ export const openApiDocument = {
     description: "Versioned JSON API for OpenTicket. Organization endpoints use scoped API keys; public discovery does not require authentication.",
   },
   servers: [{ url: "/api/v1" }],
+  externalDocs: {
+    description: "Interactive API documentation",
+    url: "/api/v1/docs",
+  },
   tags: [
     { name: "Public", description: "Unauthenticated discovery of published public events." },
     { name: "Events", description: "Organization-scoped event management." },

@@ -31,4 +31,11 @@ describe("OpenAPI contract", () => {
     expect(document.components.responses.ValidationError.headers["X-RateLimit-Remaining"]).toBeDefined();
     expect(document.components.responses.NotFound.headers["X-RateLimit-Remaining"]).toBeDefined();
   });
+
+  it("links to the interactive Scalar documentation", () => {
+    expect(document.externalDocs).toEqual({
+      description: "Interactive API documentation",
+      url: "/api/v1/docs",
+    });
+  });
 });

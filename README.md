@@ -69,6 +69,37 @@ Optional. Set the `APPLE_*` variables (Pass Type ID certificate, key, Apple WWDR
 
 `EDITION=self_hosted` (default) or `EDITION=cloud`. Same code, one flag. Cloud adds the 0.99% platform fee, Stripe Connect onboarding, the $5 SMS unlock for free events, and the global discovery dashboard. See `packages/core/src/fees.ts` and `sms.ts` for the exact rules.
 
+## Delivery sequence
+
+This is the canonical implementation order and cross-session progress tracker. Update it whenever an item starts, ships, or becomes blocked.
+
+**Status legend:** `[ ]` pending · `[>]` in progress · `[x]` shipped · `[!]` blocked
+
+**Resume here:** Item 1 — Payment Element and paid-checkout completion.
+
+1. [>] **Payment Element and paid-checkout completion**
+   - Existing foundation: atomic 10-minute inventory holds, PaymentIntent creation, Stripe webhooks, fees/tax calculation, and dashboard refunds.
+   - Complete when buyers can confirm payment in the registration flow, recover from failures, see a clear success state/receipt, and the flow is verified end to end in Stripe test mode.
+2. [ ] **Check-in scanner, manual check-in, and undo**
+   - Complete when authorized check-in staff can scan signed ticket QR codes from a phone, search and check in manually, undo a check-in, and see synchronized counters; short offline operation must fail safely and resync.
+3. [ ] **Private-event invitations and access enforcement**
+   - Complete when organizers can issue/revoke event invitations and private event pages plus registration validate an invite token or authorized membership while remaining `noindex`.
+4. [ ] **Waitlist enrollment and promotion**
+   - Complete when sold-out events can collect waitlist entries, organizers can promote them without overselling, promotion expires safely, and required email/SMS notifications are queued.
+5. [ ] **Discount-code checkout and management**
+   - Complete when organizers can create/manage percentage and fixed discounts with expiry and usage limits, checkout validates and applies them atomically, and orders preserve the discount audit trail.
+6. [ ] **REST API/MCP parity, API-key UI, and outbound webhooks**
+   - Complete when the documented organizations, events, ticket types, registration fields, orders, attendees/tickets, check-ins, discounts, and webhook resources exist; MCP tools call real endpoints; organizers can manage scoped keys/webhooks; TypeScript SDK generation and signed retrying outbound deliveries are available.
+7. [ ] **Discovery search, filters, calendar, and sitemap**
+   - Complete when `/discover` supports query/city/tag/date/free-or-paid/location filters, list and calendar views, near-me discovery, featured/upcoming sections, and public-only sitemap/SEO coverage.
+8. [ ] **Complete uploads with S3/R2 and remaining image fields**
+   - Existing foundation: authenticated, bounded, decoded/re-encoded local event cover/logo uploads with quotas and cleanup.
+   - Complete when organization logos, host avatars, sponsor logos, registration file fields, crop controls, and persistent S3-compatible Cloud storage are implemented.
+9. [ ] **Health endpoint, registration abuse controls, and privacy workflows**
+   - Complete when health/readiness checks, registration/login abuse limits, Cloud moderation/reporting, and attendee/org PII export plus hard deletion are implemented and documented.
+10. [ ] **README/PRD reconciliation and release-readiness matrix**
+    - Complete when implementation claims, package names, providers, storage behavior, routes, P0/P1 status, deployment instructions, accessibility/performance checks, and remaining post-launch work are accurately reflected in both documents.
+
 ## Status
 
 Foundation (M0) plus the first slice of M1/M2:

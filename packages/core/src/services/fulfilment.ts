@@ -56,34 +56,70 @@ export async function fulfilFreeOrder(db: Database, orderId: string) {
   });
 }
 
-/**
- * Move an order to paid, convert holds to sales, issue tickets (or queue the approval-pending
- * email when the host reviews registrations). Accepts `pending` and `expired` orders: Stripe
- * can confirm a PaymentIntent after the hold lapsed, and the buyer has paid either way.
- */
-export async function markOrderPaid(db: Database, paymentIntentId: string) {
-  await db.transaction(async (tx) => {
-    const [order] = await tx.select().from(orders).where(eq(orders.stripePaymentIntentId, paymentIntentId)).for("update");
-    if (!order || (order.status !== "pending" && order.status !== "expired")) return;
-    const stillHeld = order.status === "pending";
+async function releaseHeldItems(tx: DbOrTx, orderId: string) {
+  const items = await tx.select().from(orderItems).where(eq(orderItems.orderId, orderId));
+  for (const item of items) {
+    await tx.update(ticketTypes).set({ held: sql`GREATEST(${ticketTypes.held} - ${item.quantity}, 0)` }).where(eq(ticketTypes.id, item.ticketTypeId));
+  }
+}
 
-    await tx.update(orders).set({ status: "paid", paidAt: new Date() }).where(eq(orders.id, order.id));
+export function canMarkOrderPaid(status: string, holdExpiresAt: Date | null, now = new Date()) {
+  return status === "processing" || (status === "pending" && Boolean(holdExpiresAt && holdExpiresAt > now));
+}
+
+/**
+ * Move an actively held order to paid, convert holds to sales, issue tickets,
+ * email when the host reviews registrations). Expiry processing cancels the PaymentIntent before
+ * releasing inventory, so an expired order cannot later oversell the event.
+ */
+export async function markOrderPaid(db: Database, paymentIntentId: string, settledAt = new Date()) {
+  return db.transaction(async (tx) => {
+    const [order] = await tx.select().from(orders).where(eq(orders.stripePaymentIntentId, paymentIntentId)).for("update");
+    if (!order) return "ignored" as const;
     const items = await tx.select().from(orderItems).where(eq(orderItems.orderId, order.id));
+    if (!canMarkOrderPaid(order.status, order.holdExpiresAt, settledAt)) {
+      if (order.status === "expired" || order.status === "failed") return "expired" as const;
+      if (order.status === "pending") {
+        await tx.update(orders).set({ status: "expired" }).where(eq(orders.id, order.id));
+        await releaseHeldItems(tx, order.id);
+        return "expired" as const;
+      }
+      return "ignored" as const;
+    }
+
+    await tx.update(orders).set({ status: "paid", paidAt: new Date(), holdExpiresAt: null }).where(eq(orders.id, order.id));
     for (const item of items) {
       await tx.update(ticketTypes)
-        .set({ sold: sql`${ticketTypes.sold} + ${item.quantity}`, ...(stillHeld ? { held: sql`GREATEST(${ticketTypes.held} - ${item.quantity}, 0)` } : {}) })
+        .set({ sold: sql`${ticketTypes.sold} + ${item.quantity}`, held: sql`GREATEST(${ticketTypes.held} - ${item.quantity}, 0)` })
         .where(eq(ticketTypes.id, item.ticketTypeId));
     }
     const rows = await tx.select().from(attendees).where(eq(attendees.orderId, order.id));
     await queueEmailPerAddress(tx, order.organizationId, "approval_pending", rows.filter((a) => a.status === "pending_approval"));
     await issueTickets(tx, order.organizationId, rows);
+    return "paid" as const;
+  });
+}
+
+export async function markOrderProcessing(db: Database, paymentIntentId: string) {
+  return db.transaction(async (tx) => {
+    const [order] = await tx.select().from(orders).where(eq(orders.stripePaymentIntentId, paymentIntentId)).for("update");
+    if (!order) return "ignored" as const;
+    if (order.status === "processing") return "processing" as const;
+    if (order.status !== "pending") return "ignored" as const;
+    if (!order.holdExpiresAt || order.holdExpiresAt <= new Date()) {
+      await tx.update(orders).set({ status: "expired" }).where(eq(orders.id, order.id));
+      await releaseHeldItems(tx, order.id);
+      return "expired" as const;
+    }
+    await tx.update(orders).set({ status: "processing", holdExpiresAt: null }).where(eq(orders.id, order.id));
+    return "processing" as const;
   });
 }
 
 /** Give a pending order's inventory back. Atomic: only one caller wins against a concurrent markOrderPaid. */
 export async function releaseOrder(db: Database, orderId: string, status: "failed" | "expired") {
   return db.transaction(async (tx) => {
-    const [res] = await tx.update(orders).set({ status }).where(and(eq(orders.id, orderId), eq(orders.status, "pending")));
+    const [res] = await tx.update(orders).set({ status }).where(and(eq(orders.id, orderId), inArray(orders.status, ["pending", "processing"])));
     if (res.affectedRows === 0) return false;
     const items = await tx.select().from(orderItems).where(eq(orderItems.orderId, orderId));
     for (const item of items) {
@@ -98,13 +134,19 @@ export async function releaseOrderByPaymentIntent(db: Database, paymentIntentId:
   if (order) await releaseOrder(db, order.id, status);
 }
 
-/** Release holds on pending orders whose window has passed. Called before each new order until a job runner picks it up. */
-export async function expireHolds(db: Database, limit = 100) {
-  const stale = await db.select({ id: orders.id }).from(orders)
+/** Prepare Stripe first, then release holds whose window passed. */
+export async function expireHolds(
+  db: Database,
+  prepareRelease: (order: { id: string; stripePaymentIntentId: string | null; stripeAccountId: string | null }) => Promise<boolean>,
+  limit = 100,
+) {
+  const stale = await db.select({ id: orders.id, stripePaymentIntentId: orders.stripePaymentIntentId, stripeAccountId: orders.stripeAccountId }).from(orders)
     .where(and(eq(orders.status, "pending"), lt(orders.holdExpiresAt, new Date())))
     .limit(limit);
   let released = 0;
-  for (const o of stale) if (await releaseOrder(db, o.id, "expired")) released++;
+  for (const order of stale) {
+    if (await prepareRelease(order) && await releaseOrder(db, order.id, "expired")) released++;
+  }
   return released;
 }
 

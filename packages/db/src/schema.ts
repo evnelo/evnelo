@@ -265,7 +265,7 @@ export const orders = mysqlTable(
     organizationId: ref("organization_id").notNull(),
     userId: ref("user_id"),
     email: varchar("email", { length: 255 }).notNull(),
-    status: mysqlEnum("status", ["pending", "paid", "free", "refunded", "partially_refunded", "failed", "expired"])
+    status: mysqlEnum("status", ["pending", "processing", "paid", "free", "refunded", "partially_refunded", "failed", "expired"])
       .notNull()
       .default("pending"),
     currency: currency(),

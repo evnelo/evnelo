@@ -21,7 +21,7 @@ type Props = {
   collectPhone: boolean;
   guestsEnabled: boolean;
   maxGuests: number;
-  onSubmitted?: (result: { orderId: string; clientSecret?: string; partySize: number }) => void;
+  onSubmitted?: (result: { orderId: string; clientSecret?: string; stripeAccountId?: string | null; holdExpiresAt?: string; resumeToken?: string; partySize: number }) => void;
 };
 
 /**

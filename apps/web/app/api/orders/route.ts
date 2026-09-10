@@ -7,6 +7,8 @@ import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { createOrderPaymentIntent } from "@/lib/stripe";
 import { expireHolds, fulfilFreeOrder, releaseOrder } from "@/lib/orders";
+import { checkoutStripeAccount, paymentsConfigured } from "@/lib/payment-flow";
+import { signPaymentResume } from "@/lib/payment-resume";
 
 export const runtime = "nodejs";
 const HOLD_MINUTES = 10;
@@ -72,10 +74,12 @@ export async function POST(req: Request) {
 
   const [org] = await db.select().from(organizations).where(eq(organizations.id, event.organizationId)).limit(1);
   const edition = currentEdition();
+  const stripeAccountId = checkoutStripeAccount(edition, org?.stripeAccountId);
   const fees = computeOrder([{ unitPriceMinor: tt.priceMinor, quantity, taxRateBps: tt.taxRateBps }], { edition, feePassThrough: event.feePassThrough });
   const isFree = fees.totalMinor === 0;
-  if (!isFree && !env.STRIPE_SECRET_KEY) return NextResponse.json({ error: "This event can't take payments yet. Contact the host." }, { status: 503 });
+  if (!isFree && !paymentsConfigured(env.STRIPE_SECRET_KEY, env.STRIPE_PUBLISHABLE_KEY)) return NextResponse.json({ error: "This event can't take payments yet. Contact the host." }, { status: 503 });
   const orderId = newId();
+  const holdExpiresAt = isFree ? null : new Date(now.getTime() + HOLD_MINUTES * 60_000);
   const status = event.requiresApproval ? ("pending_approval" as const) : ("confirmed" as const);
 
   // no job runner yet: lapsed holds are reclaimed here so they don't block the next buyer
@@ -106,8 +110,8 @@ export async function POST(req: Request) {
       status: isFree ? "free" : "pending", currency: tt.currency,
       subtotalMinor: fees.subtotalMinor, taxMinor: fees.taxMinor, serviceFeeMinor: fees.serviceFeeMinor,
       totalMinor: fees.totalMinor, platformFeeMinor: fees.platformFeeMinor,
-      holdExpiresAt: isFree ? null : new Date(now.getTime() + HOLD_MINUTES * 60_000),
-      paidAt: isFree ? now : null, answers: ord.data, stripeAccountId: org?.stripeAccountId ?? null,
+      holdExpiresAt,
+      paidAt: isFree ? now : null, answers: ord.data, stripeAccountId,
     });
     await tx.insert(orderItems).values({ id: newId(), orderId, ticketTypeId: tt.id, quantity, unitPriceMinor: tt.priceMinor });
     const hostId = newId();
@@ -138,13 +142,18 @@ export async function POST(req: Request) {
   try {
     pi = await createOrderPaymentIntent({
       orderId, amountMinor: fees.totalMinor, currency: tt.currency, platformFeeMinor: fees.platformFeeMinor,
-      stripeAccountId: org?.stripeAccountId, receiptEmail: input.email,
+      stripeAccountId, receiptEmail: input.email,
     });
   } catch (e) {
     console.error("createOrderPaymentIntent", e);
     await releaseOrder(orderId, "failed"); // give the hold back, don't strand inventory
     return NextResponse.json({ error: "Payments are unavailable right now. Please try again in a few minutes." }, { status: 503 });
   }
+  if (!pi.client_secret) {
+    await releaseOrder(orderId, "failed");
+    return NextResponse.json({ error: "Payments are unavailable right now. Please try again in a few minutes." }, { status: 503 });
+  }
   await db.update(orders).set({ stripePaymentIntentId: pi.id }).where(eq(orders.id, orderId));
-  return NextResponse.json({ orderId, clientSecret: pi.client_secret, stripeAccountId: org?.stripeAccountId ?? null });
+  const resumeToken = await signPaymentResume({ orderId, eventId: event.id, expiresAt: new Date(now.getTime() + 24 * 60 * 60_000) }, env.AUTH_SECRET);
+  return NextResponse.json({ orderId, clientSecret: pi.client_secret, stripeAccountId, holdExpiresAt: holdExpiresAt!.toISOString(), resumeToken });
 }

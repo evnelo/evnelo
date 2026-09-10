@@ -75,12 +75,12 @@ This is the canonical implementation order and cross-session progress tracker. U
 
 **Status legend:** `[ ]` pending · `[>]` in progress · `[x]` shipped · `[!]` blocked
 
-**Resume here:** Item 1 — Payment Element and paid-checkout completion.
+**Resume here:** Item 2 — Check-in scanner, manual check-in, and undo.
 
-1. [>] **Payment Element and paid-checkout completion**
+1. [x] **Payment Element and paid-checkout completion**
    - Existing foundation: atomic 10-minute inventory holds, PaymentIntent creation, Stripe webhooks, fees/tax calculation, and dashboard refunds.
    - Complete when buyers can confirm payment in the registration flow, recover from failures, see a clear success state/receipt, and the flow is verified end to end in Stripe test mode.
-2. [ ] **Check-in scanner, manual check-in, and undo**
+2. [>] **Check-in scanner, manual check-in, and undo**
    - Complete when authorized check-in staff can scan signed ticket QR codes from a phone, search and check in manually, undo a check-in, and see synchronized counters; short offline operation must fail safely and resync.
 3. [ ] **Private-event invitations and access enforcement**
    - Complete when organizers can issue/revoke event invitations and private event pages plus registration validate an invite token or authorized membership while remaining `noindex`.
@@ -118,7 +118,7 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] REST API foundation: public event search plus authenticated event list/get/create, scoped API keys, per-key rate limits, transactional idempotency for event creation, a published OpenAPI 3.1 document, and an interactive Scalar API reference
 - [ ] Complete REST API resource coverage, API-key management UI, generated TypeScript SDK, and outbound webhooks
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
-- [ ] Payment Element step after order creation
+- [x] Stripe Payment Element after order creation, with signed redirect recovery, authoritative inventory deadlines, delayed-payment processing state, and automatic late-payment refunds
 - [ ] Check-in scanner
 - [ ] Complete image uploads: event covers and logos upload to local storage; organization logos, host avatars, and sponsor logos still accept URLs
 

@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: event.name,
     description: event.descriptionMd?.slice(0, 160),
     robots: robotsFor(event),
+    referrer: "no-referrer",
     alternates: { canonical },
     openGraph: { title: event.name, url: canonical, images: event.coverImageUrl ? [event.coverImageUrl] : [], siteName: org.name, type: "website" },
   };
@@ -127,7 +128,7 @@ export default async function EventPage({ params }: Params) {
         <aside className="lg:sticky lg:top-6 lg:self-start">
           <RegisterCard eventId={event.id} eventName={event.name} ticketTypes={ticketTypes} fields={fields}
             collectPhone={event.collectPhone} requiresApproval={event.requiresApproval} soldOut={soldOut}
-            guestsEnabled={event.guestsEnabled} maxGuests={event.maxGuests} />
+            guestsEnabled={event.guestsEnabled} maxGuests={event.maxGuests} stripePublishableKey={env.STRIPE_PUBLISHABLE_KEY} />
         </aside>
       </div>
     </article>

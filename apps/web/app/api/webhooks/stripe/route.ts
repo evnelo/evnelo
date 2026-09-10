@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import { smsUnlocks } from "@ot/db";
+import { orders, smsUnlocks } from "@ot/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
-import { applyRefund, markOrderPaid, releaseOrderByPaymentIntent } from "@/lib/orders";
+import { applyRefund, markOrderPaid, markOrderProcessing, releaseOrderByPaymentIntent } from "@/lib/orders";
 
 export const runtime = "nodejs";
 
@@ -32,12 +32,30 @@ export async function POST(req: Request) {
           .where(eq(smsUnlocks.eventId, pi.metadata.smsUnlockEventId));
         break;
       }
-      await markOrderPaid(pi.id);
+      const result = await markOrderPaid(pi.id, new Date(event.created * 1000));
+      if (result === "expired") {
+        await stripe.refunds.create(
+          { payment_intent: pi.id },
+          { idempotencyKey: `late-payment-refund:${pi.id}`, ...(event.account ? { stripeAccount: event.account } : {}) },
+        );
+      }
+      break;
+    }
+    case "payment_intent.processing": {
+      const result = await markOrderProcessing(event.data.object.id);
+      if (result === "expired") {
+        await stripe.paymentIntents.cancel(
+          event.data.object.id,
+          {},
+          event.account ? { stripeAccount: event.account } : undefined,
+        ).catch(() => undefined);
+      }
       break;
     }
     case "payment_intent.payment_failed": {
-      // One attempt failed (declined card etc.). The PaymentIntent is still confirmable
-      // with another method, so the order stays pending until its hold expires.
+      const [order] = await db.select({ status: orders.status }).from(orders).where(eq(orders.stripePaymentIntentId, event.data.object.id)).limit(1);
+      if (order?.status === "processing") await releaseOrderByPaymentIntent(event.data.object.id, "failed");
+      // A normal card attempt may still be retried while its short hold is active.
       break;
     }
     case "payment_intent.canceled": {

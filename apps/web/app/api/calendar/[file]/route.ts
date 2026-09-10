@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { and, eq, isNull, ne } from "drizzle-orm";
-import { events } from "@ot/db";
+import { events, organizations } from "@ot/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { buildIcs } from "@/lib/ics";
+import { publicEventPath } from "@/lib/urls";
 
 export const runtime = "nodejs";
 
@@ -12,11 +13,13 @@ export async function GET(_req: Request, { params }: { params: Promise<{ file: s
   const { file } = await params;
   if (!file.endsWith(".ics")) return new NextResponse("not found", { status: 404 });
   const slug = file.slice(0, -4);
-  const [event] = await db.select().from(events)
+  const [row] = await db.select({ event: events, organizationSlug: organizations.slug }).from(events)
+    .innerJoin(organizations, eq(events.organizationId, organizations.id))
     .where(and(eq(events.slug, slug), isNull(events.deletedAt), eq(events.status, "published"), ne(events.visibility, "private"))).limit(1);
-  if (!event) return new NextResponse("not found", { status: 404 });
+  if (!row) return new NextResponse("not found", { status: 404 });
+  const { event } = row;
 
-  const url = `${env.APP_URL}/e/${event.slug}`;
+  const url = `${env.APP_URL}${publicEventPath(row.organizationSlug, event.slug)}`;
   const location = event.locationType === "online"
     ? "Online"
     : [event.venueName, event.address, event.city].filter(Boolean).join(", ") || null;

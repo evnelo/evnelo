@@ -152,12 +152,12 @@ export const openApiDocument = {
       },
       PublicEvent: {
         type: "object",
-        required: ["id", "slug", "name", "startsAt", "endsAt", "timezone", "locationType", "organizationId", "orgName"],
+        required: ["id", "slug", "name", "startsAt", "endsAt", "timezone", "locationType", "organizationId", "orgName", "orgSlug"],
         properties: {
           id: { type: "string" }, slug: { type: "string" }, name: { type: "string" }, descriptionMd: { type: ["string", "null"] },
           coverImageUrl: { type: ["string", "null"], format: "uri" }, startsAt: { type: "string", format: "date-time" }, endsAt: { type: "string", format: "date-time" },
           timezone: { type: "string" }, city: { type: ["string", "null"] }, country: { type: ["string", "null"] }, locationType: { type: "string" },
-          venueName: { type: ["string", "null"] }, organizationId: { type: "string" }, orgName: { type: "string" },
+          venueName: { type: ["string", "null"] }, organizationId: { type: "string" }, orgName: { type: "string" }, orgSlug: { type: "string" },
         },
       },
       Event: { type: "object", additionalProperties: true, required: ["id", "organizationId", "slug", "name", "status"], properties: { id: { type: "string" }, organizationId: { type: "string" }, slug: { type: "string" }, name: { type: "string" }, status: { type: "string", enum: ["draft", "published", "cancelled", "ended"] } } },

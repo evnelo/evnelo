@@ -5,6 +5,7 @@ import { and, asc, eq, gte, isNull } from "drizzle-orm";
 import { events, organizations } from "@ot/db";
 import { db } from "@/lib/db";
 import { SocialLinks } from "@/components/event/social-links";
+import { publicEventPath } from "@/lib/urls";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -47,7 +48,7 @@ export default async function OrgPage({ params }: Params) {
             const when = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", timeZone: e.timezone }).format(e.startsAt);
             return (
               <li key={e.id}>
-                <Link href={`/e/${e.slug}`} className="group block">
+                <Link href={publicEventPath(org.slug, e.slug)} className="group block">
                   <div className="aspect-[4/3] overflow-hidden rounded-lg border bg-muted">{e.coverImageUrl && <img src={e.coverImageUrl} alt="" className="size-full object-cover" loading="lazy" />}</div>
                   <p className="mt-3 text-sm text-muted-foreground">{when}</p>
                   <h3 className="display mt-1 text-2xl group-hover:underline underline-offset-4" style={{ fontVariationSettings: '"opsz" 32, "SOFT" 50' }}>{e.name}</h3>

@@ -1,19 +1,21 @@
 import { notFound } from "next/navigation";
 import { and, eq, isNull } from "drizzle-orm";
-import { attendees, events, tickets } from "@ot/db";
+import { attendees, events, organizations, tickets } from "@ot/db";
 import { db } from "@/lib/db";
 import { appleWalletConfigured, googleWalletConfigured } from "@/lib/env";
 import { formatDateRange } from "@/lib/utils";
+import { publicEventPath } from "@/lib/urls";
 
 export const metadata = { robots: "noindex,nofollow" };
 
 export default async function TicketPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   const [row] = await db
-    .select({ ticket: tickets, attendee: attendees, event: events })
+    .select({ ticket: tickets, attendee: attendees, event: events, organizationSlug: organizations.slug })
     .from(tickets)
     .innerJoin(attendees, eq(tickets.attendeeId, attendees.id))
     .innerJoin(events, eq(tickets.eventId, events.id))
+    .innerJoin(organizations, eq(events.organizationId, organizations.id))
     .where(and(eq(tickets.token, token), isNull(tickets.revokedAt)))
     .limit(1);
   if (!row) notFound();
@@ -59,7 +61,7 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
       </div>
       <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm">
         <a href={`/api/calendar/${event.slug}.ics`} className="underline underline-offset-4">Add to calendar</a>
-        <a href={`/e/${event.slug}`} className="underline underline-offset-4">Event page</a>
+        <a href={publicEventPath(row.organizationSlug, event.slug)} className="underline underline-offset-4">Event page</a>
         {(appleWalletConfigured || googleWalletConfigured) && (
           <span className="ml-auto flex gap-2">
             {appleWalletConfigured && (

@@ -64,6 +64,13 @@
       "when": 1788993861222,
       "tag": "0008_perfect_the_hood",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1789003744142,
+      "tag": "0009_reserved_organization_slugs",
+      "breakpoints": true
     }
   ]
 }

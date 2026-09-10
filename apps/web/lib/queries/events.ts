@@ -3,10 +3,17 @@ import { events, eventHosts, eventSponsors, registrationFields, ticketTypes, tag
 import { listPublicEvents } from "@ot/core/services";
 import { db } from "@/lib/db";
 
-export async function getPublicEventBySlug(slug: string) {
-  const [event] = await db.select().from(events).where(and(eq(events.slug, slug), isNull(events.deletedAt))).limit(1);
-  if (!event) return null;
-  const [org] = await db.select().from(organizations).where(eq(organizations.id, event.organizationId)).limit(1);
+export async function getPublicEventBySlug(slug: string, organizationSlug?: string) {
+  const where = [eq(events.slug, slug), isNull(events.deletedAt)];
+  if (organizationSlug) where.push(eq(organizations.slug, organizationSlug));
+  const [row] = await db
+    .select({ event: events, org: organizations })
+    .from(events)
+    .innerJoin(organizations, eq(events.organizationId, organizations.id))
+    .where(and(...where))
+    .limit(1);
+  if (!row) return null;
+  const { event, org } = row;
   const [hosts, sponsors, types, fields, eventTagRows] = await Promise.all([
     db.select().from(eventHosts).where(eq(eventHosts.eventId, event.id)).orderBy(asc(eventHosts.position)),
     db.select().from(eventSponsors).where(eq(eventSponsors.eventId, event.id)).orderBy(asc(eventSponsors.position)),

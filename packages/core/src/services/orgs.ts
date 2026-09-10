@@ -5,12 +5,19 @@ import { organizationInvites, organizationMembers, organizations, users, type Da
 import { newId } from "../ids";
 import type { Role } from "../permissions";
 import { slugify, slugSuffix } from "../slug";
+import { isHttpUrl, normalizeWebsiteUrl } from "../url";
 
-const url = z.string().trim().url().max(300).or(z.literal("")).transform((v) => v || null);
+const url = z.string().transform(normalizeWebsiteUrl)
+  .pipe(z.string().max(300).refine((value) => !value || isHttpUrl(value), "Must be a valid http:// or https:// URL"))
+  .transform((v) => v || null);
+const RESERVED_ORGANIZATION_SLUGS = new Set(["api", "dashboard", "dev", "discover", "e", "invite", "login", "o", "onboarding", "t", "unsubscribe"]);
+const organizationSlug = z.string().trim()
+  .regex(/^[a-z0-9-]{3,60}$/, "Lowercase letters, numbers and hyphens")
+  .refine((slug) => !RESERVED_ORGANIZATION_SLUGS.has(slug), "This URL is reserved.");
 
 export const organizationInput = z.object({
   name: z.string().trim().min(2).max(120),
-  slug: z.string().trim().regex(/^[a-z0-9-]{3,60}$/, "Lowercase letters, numbers and hyphens").optional(),
+  slug: organizationSlug.optional(),
   website: url.optional(),
   logoUrl: z.string().trim().url().max(500).or(z.literal("")).transform((v) => v || null).optional(),
   accentColor: z.string().regex(/^#[0-9a-fA-F]{6}$/).or(z.literal("")).transform((v) => v || null).optional(),
@@ -20,7 +27,7 @@ export const organizationInput = z.object({
 export type OrganizationInput = z.infer<typeof organizationInput>;
 
 async function uniqueOrgSlug(db: Database, base: string) {
-  let slug = base;
+  let slug = RESERVED_ORGANIZATION_SLUGS.has(base) ? `${base}-${slugSuffix()}` : base;
   for (let i = 0; i < 5; i++) {
     const [hit] = await db.select({ id: organizations.id }).from(organizations).where(eq(organizations.slug, slug)).limit(1);
     if (!hit) return slug;

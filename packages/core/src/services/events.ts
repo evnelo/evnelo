@@ -280,7 +280,7 @@ export async function listPublicEvents(db: Database, opts: PublicEventSearch = {
     .select({
       id: events.id, slug: events.slug, name: events.name, descriptionMd: events.descriptionMd, coverImageUrl: events.coverImageUrl,
       startsAt: events.startsAt, endsAt: events.endsAt, timezone: events.timezone, city: events.city, country: events.country,
-      locationType: events.locationType, venueName: events.venueName, organizationId: organizations.id, orgName: organizations.name,
+      locationType: events.locationType, venueName: events.venueName, organizationId: organizations.id, orgName: organizations.name, orgSlug: organizations.slug,
     })
     .from(events)
     .innerJoin(organizations, eq(events.organizationId, organizations.id))

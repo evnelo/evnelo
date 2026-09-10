@@ -3,10 +3,12 @@ import { ExternalLink } from "lucide-react";
 import { requireEvent, statusVariant } from "@/lib/dashboard";
 import { Badge } from "@/components/ui/badge";
 import { EventNav } from "@/components/dashboard/event-nav";
+import { publicEventPath } from "@/lib/urls";
 
 export default async function EventLayout({ children, params }: { children: React.ReactNode; params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { event } = await requireEvent(id);
+  const { event, org } = await requireEvent(id);
+  const eventPath = publicEventPath(org.slug, event.slug);
   return (
     <div>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -15,7 +17,7 @@ export default async function EventLayout({ children, params }: { children: Reac
           <h1 className="display mt-1 truncate text-3xl">{event.name}</h1>
           <div className="mt-2 flex items-center gap-2 text-sm">
             <Badge variant={statusVariant[event.status]}>{event.status}</Badge>
-            <a href={`/e/${event.slug}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">/e/{event.slug} <ExternalLink className="size-3.5" /></a>
+            <a href={eventPath} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">{eventPath} <ExternalLink className="size-3.5" /></a>
           </div>
         </div>
       </div>

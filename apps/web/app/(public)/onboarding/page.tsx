@@ -4,9 +4,8 @@ import { createOrganization, listMemberships, organizationInput } from "@ot/core
 import { slugify } from "@ot/core";
 import { db } from "@/lib/db";
 import { ORG_COOKIE, requireUser } from "@/lib/auth/session";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Field, FormMessage } from "@/components/ui/form-field";
+import { FormMessage } from "@/components/ui/form-field";
+import { OnboardingForm } from "@/components/onboarding-form";
 
 export const metadata = { title: "Set up your organization", robots: "noindex" };
 
@@ -32,14 +31,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
       <h1 className="display text-4xl">Name your organization</h1>
       <p className="mt-3 text-sm text-muted-foreground">Events are published under an organization: a company, a community, or just you. You can invite teammates later.</p>
       {error && <div className="mt-4"><FormMessage error={error} /></div>}
-      <form action={create} className="mt-6 space-y-4">
-        <Field label="Organization name" htmlFor="name"><Input id="name" name="name" required minLength={2} maxLength={120} autoFocus /></Field>
-        <Field label="Public URL" htmlFor="slug" help={`Your public page will live at /o/${suggested}. Lowercase letters, numbers and hyphens.`} optional>
-          <Input id="slug" name="slug" pattern="[a-z0-9-]{3,60}" placeholder={suggested} />
-        </Field>
-        <Field label="Website" htmlFor="website" optional><Input id="website" name="website" type="url" placeholder="https://" /></Field>
-        <Button type="submit" className="w-full">Create organization</Button>
-      </form>
+      <OnboardingForm action={create} suggestedSlug={suggested} />
     </div>
   );
 }

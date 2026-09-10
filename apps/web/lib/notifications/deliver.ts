@@ -7,6 +7,7 @@ import { appleWalletConfigured, env, googleWalletConfigured, smsConfigured } fro
 import { renderEmail, sendEmail } from "@/lib/email";
 import { sms, smsTemplates } from "@/lib/sms";
 import { formatDateRange, formatMoney } from "@/lib/utils";
+import { publicEventPath } from "@/lib/urls";
 import { unsubscribeUrl } from "./unsubscribe";
 import type { EmailBrand, EmailEvent, EmailTicket } from "@/emails/layout";
 import RegistrationConfirmation, { registrationConfirmationSubject } from "@/emails/registration-confirmation";
@@ -43,7 +44,7 @@ async function loadContext(n: Notification) {
   const hostNames = new Map(party.filter((p) => !p.attendee.guestOfAttendeeId).map((p) => [p.attendee.id, p.attendee.name]));
 
   const brand: EmailBrand = { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL };
-  const eventUrl = `${env.APP_URL}/e/${event.slug}`;
+  const eventUrl = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
   const emailEvent: EmailEvent = {
     name: event.name, url: eventUrl, when: formatDateRange(event.startsAt, event.endsAt, event.timezone),
     where: event.locationType === "online" ? "Online" : [event.venueName, event.address, event.city].filter(Boolean).join(", "),
@@ -115,7 +116,7 @@ async function deliverEmail(n: Notification): Promise<DeliveryResult> {
 
 async function deliverSms(n: Notification): Promise<DeliveryResult> {
   const ctx = await loadContext(n);
-  const { attendee, event, party } = ctx;
+  const { attendee, event, org, party } = ctx;
   if (!attendee.smsOptIn || !attendee.phone) return { skipped: true, reason: "attendee has not opted in to SMS" };
 
   // the gate: edition rules, the $5 unlock on cloud free events, fair use per attendee
@@ -128,7 +129,7 @@ async function deliverSms(n: Notification): Promise<DeliveryResult> {
   if (!gate.allowed) return { skipped: true, reason: gate.reason };
 
   const ticket = party.find((p) => p.attendee.id === attendee.id)?.ticket ?? party[0]?.ticket;
-  const eventUrl = `${env.APP_URL}/e/${event.slug}`;
+  const eventUrl = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
   let text: string;
   if (n.template === "updated") text = smsTemplates.updated({ event: event.name, url: eventUrl });
   else if (n.template === "cancelled") text = smsTemplates.cancelled({ event: event.name });

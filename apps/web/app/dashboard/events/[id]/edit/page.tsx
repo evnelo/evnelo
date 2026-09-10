@@ -5,13 +5,14 @@ import { EventForm } from "@/components/dashboard/event-form";
 
 export default async function EditEventPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  await requireEvent(id, "edit_events");
+  const { org } = await requireEvent(id, "edit_events");
   const data = (await getEventWithRelations(db, id))!;
   const e = data.event;
   return (
     <EventForm
       mode="edit"
       eventId={id}
+      organizationSlug={org.slug}
       status={e.status}
       defaults={{
         name: e.name, slug: e.slug, descriptionMd: e.descriptionMd ?? "", coverImageUrl: e.coverImageUrl ?? "", logoUrl: e.logoUrl ?? "",

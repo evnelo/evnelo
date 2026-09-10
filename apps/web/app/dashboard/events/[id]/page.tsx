@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { requireEvent } from "@/lib/dashboard";
 import { formatDateRange, formatMoney } from "@/lib/utils";
+import { publicEventPath } from "@/lib/urls";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ConfirmButton } from "@/components/dashboard/confirm-button";
@@ -12,10 +13,10 @@ import { cancelEventAction, deleteEventAction, publishEventAction, unpublishEven
 
 export default async function OverviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { event, role } = await requireEvent(id);
+  const { event, role, org } = await requireEvent(id);
   const [stats, types] = await Promise.all([getEventStats(db, id), listTicketTypes(db, id)]);
   const editable = can(role, "edit_events");
-  const url = `${env.APP_URL}/e/${event.slug}`;
+  const url = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
   const maxDay = Math.max(1, ...stats.byDay.map((d) => d.count));
 
   return (

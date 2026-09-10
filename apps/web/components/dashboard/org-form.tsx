@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Plus, X } from "lucide-react";
-import { SOCIAL_PLATFORMS } from "@ot/core";
+import { normalizeWebsiteUrl, SOCIAL_PLATFORMS } from "@ot/core";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -33,7 +33,7 @@ export function OrgForm({ org, readOnly }: { org: Values; readOnly: boolean }) {
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Name" htmlFor="org-name"><Input id="org-name" value={v.name} onChange={(e) => set("name", e.target.value)} required /></Field>
           <Field label="Public URL" htmlFor="org-slug" help="/o/…  Lowercase letters, numbers, hyphens."><Input id="org-slug" value={v.slug} onChange={(e) => set("slug", e.target.value)} pattern="[a-z0-9-]{3,60}" /></Field>
-          <Field label="Website" htmlFor="org-web" optional><Input id="org-web" type="url" value={v.website} onChange={(e) => set("website", e.target.value)} placeholder="https://" /></Field>
+          <Field label="Website" htmlFor="org-web" optional help="Enter example.com and we'll add https:// automatically."><Input id="org-web" type="text" inputMode="url" autoCapitalize="none" autoCorrect="off" value={v.website} onChange={(e) => set("website", e.target.value)} onBlur={() => set("website", normalizeWebsiteUrl(v.website))} placeholder="example.com" /></Field>
           <Field label="Logo URL" htmlFor="org-logo" optional help="Shown on event pages and emails."><Input id="org-logo" type="url" value={v.logoUrl} onChange={(e) => set("logoUrl", e.target.value)} placeholder="https://…/logo.png" /></Field>
           <Field label="Accent colour" htmlFor="org-accent" optional help="Buttons in emails and on ticket pages.">
             <div className="flex gap-2">

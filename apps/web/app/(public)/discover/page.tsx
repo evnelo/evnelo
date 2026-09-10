@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listDiscoverableEvents } from "@/lib/queries/events";
+import { publicEventPath } from "@/lib/urls";
 
 export const revalidate = 300;
 
@@ -24,7 +25,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
             const when = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", timeZone: e.timezone }).format(d);
             return (
               <li key={e.id}>
-                <Link href={`/e/${e.slug}`} className="group block">
+                <Link href={publicEventPath(e.orgSlug, e.slug)} className="group block">
                   <div className="aspect-[4/3] overflow-hidden rounded-lg border bg-muted">
                     {e.coverImageUrl && <img src={e.coverImageUrl} alt="" className="size-full object-cover" loading="lazy" />}
                   </div>

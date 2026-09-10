@@ -113,7 +113,7 @@ Priority: **P0** = required for launch, **P1** = fast follow, **P2** = later.
 
 Event fields (all P0 unless noted):
 
-- Name, slug (`/e/{slug}`), start/end datetime with timezone, optional multi-day sessions (P1)
+- Name, slug (`/{organizationSlug}/{eventSlug}`), start/end datetime with timezone, optional multi-day sessions (P1)
 - Description — rich text (headings, lists, links, images, embeds) with Markdown import/export
 - Venue: in-person (address, map, geocoded lat/lng), online (link revealed after registration), or hybrid
 - Cover image (16:9 and square crop), company/host logo

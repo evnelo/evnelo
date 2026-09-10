@@ -18,6 +18,12 @@ describe("OpenAPI contract", () => {
     expect(schemas.CreateEventInput.properties.onlineUrl.oneOf).toContainEqual({ type: "string", const: "" });
   });
 
+  it("documents the organization slug used in canonical event URLs", () => {
+    const publicEvent = document.components.schemas.PublicEvent;
+    expect(publicEvent.required).toContain("orgSlug");
+    expect(publicEvent.properties.orgSlug).toEqual({ type: "string" });
+  });
+
   it("documents bounded JSON body failures", () => {
     const responses = document.paths["/events"].post.responses;
     expect(responses["400"]).toBeDefined();

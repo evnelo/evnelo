@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Plus, X } from "lucide-react";
 import { SOCIAL_PLATFORMS, slugify } from "@ot/core";
 import { TIMEZONES, utcToZonedLocal, zonedLocalToUtc } from "@/lib/tz";
+import { publicEventPath } from "@/lib/urls";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -42,7 +43,7 @@ function initial(d: EventDefaults, tz: string): Values {
   };
 }
 
-export function EventForm({ mode, eventId, status, defaults }: { mode: "create" | "edit"; eventId?: string; status?: string; defaults: EventDefaults }) {
+export function EventForm({ mode, eventId, status, defaults, organizationSlug }: { mode: "create" | "edit"; eventId?: string; status?: string; defaults: EventDefaults; organizationSlug: string }) {
   const browserTz = useMemo(() => (typeof Intl !== "undefined" ? Intl.DateTimeFormat().resolvedOptions().timeZone : "UTC"), []);
   const [v, setV] = useState<Values>(() => initial(defaults, browserTz));
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
@@ -91,7 +92,7 @@ export function EventForm({ mode, eventId, status, defaults }: { mode: "create" 
       <Section title="Basics">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Event name" htmlFor="name" className="sm:col-span-2"><Input id="name" value={v.name} onChange={(e) => set("name", e.target.value)} required maxLength={160} autoFocus={mode === "create"} /></Field>
-          <Field label="URL" htmlFor="slug" help={`/e/${v.slug || "…"}`}><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9-]{3,80}" /></Field>
+          <Field label="URL" htmlFor="slug" help={publicEventPath(organizationSlug, v.slug || "…")}><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9-]{3,80}" /></Field>
           <Field label="Tags" htmlFor="tags" optional help="Comma separated. Used for discovery."><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="design, meetup" /></Field>
           <Field label="Description" htmlFor="desc" optional help="Markdown is supported." className="sm:col-span-2"><Textarea id="desc" rows={8} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
           <Field label="Cover image URL" htmlFor="cover" optional help="16:9 works best. Uploads are coming; paste a URL for now."><Input id="cover" type="url" value={v.coverImageUrl} onChange={(e) => set("coverImageUrl", e.target.value)} placeholder="https://" /></Field>

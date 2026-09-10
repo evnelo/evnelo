@@ -19,7 +19,7 @@ export const runtime = "nodejs";
  */
 const brand = { orgName: "Demo Collective", orgLogoUrl: null, accent: null, appUrl: "http://localhost:3000" };
 const event = {
-  name: "Design Systems Meetup, September edition", url: "http://localhost:3000/e/design-systems-meetup",
+  name: "Design Systems Meetup, September edition", url: "http://localhost:3000/demo-collective/design-systems-meetup",
   when: "Tuesday, September 22, 6:00 PM to 9:00 PM", where: "Casa Cultural, Rua Augusta 1500, São Paulo", onlineUrl: null,
   calendarUrl: "http://localhost:3000/api/calendar/design-systems-meetup.ics",
 };

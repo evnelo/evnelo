@@ -26,12 +26,18 @@ const schema = z.object({
   MAPBOX_TOKEN: z.string().optional(),
   // which proxy header carries the real client IP; unset = clients are not told apart (only global limits)
   API_TRUSTED_PROXY_HEADER: z.preprocess((v) => (typeof v === "string" ? v.trim().toLowerCase() || undefined : v), z.enum(["cf-connecting-ip", "x-real-ip", "x-forwarded-for"]).optional()),
-  // image storage: direct-to-S3 uploads (or any S3-compatible bucket via S3_ENDPOINT); CloudFront rewrites public URLs
+  // image storage: direct-to-S3 uploads (or any S3-compatible bucket via S3_ENDPOINT); CloudFront rewrites public URLs.
+  // Credentials/region are read from S3_* first, then the SDK-standard AWS_* names.
+  S3_ACCESS_KEY_ID: z.string().optional(),
+  S3_SECRET_ACCESS_KEY: z.string().optional(),
+  S3_REGION: z.string().optional(),
   AWS_ACCESS_KEY_ID: z.string().optional(),
   AWS_SECRET_ACCESS_KEY: z.string().optional(),
   AWS_REGION: z.string().optional(),
   S3_BUCKET: z.string().optional(),
   S3_ENDPOINT: z.string().url().optional(),
+  // every object key lives under this folder, so one bucket can be shared with other apps
+  S3_KEY_PREFIX: z.string().default("openticket"),
   CLOUDFRONT_DOMAIN: z.string().optional(),
   // Google sign-in (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),

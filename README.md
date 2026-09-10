@@ -55,7 +55,7 @@ Create keys under Dashboard → Settings → API keys (owners and admins). Organ
 
 ## Image storage
 
-Uploads never pass through the web process: the browser asks `/api/uploads` for a presigned S3 POST and sends the file to the bucket directly, then confirms so the server can verify size and type. Set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` and `S3_BUCKET`; add `S3_ENDPOINT` for R2, MinIO or another S3-compatible store, and `CLOUDFRONT_DOMAIN` to serve images through CloudFront. The bucket needs a CORS rule allowing `POST` from your `APP_URL`, and objects under `uploads/` must be publicly readable (bucket policy, or CloudFront in front of a private bucket). Without these variables the editor accepts image URLs instead.
+Uploads never pass through the web process: the browser asks `/api/uploads` for a presigned S3 POST and sends the file to the bucket directly, then confirms so the server can verify size and type. Set `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION` and `S3_BUCKET` (the SDK-standard `AWS_*` names are accepted too); add `S3_ENDPOINT` for R2, MinIO or another S3-compatible store, and `CLOUDFRONT_DOMAIN` to serve images through CloudFront. Every object is written under `S3_KEY_PREFIX` (default `openticket`), so the bucket can be shared with other applications. The bucket needs a CORS rule allowing `POST` from your `APP_URL`, and objects under `openticket/` must be publicly readable (bucket policy, or CloudFront in front of a private bucket). Without these variables the editor accepts image URLs instead.
 
 ## Notifications
 

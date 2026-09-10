@@ -11,7 +11,7 @@ describe("S3 storage helpers", () => {
 
   it("namespaces keys by organization with a random name and the right extension", () => {
     const key = uploadKey("01J00000000000000000000000", "image/png");
-    expect(key).toMatch(/^uploads\/01J00000000000000000000000\/[a-f0-9]{32}\.png$/);
+    expect(key).toMatch(/^openticket\/uploads\/01J00000000000000000000000\/[a-f0-9]{32}\.png$/);
     expect(uploadKey("o", "image/jpeg")).toMatch(/\.jpg$/);
     expect(Object.keys(IMAGE_TYPES)).toEqual(["image/jpeg", "image/png", "image/webp"]);
   });

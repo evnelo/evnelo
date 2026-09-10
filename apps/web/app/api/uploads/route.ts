@@ -4,7 +4,7 @@ import { env } from "@/lib/env";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { uploadAccess } from "@/lib/upload-access";
 import { readJsonBody } from "@/lib/api-http";
-import { IMAGE_TYPES, MAX_IMAGE_BYTES, keyFromPublicUrl, presignImageUpload, storageConfigured, verifyUploadedImage, type ImageType } from "@/lib/storage";
+import { IMAGE_TYPES, MAX_IMAGE_BYTES, keyFromPublicUrl, presignImageUpload, storageConfigured, uploadPrefix, verifyUploadedImage, type ImageType } from "@/lib/storage";
 
 export const runtime = "nodejs";
 
@@ -47,7 +47,7 @@ export async function PUT(request: Request) {
   if (!access.ok) return NextResponse.json({ error: access.error }, { status: access.status });
   const parsed = confirmInput.safeParse(await readJsonBody(request, 2_048).catch(() => null));
   const key = parsed.success ? keyFromPublicUrl(parsed.data.url) : null;
-  if (!key || !key.startsWith(`uploads/${access.org.id}/`)) return NextResponse.json({ error: "That file isn't one of this organization's uploads." }, { status: 400 });
+  if (!key || !key.startsWith(uploadPrefix(access.org.id))) return NextResponse.json({ error: "That file isn't one of this organization's uploads." }, { status: 400 });
   const result = await verifyUploadedImage(key);
   if (!result.ok) return NextResponse.json({ error: result.reason }, { status: 422 });
   return NextResponse.json({ url: result.url });

@@ -43,6 +43,7 @@ export const openApiDocument = {
           { name: "city", in: "query", schema: { type: "string", maxLength: 100 } },
           { name: "tag", in: "query", schema: { type: "string", maxLength: 60 } },
           { name: "limit", in: "query", schema: { type: "integer", minimum: 1, maximum: 100, default: 48 } },
+          { name: "offset", in: "query", schema: { type: "integer", minimum: 0, default: 0 }, description: "Use `pagination.nextOffset` from the previous page." },
         ],
         responses: {
           "200": { description: "Matching events", headers: rateLimitResponseHeaders, content: jsonContent({ $ref: "#/components/schemas/PublicEventListResponse" }) },
@@ -58,7 +59,11 @@ export const openApiDocument = {
         operationId: "listEvents",
         summary: "List events belonging to the API key organization",
         security: [{ bearerAuth: [] }],
-        parameters: [{ name: "status", in: "query", schema: { type: "string", enum: ["draft", "published", "cancelled", "ended"] } }],
+        parameters: [
+          { name: "status", in: "query", schema: { type: "string", enum: ["draft", "published", "cancelled", "ended"] } },
+          { name: "limit", in: "query", schema: { type: "integer", minimum: 1, maximum: 200, default: 50 } },
+          { name: "offset", in: "query", schema: { type: "integer", minimum: 0, default: 0 }, description: "Use `pagination.nextOffset` from the previous page." },
+        ],
         responses: {
           "200": { description: "Organization events", headers: rateLimitResponseHeaders, content: jsonContent({ $ref: "#/components/schemas/EventListResponse" }) },
           "401": { $ref: "#/components/responses/Unauthorized" },
@@ -118,7 +123,7 @@ export const openApiDocument = {
     headers: {
       RateLimitLimit: { description: "Maximum requests allowed in the current one-minute window.", schema: { type: "integer" } },
       RateLimitRemaining: { description: "Requests remaining in the current window.", schema: { type: "integer" } },
-      RateLimitReset: { description: "UTC time when the current window resets.", schema: { type: "string", format: "date-time" } },
+      RateLimitReset: { description: "Unix time (seconds) when the current window resets.", schema: { type: "integer" } },
     },
     securitySchemes: {
       bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "ot_live_*", description: "Organization-scoped API key with read or write scope." },
@@ -160,10 +165,46 @@ export const openApiDocument = {
           venueName: { type: ["string", "null"] }, organizationId: { type: "string" }, orgName: { type: "string" }, orgSlug: { type: "string" },
         },
       },
-      Event: { type: "object", additionalProperties: true, required: ["id", "organizationId", "slug", "name", "status"], properties: { id: { type: "string" }, organizationId: { type: "string" }, slug: { type: "string" }, name: { type: "string" }, status: { type: "string", enum: ["draft", "published", "cancelled", "ended"] } } },
+      Event: {
+        type: "object",
+        required: ["id", "organizationId", "slug", "name", "status", "timezone", "startsAt", "endsAt", "locationType", "visibility", "requiresApproval", "guestsEnabled", "maxGuests", "createdAt", "updatedAt"],
+        properties: {
+          id: { type: "string" }, organizationId: { type: "string" }, slug: { type: "string" }, name: { type: "string" }, descriptionMd: { type: ["string", "null"] },
+          coverImageUrl: { type: ["string", "null"] }, logoUrl: { type: ["string", "null"] }, timezone: { type: "string" },
+          startsAt: { type: "string", format: "date-time" }, endsAt: { type: "string", format: "date-time" },
+          locationType: { type: "string", enum: ["in_person", "online", "hybrid"] }, venueName: { type: ["string", "null"] }, address: { type: ["string", "null"] }, city: { type: ["string", "null"] }, country: { type: ["string", "null"] },
+          lat: { type: ["string", "null"] }, lng: { type: ["string", "null"] }, onlineUrl: { type: ["string", "null"] },
+          visibility: { type: "string", enum: ["public", "unlisted", "private"] }, status: { type: "string", enum: ["draft", "published", "cancelled", "ended"] },
+          requiresApproval: { type: "boolean" }, capacity: { type: ["integer", "null"] }, waitlistEnabled: { type: "boolean" }, collectPhone: { type: "boolean" },
+          guestsEnabled: { type: "boolean" }, maxGuests: { type: "integer" }, feePassThrough: { type: "boolean" }, refundPolicy: { type: ["string", "null"] },
+          socialLinks: { type: "array", items: { $ref: "#/components/schemas/SocialLink" } }, reminderHours: { type: "array", items: { type: "integer" } },
+          publishedAt: { type: ["string", "null"], format: "date-time" }, deletedAt: { type: ["string", "null"], format: "date-time" },
+          createdAt: { type: "string", format: "date-time" }, updatedAt: { type: "string", format: "date-time" },
+        },
+      },
+      TicketType: {
+        type: "object",
+        required: ["id", "eventId", "name", "priceMinor", "currency", "sold", "held", "minPerOrder", "maxPerOrder", "hidden", "taxRateBps", "position"],
+        properties: {
+          id: { type: "string" }, eventId: { type: "string" }, name: { type: "string" }, description: { type: ["string", "null"] }, priceMinor: { type: "integer" }, currency: { type: "string" },
+          quantity: { type: ["integer", "null"] }, sold: { type: "integer" }, held: { type: "integer" }, minPerOrder: { type: "integer" }, maxPerOrder: { type: "integer" },
+          salesStartAt: { type: ["string", "null"], format: "date-time" }, salesEndAt: { type: ["string", "null"], format: "date-time" }, hidden: { type: "boolean" }, accessCode: { type: ["string", "null"] }, taxRateBps: { type: "integer" }, position: { type: "integer" },
+        },
+      },
+      RegistrationField: {
+        type: "object",
+        required: ["id", "eventId", "key", "label", "type", "required", "scope", "position"],
+        properties: {
+          id: { type: "string" }, eventId: { type: "string" }, key: { type: "string" }, label: { type: "string" }, helpText: { type: ["string", "null"] }, placeholder: { type: ["string", "null"] },
+          type: { type: "string", enum: ["short_text", "long_text", "email", "phone", "number", "select", "multi_select", "checkbox", "date", "url", "file", "consent"] },
+          options: { type: ["array", "null"], items: { type: "object", properties: { value: { type: "string" }, label: { type: "string" } } } },
+          required: { type: "boolean" }, scope: { type: "string", enum: ["order", "attendee", "guest"] }, ticketTypeIds: { type: ["array", "null"], items: { type: "string" } },
+          condition: { type: ["object", "null"] }, position: { type: "integer" },
+        },
+      },
       CreateEventInput: {
         type: "object",
-        additionalProperties: false,
+        description: "Unknown properties are ignored. `country` is upper-cased before validation.",
         required: ["name", "timezone", "startsAt", "endsAt"],
         properties: {
           name: { type: "string", minLength: 2, maxLength: 160 }, slug: { type: "string", pattern: "^[a-z0-9-]{3,80}$" }, descriptionMd: { type: ["string", "null"], maxLength: 20000 },
@@ -181,11 +222,20 @@ export const openApiDocument = {
           sponsors: { type: "array", maxItems: 50, items: { $ref: "#/components/schemas/Sponsor" }, default: [] },
         },
       },
-      PublicEventListResponse: { type: "object", required: ["data"], properties: { data: { type: "array", items: { $ref: "#/components/schemas/PublicEvent" } } } },
+      Pagination: { type: "object", required: ["limit", "offset", "nextOffset"], properties: { limit: { type: "integer" }, offset: { type: "integer" }, nextOffset: { type: ["integer", "null"], description: "Offset of the next page, or null on the last page." } } },
+      PublicEventListResponse: { type: "object", required: ["data", "pagination"], properties: { data: { type: "array", items: { $ref: "#/components/schemas/PublicEvent" } }, pagination: { $ref: "#/components/schemas/Pagination" } } },
       EventListItem: { type: "object", required: ["event", "registrations", "pending", "revenue", "checkedIn"], properties: { event: { $ref: "#/components/schemas/Event" }, registrations: { type: "integer" }, pending: { type: "integer" }, revenue: { type: "integer" }, checkedIn: { type: "integer" } } },
-      EventListResponse: { type: "object", required: ["data"], properties: { data: { type: "array", items: { $ref: "#/components/schemas/EventListItem" } } } },
+      EventListResponse: { type: "object", required: ["data", "pagination"], properties: { data: { type: "array", items: { $ref: "#/components/schemas/EventListItem" } }, pagination: { $ref: "#/components/schemas/Pagination" } } },
       EventResponse: { type: "object", required: ["data"], properties: { data: { $ref: "#/components/schemas/Event" } } },
-      EventDetailsResponse: { type: "object", required: ["data"], properties: { data: { type: "object", additionalProperties: true, required: ["event", "ticketTypes", "registrationFields"], properties: { event: { $ref: "#/components/schemas/Event" }, ticketTypes: { type: "array", items: { type: "object", additionalProperties: true } }, registrationFields: { type: "array", items: { type: "object", additionalProperties: true } } } } } },
+      EventDetailsResponse: {
+        type: "object", required: ["data"],
+        properties: { data: { type: "object", required: ["event", "ticketTypes", "hosts", "sponsors", "tags", "registrationFields"], properties: {
+          event: { $ref: "#/components/schemas/Event" }, ticketTypes: { type: "array", items: { $ref: "#/components/schemas/TicketType" } },
+          hosts: { type: "array", items: { $ref: "#/components/schemas/Host" } }, sponsors: { type: "array", items: { $ref: "#/components/schemas/Sponsor" } },
+          tags: { type: "array", items: { type: "object", required: ["name", "slug"], properties: { name: { type: "string" }, slug: { type: "string" } } } },
+          registrationFields: { type: "array", items: { $ref: "#/components/schemas/RegistrationField" } },
+        } } },
+      },
     },
     responses: {
       Unauthorized: { description: "Missing, revoked, or invalid API key", content: jsonContent({ $ref: "#/components/schemas/ErrorResponse" }) },

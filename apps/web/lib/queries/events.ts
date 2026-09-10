@@ -1,9 +1,10 @@
+import { cache } from "react";
 import { and, asc, eq, isNull } from "drizzle-orm";
 import { events, eventHosts, eventSponsors, registrationFields, ticketTypes, tags, eventTags, organizations } from "@ot/db";
 import { listPublicEvents } from "@ot/core/services";
 import { db } from "@/lib/db";
 
-export async function getPublicEventBySlug(slug: string, organizationSlug?: string) {
+export const getPublicEventBySlug = cache(async function getPublicEventBySlug(slug: string, organizationSlug?: string) {
   const where = [eq(events.slug, slug), isNull(events.deletedAt)];
   if (organizationSlug) where.push(eq(organizations.slug, organizationSlug));
   const [row] = await db
@@ -22,7 +23,7 @@ export async function getPublicEventBySlug(slug: string, organizationSlug?: stri
     db.select({ name: tags.name, slug: tags.slug }).from(eventTags).innerJoin(tags, eq(eventTags.tagId, tags.id)).where(eq(eventTags.eventId, event.id)),
   ]);
   return { event, org: org!, hosts, sponsors, ticketTypes: types, fields, tags: eventTagRows };
-}
+});
 
 export function listDiscoverableEvents(opts: { city?: string; limit?: number } = {}) {
   return listPublicEvents(db, opts);

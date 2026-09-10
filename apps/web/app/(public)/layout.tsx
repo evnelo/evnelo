@@ -12,7 +12,7 @@ export default async function PublicLayout({ children }: { children: React.React
             OpenTicket
           </Link>
           <div className="flex items-center gap-3 text-sm sm:gap-5">
-            <Link href="/discover" className="hidden hover:underline underline-offset-4 sm:inline">Discover</Link>
+            <Link href="/discover" className="hover:underline underline-offset-4">Discover</Link>
             {user ? (
               <Link href="/dashboard" className="rounded-md border px-3 py-1.5 hover:bg-muted">Dashboard</Link>
             ) : (

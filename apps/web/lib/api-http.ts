@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { isIP } from "node:net";
+import { env } from "@/lib/env";
 import type { ApiRateLimit } from "@ot/core/services";
 
 export const MAX_API_BODY_BYTES = 256 * 1024;
@@ -64,16 +66,19 @@ export async function readJsonBody(request: Request, maxBytes = MAX_API_BODY_BYT
 export type TrustedProxyHeader = "cf-connecting-ip" | "x-real-ip" | "x-forwarded-for";
 
 function configuredTrustedProxyHeader(): TrustedProxyHeader | undefined {
-  const value = process.env.API_TRUSTED_PROXY_HEADER?.trim().toLowerCase();
-  if (value === "cf-connecting-ip" || value === "x-real-ip" || value === "x-forwarded-for") return value;
-  return undefined;
+  return env.API_TRUSTED_PROXY_HEADER;
 }
 
-function clientAddress(request: Request, trustedProxyHeader?: TrustedProxyHeader): string {
-  if (!trustedProxyHeader) return "unattributed";
-  const value = request.headers.get(trustedProxyHeader)?.trim();
-  if (!value) return "unattributed";
-  return trustedProxyHeader === "x-forwarded-for" ? value.split(",", 1)[0]!.trim() || "unattributed" : value;
+/**
+ * The client IP, or null when no trusted proxy header is configured. For x-forwarded-for the
+ * last hop is used: proxies append, so the last entry is the one the trusted proxy wrote.
+ */
+export function clientAddress(request: Request, trustedProxyHeader?: TrustedProxyHeader): string | null {
+  if (!trustedProxyHeader) return null;
+  const raw = request.headers.get(trustedProxyHeader)?.trim();
+  if (!raw) return null;
+  const candidate = trustedProxyHeader === "x-forwarded-for" ? raw.split(",").map((v) => v.trim()).filter(Boolean).at(-1) : raw;
+  return candidate && isIP(candidate) ? candidate : null;
 }
 
 function hashedRateLimitBucket(identity: string): string {
@@ -83,20 +88,30 @@ function hashedRateLimitBucket(identity: string): string {
 
 export const PUBLIC_API_GLOBAL_BUCKET = hashedRateLimitBucket("openticket:public-api:global");
 
-export function publicRateLimitBucket(request: Request, trustedProxyHeader = configuredTrustedProxyHeader()): string {
-  return hashedRateLimitBucket(`openticket:public-api:client:${clientAddress(request, trustedProxyHeader)}`);
+/** Per-client bucket, or null when clients can't be told apart (then only the global ceiling applies). */
+export function publicRateLimitBucket(request: Request, trustedProxyHeader = configuredTrustedProxyHeader()): string | null {
+  const address = clientAddress(request, trustedProxyHeader);
+  return address ? hashedRateLimitBucket(`openticket:public-api:client:${address}`) : null;
 }
 
+/** Bucket for failed authentication attempts: per client when attributable, else per presented key prefix. */
+export function authFailureBucket(request: Request, presentedKey: string | null, trustedProxyHeader = configuredTrustedProxyHeader()): string {
+  const address = clientAddress(request, trustedProxyHeader);
+  return hashedRateLimitBucket(`openticket:api-auth-fail:${address ?? `prefix:${(presentedKey ?? "").slice(0, 12)}`}`);
+}
+
+/** Standard headers; Reset is unix seconds, as clients and SDK generators expect. */
 export function rateLimitHeaders(rateLimit: ApiRateLimit): HeadersInit {
   return {
     "X-RateLimit-Limit": String(rateLimit.limit),
     "X-RateLimit-Remaining": String(rateLimit.remaining),
-    "X-RateLimit-Reset": rateLimit.resetAt.toISOString(),
+    "X-RateLimit-Reset": String(Math.ceil(rateLimit.resetAt.getTime() / 1000)),
   };
 }
 
 export function apiJson(body: unknown, init: ResponseInit = {}, rateLimit?: ApiRateLimit): Response {
   const headers = new Headers(init.headers);
+  headers.set("Cache-Control", "private, no-store");
   if (rateLimit) {
     for (const [name, value] of Object.entries(rateLimitHeaders(rateLimit))) headers.set(name, String(value));
   }

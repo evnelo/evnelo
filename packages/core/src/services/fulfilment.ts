@@ -63,29 +63,24 @@ async function releaseHeldItems(tx: DbOrTx, orderId: string) {
   }
 }
 
-export function canMarkOrderPaid(status: string, holdExpiresAt: Date | null, now = new Date()) {
-  return status === "processing" || (status === "pending" && Boolean(holdExpiresAt && holdExpiresAt > now));
+/**
+ * A payment can be applied while the order still holds its seats (`pending`, even past the
+ * advertised deadline: nobody else can take those seats until expireHolds releases them) or
+ * once a delayed method was verified (`processing`). expireHolds cancels the PaymentIntent
+ * before releasing, so a success on an `expired`/`failed` order is the rare race that gets
+ * refunded by the caller.
+ */
+export function canMarkOrderPaid(status: string) {
+  return status === "pending" || status === "processing";
 }
 
-/**
- * Move an actively held order to paid, convert holds to sales, issue tickets,
- * email when the host reviews registrations). Expiry processing cancels the PaymentIntent before
- * releasing inventory, so an expired order cannot later oversell the event.
- */
-export async function markOrderPaid(db: Database, paymentIntentId: string, settledAt = new Date()) {
+/** Move a held order to paid, convert holds to sales, issue tickets (or queue the approval-pending email). */
+export async function markOrderPaid(db: Database, paymentIntentId: string) {
   return db.transaction(async (tx) => {
     const [order] = await tx.select().from(orders).where(eq(orders.stripePaymentIntentId, paymentIntentId)).for("update");
     if (!order) return "ignored" as const;
+    if (!canMarkOrderPaid(order.status)) return order.status === "expired" || order.status === "failed" ? ("expired" as const) : ("ignored" as const);
     const items = await tx.select().from(orderItems).where(eq(orderItems.orderId, order.id));
-    if (!canMarkOrderPaid(order.status, order.holdExpiresAt, settledAt)) {
-      if (order.status === "expired" || order.status === "failed") return "expired" as const;
-      if (order.status === "pending") {
-        await tx.update(orders).set({ status: "expired" }).where(eq(orders.id, order.id));
-        await releaseHeldItems(tx, order.id);
-        return "expired" as const;
-      }
-      return "ignored" as const;
-    }
 
     await tx.update(orders).set({ status: "paid", paidAt: new Date(), holdExpiresAt: null }).where(eq(orders.id, order.id));
     for (const item of items) {
@@ -100,41 +95,49 @@ export async function markOrderPaid(db: Database, paymentIntentId: string, settl
   });
 }
 
+/** A delayed payment method (bank debit etc.) was verified: keep the seats without a deadline until Stripe settles. */
 export async function markOrderProcessing(db: Database, paymentIntentId: string) {
   return db.transaction(async (tx) => {
     const [order] = await tx.select().from(orders).where(eq(orders.stripePaymentIntentId, paymentIntentId)).for("update");
     if (!order) return "ignored" as const;
     if (order.status === "processing") return "processing" as const;
+    if (order.status === "expired" || order.status === "failed") return "expired" as const;
     if (order.status !== "pending") return "ignored" as const;
-    if (!order.holdExpiresAt || order.holdExpiresAt <= new Date()) {
-      await tx.update(orders).set({ status: "expired" }).where(eq(orders.id, order.id));
-      await releaseHeldItems(tx, order.id);
-      return "expired" as const;
-    }
     await tx.update(orders).set({ status: "processing", holdExpiresAt: null }).where(eq(orders.id, order.id));
     return "processing" as const;
   });
 }
 
-/** Give a pending order's inventory back. Atomic: only one caller wins against a concurrent markOrderPaid. */
-export async function releaseOrder(db: Database, orderId: string, status: "failed" | "expired") {
+export type ReleasableStatus = "pending" | "processing";
+
+/**
+ * Give an unpaid order's inventory back and cancel its party (they never got tickets).
+ * Atomic: the conditional UPDATE means only one caller wins against a concurrent markOrderPaid.
+ */
+export async function releaseOrder(db: Database, orderId: string, status: "failed" | "expired", from: ReleasableStatus[] = ["pending", "processing"]) {
   return db.transaction(async (tx) => {
-    const [res] = await tx.update(orders).set({ status }).where(and(eq(orders.id, orderId), inArray(orders.status, ["pending", "processing"])));
+    const [res] = await tx.update(orders).set({ status }).where(and(eq(orders.id, orderId), inArray(orders.status, from)));
     if (res.affectedRows === 0) return false;
-    const items = await tx.select().from(orderItems).where(eq(orderItems.orderId, orderId));
-    for (const item of items) {
-      await tx.update(ticketTypes).set({ held: sql`GREATEST(${ticketTypes.held} - ${item.quantity}, 0)` }).where(eq(ticketTypes.id, item.ticketTypeId));
-    }
+    await releaseHeldItems(tx, orderId);
+    await tx.update(attendees).set({ status: "cancelled" }).where(and(eq(attendees.orderId, orderId), inArray(attendees.status, ["confirmed", "pending_approval"])));
     return true;
   });
 }
 
-export async function releaseOrderByPaymentIntent(db: Database, paymentIntentId: string, status: "failed" | "expired") {
+export async function releaseOrderByPaymentIntent(db: Database, paymentIntentId: string, status: "failed" | "expired", from?: ReleasableStatus[]) {
   const [order] = await db.select({ id: orders.id }).from(orders).where(eq(orders.stripePaymentIntentId, paymentIntentId)).limit(1);
-  if (order) await releaseOrder(db, order.id, status);
+  return order ? releaseOrder(db, order.id, status, from) : false;
 }
 
-/** Prepare Stripe first, then release holds whose window passed. */
+/** Delayed-payment orders that have sat in `processing` without a Stripe verdict for a while; the caller re-checks them with Stripe. */
+export async function staleProcessingOrders(db: Database, olderThan: Date, limit = 20) {
+  const rows = await db.select({ id: orders.id, stripePaymentIntentId: orders.stripePaymentIntentId, stripeAccountId: orders.stripeAccountId }).from(orders)
+    .where(and(eq(orders.status, "processing"), lt(orders.updatedAt, olderThan))).limit(limit);
+  if (rows.length) await db.update(orders).set({ updatedAt: new Date() }).where(inArray(orders.id, rows.map((r) => r.id))); // one check per interval per order
+  return rows;
+}
+
+/** Release holds whose window passed. `prepareRelease` runs first (it cancels the PaymentIntent) and returns false to keep the hold. */
 export async function expireHolds(
   db: Database,
   prepareRelease: (order: { id: string; stripePaymentIntentId: string | null; stripeAccountId: string | null }) => Promise<boolean>,

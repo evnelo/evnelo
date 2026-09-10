@@ -1,17 +1,17 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import { orders, smsUnlocks } from "@ot/db";
+import { smsUnlocks } from "@ot/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
-import { applyRefund, markOrderPaid, markOrderProcessing, releaseOrderByPaymentIntent } from "@/lib/orders";
+import { applyRefund, settlePaymentIntent } from "@/lib/orders";
 
 export const runtime = "nodejs";
 
 /**
- * Stripe webhook. Idempotent: order state moves forward only.
- * Fulfilment (issuing tickets, sending email/SMS) is enqueued in the service layer
- * by markOrderPaid — this handler never sends anything itself.
+ * Stripe webhook. Idempotent: order state moves forward only, and every PaymentIntent status
+ * goes through settlePaymentIntent so this handler, the resume endpoint and the job loop agree.
+ * Fulfilment (tickets, emails) is queued by the service layer; nothing is sent from here.
  */
 export async function POST(req: Request) {
   const sig = req.headers.get("stripe-signature");
@@ -32,40 +32,17 @@ export async function POST(req: Request) {
           .where(eq(smsUnlocks.eventId, pi.metadata.smsUnlockEventId));
         break;
       }
-      const result = await markOrderPaid(pi.id, new Date(event.created * 1000));
-      if (result === "expired") {
-        await stripe.refunds.create(
-          { payment_intent: pi.id },
-          { idempotencyKey: `late-payment-refund:${pi.id}`, ...(event.account ? { stripeAccount: event.account } : {}) },
-        );
-      }
+      await settlePaymentIntent(pi, event.account ?? null);
       break;
     }
-    case "payment_intent.processing": {
-      const result = await markOrderProcessing(event.data.object.id);
-      if (result === "expired") {
-        await stripe.paymentIntents.cancel(
-          event.data.object.id,
-          {},
-          event.account ? { stripeAccount: event.account } : undefined,
-        ).catch(() => undefined);
-      }
+    case "payment_intent.processing":
+    case "payment_intent.canceled":
+    case "payment_intent.payment_failed":
+      await settlePaymentIntent(event.data.object, event.account ?? null);
       break;
-    }
-    case "payment_intent.payment_failed": {
-      const [order] = await db.select({ status: orders.status }).from(orders).where(eq(orders.stripePaymentIntentId, event.data.object.id)).limit(1);
-      if (order?.status === "processing") await releaseOrderByPaymentIntent(event.data.object.id, "failed");
-      // A normal card attempt may still be retried while its short hold is active.
-      break;
-    }
-    case "payment_intent.canceled": {
-      await releaseOrderByPaymentIntent(event.data.object.id, "failed");
-      break;
-    }
-    case "charge.refunded": {
+    case "charge.refunded":
       await applyRefund(event.data.object);
       break;
-    }
   }
   return NextResponse.json({ received: true });
 }

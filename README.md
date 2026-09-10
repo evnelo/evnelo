@@ -28,7 +28,7 @@ pnpm dev                     # http://localhost:3000 — sign in at /login; in d
 
 Or everything in Docker: `docker compose up --build`.
 
-Upgrades that include discovery-index migrations can rebuild MySQL indexes. On a large existing installation, check free disk space and run `pnpm db:migrate` in a maintenance window before deploying the new web process.
+Upgrades that include discovery-index migrations can rebuild MySQL indexes. On a large existing installation, check free disk space and run `pnpm db:migrate` in a maintenance window before deploying the new web process. `APP_URL` is required in production: sign-in links and payment return URLs are built from it, never from the request host.
 
 Stripe webhooks locally: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`.
 
@@ -51,7 +51,7 @@ The first `/api/v1` slice is available for event discovery and organizer automat
 - `GET /api/v1/openapi.json` — OpenAPI 3.1 document for the implemented endpoints
 - `GET /api/v1/docs` — interactive Scalar API reference backed by the published OpenAPI document
 
-Organization endpoints use `Authorization: Bearer ot_live_...` with `read` or `write` scopes and enforce a per-key limit of 120 requests per minute. Rate-limit headers are returned on every request that consumes quota. JSON request bodies are capped at 256 KiB. Public discovery uses indexed MySQL full-text search and is limited to 60 requests per minute per client plus a 3,000-request global ceiling. Forwarded IP headers are ignored by default; behind a trusted proxy, set `API_TRUSTED_PROXY_HEADER` to the single header that proxy overwrites. API keys are SHA-256 hashed at rest. API-key management UI and the remaining resources used by the MCP skeleton are still pending.
+Create keys under Dashboard → Settings → API keys (owners and admins). Organization endpoints use `Authorization: Bearer ot_live_...` with `read` or `write` scopes and enforce a per-key limit of 120 requests per minute; failed authentication attempts are throttled separately. Rate-limit headers (`X-RateLimit-*`, reset as unix seconds) are returned on every request that consumes quota, and list endpoints paginate with `limit`/`offset` plus `pagination.nextOffset`. JSON request bodies are capped at 256 KiB. Public discovery uses indexed MySQL full-text search behind a 3,000-request-per-minute global ceiling; set `API_TRUSTED_PROXY_HEADER` to the header your proxy writes (`cf-connecting-ip`, `x-real-ip` or `x-forwarded-for`, last hop) to add a 60-per-minute limit per client. API keys are SHA-256 hashed at rest and shown once at creation. The remaining resources used by the MCP skeleton are still pending.
 
 ## Notifications
 
@@ -75,12 +75,12 @@ This is the canonical implementation order and cross-session progress tracker. U
 
 **Status legend:** `[ ]` pending · `[>]` in progress · `[x]` shipped · `[!]` blocked
 
-**Resume here:** Item 2 — Check-in scanner, manual check-in, and undo.
+**Resume here:** Item 2 — Check-in scanner, manual check-in, and undo (not started).
 
 1. [x] **Payment Element and paid-checkout completion**
    - Existing foundation: atomic 10-minute inventory holds, PaymentIntent creation, Stripe webhooks, fees/tax calculation, and dashboard refunds.
    - Complete when buyers can confirm payment in the registration flow, recover from failures, see a clear success state/receipt, and the flow is verified end to end in Stripe test mode.
-2. [>] **Check-in scanner, manual check-in, and undo**
+2. [ ] **Check-in scanner, manual check-in, and undo**
    - Complete when authorized check-in staff can scan signed ticket QR codes from a phone, search and check in manually, undo a check-in, and see synchronized counters; short offline operation must fail safely and resync.
 3. [ ] **Private-event invitations and access enforcement**
    - Complete when organizers can issue/revoke event invitations and private event pages plus registration validate an invite token or authorized membership while remaining `noindex`.
@@ -115,12 +115,12 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] Auth: magic-link email sign-in (Auth.js, React Email), Google when configured; first sign-in creates the organization; org roles (owner, admin, member, check-in) with invites by email
 - [x] Organizer dashboard: events list with registrations, revenue and check-ins; event editor (venue, visibility, approval, guests, reminders, hosts, sponsors, tags, links); ticket types; registration form builder with conditional questions; attendees with search, approve/reject/cancel and CSV export; orders with Stripe refunds; org settings and members; public organization page `/o/{slug}`
 - [x] Service layer in `packages/core/services` shared by the dashboard, the coming REST API, and the MCP server
-- [x] REST API foundation: public event search plus authenticated event list/get/create, scoped API keys, per-key rate limits, transactional idempotency for event creation, a published OpenAPI 3.1 document, and an interactive Scalar API reference
-- [ ] Complete REST API resource coverage, API-key management UI, generated TypeScript SDK, and outbound webhooks
+- [x] REST API foundation: public event search plus authenticated event list/get/create, scoped API keys managed from Settings, per-key and auth-failure rate limits, pagination, transactional idempotency for event creation, a published OpenAPI 3.1 document, and an interactive Scalar API reference
+- [ ] Complete REST API resource coverage, generated TypeScript SDK, and outbound webhooks
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
-- [x] Stripe Payment Element after order creation, with signed redirect recovery, authoritative inventory deadlines, delayed-payment processing state, and automatic late-payment refunds
+- [x] Stripe Payment Element after order creation: signed redirect recovery, server-confirmed success, a `processing` state for delayed payment methods with hourly reconciliation against Stripe, and hold expiry that cancels the PaymentIntent before releasing seats (a payment that lands after seats were released is refunded automatically)
 - [ ] Check-in scanner
-- [ ] Complete image uploads: event covers and logos upload to local storage; organization logos, host avatars, and sponsor logos still accept URLs
+- [ ] Complete image uploads: event covers and logos upload to local storage (`UPLOAD_DIR`, defaults to `./uploads`); organization logos, host avatars, and sponsor logos still accept URLs; S3-compatible storage pending
 
 Contributor and agent notes: `AGENTS.md`.
 

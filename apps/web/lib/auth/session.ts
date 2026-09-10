@@ -8,6 +8,12 @@ import { db } from "@/lib/db";
 
 export const ORG_COOKIE = "ot_org";
 
+/** A post-login destination we will actually honour: a same-origin path, never `//host` or a scheme. */
+export function safeNextPath(next: string | undefined | null, fallback = "/dashboard") {
+  if (!next || !next.startsWith("/") || next.startsWith("//") || next.startsWith("/\\") || /[\r\n]/.test(next)) return fallback;
+  return next;
+}
+
 export type CurrentUser = { id: string; email: string; name: string | null };
 
 export async function currentUser(): Promise<CurrentUser | null> {

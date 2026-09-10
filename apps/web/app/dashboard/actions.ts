@@ -85,7 +85,7 @@ export async function searchAddressesAction(query: string): Promise<{ ok: true; 
   if (normalized.length < 3) return { ok: true, data: [] };
   if (!(await consumeSharedRateLimit("geocode", user.id, 30, 60_000))) return { ok: false, error: "Too many address searches. Wait a minute and try again." };
   try {
-    return { ok: true, data: await searchAddresses(normalized, fetch, env.MAPBOX_TOKEN) };
+    return { ok: true, data: await searchAddresses(normalized, fetch, { provider: env.GEOCODER, photonUrl: env.PHOTON_URL, mapboxToken: env.MAPBOX_TOKEN }) };
   } catch (error) {
     return { ok: false, error: error instanceof Error ? error.message : "Address search is temporarily unavailable." };
   }
@@ -224,6 +224,33 @@ export async function removeMemberAction(userId: string): Promise<ActionResult> 
   try {
     const { org } = await requireOrg("manage_members");
     await svc.removeMember(db, org.id, userId);
+    revalidatePath("/dashboard/settings");
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/* ---------- API keys ---------- */
+
+export async function createApiKeyAction(formData: FormData): Promise<ActionResult & { secret?: string }> {
+  const parsed = z.object({ name: z.string().trim().min(1).max(80), scopes: z.array(z.enum(["read", "write"])).min(1) })
+    .safeParse({ name: formData.get("name"), scopes: formData.getAll("scopes") });
+  if (!parsed.success) return zodFail(parsed.error);
+  try {
+    const { org } = await requireOrg("manage_org");
+    const key = await svc.createApiKey(db, { organizationId: org.id, ...parsed.data });
+    revalidatePath("/dashboard/settings");
+    return { ok: true, id: key.id, secret: key.secret, message: "Key created. Copy it now; it won't be shown again." };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function revokeApiKeyAction(id: string): Promise<ActionResult> {
+  try {
+    const { org } = await requireOrg("manage_org");
+    await svc.revokeApiKey(db, org.id, id);
     revalidatePath("/dashboard/settings");
     return { ok: true };
   } catch (e) {

@@ -90,7 +90,12 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug }:
   );
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); submit(); }} className="space-y-6 pb-24">
+    <form
+      onSubmit={(e) => { e.preventDefault(); submit(); }}
+      // `invalid` doesn't bubble, so catch it in the capture phase and open the collapsed section that holds the field
+      onInvalidCapture={(e) => { const details = (e.target as HTMLElement).closest("details"); if (details && !details.open) details.open = true; }}
+      className="space-y-6 pb-24"
+    >
       <Section title="Basics" description="The minimum details people need to recognize your event.">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Event name" htmlFor="name" className="sm:col-span-2"><Input id="name" value={v.name} onChange={(e) => set("name", e.target.value)} required maxLength={160} autoFocus={mode === "create"} /></Field>
@@ -128,15 +133,17 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug }:
           {v.locationType !== "online" && (
             <>
               <Field label="Venue" htmlFor="venue" className="sm:col-span-2"><Input id="venue" value={v.venueName} onChange={(e) => set("venueName", e.target.value)} placeholder="Venue name" /></Field>
-              <Field label="Address" htmlFor="address" className="sm:col-span-2">
+              <Field label="Address" htmlFor="address" className="sm:col-span-2" help="Pick a suggestion to fill city, country and map coordinates.">
                 <AddressAutocomplete
                   value={v.address}
-                  onChange={(address) => setV((current) => ({ ...current, address, lat: "", lng: "" }))}
+                  onChange={(address) => set("address", address)}
                   onSelect={(suggestion) => setV((current) => ({ ...current, address: suggestion.address, city: suggestion.city, country: suggestion.country, lat: suggestion.lat, lng: suggestion.lng }))}
                 />
               </Field>
-              <Field label="City" htmlFor="city"><Input id="city" value={v.city} onChange={(e) => setV((current) => ({ ...current, city: e.target.value, lat: "", lng: "" }))} /></Field>
-              <Field label="Country code" htmlFor="country" help="Two-letter code, e.g. BR"><Input id="country" maxLength={2} value={v.country} onChange={(e) => setV((current) => ({ ...current, country: e.target.value.toUpperCase(), lat: "", lng: "" }))} placeholder="US" /></Field>
+              <Field label="City" htmlFor="city"><Input id="city" value={v.city} onChange={(e) => set("city", e.target.value)} /></Field>
+              <Field label="Country code" htmlFor="country" help="Two-letter code, e.g. BR"><Input id="country" maxLength={2} value={v.country} onChange={(e) => set("country", e.target.value.toUpperCase())} placeholder="US" /></Field>
+              <Field label="Latitude" htmlFor="lat" optional help="Powers the map link. Filled in when you pick an address suggestion."><Input id="lat" value={v.lat} onChange={(e) => set("lat", e.target.value)} placeholder="-23.5578" /></Field>
+              <Field label="Longitude" htmlFor="lng" optional><Input id="lng" value={v.lng} onChange={(e) => set("lng", e.target.value)} placeholder="-46.6606" /></Field>
             </>
           )}
           {v.locationType !== "in_person" && (
@@ -227,7 +234,7 @@ function Section({ title, description, children }: { title: string; description?
 function CollapsibleSection({ title, description, children, defaultOpen = false }: { title: string; description?: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <details className="group rounded-lg border bg-card text-card-foreground" open={open} onToggle={(event) => setOpen(event.currentTarget.open)} onInvalid={() => setOpen(true)}>
+    <details className="group rounded-lg border bg-card text-card-foreground" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-4 [&::-webkit-details-marker]:hidden">
         <span>
           <span className="block text-sm font-medium">{title}</span>

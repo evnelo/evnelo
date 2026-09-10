@@ -16,7 +16,7 @@ export function startJobLoop() {
     g.__otJobRunning = true;
     try {
       const r = await runJobs();
-      if (r.sent || r.failed || r.retried || r.skipped || r.requeued) console.log("[jobs]", JSON.stringify(r));
+      if (r.sent || r.failed || r.retried || r.skipped || r.requeued || r.expiredHolds || r.reconciled) console.log("[jobs]", JSON.stringify(r));
     } catch (e) {
       console.error("[jobs]", (e as Error).message);
     } finally {

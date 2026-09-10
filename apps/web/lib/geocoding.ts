@@ -10,23 +10,26 @@ export type AddressSuggestion = {
 type Fetcher = (input: string | URL | Request, init?: RequestInit) => Promise<Response>;
 const cache = new Map<string, { expiresAt: number; data: AddressSuggestion[] }>();
 
-export async function searchAddresses(query: string, fetcher: Fetcher = fetch, mapboxToken?: string): Promise<AddressSuggestion[]> {
+export type GeocoderConfig = { provider: "photon" | "mapbox" | "none"; photonUrl?: string; mapboxToken?: string };
+
+export async function searchAddresses(query: string, fetcher: Fetcher = fetch, config: GeocoderConfig): Promise<AddressSuggestion[]> {
   const term = query.trim().slice(0, 160);
-  if (term.length < 3) return [];
-  const cacheKey = `${mapboxToken ? "mapbox" : "photon"}:${term.toLowerCase()}`;
+  if (term.length < 3 || config.provider === "none") return [];
+  if (config.provider === "mapbox" && !config.mapboxToken) return [];
+  const cacheKey = `${config.provider}:${term.toLowerCase()}`;
   const cached = cache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) return cached.data;
-  const data = mapboxToken ? await searchMapbox(term, mapboxToken, fetcher) : await searchPhoton(term, fetcher);
+  const data = config.provider === "mapbox" ? await searchMapbox(term, config.mapboxToken!, fetcher) : await searchPhoton(term, fetcher, config.photonUrl ?? "https://photon.komoot.io");
   if (cache.size >= 200) cache.delete(cache.keys().next().value!);
   cache.set(cacheKey, { expiresAt: Date.now() + 5 * 60_000, data });
   return data;
 }
 
-async function searchPhoton(term: string, fetcher: Fetcher): Promise<AddressSuggestion[]> {
-  const url = new URL("https://photon.komoot.io/api/");
+async function searchPhoton(term: string, fetcher: Fetcher, base: string): Promise<AddressSuggestion[]> {
+  const url = new URL("/api/", base);
   url.searchParams.set("q", term);
   url.searchParams.set("limit", "5");
-  const response = await fetcher(url, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(5000) });
+  const response = await fetcher(url, { headers: { Accept: "application/json", "User-Agent": "OpenTicket (https://github.com/openticket/openticket)" }, signal: AbortSignal.timeout(5000) });
   if (!response.ok) throw new Error("Address search is temporarily unavailable.");
   const payload = await response.json() as { features?: Array<{ geometry?: { coordinates?: [number, number] }; properties?: Record<string, string> }> };
   return (payload.features ?? []).flatMap((feature) => {

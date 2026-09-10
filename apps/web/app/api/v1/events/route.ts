@@ -6,7 +6,11 @@ import { db } from "@/lib/db";
 
 export const runtime = "nodejs";
 
-const queryInput = z.object({ status: z.enum(["draft", "published", "cancelled", "ended"]).optional() });
+const queryInput = z.object({
+  status: z.enum(["draft", "published", "cancelled", "ended"]).optional(),
+  limit: z.coerce.number().int().min(1).max(200).default(50),
+  offset: z.coerce.number().int().min(0).default(0),
+});
 
 export async function GET(request: Request) {
   let auth: ApiRequestContext | undefined;
@@ -16,7 +20,10 @@ export async function GET(request: Request) {
     if (!parsed.success) {
       return apiJson({ error: { code: "validation_error", message: "Invalid query parameters.", issues: parsed.error.issues } }, { status: 422 }, auth.rateLimit);
     }
-    return apiJson({ data: await listOrgEvents(db, auth.organizationId, parsed.data.status) }, {}, auth.rateLimit);
+    const { limit, offset } = parsed.data;
+    const data = await listOrgEvents(db, auth.organizationId, { status: parsed.data.status, limit: limit + 1, offset });
+    const page = data.slice(0, limit);
+    return apiJson({ data: page, pagination: { limit, offset, nextOffset: data.length > limit ? offset + limit : null } }, {}, auth.rateLimit);
   } catch (error) {
     return apiError(error, auth);
   }
@@ -31,8 +38,8 @@ export async function POST(request: Request) {
     if (!parsed.success) {
       return apiJson({ error: { code: "validation_error", message: "Invalid event.", issues: parsed.error.issues } }, { status: 422 }, context.rateLimit);
     }
-    const idempotencyKey = request.headers.get("idempotency-key");
-    if (idempotencyKey != null && (!idempotencyKey.trim() || idempotencyKey.length > 120)) {
+    const idempotencyKey = request.headers.get("idempotency-key")?.trim() ?? null;
+    if (idempotencyKey != null && (!idempotencyKey || idempotencyKey.length > 120)) {
       return apiJson({ error: { code: "validation_error", message: "Idempotency-Key must contain 1 to 120 characters." } }, { status: 422 }, context.rateLimit);
     }
     if (idempotencyKey) {

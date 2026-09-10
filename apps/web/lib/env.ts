@@ -19,7 +19,13 @@ const schema = z.object({
   EMAIL_FROM: z.string().default("OpenTicket <tickets@example.com>"),
   VONAGE_SIGNATURE_SECRET: z.string().optional(), // dashboard → Settings → signature secret; verifies status/inbound webhooks
   JOBS_INLINE: z.enum(["true", "false"]).default("true"), // run the notification loop inside the web process
+  // address autocomplete: "photon" (komoot's public OSM instance, no key; addresses are sent to a third party),
+  // "mapbox" (needs MAPBOX_TOKEN), or "none"
+  GEOCODER: z.enum(["photon", "mapbox", "none"]).default("photon"),
+  PHOTON_URL: z.string().url().default("https://photon.komoot.io"),
   MAPBOX_TOKEN: z.string().optional(),
+  // which proxy header carries the real client IP; unset = clients are not told apart (only global limits)
+  API_TRUSTED_PROXY_HEADER: z.preprocess((v) => (typeof v === "string" ? v.trim().toLowerCase() || undefined : v), z.enum(["cf-connecting-ip", "x-real-ip", "x-forwarded-for"]).optional()),
   UPLOAD_DIR: z.string().optional(),
   // Google sign-in (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),
@@ -36,6 +42,10 @@ const schema = z.object({
 });
 
 export const env = schema.parse(process.env);
+// Auth.js derives magic-link and callback URLs from the request host unless AUTH_URL is set; in
+// production that must come from the operator, never from an attacker-controlled Host header.
+if (process.env.NODE_ENV === "production" && !process.env.APP_URL) throw new Error("APP_URL must be set in production (it anchors sign-in links and payment return URLs).");
+process.env.AUTH_URL ??= env.APP_URL;
 export const smsAuthMode: "application" | "basic" | null =
   env.VONAGE_APPLICATION_ID && env.VONAGE_PRIVATE_KEY ? "application" : env.VONAGE_API_KEY && env.VONAGE_API_SECRET ? "basic" : null;
 export const smsConfigured = smsAuthMode !== null;

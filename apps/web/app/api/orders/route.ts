@@ -6,7 +6,7 @@ import { buildAnswersSchema, computeOrder, currentEdition, newId } from "@ot/cor
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { createOrderPaymentIntent } from "@/lib/stripe";
-import { expireHolds, fulfilFreeOrder, releaseOrder } from "@/lib/orders";
+import { fulfilFreeOrder, releaseOrder } from "@/lib/orders";
 import { checkoutStripeAccount, paymentsConfigured } from "@/lib/payment-flow";
 import { signPaymentResume } from "@/lib/payment-resume";
 
@@ -81,9 +81,6 @@ export async function POST(req: Request) {
   const orderId = newId();
   const holdExpiresAt = isFree ? null : new Date(now.getTime() + HOLD_MINUTES * 60_000);
   const status = event.requiresApproval ? ("pending_approval" as const) : ("confirmed" as const);
-
-  // no job runner yet: lapsed holds are reclaimed here so they don't block the next buyer
-  await expireHolds().catch((e) => console.error("expireHolds", e));
 
   const result = await db.transaction(async (tx) => {
     // one live registration per email per event (cancelled/rejected attendees and dead orders don't count)

@@ -131,6 +131,9 @@ export const events = mysqlTable(
     index("ev_discover").on(t.visibility, t.status, t.startsAt),
     index("ev_city").on(t.city, t.startsAt),
     index("ev_name").on(t.name),
+    // Also: FULLTEXT ev_search_ft (name, description_md), created by drizzle/0006_api_search_fulltext.sql.
+    // drizzle-kit can't express FULLTEXT; listPublicEvents depends on it, so never let a generated
+    // migration drop it (organizations.org_name_ft and tags.tag_name_ft likewise).
   ],
 );
 

@@ -240,18 +240,23 @@ const pending = sql<number>`(select count(*) from ${attendees} a where a.event_i
 const revenue = sql<number>`(select coalesce(sum(o.total_minor - o.refunded_minor), 0) from ${orders} o where o.event_id = events.id and o.status in ('paid','partially_refunded'))`;
 const checkedIn = sql<number>`(select count(*) from ${checkIns} c where c.event_id = events.id and c.undone_at is null)`;
 
-export async function listOrgEvents(db: Database, orgId: string, status?: Event["status"]) {
+export type OrgEventsPage = { status?: Event["status"]; limit?: number; offset?: number };
+
+export async function listOrgEvents(db: Database, orgId: string, opts: OrgEventsPage | Event["status"] = {}) {
+  const { status, limit, offset } = typeof opts === "string" ? { status: opts } : opts;
   const where = [eq(events.organizationId, orgId), isNull(events.deletedAt)];
   if (status) where.push(eq(events.status, status));
   const rows = await db
     .select({ event: events, registrations, pending, revenue, checkedIn })
     .from(events)
     .where(and(...where))
-    .orderBy(desc(events.startsAt));
+    .orderBy(desc(events.startsAt), desc(events.id))
+    .limit(Math.min(Math.max(limit ?? 500, 1), 500))
+    .offset(Math.max(offset ?? 0, 0));
   return rows.map((r) => ({ ...r, registrations: Number(r.registrations), pending: Number(r.pending), revenue: Number(r.revenue), checkedIn: Number(r.checkedIn) }));
 }
 
-export type PublicEventSearch = { query?: string; city?: string; tag?: string; limit?: number };
+export type PublicEventSearch = { query?: string; city?: string; tag?: string; limit?: number; offset?: number };
 
 /** Public-safe discovery projection used by the web UI and unauthenticated API. */
 export async function listPublicEvents(db: Database, opts: PublicEventSearch = {}) {
@@ -271,6 +276,7 @@ export async function listPublicEvents(db: Database, opts: PublicEventSearch = {
     } else {
       where.push(or(
         sql<boolean>`match(${events.name}, ${events.descriptionMd}) against (${term} in natural language mode)`,
+        like(events.city, `${term}%`),
         sql<boolean>`match(${organizations.name}) against (${term} in natural language mode)`,
         sql<boolean>`exists (select 1 from ${eventTags} et join ${tags} t on t.id = et.tag_id where et.event_id = events.id and match(t.name) against (${term} in natural language mode))`,
       )!);
@@ -285,8 +291,9 @@ export async function listPublicEvents(db: Database, opts: PublicEventSearch = {
     .from(events)
     .innerJoin(organizations, eq(events.organizationId, organizations.id))
     .where(and(...where))
-    .orderBy(asc(events.startsAt))
-    .limit(Math.min(Math.max(opts.limit ?? 48, 1), 100));
+    .orderBy(asc(events.startsAt), asc(events.id))
+    .limit(Math.min(Math.max(opts.limit ?? 48, 1), 100))
+    .offset(Math.max(opts.offset ?? 0, 0));
 }
 
 export async function getEventStats(db: Database, eventId: string) {

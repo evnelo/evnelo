@@ -77,7 +77,9 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
         setPayment(undefined);
         setProcessing(false);
         setCanRegisterAgain(true);
-        setResumeError("This ticket reservation expired or closed. Register again to continue.");
+        setResumeError(result.refunded
+          ? "Your payment arrived after the reservation had lapsed, so it has been refunded; it will show on your statement within 5 to 10 days. Register again to get a ticket."
+          : "This ticket reservation expired or closed. Register again to continue.");
         clearResume();
         return;
       }
@@ -111,27 +113,23 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
     void restorePayment(credentials);
   }, [clearPaymentQuery, restorePayment, storageKey]);
 
+  // while a delayed payment is processing: poll for two minutes, then leave the manual "Check payment" button
   useEffect(() => {
     if (!processing || !resumeCredentials) return;
-    const timer = setInterval(() => void restorePayment(resumeCredentials), 5_000);
+    let polls = 0;
+    const timer = setInterval(() => { if (++polls > 24) return clearInterval(timer); void restorePayment(resumeCredentials); }, 5_000);
     return () => clearInterval(timer);
   }, [processing, restorePayment, resumeCredentials]);
   useEffect(() => { if (done) doneRef.current?.focus(); }, [done]);
 
+  // Stripe's client-side result is a hint only: the server settles the order and reports back.
   const completePayment = useCallback((outcome: PaymentOutcome) => {
     if (!payment) return;
-    if (outcome.state === "processing") {
-      setProcessing(true);
-      setPayment(undefined);
-      setOpen(false);
-      void restorePayment({ token: payment.token, clientSecret: payment.clientSecret });
-      return;
-    }
-    setDone(registrationSuccessMessage(payment.requiresApproval, payment.partySize, true));
+    if (outcome.state === "processing") setProcessing(true);
     setPayment(undefined);
     setOpen(false);
-    clearResume();
-  }, [clearResume, payment, restorePayment]);
+    void restorePayment({ token: payment.token, clientSecret: payment.clientSecret });
+  }, [payment, restorePayment]);
 
   function startAgain() {
     setCanRegisterAgain(false);
@@ -159,9 +157,10 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
       ) : resumeError ? (
         <div className="mt-4 space-y-2" role="alert">
           <p className="text-sm text-destructive">{resumeError}</p>
-          {canRegisterAgain
-            ? <Button type="button" size="sm" onClick={startAgain}>Register again</Button>
-            : resumeCredentials && <Button type="button" size="sm" variant="outline" onClick={() => void restorePayment(resumeCredentials)}>Try again</Button>}
+          <div className="flex flex-wrap gap-2">
+            {!canRegisterAgain && resumeCredentials && <Button type="button" size="sm" variant="outline" onClick={() => void restorePayment(resumeCredentials)}>Check again</Button>}
+            <Button type="button" size="sm" variant={canRegisterAgain ? "default" : "ghost"} onClick={() => { clearResume(); startAgain(); }}>Register again</Button>
+          </div>
         </div>
       ) : (
         <Dialog open={open} onOpenChange={setOpen}>

@@ -1,16 +1,15 @@
 import { randomBytes } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { NextResponse } from "next/server";
-import { eq, sql } from "drizzle-orm";
-import { events } from "@ot/db";
+import { sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { uploadAccess } from "@/lib/upload-access";
 import {
+  ImageUploadError,
   MAX_IMAGE_BYTES,
   MAX_ORGANIZATION_UPLOAD_BYTES,
-  cleanupOrganizationUploads,
   hasTrustedRequestOrigin,
   organizationUploadBytes,
   processImageUpload,
@@ -19,16 +18,6 @@ import {
 } from "@/lib/uploads";
 
 export const runtime = "nodejs";
-
-function referencedUploadFilename(url: string | null, organizationId: string) {
-  if (!url) return null;
-  try {
-    const filename = new URL(url).pathname.split("/").pop() ?? "";
-    return filename.startsWith(`${organizationId}-`) ? filename : null;
-  } catch {
-    return null;
-  }
-}
 
 export async function POST(request: Request) {
   const expectedOrigin = new URL(env.APP_URL).origin;
@@ -61,23 +50,23 @@ export async function POST(request: Request) {
   try {
     image = await processImageUpload(file);
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Invalid image." }, { status: 422 });
+    return NextResponse.json({ error: error instanceof ImageUploadError ? error.message : "Invalid image." }, { status: 422 });
   }
 
+  const directory = uploadDirectory(env.UPLOAD_DIR);
   try {
-    const directory = uploadDirectory(env.UPLOAD_DIR);
     await mkdir(directory, { recursive: true });
+  } catch (error) {
+    console.error("[uploads] UPLOAD_DIR is not writable", directory, error);
+    return NextResponse.json({ error: "Image storage isn't writable on this instance. Ask the operator to check UPLOAD_DIR." }, { status: 503 });
+  }
+  try {
     return await db.transaction(async (tx) => {
+      // per-organization quota under an advisory lock; the orphan sweep runs from the job loop, not here
       const lockName = `openticket:upload:${access.org.id}`;
       const [lockRows] = await tx.execute(sql`SELECT GET_LOCK(${lockName}, 5) AS acquired`);
       if (Number(((lockRows as unknown) as Array<{ acquired: number | string }>)[0]?.acquired ?? 0) !== 1) throw new Error("Upload storage is busy.");
       try {
-        const eventImages = await tx.select({ cover: events.coverImageUrl, logo: events.logoUrl }).from(events).where(eq(events.organizationId, access.org.id));
-        const referenced = new Set(eventImages.flatMap((event) => [
-          referencedUploadFilename(event.cover, access.org.id),
-          referencedUploadFilename(event.logo, access.org.id),
-        ]).filter((filename): filename is string => Boolean(filename)));
-        await cleanupOrganizationUploads(directory, access.org.id, referenced, new Date(Date.now() - 24 * 60 * 60_000));
         const used = await organizationUploadBytes(directory, access.org.id);
         if (used + image.length > MAX_ORGANIZATION_UPLOAD_BYTES) {
           return NextResponse.json({ error: "Organization image storage is full. Remove unused images and try again." }, { status: 507 });

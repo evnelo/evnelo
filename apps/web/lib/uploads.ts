@@ -3,10 +3,28 @@ import { readdir, stat, unlink } from "node:fs/promises";
 import sharp from "sharp";
 
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-export const MAX_IMAGE_PIXELS = 40_000_000;
+/** 12 MP covers a 4K cover image; a 5 MB PNG can inflate to ~160 MB of pixels without this cap. */
+export const MAX_IMAGE_PIXELS = 12_000_000;
+export const MAX_IMAGE_DIMENSION = 6_000;
 export const MAX_ORGANIZATION_UPLOAD_BYTES = 250 * 1024 * 1024;
 const INPUT_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const DECODED_FORMATS = new Set(["jpeg", "png", "webp"]); // what the bytes actually are, not what the client claimed
 const FILENAME = /^([A-Za-z0-9]{26})-([a-f0-9]{32})\.webp$/;
+
+/** Decodes are memory-heavy; run at most two at a time per process. */
+const MAX_CONCURRENT_DECODES = 2;
+let activeDecodes = 0;
+const waiters: Array<() => void> = [];
+async function withDecodeSlot<T>(work: () => Promise<T>): Promise<T> {
+  if (activeDecodes >= MAX_CONCURRENT_DECODES) await new Promise<void>((resolve) => waiters.push(resolve));
+  activeDecodes++;
+  try {
+    return await work();
+  } finally {
+    activeDecodes--;
+    waiters.shift()?.();
+  }
+}
 
 export function hasTrustedRequestOrigin(request: Request, expectedOrigin: string) {
   const origin = request.headers.get("origin");
@@ -48,25 +66,30 @@ export function validateImageUpload(file: Pick<File, "size" | "type">) {
   if (file.size > MAX_IMAGE_BYTES) throw new Error("Images must be 5 MB or smaller.");
 }
 
+export class ImageUploadError extends Error {}
+
 export async function processImageUpload(file: Pick<File, "arrayBuffer" | "size" | "type">) {
   validateImageUpload(file);
   const input = Buffer.from(await file.arrayBuffer());
-  try {
-    const image = sharp(input, { failOn: "error", limitInputPixels: MAX_IMAGE_PIXELS });
-    const metadata = await image.metadata();
-    if (!metadata.width || !metadata.height || metadata.width > 8000 || metadata.height > 8000) {
-      throw new Error("Image dimensions must be 8,000 × 8,000 pixels or smaller.");
+  return withDecodeSlot(async () => {
+    try {
+      const image = sharp(input, { failOn: "error", limitInputPixels: MAX_IMAGE_PIXELS });
+      const metadata = await image.metadata();
+      if (!metadata.format || !DECODED_FORMATS.has(metadata.format)) throw new ImageUploadError("Upload a JPEG, PNG, or WebP image.");
+      if (!metadata.width || !metadata.height || metadata.width > MAX_IMAGE_DIMENSION || metadata.height > MAX_IMAGE_DIMENSION || metadata.width * metadata.height > MAX_IMAGE_PIXELS) {
+        throw new ImageUploadError(`Images must be at most ${MAX_IMAGE_DIMENSION} pixels on a side and ${Math.round(MAX_IMAGE_PIXELS / 1e6)} megapixels.`);
+      }
+      return await image.rotate().webp({ quality: 86 }).toBuffer();
+    } catch (error) {
+      if (error instanceof ImageUploadError) throw error;
+      throw new ImageUploadError("The file is not a valid supported image.");
     }
-    return await image.rotate().webp({ quality: 86 }).toBuffer();
-  } catch (error) {
-    if (error instanceof Error && error.message.startsWith("Image dimensions")) throw error;
-    throw new Error("The file is not a valid supported image.");
-  }
+  });
 }
 
+/** UPLOAD_DIR, or `<cwd>/uploads` (apps/web/uploads in dev, /app/uploads in Docker) when unset. Relative values resolve against cwd. */
 export function uploadDirectory(configured?: string) {
-  if (!configured || !path.isAbsolute(configured)) throw new Error("UPLOAD_DIR must be configured as an absolute path.");
-  return path.normalize(configured);
+  return path.resolve(process.cwd(), configured?.trim() || "uploads");
 }
 
 export function uploadedImageOwner(filename: string) {

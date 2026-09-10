@@ -1,14 +1,15 @@
-import { listMembers, listPendingInvites } from "@ot/core/services";
+import { listApiKeys, listMembers, listPendingInvites } from "@ot/core/services";
 import { can, ROLE_LABELS } from "@ot/core";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { requireOrg } from "@/lib/auth/session";
 import { OrgForm } from "@/components/dashboard/org-form";
 import { MembersPanel } from "@/components/dashboard/members-panel";
+import { ApiKeysPanel } from "@/components/dashboard/api-keys-panel";
 
 export default async function SettingsPage() {
   const { org, role, user } = await requireOrg("view_events", "/dashboard/settings");
-  const [members, invites] = await Promise.all([listMembers(db, org.id), listPendingInvites(db, org.id)]);
+  const [members, invites, apiKeys] = await Promise.all([listMembers(db, org.id), listPendingInvites(db, org.id), listApiKeys(db, org.id)]);
   return (
     <div className="space-y-10">
       <div>
@@ -26,6 +27,12 @@ export default async function SettingsPage() {
         <p className="mt-1 text-sm text-muted-foreground">Owners and admins manage the organization; members create and run events; check-in staff can only scan tickets.</p>
         <div className="mt-4">
           <MembersPanel members={members.map((m) => ({ ...m, since: m.since.toISOString() }))} invites={invites.map((i) => ({ id: i.id, email: i.email, role: i.role, expiresAt: i.expiresAt.toISOString() }))} canManage={can(role, "manage_members")} currentUserId={user.id} roleLabels={ROLE_LABELS} />
+        </div>
+      </section>
+      <section>
+        <h2 className="text-lg font-medium">API keys</h2>
+        <div className="mt-4">
+          <ApiKeysPanel canManage={can(role, "manage_org")} docsUrl="/api/v1/docs" keys={apiKeys.map((k) => ({ ...k, lastUsedAt: k.lastUsedAt?.toISOString() ?? null, revokedAt: k.revokedAt?.toISOString() ?? null, createdAt: k.createdAt.toISOString() }))} />
         </div>
       </section>
       {env.EDITION === "cloud" && (

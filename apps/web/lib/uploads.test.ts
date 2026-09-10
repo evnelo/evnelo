@@ -20,10 +20,15 @@ describe("image uploads", () => {
     await expect(processImageUpload(new File(["not an image"], "fake.png", { type: "image/png" }))).rejects.toThrow("valid supported image");
   });
 
-  it("requires explicit storage and refuses unsafe filenames", () => {
+  it("rejects files whose bytes are not JPEG, PNG or WebP even when the declared type is", async () => {
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4"/></svg>';
+    await expect(processImageUpload(new File([svg], "cover.png", { type: "image/png" }))).rejects.toThrow("JPEG, PNG, or WebP");
+  });
+
+  it("defaults storage under the working directory and refuses unsafe filenames", () => {
     const orgId = "01J00000000000000000000000";
     const filename = `${orgId}-${"a".repeat(32)}.webp`;
-    expect(() => uploadDirectory()).toThrow("UPLOAD_DIR");
+    expect(uploadDirectory()).toBe(`${process.cwd()}/uploads`);
     expect(uploadDirectory("/var/lib/openticket/uploads")).toBe("/var/lib/openticket/uploads");
     expect(uploadedImageOwner(filename)).toBe(orgId);
     expect(uploadedImagePath(filename, "/var/lib/openticket/uploads")).toBe(`/var/lib/openticket/uploads/${filename}`);

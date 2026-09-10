@@ -60,33 +60,31 @@ describe("API HTTP boundaries", () => {
     await expect(readJsonBody(wrongType, 1024)).rejects.toMatchObject({ status: 415, code: "unsupported_media_type" });
   });
 
-  it("ignores forwarding headers until one trusted proxy header is configured", () => {
+  it("cannot tell clients apart until a trusted proxy header is configured", () => {
     const first = new Request("https://example.test", { headers: { "x-forwarded-for": "203.0.113.8, 10.0.0.1" } });
-    const same = new Request("https://example.test", { headers: { "x-forwarded-for": "203.0.113.8" } });
-    const other = new Request("https://example.test", { headers: { "x-forwarded-for": "203.0.113.9" } });
-
-    expect(publicRateLimitBucket(first)).toBe(publicRateLimitBucket(same));
-    expect(publicRateLimitBucket(first)).toBe(publicRateLimitBucket(other));
-    expect(publicRateLimitBucket(first)).toHaveLength(26);
-    expect(publicRateLimitBucket(first)).not.toContain("203.0.113.8");
+    expect(publicRateLimitBucket(first, undefined)).toBeNull();
     expect(PUBLIC_API_GLOBAL_BUCKET).toHaveLength(26);
-    expect(PUBLIC_API_GLOBAL_BUCKET).not.toBe(publicRateLimitBucket(first));
   });
 
-  it("uses only the explicitly configured trusted proxy header", () => {
+  it("uses the last hop of the configured proxy header and ignores the others", () => {
     const first = new Request("https://example.test", { headers: { "cf-connecting-ip": "192.0.2.1", "x-forwarded-for": "203.0.113.8, 10.0.0.1" } });
-    const same = new Request("https://example.test", { headers: { "cf-connecting-ip": "192.0.2.2", "x-forwarded-for": "203.0.113.8" } });
-    const other = new Request("https://example.test", { headers: { "cf-connecting-ip": "192.0.2.1", "x-forwarded-for": "203.0.113.9" } });
+    const same = new Request("https://example.test", { headers: { "cf-connecting-ip": "192.0.2.2", "x-forwarded-for": "198.51.100.7, 10.0.0.1" } });
+    const other = new Request("https://example.test", { headers: { "cf-connecting-ip": "192.0.2.1", "x-forwarded-for": "10.0.0.9" } });
+    const junk = new Request("https://example.test", { headers: { "x-forwarded-for": "not-an-ip" } });
 
-    expect(publicRateLimitBucket(first, "x-forwarded-for")).toBe(publicRateLimitBucket(same, "x-forwarded-for"));
+    expect(publicRateLimitBucket(first, "x-forwarded-for")).toBe(publicRateLimitBucket(same, "x-forwarded-for")); // same trusted hop
     expect(publicRateLimitBucket(first, "x-forwarded-for")).not.toBe(publicRateLimitBucket(other, "x-forwarded-for"));
+    expect(publicRateLimitBucket(first, "x-forwarded-for")).toHaveLength(26);
+    expect(publicRateLimitBucket(first, "x-forwarded-for")).not.toContain("10.0.0.1");
+    expect(publicRateLimitBucket(junk, "x-forwarded-for")).toBeNull();
+    expect(publicRateLimitBucket(first, "cf-connecting-ip")).not.toBe(publicRateLimitBucket(same, "cf-connecting-ip"));
   });
 
   it("formats standard rate-limit headers", () => {
     expect(rateLimitHeaders({ limit: 60, remaining: 42, resetAt: new Date("2030-01-02T03:05:00.000Z") })).toEqual({
       "X-RateLimit-Limit": "60",
       "X-RateLimit-Remaining": "42",
-      "X-RateLimit-Reset": "2030-01-02T03:05:00.000Z",
+      "X-RateLimit-Reset": String(Math.ceil(new Date("2030-01-02T03:05:00.000Z").getTime() / 1000)),
     });
   });
 

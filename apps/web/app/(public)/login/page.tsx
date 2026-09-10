@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FormMessage } from "@/components/ui/form-field";
+import { safeNextPath } from "@/lib/auth/session";
 
 export const metadata = { title: "Sign in", robots: "noindex" };
 
@@ -17,13 +18,13 @@ const errorText: Record<string, string> = {
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string; sent?: string; error?: string; email?: string }> }) {
   const { next, sent, error, email } = await searchParams;
-  if (await auth()) redirect(next && next.startsWith("/") ? next : "/dashboard");
-  const redirectTo = next && next.startsWith("/") ? next : "/dashboard";
+  const redirectTo = safeNextPath(next);
+  if (await auth()) redirect(redirectTo);
 
   async function sendLink(formData: FormData) {
     "use server";
     const address = String(formData.get("email") ?? "").trim().toLowerCase();
-    const to = String(formData.get("next") ?? "/dashboard");
+    const to = safeNextPath(String(formData.get("next") ?? ""));
     try {
       await signIn("resend", { email: address, redirectTo: to, redirect: false });
     } catch (e) {

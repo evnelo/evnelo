@@ -8,7 +8,7 @@ describe("address search", () => {
       properties: { name: "Casa Cultural", street: "Rua Augusta", housenumber: "1500", city: "São Paulo", countrycode: "BR", country: "Brazil" },
     }] }), { status: 200 }));
 
-    await expect(searchAddresses("Rua Augusta 1500", fetcher)).resolves.toEqual([{
+    await expect(searchAddresses("Rua Augusta 1500", fetcher, { provider: "photon" })).resolves.toEqual([{
       label: "Casa Cultural, Rua Augusta 1500, São Paulo, Brazil",
       address: "Rua Augusta 1500",
       city: "São Paulo",
@@ -20,14 +20,14 @@ describe("address search", () => {
 
   it("does not call the provider for short queries", async () => {
     const fetcher = vi.fn();
-    await expect(searchAddresses("ab", fetcher)).resolves.toEqual([]);
+    await expect(searchAddresses("ab", fetcher, { provider: "photon" })).resolves.toEqual([]);
     expect(fetcher).not.toHaveBeenCalled();
   });
 
   it("caches repeated provider queries", async () => {
     const fetcher = vi.fn(async () => new Response(JSON.stringify({ features: [] }), { status: 200 }));
-    await searchAddresses("unique cache query", fetcher);
-    await searchAddresses("unique cache query", fetcher);
+    await searchAddresses("unique cache query", fetcher, { provider: "photon" });
+    await searchAddresses("unique cache query", fetcher, { provider: "photon" });
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
 });

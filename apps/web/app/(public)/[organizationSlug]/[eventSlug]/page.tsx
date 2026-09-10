@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { MapPin, Video } from "lucide-react";
 import { canView, robotsFor } from "@ot/core";
 import { getPublicEventBySlug } from "@/lib/queries/events";
@@ -30,7 +30,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function EventPage({ params }: Params) {
   const { organizationSlug, eventSlug } = await params;
   const data = await getPublicEventBySlug(eventSlug, organizationSlug);
-  if (!data) notFound();
+  if (!data) {
+    // event slugs are globally unique: an org rename must not break links already sent in emails and tickets
+    const moved = await getPublicEventBySlug(eventSlug);
+    if (moved && canView(moved.event, { isMember: false, hasInvite: false })) permanentRedirect(publicEventPath(moved.org.slug, moved.event.slug));
+    notFound();
+  }
   const { event, org, hosts, sponsors, ticketTypes, fields, tags } = data;
   // TODO(auth): resolve session membership + invite token; until then private events are hidden
   if (!canView(event, { isMember: false, hasInvite: false })) notFound();

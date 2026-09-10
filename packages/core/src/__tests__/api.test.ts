@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { Database } from "@ot/db";
-import { authenticateApiKey, beginIdempotentRequest, consumeApiRateLimit, executeIdempotentRequest, hashApiKey, hasApiScope, parseBearerToken } from "../services/api";
+import { authenticateApiKey, beginIdempotentRequest, consumeApiRateLimit, consumeRateLimit, executeIdempotentRequest, hashApiKey, hasApiScope, parseBearerToken } from "../services/api";
 
 function fakeDb(row: { id: string; organizationId: string; scopes: string[] } | null) {
   let lastUsedAtUpdated = false;
   const db = {
-    select: () => ({ from: () => ({ where: () => ({ limit: async () => row ? [row] : [] }) }) }),
+    select: () => ({ from: () => ({ innerJoin: () => ({ where: () => ({ limit: async () => row ? [row] : [] }) }) }) }),
     update: () => ({ set: () => ({ where: async () => { lastUsedAtUpdated = true; } }) }),
   } as unknown as Database;
   return { db, wasUpdated: () => lastUsedAtUpdated };
@@ -50,95 +50,56 @@ describe("API key primitives", () => {
     expect(fixture.wasUpdated()).toBe(true);
   });
 
-  it("removes an expired idempotency reservation before claiming its key", async () => {
+  it("reuses an idempotency key whose 24h retention has lapsed", async () => {
     const calls: string[] = [];
-    let inserted: { expiresAt: Date } | undefined;
-    const db = {
-      delete: () => ({ where: async () => { calls.push("delete"); } }),
-      insert: () => ({ values: async (value: { expiresAt: Date }) => { calls.push("insert"); inserted = value; } }),
-    } as unknown as Database;
+    let inserts = 0;
     const now = new Date("2030-01-02T03:04:05.000Z");
+    const db = {
+      insert: () => ({ values: async () => { calls.push("insert"); if (++inserts === 1) throw Object.assign(new Error("dup"), { code: "ER_DUP_ENTRY" }); } }),
+      select: () => ({ from: () => ({ where: () => ({ limit: async () => [{ id: "old", requestHash: "other", responseStatus: 201, responseBody: {}, expiresAt: new Date("2030-01-01T00:00:00.000Z") }] }) }) }),
+      delete: () => ({ where: async () => { calls.push("delete"); } }),
+    } as unknown as Database;
 
     await expect(beginIdempotentRequest(db, "key-id", "request-id", "request-hash", now)).resolves.toMatchObject({ state: "started" });
-    expect(calls).toEqual(["delete", "insert"]);
-    expect(inserted?.expiresAt.toISOString()).toBe("2030-01-03T03:04:05.000Z");
+    expect(calls).toEqual(["insert", "delete", "insert"]);
   });
 
-  it("reports an exact reset time when the API rate limit is exceeded", async () => {
-    const calls: string[] = [];
-    const tx = {
-      insert: () => ({ values: () => ({ onDuplicateKeyUpdate: async () => { calls.push("ensure-window"); } }) }),
-      select: () => ({ from: () => ({ where: () => ({ for: () => ({ limit: async () => {
-        calls.push("select-for-update");
-        return [{ count: 120 }];
-      } }) }) }) }),
-      update: () => ({ set: () => ({ where: async () => { calls.push("update"); } }) }),
-    };
-    const db = {
-      delete: () => ({ where: async () => { calls.push("delete-stale"); } }),
-      transaction: async (operation: (transaction: typeof tx) => Promise<unknown>) => {
-        calls.push("transaction");
-        return operation(tx);
-      },
-    } as unknown as Database;
+  function rateLimitDb(counts: number[]) {
+    const executed: string[] = [];
+    // consumeRateLimit issues exactly two statements per call: the atomic upsert, then LAST_INSERT_ID()
+    const tx = { execute: async () => {
+      if (executed.length % 2 === 0) { executed.push("upsert"); return [[]]; }
+      executed.push("read");
+      return [[{ count: counts.shift() ?? 0 }]];
+    } };
+    const db = { transaction: async (operation: (transaction: typeof tx) => Promise<unknown>) => operation(tx) } as unknown as Database;
+    return { db, executed };
+  }
 
+  it("reports an exact reset time when the API rate limit is exceeded", async () => {
+    const { db, executed } = rateLimitDb([121]);
     await expect(consumeApiRateLimit(db, "key-id", 120, new Date("2030-01-02T03:04:45.000Z"))).rejects.toMatchObject({
       status: 429,
       code: "rate_limit_exceeded",
       retryAfter: 15,
       rateLimit: { limit: 120, remaining: 0, resetAt: new Date("2030-01-02T03:05:00.000Z") },
     });
-    expect(calls).toEqual(["delete-stale", "transaction", "ensure-window", "select-for-update"]);
+    expect(executed).toEqual(["upsert", "read"]);
   });
 
-  it("admits exactly one of two concurrent requests when one slot remains", async () => {
-    let count: number | null = null;
-    let topLevelIncrements = 0;
-    let releaseIncrements!: () => void;
-    const incrementsComplete = new Promise<void>((resolve) => { releaseIncrements = resolve; });
-    const rows = async () => [{ count: count ?? 0 }];
-    const select = () => ({
-      from: () => ({
-        where: () => ({
-          limit: rows,
-          for: () => ({ limit: rows }),
-        }),
-      }),
+  it("returns the remaining quota from a single atomic upsert", async () => {
+    const { db } = rateLimitDb([7]);
+    await expect(consumeApiRateLimit(db, "key-id", 120, new Date("2030-01-02T03:04:45.000Z"))).resolves.toEqual({
+      limit: 120, remaining: 113, resetAt: new Date("2030-01-02T03:05:00.000Z"),
     });
-    const tx = {
-      insert: () => ({ values: () => ({ onDuplicateKeyUpdate: async () => { count ??= 0; } }) }),
-      select,
-      update: () => ({ set: (value: { count: number }) => ({ where: async () => { count = value.count; } }) }),
-    };
-    let transactionQueue = Promise.resolve();
-    const db = {
-      delete: () => ({ where: async () => undefined }),
-      insert: () => ({ values: () => ({ onDuplicateKeyUpdate: async () => {
-        count = (count ?? 0) + 1;
-        topLevelIncrements += 1;
-        if (topLevelIncrements === 2) releaseIncrements();
-        else await incrementsComplete;
-      } }) }),
-      select,
-      transaction: <T>(operation: (transaction: typeof tx) => Promise<T>) => {
-        const result = transactionQueue.then(() => operation(tx));
-        transactionQueue = result.then(() => undefined, () => undefined);
-        return result;
-      },
-    } as unknown as Database;
-
-    const results = await Promise.allSettled([
-      consumeApiRateLimit(db, "key-id", 1, new Date("2030-01-02T03:04:45.000Z")),
-      consumeApiRateLimit(db, "key-id", 1, new Date("2030-01-02T03:04:45.000Z")),
-    ]);
-    expect(results.filter((result) => result.status === "fulfilled")).toHaveLength(1);
-    expect(results.filter((result) => result.status === "rejected")).toHaveLength(1);
+    const shared = await consumeRateLimit(rateLimitDb([3]).db, "bucket", 3, 60 * 60_000, new Date("2030-01-02T03:04:45.000Z"));
+    expect(shared).toEqual({ limit: 3, remaining: 0, resetAt: new Date("2030-01-02T04:00:00.000Z"), allowed: true });
+    expect((await consumeRateLimit(rateLimitDb([4]).db, "bucket", 3, 60 * 60_000)).allowed).toBe(false);
   });
 
   it("stores a successful idempotent response in the same transaction as the operation", async () => {
     const calls: string[] = [];
     const tx = {
-      delete: () => ({ where: async () => { calls.push("delete-expired"); } }),
       insert: () => ({ values: async () => { calls.push("claim"); } }),
       update: () => ({ set: () => ({ where: async () => { calls.push("complete"); } }) }),
     };
@@ -153,6 +114,6 @@ describe("API key primitives", () => {
       calls.push("operation");
       return { status: 201, body: { data: { id: "event-id" } } };
     })).resolves.toEqual({ state: "completed", status: 201, body: { data: { id: "event-id" } } });
-    expect(calls).toEqual(["transaction", "delete-expired", "claim", "operation", "complete"]);
+    expect(calls).toEqual(["transaction", "claim", "operation", "complete"]);
   });
 });

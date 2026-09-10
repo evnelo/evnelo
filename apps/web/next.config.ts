@@ -19,6 +19,9 @@ const config: NextConfig = {
   transpilePackages: ["@ot/core", "@ot/db"],
   images: { remotePatterns: [{ protocol: "https", hostname: "**" }] },
   serverExternalPackages: ["mysql2"],
+  async headers() {
+    return [{ source: "/(.*)", headers: [{ key: "Referrer-Policy", value: "strict-origin-when-cross-origin" }, { key: "X-Content-Type-Options", value: "nosniff" }] }];
+  },
 };
 
 export default config;

@@ -1,6 +1,6 @@
-import { createHash } from "node:crypto";
-import { and, eq, isNull, lt, lte, sql } from "drizzle-orm";
-import { apiIdempotencyKeys, apiKeys, apiRateLimits, type Database } from "@ot/db";
+import { createHash, randomBytes } from "node:crypto";
+import { and, desc, eq, isNull, lt, lte, or, sql } from "drizzle-orm";
+import { apiIdempotencyKeys, apiKeys, apiRateLimits, organizations, type Database } from "@ot/db";
 import { newId } from "../ids";
 import type { DbOrTx } from "./db";
 
@@ -50,12 +50,14 @@ export async function authenticateApiKey(db: Database, authorization: string | n
   const [key] = await db
     .select({ id: apiKeys.id, organizationId: apiKeys.organizationId, scopes: apiKeys.scopes })
     .from(apiKeys)
-    .where(and(eq(apiKeys.hash, hashApiKey(secret)), isNull(apiKeys.revokedAt)))
+    .innerJoin(organizations, eq(apiKeys.organizationId, organizations.id))
+    .where(and(eq(apiKeys.hash, hashApiKey(secret)), isNull(apiKeys.revokedAt), isNull(organizations.deletedAt)))
     .limit(1);
   if (!key) throw new ApiAuthError(401, "unauthorized", "A valid Bearer API key is required.");
   if (!hasApiScope(key.scopes, requiredScope)) throw new ApiAuthError(403, "forbidden", `This API key requires the ${requiredScope} scope.`);
 
-  await db.update(apiKeys).set({ lastUsedAt: new Date() }).where(eq(apiKeys.id, key.id));
+  await db.update(apiKeys).set({ lastUsedAt: new Date() })
+    .where(and(eq(apiKeys.id, key.id), or(isNull(apiKeys.lastUsedAt), lt(apiKeys.lastUsedAt, new Date(Date.now() - 60_000)))));
   return { apiKeyId: key.id, organizationId: key.organizationId, scopes: key.scopes };
 }
 
@@ -69,14 +71,24 @@ export type IdempotencyResult =
 
 export async function beginIdempotentRequest(db: DbOrTx, apiKeyId: string, key: string, requestHash: string, now = new Date()): Promise<IdempotencyResult> {
   const id = newId();
-  await db.delete(apiIdempotencyKeys).where(lte(apiIdempotencyKeys.expiresAt, now));
-  try {
-    await db.insert(apiIdempotencyKeys).values({ id, apiKeyId, key, requestHash, expiresAt: new Date(now.getTime() + 24 * 60 * 60 * 1000) });
-    return { state: "started", id };
-  } catch (error) {
-    if (!(error && typeof error === "object" && "code" in error && error.code === "ER_DUP_ENTRY")) throw error;
-  }
+  const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  const claim = async () => {
+    try {
+      await db.insert(apiIdempotencyKeys).values({ id, apiKeyId, key, requestHash, expiresAt });
+      return true;
+    } catch (error) {
+      if (error && typeof error === "object" && "code" in error && error.code === "ER_DUP_ENTRY") return false;
+      throw error;
+    }
+  };
+  if (await claim()) return { state: "started", id };
   const [existing] = await db.select().from(apiIdempotencyKeys).where(and(eq(apiIdempotencyKeys.apiKeyId, apiKeyId), eq(apiIdempotencyKeys.key, key))).limit(1);
+  if (existing && existing.expiresAt <= now) {
+    // a key past its 24h retention may be reused; the periodic purge normally removes these first
+    await db.delete(apiIdempotencyKeys).where(eq(apiIdempotencyKeys.id, existing.id));
+    if (await claim()) return { state: "started", id };
+    throw new ApiRequestError(409, "idempotency_in_progress", "A request with that idempotency key is still in progress.");
+  }
   if (!existing || existing.requestHash !== requestHash) {
     throw new ApiRequestError(409, "idempotency_conflict", "That idempotency key was already used for a different request.");
   }
@@ -110,27 +122,60 @@ export async function executeIdempotentRequest(
   });
 }
 
-export async function consumeApiRateLimit(db: Database, apiKeyId: string, limit = 120, now = new Date()) {
-  const windowStart = new Date(now);
-  windowStart.setUTCSeconds(0, 0);
-  await db.delete(apiRateLimits).where(lt(apiRateLimits.windowStart, windowStart));
-  return db.transaction(async (tx) => {
-    await tx.insert(apiRateLimits).values({ apiKeyId, windowStart, count: 0 })
-      .onDuplicateKeyUpdate({ set: { count: sql`${apiRateLimits.count}` } });
-    const [row] = await tx.select({ count: apiRateLimits.count }).from(apiRateLimits)
-      .where(and(eq(apiRateLimits.apiKeyId, apiKeyId), eq(apiRateLimits.windowStart, windowStart)))
-      .for("update")
-      .limit(1);
-    const count = row?.count ?? 0;
-    const resetAt = new Date(windowStart.getTime() + 60_000);
-    if (count >= limit) {
-      const rateLimit = { limit, remaining: 0, resetAt };
-      const retryAfter = Math.max(1, Math.ceil((resetAt.getTime() - now.getTime()) / 1000));
-      throw new ApiRequestError(429, "rate_limit_exceeded", "API rate limit exceeded.", rateLimit, retryAfter);
-    }
-    const nextCount = count + 1;
-    await tx.update(apiRateLimits).set({ count: nextCount })
-      .where(and(eq(apiRateLimits.apiKeyId, apiKeyId), eq(apiRateLimits.windowStart, windowStart)));
-    return { limit, remaining: limit - nextCount, resetAt };
+/**
+ * Fixed-window counter shared by API keys, public-API client buckets, uploads, geocoding and
+ * payment-resume checks. One atomic upsert per call: the LAST_INSERT_ID trick returns the
+ * post-increment count without a second locked read. `bucket` must fit char(26).
+ */
+export async function consumeRateLimit(db: Database, bucket: string, limit: number, windowMs: number, now = new Date()): Promise<ApiRateLimit & { allowed: boolean }> {
+  const windowStart = new Date(Math.floor(now.getTime() / windowMs) * windowMs);
+  const count = await db.transaction(async (tx) => {
+    await tx.execute(sql`
+      INSERT INTO api_rate_limits (api_key_id, window_start, count)
+      VALUES (${bucket}, ${windowStart}, LAST_INSERT_ID(1))
+      ON DUPLICATE KEY UPDATE count = LAST_INSERT_ID(count + 1)
+    `);
+    const [rows] = await tx.execute(sql`SELECT LAST_INSERT_ID() AS count`);
+    return Number(((rows as unknown) as Array<{ count: number | string }>)[0]?.count ?? 0);
   });
+  const resetAt = new Date(windowStart.getTime() + windowMs);
+  return { limit, remaining: Math.max(0, limit - count), resetAt, allowed: count > 0 && count <= limit };
+}
+
+/** Per-API-key limit (one-minute window). Throws the 429 the route returns. */
+export async function consumeApiRateLimit(db: Database, apiKeyId: string, limit = 120, now = new Date()): Promise<ApiRateLimit> {
+  const { allowed, remaining, resetAt } = await consumeRateLimit(db, apiKeyId, limit, 60_000, now);
+  if (!allowed) {
+    const retryAfter = Math.max(1, Math.ceil((resetAt.getTime() - now.getTime()) / 1000));
+    throw new ApiRequestError(429, "rate_limit_exceeded", "API rate limit exceeded.", { limit, remaining: 0, resetAt }, retryAfter);
+  }
+  return { limit, remaining, resetAt };
+}
+
+/** Drop old rate-limit windows and expired idempotency keys. Runs from the job loop, never inside request transactions. */
+export async function purgeApiHousekeeping(db: Database, now = new Date()) {
+  const [limits] = await db.delete(apiRateLimits).where(lt(apiRateLimits.windowStart, new Date(now.getTime() - 24 * 60 * 60_000)));
+  const [keys] = await db.delete(apiIdempotencyKeys).where(lte(apiIdempotencyKeys.expiresAt, now));
+  return { rateLimitRows: limits.affectedRows, idempotencyKeys: keys.affectedRows };
+}
+
+/* ---------- key management ---------- */
+
+export const API_KEY_PREFIX = "ot_live_";
+
+/** Mint a key. The secret is returned exactly once; only its SHA-256 and a display prefix are stored. */
+export async function createApiKey(db: Database, input: { organizationId: string; name: string; scopes: ApiScope[] }) {
+  const secret = `${API_KEY_PREFIX}${randomBytes(24).toString("base64url")}`;
+  const id = newId();
+  await db.insert(apiKeys).values({ id, organizationId: input.organizationId, name: input.name.trim().slice(0, 80) || "API key", prefix: secret.slice(0, 12), hash: hashApiKey(secret), scopes: input.scopes });
+  return { id, secret, prefix: secret.slice(0, 12) };
+}
+
+export async function listApiKeys(db: Database, organizationId: string) {
+  return db.select({ id: apiKeys.id, name: apiKeys.name, prefix: apiKeys.prefix, scopes: apiKeys.scopes, lastUsedAt: apiKeys.lastUsedAt, revokedAt: apiKeys.revokedAt, createdAt: apiKeys.createdAt })
+    .from(apiKeys).where(eq(apiKeys.organizationId, organizationId)).orderBy(desc(apiKeys.createdAt));
+}
+
+export async function revokeApiKey(db: Database, organizationId: string, id: string) {
+  await db.update(apiKeys).set({ revokedAt: new Date() }).where(and(eq(apiKeys.id, id), eq(apiKeys.organizationId, organizationId), isNull(apiKeys.revokedAt)));
 }

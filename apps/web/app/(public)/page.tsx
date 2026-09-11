@@ -4,7 +4,7 @@ import { ArrowRight, Check, CalendarDays, Code2, ScanLine, Ticket, Users } from 
 import { listDiscoverableEvents } from "@/lib/queries/events";
 import { Button } from "@/components/ui/button";
 import { EventCard } from "@/components/discover/event-card";
-import { FlowLine } from "@/components/marketing/flow-line";
+import { Hero } from "@/components/marketing/hero";
 
 export const metadata: Metadata = {
   title: "Evnelo: events, in motion",
@@ -32,19 +32,7 @@ export default async function HomePage() {
   const upcoming = (await listDiscoverableEvents({ limit: 3 })).filter((e) => e.coverImageUrl);
   return (
     <div className="overflow-x-clip">
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 pb-16 pt-16 sm:px-6 sm:pt-24 lg:pb-24">
-        <p className="eyebrow">Open event infrastructure</p>
-        <h1 className="display mt-4 max-w-4xl text-[clamp(3rem,8vw,5.5rem)]">Events, in motion.</h1>
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
-          Publish events, register attendees, sell or give away tickets, message your community and check people in. Pay <strong className="text-foreground">0.99%</strong> on paid tickets, nothing on free events, or run it yourself for nothing at all.
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Button asChild size="lg"><Link href="/login">Host an event <ArrowRight className="size-4" /></Link></Button>
-          <Button asChild size="lg" variant="outline"><Link href="/discover">Explore events</Link></Button>
-        </div>
-        <FlowLine labels={["Discover", "Register", "Arrive", "Belong"]} className="mt-14 w-full max-w-4xl" />
-      </section>
+      <Hero />
 
       {/* Pricing band */}
       <section id="pricing" className="bg-ink text-paper">

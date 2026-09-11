@@ -1,0 +1,39 @@
+/* Hero illustration: a container-query scaled scene, so % positions and cqw sizes hold on every viewport. */
+.hero-scene {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+}
+.hero-scene > * { position: absolute; }
+.hero-card {
+  background: var(--evnelo-white);
+  border-radius: 2cqw;
+  box-shadow: 0 1.2cqw 3cqw rgb(20 21 26 / 0.10), 0 0.2cqw 0.6cqw rgb(20 21 26 / 0.06);
+  overflow: hidden;
+}
+.hero-label { font-weight: 700; font-size: 1.95cqw; letter-spacing: -0.02em; line-height: 1.1; }
+.hero-sub { font-size: 1.45cqw; color: var(--muted-foreground); margin-top: 0.3cqw; }
+.hero-note {
+  font-family: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+  font-weight: 600;
+  font-size: 3.1cqw;
+  line-height: 1.05;
+  color: var(--evnelo-ink);
+}
+.hero-sparkle { width: 3.4cqw; height: 3.4cqw; }
+.hero-sparkle line { stroke-width: 2.6; stroke-linecap: round; }
+.hero-ticket {
+  -webkit-mask: radial-gradient(circle at 0 50%, transparent 1.6cqw, #000 1.7cqw), radial-gradient(circle at 100% 50%, transparent 1.6cqw, #000 1.7cqw);
+  mask: radial-gradient(circle at 0 50%, transparent 1.6cqw, #000 1.7cqw), radial-gradient(circle at 100% 50%, transparent 1.6cqw, #000 1.7cqw);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-float { animation: hero-float 6s ease-in-out infinite; }
+  .hero-float:nth-child(odd) { animation-delay: -3s; }
+}
+@keyframes hero-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -0.6cqw; }
+}

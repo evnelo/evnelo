@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@fontsource-variable/instrument-sans/index.css"; // self-hosted: no Google Fonts dependency
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/caveat/600.css"; // handwritten notes on the marketing hero only
 import "./globals.css";
 
 export const metadata: Metadata = {

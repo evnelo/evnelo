@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { z } from "zod";
+import { MailCheck, Percent, QrCode, Ticket } from "lucide-react";
 import { auth, googleEnabled, signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +23,34 @@ const errorText: Record<string, string> = {
   InvalidEmail: "Enter a valid email address.",
   Default: "Something went wrong signing you in. Try again.",
 };
+
+const REASONS = [
+  { icon: Ticket, text: "Free events are free to run." },
+  { icon: Percent, text: "Paid events cost the host 0.99%." },
+  { icon: QrCode, text: "QR tickets, wallet passes and door check-in included." },
+];
+
+/** A decorative ticket for the side panel. Purely illustrative, so it is hidden from assistive tech. */
+function TicketIllustration() {
+  const cells = [1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1];
+  return (
+    <div aria-hidden className="ticket grid w-full max-w-sm -rotate-2 grid-cols-[minmax(0,1fr)_6rem]" style={{ ["--background" as string]: "var(--muted)" }}>
+      <div className="p-6">
+        <div className="date-leaf border-[color:var(--ticket-perforation)]" style={{ ["--accent-event" as string]: "var(--ticket-ink)", ["--accent-event-foreground" as string]: "var(--ticket-paper)" }}>
+          <span>Oct</span><span>15</span>
+        </div>
+        <p className="display mt-5 text-2xl" style={{ fontVariationSettings: '"opsz" 36, "SOFT" 60' }}>Product Night</p>
+        <p className="mt-1 text-xs opacity-70">Thursday, 7:00 PM · Cubo Itaú</p>
+        <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.22em] opacity-55">Admit one</p>
+      </div>
+      <div className="ticket-stub flex items-center justify-center p-4">
+        <div className="grid size-16 grid-cols-5 gap-0.5 rounded bg-white p-1.5">
+          {cells.map((on, i) => <span key={i} className={on ? "rounded-[1px] bg-[var(--ticket-ink)]" : ""} />)}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string; sent?: string; error?: string; email?: string }> }) {
   const { next, sent, error, email } = await searchParams;
@@ -58,34 +87,52 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   }
 
   return (
-    <div className="mx-auto max-w-sm px-4 py-16">
-      <h1 className="display text-4xl">Sign in</h1>
-      {sent ? (
-        <div className="mt-6 rounded-lg border bg-card p-5">
-          <p className="font-medium">Check your email</p>
-          <p className="mt-1 text-sm text-muted-foreground">We sent a sign-in link{email ? ` to ${email}` : ""}. It works once and expires in 15 minutes.</p>
-          <p className="mt-4 text-sm"><a href={`/login${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="underline underline-offset-4">Use a different email</a></p>
-        </div>
-      ) : (
-        <div className="mt-6 space-y-5">
-          <p className="text-sm text-muted-foreground">No password. We'll email you a link that signs you in, and create your account the first time.</p>
-          {error && <FormMessage error={errorText[error] ?? errorText.Default} />}
-          <form action={sendLink} className="space-y-3">
-            <input type="hidden" name="next" value={redirectTo} />
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" required autoComplete="email" autoFocus defaultValue={email} className="mt-1.5" />
+    <div className="mx-auto grid max-w-6xl px-4 sm:px-6 lg:min-h-[calc(100dvh-4rem)] lg:grid-cols-2 lg:gap-12">
+      <div className="flex items-center py-16 lg:py-20">
+        <div className="animate-rise mx-auto w-full max-w-sm lg:mx-0">
+          <p className="eyebrow">Hosts and teammates</p>
+          <h1 className="display mt-2 text-4xl sm:text-5xl">Sign in</h1>
+          {sent ? (
+            <div className="mt-8 rounded-xl border border-border/80 bg-card p-6 shadow-card">
+              <div className="flex size-11 items-center justify-center rounded-full bg-accent text-accent-foreground"><MailCheck className="size-5" aria-hidden /></div>
+              <p className="mt-4 font-medium">Check your email</p>
+              <p className="mt-1 text-sm text-muted-foreground">We sent a sign-in link{email ? ` to ${email}` : ""}. It works once and expires in 15 minutes.</p>
+              <p className="mt-5 text-sm"><a href={`/login${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="underline underline-offset-4">Use a different email</a></p>
             </div>
-            <Button type="submit" className="w-full">Email me a sign-in link</Button>
-          </form>
-          {googleEnabled && (
-            <>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground"><span className="h-px flex-1 bg-border" />or<span className="h-px flex-1 bg-border" /></div>
-              <form action={google}><Button type="submit" variant="outline" className="w-full">Continue with Google</Button></form>
-            </>
+          ) : (
+            <div className="mt-6 space-y-5">
+              <p className="text-sm text-muted-foreground">No password. We'll email you a link that signs you in, and create your account the first time.</p>
+              {error && <FormMessage error={errorText[error] ?? errorText.Default} />}
+              <form action={sendLink} className="space-y-3">
+                <input type="hidden" name="next" value={redirectTo} />
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" name="email" type="email" required autoComplete="email" autoFocus defaultValue={email} className="mt-1.5 h-11" />
+                </div>
+                <Button type="submit" size="lg" className="w-full">Email me a sign-in link</Button>
+              </form>
+              {googleEnabled && (
+                <>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground"><span className="hairline flex-1" />or<span className="hairline flex-1" /></div>
+                  <form action={google}><Button type="submit" variant="outline" size="lg" className="w-full">Continue with Google</Button></form>
+                </>
+              )}
+            </div>
           )}
         </div>
-      )}
+      </div>
+
+      <aside className="my-8 hidden flex-col justify-center gap-12 rounded-2xl bg-muted px-12 py-16 lg:flex" aria-label="Why OpenTicket">
+        <TicketIllustration />
+        <ul className="space-y-4">
+          {REASONS.map(({ icon: Icon, text }) => (
+            <li key={text} className="flex items-center gap-3 text-[15px]">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-card text-primary shadow-card"><Icon className="size-4" aria-hidden /></span>
+              {text}
+            </li>
+          ))}
+        </ul>
+      </aside>
     </div>
   );
 }

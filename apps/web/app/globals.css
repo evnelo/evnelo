@@ -224,6 +224,107 @@
   }
 }
 
+@layer components {
+  /* public-page additions: extend a compact control's hit area to 44px without changing its look */
+  .tap-area {
+    position: relative;
+  }
+  .tap-area::after {
+    content: "";
+    position: absolute;
+    inset: -4px 0;
+  }
+
+  /* horizontal scroller for chip rows; no visible scrollbar on any platform */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ticket stub: perforation runs along the top when stacked, along the left once side by side */
+  .ticket-stub {
+    position: relative;
+    border-top: 2px dashed var(--ticket-perforation);
+  }
+  .ticket-stub::before,
+  .ticket-stub::after {
+    content: "";
+    position: absolute;
+    top: -11px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--background);
+  }
+  .ticket-stub::before { left: -10px; }
+  .ticket-stub::after { right: -10px; }
+  @media (min-width: 640px) {
+    .ticket-stub {
+      border-top: 0;
+      border-left: 2px dashed var(--ticket-perforation);
+    }
+    .ticket-stub::before,
+    .ticket-stub::after {
+      top: auto;
+      left: -11px;
+      right: auto;
+    }
+    .ticket-stub::before { top: -10px; }
+    .ticket-stub::after { bottom: -10px; }
+  }
+
+  /* the rotated "ADMIT ONE" mark along the perforation */
+  .stub-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  /* selectable option card (ticket types): the checked state is driven by the hidden radio */
+  .option-card {
+    @apply relative flex cursor-pointer items-center gap-3 rounded-xl border bg-card p-4 transition-[border-color,box-shadow,background-color] duration-150;
+  }
+  .option-card:hover {
+    @apply border-foreground/30;
+  }
+  .option-card:has(:checked) {
+    border-color: var(--accent-event);
+    box-shadow: 0 0 0 1px var(--accent-event);
+  }
+  .option-card:has(:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .option-card:has(:disabled) {
+    @apply cursor-not-allowed opacity-50;
+  }
+}
+
+@media print {
+  body {
+    background: #fff !important;
+  }
+  .print-hide {
+    display: none !important;
+  }
+  .ticket {
+    box-shadow: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .ticket-stub::before,
+  .ticket-stub::after {
+    background: #fff;
+  }
+}
+
 @keyframes rise {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }

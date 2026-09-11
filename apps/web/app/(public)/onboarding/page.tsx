@@ -5,6 +5,7 @@ import { slugify } from "@ot/core";
 import { db } from "@/lib/db";
 import { ORG_COOKIE, requireUser } from "@/lib/auth/session";
 import { FormMessage } from "@/components/ui/form-field";
+import { NarrowPage } from "@/components/narrow-page";
 import { OnboardingForm } from "@/components/onboarding-form";
 
 export const metadata = { title: "Set up your organization", robots: "noindex" };
@@ -27,11 +28,13 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
 
   const suggested = slugify(user.name ?? user.email.split("@")[0] ?? "my-org", 60);
   return (
-    <div className="mx-auto max-w-md px-4 py-16">
-      <h1 className="display text-4xl">Name your organization</h1>
-      <p className="mt-3 text-sm text-muted-foreground">Events are published under an organization: a company, a community, or just you. You can invite teammates later.</p>
-      {error && <div className="mt-4"><FormMessage error={error} /></div>}
+    <NarrowPage
+      eyebrow="First step"
+      title="Name your organization"
+      description="Events are published under an organization: a company, a community, or just you. You can invite teammates later."
+    >
+      {error && <div className="mb-4"><FormMessage error={error} /></div>}
       <OnboardingForm action={create} suggestedSlug={suggested} />
-    </div>
+    </NarrowPage>
   );
 }

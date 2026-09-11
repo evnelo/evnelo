@@ -9,7 +9,7 @@ export default async function PublicLayout({ children }: { children: React.React
   const user = await currentUser();
   return (
     <>
-      <header className="surface-glass sticky top-0 z-40 border-b border-border/70">
+      <header className="print-hide surface-glass sticky top-0 z-40 border-b border-border/70">
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="press shrink-0 rounded-md"><Brand /></Link>
           <div className="flex items-center gap-1 text-sm sm:gap-2">
@@ -26,7 +26,7 @@ export default async function PublicLayout({ children }: { children: React.React
         </nav>
       </header>
       <main className="flex-1">{children}</main>
-      <footer className="mt-16 border-t border-border/70 py-10 text-sm text-muted-foreground">
+      <footer className="print-hide mt-16 border-t border-border/70 py-10 text-sm text-muted-foreground">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div className="space-y-1">
             <Brand size="sm" className="text-foreground" />

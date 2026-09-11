@@ -3,8 +3,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Loader2 } from "lucide-react";
+import { Clock, Loader2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { paymentHold, paymentOutcome, type PaymentOutcome } from "@/lib/payment-flow";
 
 type Props = {
@@ -27,8 +28,8 @@ export function PaymentStep(props: Props) {
       appearance: {
         theme: "stripe",
         variables: {
-          colorPrimary: "#16603a", colorText: "#000000", colorDanger: "#a8341f", colorBackground: "#ffffff",
-          colorTextSecondary: "#6a6b66", borderRadius: "10px", fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif",
+          colorPrimary: "#16603a", colorText: "#17170f", colorDanger: "#a8341f", colorBackground: "#ffffff",
+          colorTextSecondary: "#6b6a60", borderRadius: "10px", fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif",
         },
       },
     }}>
@@ -89,15 +90,22 @@ function PaymentForm({ resumeToken, holdExpiresAt, onComplete }: Props) {
   const seconds = String(hold.seconds % 60).padStart(2, "0");
   return (
     <form onSubmit={submit} className="space-y-5">
-      <p className={`text-sm ${hold.expired ? "text-destructive" : "text-muted-foreground"}`} role={hold.expired ? "alert" : undefined}>
-        {hold.expired ? "This ticket reservation expired. Close this window and register again." : `Tickets reserved for ${minutes}:${seconds}.`}
+      <p
+        className={cn("flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm tabular-nums", hold.expired ? "bg-destructive/5 text-destructive" : "bg-muted text-muted-foreground")}
+        role={hold.expired ? "alert" : undefined}
+      >
+        <Clock className="size-4 shrink-0" aria-hidden />
+        <span>{hold.expired ? "This ticket reservation expired. Close this window and register again." : `Tickets reserved for ${minutes}:${seconds}.`}</span>
       </p>
-      <div className="rounded-lg border bg-card p-3"><PaymentElement options={{ layout: "accordion" }} /></div>
-      {message && <p role="alert" className="text-sm text-destructive">{message}</p>}
+      <div className="rounded-xl border border-border/80 bg-card p-4 shadow-card"><PaymentElement options={{ layout: "accordion" }} /></div>
+      {message && <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">{message}</p>}
       <Button type="submit" variant="event" size="lg" className="w-full" disabled={!stripe || !elements || submitting || hold.expired}>
         {submitting ? <><Loader2 className="animate-spin" /> Processing payment…</> : hold.expired ? "Reservation expired" : "Pay and register"}
       </Button>
-      <p className="text-center text-xs text-muted-foreground">Payments are securely processed by Stripe. OpenTicket does not store card details.</p>
+      <p className="flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
+        <Lock className="size-3 shrink-0" aria-hidden />
+        Payments are securely processed by Stripe. OpenTicket does not store card details.
+      </p>
     </form>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Check, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,13 +27,19 @@ export function DiscountCodeField({ eventId, ticketTypeId, quantity, applied, on
     } catch { setError("Network error. Try again."); } finally { setBusy(false); }
   }
 
-  if (!open) return <button type="button" onClick={() => setOpen(true)} className="text-sm underline underline-offset-4 text-muted-foreground hover:text-foreground">Have a discount code?</button>;
+  if (!open) {
+    return (
+      <button type="button" onClick={() => setOpen(true)} className="press inline-flex h-11 items-center gap-1.5 text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">
+        <Tag className="size-3.5" aria-hidden /> Have a discount code?
+      </button>
+    );
+  }
   return (
-    <div>
+    <div className="animate-rise">
       <Label htmlFor="discount-code">Discount code</Label>
       <div className="mt-1.5 flex gap-2">
-        <Input id="discount-code" value={code} onChange={(e) => { setCode(e.target.value.toUpperCase()); if (applied) onChange(null); }} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); void apply(); } }} placeholder="CODE" autoCapitalize="characters" spellCheck={false} />
-        <Button type="button" variant="outline" disabled={busy || !code.trim()} onClick={() => void apply()}>{busy ? "Checking…" : applied ? "Applied" : "Apply"}</Button>
+        <Input id="discount-code" value={code} onChange={(e) => { setCode(e.target.value.toUpperCase()); if (applied) onChange(null); }} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); void apply(); } }} placeholder="CODE" autoCapitalize="characters" spellCheck={false} className="h-11 font-mono uppercase tracking-wider" />
+        <Button type="button" variant="outline" className="h-11" disabled={busy || !code.trim()} onClick={() => void apply()}>{busy ? "Checking…" : applied ? <><Check className="size-4" aria-hidden /> Applied</> : "Apply"}</Button>
       </div>
       {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
       {applied && !error && <p className="mt-1 text-xs text-muted-foreground">{applied.code}: {formatMoney(applied.discountMinor, applied.currency)} off{applied.totalMinor === 0 ? ", your ticket is free" : ""}.</p>}

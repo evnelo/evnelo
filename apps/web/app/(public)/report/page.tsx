@@ -2,6 +2,7 @@ import * as React from "react";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { Flag } from "lucide-react";
 import { createEventReport, eventReportInput } from "@ot/core/services";
 import { events, organizations } from "@ot/db";
 import { db } from "@/lib/db";
@@ -17,6 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { FormMessage } from "@/components/ui/form-field";
+import { NarrowPage } from "@/components/narrow-page";
 import AbuseReport, { abuseReportSubject } from "@/emails/abuse-report";
 
 export const metadata = { title: "Report an event", robots: "noindex,nofollow" };
@@ -49,27 +51,30 @@ export default async function ReportPage({ searchParams }: { searchParams: Promi
     redirect(`/report?event=${target.id}&sent=1`);
   }
 
+  const description = !row
+    ? (error === "invalid" ? "That event could not be found." : "Open this page from an event to report it.")
+    : sent
+      ? <span className="text-foreground">Thanks. Your report about <strong>{row.name}</strong> was recorded{env.ABUSE_EMAIL ? " and sent to the operators of this instance" : ""}.</span>
+      : <>Reporting <strong className="text-foreground">{row.name}</strong> by {row.orgName}. Reports go to the people who run this OpenTicket instance, not to the host.</>;
+
   return (
-    <div className="mx-auto max-w-md px-4 py-16">
-      <h1 className="display text-4xl">Report an event</h1>
-      {!row ? (
-        <p className="mt-3 text-sm text-muted-foreground">{error === "invalid" ? "That event could not be found." : "Open this page from an event to report it."}</p>
-      ) : sent ? (
-        <p className="mt-3 text-sm">Thanks. Your report about <strong>{row.name}</strong> was recorded{env.ABUSE_EMAIL ? " and sent to the operators of this instance" : ""}.</p>
-      ) : (
+    <NarrowPage icon={<Flag />} eyebrow="Report" title="Report an event" description={description}>
+      {row && !sent && (
         <>
-          <p className="mt-3 text-sm text-muted-foreground">Reporting <strong>{row.name}</strong> by {row.orgName}. Reports go to the people who run this OpenTicket instance, not to the host.</p>
-          {error === "limited" && <div className="mt-4"><FormMessage error="Too many reports from your connection. Try again later." /></div>}
-          {error === "invalid" && <div className="mt-4"><FormMessage error="Check the form and try again." /></div>}
-          <form action={submit} className="mt-6 space-y-4">
+          {error === "limited" && <div className="mb-4"><FormMessage error="Too many reports from your connection. Try again later." /></div>}
+          {error === "invalid" && <div className="mb-4"><FormMessage error="Check the form and try again." /></div>}
+          <form action={submit} className="space-y-5">
             <input type="hidden" name="eventId" value={row.id} />
-            <div><Label htmlFor="reason">Reason</Label><Select id="reason" name="reason" className="mt-1.5" defaultValue="spam">{Object.entries(REASONS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select></div>
+            <div><Label htmlFor="reason">Reason</Label><Select id="reason" name="reason" className="mt-1.5 h-11" defaultValue="spam">{Object.entries(REASONS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select></div>
             <div><Label htmlFor="details">Details <span className="font-normal text-muted-foreground">(optional)</span></Label><Textarea id="details" name="details" rows={4} maxLength={2000} className="mt-1.5" /></div>
-            <div><Label htmlFor="reporterEmail">Your email <span className="font-normal text-muted-foreground">(optional, if we may follow up)</span></Label><Input id="reporterEmail" name="reporterEmail" type="email" className="mt-1.5" /></div>
-            <Button type="submit">Send report</Button>
+            <div><Label htmlFor="reporterEmail">Your email <span className="font-normal text-muted-foreground">(optional, if we may follow up)</span></Label><Input id="reporterEmail" name="reporterEmail" type="email" className="mt-1.5 h-11" /></div>
+            <Button type="submit" size="lg">Send report</Button>
           </form>
         </>
       )}
-    </div>
+      {row && sent && (
+        <Button asChild variant="outline" size="lg"><a href={publicEventPath(row.orgSlug, row.slug)}>Back to the event</a></Button>
+      )}
+    </NarrowPage>
   );
 }

@@ -1,11 +1,13 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { MailQuestion, UserPlus } from "lucide-react";
 import { acceptInvite, getInvite } from "@ot/core/services";
 import { ROLE_LABELS } from "@ot/core";
 import { db } from "@/lib/db";
 import { ORG_COOKIE, currentUser } from "@/lib/auth/session";
 import { Button } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form-field";
+import { NarrowPage } from "@/components/narrow-page";
 
 export const metadata = { title: "Invitation", robots: "noindex" };
 
@@ -28,27 +30,25 @@ export default async function InvitePage({ params, searchParams }: { params: Pro
     redirect("/dashboard");
   }
 
+  if (!row) {
+    return (
+      <NarrowPage icon={<MailQuestion />} eyebrow="Invitation" title="Invite not found" description="This link isn't valid. Ask the person who invited you for a new one." />
+    );
+  }
+
   return (
-    <div className="mx-auto max-w-md px-4 py-16">
-      {!row ? (
-        <>
-          <h1 className="display text-4xl">Invite not found</h1>
-          <p className="mt-3 text-sm text-muted-foreground">This link isn't valid. Ask the person who invited you for a new one.</p>
-        </>
+    <NarrowPage
+      icon={<UserPlus />}
+      eyebrow="Invitation"
+      title={`Join ${row.org.name}`}
+      description={<>You've been invited to {row.org.name} as <strong className="text-foreground">{ROLE_LABELS[row.invite.role]}</strong>. The invite was sent to {row.invite.email}.</>}
+    >
+      {error && <div className="mb-4"><FormMessage error={error} /></div>}
+      {user ? (
+        <form action={accept}><Button type="submit" size="lg">Accept as {user.email}</Button></form>
       ) : (
-        <>
-          <h1 className="display text-4xl">Join {row.org.name}</h1>
-          <p className="mt-3 text-sm text-muted-foreground">You've been invited to {row.org.name} as <strong>{ROLE_LABELS[row.invite.role]}</strong>. The invite was sent to {row.invite.email}.</p>
-          {error && <div className="mt-4"><FormMessage error={error} /></div>}
-          <div className="mt-6">
-            {user ? (
-              <form action={accept}><Button type="submit">Accept as {user.email}</Button></form>
-            ) : (
-              <Button asChild><a href={`/login?next=${encodeURIComponent(`/invite/${token}`)}&email=${encodeURIComponent(row.invite.email)}`}>Sign in to accept</a></Button>
-            )}
-          </div>
-        </>
+        <Button asChild size="lg"><a href={`/login?next=${encodeURIComponent(`/invite/${token}`)}&email=${encodeURIComponent(row.invite.email)}`}>Sign in to accept</a></Button>
       )}
-    </div>
+    </NarrowPage>
   );
 }

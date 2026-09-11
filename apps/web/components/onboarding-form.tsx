@@ -19,7 +19,7 @@ export function OnboardingForm({
   const preview = organizationSlugPreview(slug, suggestedSlug);
 
   return (
-    <form action={action} className="mt-6 space-y-4">
+    <form action={action} className="space-y-5">
       <Field label="Organization name" htmlFor="name">
         <Input id="name" name="name" required minLength={2} maxLength={120} autoFocus />
       </Field>

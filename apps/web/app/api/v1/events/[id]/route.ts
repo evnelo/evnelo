@@ -1,21 +1,29 @@
-import { getEventWithRelations, listRegistrationFields } from "@ot/core/services";
-import { apiError, requireApiKey, type ApiRequestContext } from "@/lib/api";
-import { apiJson } from "@/lib/api-http";
+import { z } from "zod";
+import { eventInput, eventInputFromRecord, getEventWithRelations, listRegistrationFields, updateEvent } from "@ot/core/services";
+import { apiRoute, mutate, notFound, ok, parseBody, parseWith, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 
 export const runtime = "nodejs";
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  let auth: ApiRequestContext | undefined;
-  try {
-    const [context, { id }] = await Promise.all([requireApiKey(request, "read"), params]);
-    auth = context;
-    const result = await getEventWithRelations(db, id);
-    if (!result || result.event.organizationId !== auth.organizationId) {
-      return apiJson({ error: { code: "not_found", message: "Event not found." } }, { status: 404 }, auth.rateLimit);
-    }
-    return apiJson({ data: { ...result, registrationFields: await listRegistrationFields(db, id) } }, {}, auth.rateLimit);
-  } catch (error) {
-    return apiError(error, auth);
-  }
-}
+type Params = { id: string };
+
+export const GET = apiRoute<Params>("read", async ({ auth, params }) => {
+  await requireOrgEvent(auth, params.id);
+  const result = await getEventWithRelations(db, params.id);
+  if (!result) throw notFound("Event");
+  return ok(auth, { data: { ...result, registrationFields: await listRegistrationFields(db, params.id) } });
+});
+
+/**
+ * Partial update. The patch is merged over the stored event (tags, hosts and sponsors included) and
+ * validated as a whole, because the update service replaces every field and relation. Schedule or
+ * venue changes on a published event queue the "event updated" notifications, as in the dashboard.
+ */
+export const PATCH = apiRoute<Params>("write", async ({ request, auth, params }) => {
+  const patch = await parseBody(request, z.record(z.unknown()));
+  await requireOrgEvent(auth, params.id);
+  const current = await getEventWithRelations(db, params.id);
+  if (!current) throw notFound("Event");
+  const input = parseWith(eventInput, { ...eventInputFromRecord(current), ...patch }, "Invalid event.");
+  return mutate(request, auth, patch, async (database) => ({ body: { data: (await updateEvent(database, params.id, input)).event } }));
+});

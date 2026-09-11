@@ -4,8 +4,10 @@
  */
 import { captureError } from "@/lib/observability";
 import type Stripe from "stripe";
+import type { Order } from "@ot/db";
 import * as svc from "@ot/core/services";
 import { db } from "./db";
+import { env } from "./env";
 import { stripe } from "./stripe";
 
 export const markOrderPaid = (paymentIntentId: string) => svc.markOrderPaid(db, paymentIntentId);
@@ -96,4 +98,25 @@ export async function applyRefund(charge: Stripe.Charge) {
   const piId = typeof charge.payment_intent === "string" ? charge.payment_intent : charge.payment_intent?.id;
   if (!piId) return;
   await svc.applyRefund(db, { paymentIntentId: piId, amountRefunded: charge.amount_refunded, amount: charge.amount });
+}
+
+export type RefundRequest =
+  | { ok: true; order: Order }
+  | { ok: false; reason: "not_found" | "no_payment" | "not_refundable"; message: string };
+
+/**
+ * Ask Stripe for a full refund. The order itself is updated by the `charge.refunded` webhook
+ * (`applyRefund`: party cancelled, tickets revoked, seats returned), so the state is only ever
+ * derived from Stripe. Same rule as the dashboard refund action; shared with the REST API.
+ */
+export async function requestFullRefund(eventId: string, orderId: string): Promise<RefundRequest> {
+  const order = await svc.getOrder(db, eventId, orderId);
+  if (!order) return { ok: false, reason: "not_found", message: "Order not found." };
+  if (!order.stripePaymentIntentId) return { ok: false, reason: "no_payment", message: "This order has no payment to refund." };
+  if (order.status !== "paid" && order.status !== "partially_refunded") return { ok: false, reason: "not_refundable", message: `Order is ${order.status}; nothing to refund.` };
+  await stripe.refunds.create(
+    { payment_intent: order.stripePaymentIntentId },
+    env.EDITION === "cloud" && order.stripeAccountId ? { stripeAccount: order.stripeAccountId } : undefined,
+  );
+  return { ok: true, order };
 }

@@ -5,6 +5,7 @@ import type { RegistrationField, TicketType } from "@ot/db";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { RegisterForm } from "./register-form";
+import { WaitlistJoin } from "./waitlist-join";
 import { PaymentStep } from "./payment-step";
 import { formatMoney } from "@/lib/utils";
 import { paymentHold, paymentOutcome, registrationSuccessMessage, type PaymentOutcome } from "@/lib/payment-flow";
@@ -13,13 +14,14 @@ type Props = {
   eventId: string; eventName: string; ticketTypes: TicketType[]; fields: RegistrationField[];
   collectPhone: boolean; requiresApproval: boolean; soldOut: boolean; guestsEnabled: boolean; maxGuests: number;
   stripePublishableKey?: string | null;
+  waitlist?: { enabled: boolean; offer: { email: string; expiresAt: string; ticketTypeName: string } | null };
 };
 type ResumeCredentials = { token: string; clientSecret: string };
 type PaymentState = ResumeCredentials & {
   orderId: string; stripeAccountId?: string | null; holdExpiresAt: string; partySize: number; requiresApproval: boolean;
 };
 
-export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectPhone, requiresApproval, soldOut, guestsEnabled, maxGuests, stripePublishableKey }: Props) {
+export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectPhone, requiresApproval, soldOut, guestsEnabled, maxGuests, stripePublishableKey, waitlist }: Props) {
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState<string>();
   const [payment, setPayment] = useState<PaymentState>();
@@ -144,8 +146,13 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
         <span className="text-sm text-muted-foreground">{requiresApproval ? "Registration, approval required" : guestsEnabled ? "Registration, guests welcome" : "Registration"}</span>
         {priceLabel && <span className="font-display text-xl" style={{ fontVariationSettings: '\"opsz\" 24' }}>{priceLabel}</span>}
       </div>
+      {waitlist?.offer && !done && (
+        <p className="mt-3 rounded-md border border-[#c9d9c0] bg-[#eef6ea] px-3 py-2 text-xs">A <strong>{waitlist.offer.ticketTypeName}</strong> spot is reserved for {waitlist.offer.email} until {new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(waitlist.offer.expiresAt))}. Register with that email.</p>
+      )}
       {done ? (
         <p ref={doneRef} tabIndex={-1} aria-live="polite" className="mt-4 text-sm">{done}</p>
+      ) : soldOut && waitlist?.enabled ? (
+        <WaitlistJoin eventId={eventId} eventName={eventName} />
       ) : processing ? (
         <div className="mt-4 space-y-2" aria-live="polite">
           <p className="text-sm">Payment processing. We’ll email your ticket when Stripe confirms it.</p>

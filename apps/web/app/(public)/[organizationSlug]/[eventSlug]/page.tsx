@@ -9,6 +9,9 @@ import { SocialLinks } from "@/components/event/social-links";
 import { RegisterCard } from "@/components/event/register-card";
 import { env } from "@/lib/env";
 import { eventAccess } from "@/lib/event-access";
+import { waitlistOffer } from "@/lib/waitlist-access";
+import { activeWaitlistHolds, liveAttendeeCount } from "@ot/core/services";
+import { db } from "@/lib/db";
 
 type Params = { params: Promise<{ organizationSlug: string; eventSlug: string }> };
 
@@ -45,7 +48,11 @@ export default async function EventPage({ params }: Params) {
 
   const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: event.timezone }).format(event.startsAt);
   const day = new Intl.DateTimeFormat("en-US", { day: "numeric", timeZone: event.timezone }).format(event.startsAt);
-  const soldOut = ticketTypes.length > 0 && ticketTypes.every((t) => t.quantity != null && t.sold + t.held >= t.quantity);
+  const offer = event.waitlistEnabled ? await waitlistOffer(event.id) : null;
+  const atCapacity = event.capacity != null && (await liveAttendeeCount(db, event.id)) + (await activeWaitlistHolds(db, event.id)) >= event.capacity;
+  const soldOut = !offer && (atCapacity || (ticketTypes.length > 0 && ticketTypes.every((t) => t.quantity != null && t.sold + t.held >= t.quantity)));
+  // an offer holds one seat in `held`; present that seat as available for its ticket type only
+  const offeredTypes = offer ? ticketTypes.filter((t) => t.id === offer.ticketTypeId).map((t) => ({ ...t, held: Math.max(t.held - 1, 0) })) : ticketTypes;
 
   const eventPath = publicEventPath(org.slug, event.slug);
   const jsonLd = {
@@ -137,9 +144,10 @@ export default async function EventPage({ params }: Params) {
           {event.visibility === "private" && (
             <p className="mb-3 text-xs text-muted-foreground">{access.invite ? `Private event. Your invitation${access.invite.email ? ` for ${access.invite.email}` : ""} is active.` : "Private event. You can see it because you help run it."}</p>
           )}
-          <RegisterCard eventId={event.id} eventName={event.name} ticketTypes={ticketTypes} fields={fields}
+          <RegisterCard eventId={event.id} eventName={event.name} ticketTypes={offeredTypes} fields={fields}
             collectPhone={event.collectPhone} requiresApproval={event.requiresApproval} soldOut={soldOut}
-            guestsEnabled={event.guestsEnabled} maxGuests={event.maxGuests} stripePublishableKey={env.STRIPE_PUBLISHABLE_KEY} />
+            guestsEnabled={event.guestsEnabled && !offer} maxGuests={event.maxGuests} stripePublishableKey={env.STRIPE_PUBLISHABLE_KEY}
+            waitlist={{ enabled: event.waitlistEnabled, offer: offer ? { email: offer.email, expiresAt: offer.holdExpiresAt.toISOString(), ticketTypeName: offeredTypes[0]?.name ?? "" } : null }} />
         </aside>
       </div>
     </article>

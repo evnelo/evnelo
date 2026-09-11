@@ -357,18 +357,29 @@ export const checkIns = mysqlTable(
   (t) => [index("ci_ticket").on(t.ticketId)],
 );
 
+/**
+ * Waitlist. Joining stores name + email. Promotion reserves one seat (`ticket_types.held` + 1,
+ * counted against event capacity), mints a token for the offer link, and sets `hold_expires_at`;
+ * registering through the offer converts the held seat; the job loop releases lapsed offers
+ * (`expired_at`), after which the entry can be promoted again.
+ */
 export const waitlistEntries = mysqlTable(
   "waitlist_entries",
   {
     id: id(),
     eventId: ref("event_id").notNull(),
-    ticketTypeId: ref("ticket_type_id"),
+    ticketTypeId: ref("ticket_type_id"), // set when promoted: the seat being held
     email: varchar("email", { length: 255 }).notNull(),
     name: varchar("name", { length: 120 }),
+    token: char("token", { length: 48 }), // offer link, minted on promotion
     promotedAt: datetime("promoted_at", { fsp: 3 }),
+    holdExpiresAt: datetime("hold_expires_at", { fsp: 3 }),
+    expiredAt: datetime("expired_at", { fsp: 3 }),
+    registeredAt: datetime("registered_at", { fsp: 3 }),
+    orderId: ref("order_id"),
     createdAt: createdAt(),
   },
-  (t) => [uniqueIndex("wl_event_email").on(t.eventId, t.email)],
+  (t) => [uniqueIndex("wl_event_email").on(t.eventId, t.email), uniqueIndex("wl_token").on(t.token), index("wl_hold").on(t.holdExpiresAt)],
 );
 
 /* ---------- notifications ---------- */

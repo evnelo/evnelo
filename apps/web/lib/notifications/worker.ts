@@ -5,7 +5,7 @@ import { NOTIFICATION_RETRY_LIMIT, STUCK_SENDING_MS, newId, reminderDedupeKey, r
 import { db } from "@/lib/db";
 import { deliver } from "./deliver";
 import { expireHolds, reconcileProcessingOrders } from "@/lib/orders";
-import { purgeApiHousekeeping } from "@ot/core/services";
+import { expireWaitlistOffers, purgeApiHousekeeping } from "@ot/core/services";
 
 /**
  * The job runner. No Redis: everything is rows in `notifications`, claimed with a
@@ -112,6 +112,7 @@ let lastScheduled = 0;
 export async function runJobs(opts: { force?: boolean } = {}) {
   // lapsed checkout holds: cancel the PaymentIntent at Stripe, then give the seats back
   const expiredHolds = await expireHolds().catch((e) => { captureError("jobs.expireHolds", e); return 0; });
+  const expiredOffers = await expireWaitlistOffers(db).catch((e) => { captureError("jobs.expireWaitlistOffers", e); return 0; });
   const requeued = await requeueStuck();
   let scheduled = 0;
   let reconciled = 0;
@@ -122,5 +123,5 @@ export async function runJobs(opts: { force?: boolean } = {}) {
     lastScheduled = Date.now();
   }
   const processed = await processNotifications();
-  return { expiredHolds, reconciled, requeued, scheduled, ...processed };
+  return { expiredHolds, expiredOffers, reconciled, requeued, scheduled, ...processed };
 }

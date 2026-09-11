@@ -18,6 +18,7 @@ import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { stripe } from "@/lib/stripe";
 import OrgInvite, { orgInviteSubject } from "@/emails/org-invite";
 import EventInvite, { eventInviteSubject } from "@/emails/event-invite";
+import WaitlistOffer, { waitlistOfferSubject } from "@/emails/waitlist-offer";
 import { formatDateRange } from "@/lib/utils";
 import { publicEventPath } from "@/lib/urls";
 import { calendarPath } from "@/lib/calendar";
@@ -299,6 +300,49 @@ export async function deleteEventInviteAction(eventId: string, id: string): Prom
     await requireEvent(eventId, "edit_events");
     await svc.deleteEventInvite(db, eventId, id);
     revalidatePath(`/dashboard/events/${eventId}/invites`);
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/* ---------- waitlist ---------- */
+
+export async function promoteWaitlistAction(eventId: string, entryId: string, ticketTypeId: string): Promise<ActionResult> {
+  try {
+    const { event, org } = await requireEvent(eventId, "manage_attendees");
+    const result = await svc.promoteWaitlistEntry(db, eventId, entryId, ticketTypeId);
+    if (!result.ok) {
+      const why = { not_found: "That entry no longer exists.", already_offered: "This person already has an open offer.", registered: "This person already registered.", no_room: "No seat is free on that ticket type (or the event is at capacity). Free one first." }[result.reason];
+      return { ok: false, error: why };
+    }
+    const entry = result.entry;
+    const url = `${env.APP_URL}/w/${entry.token}`;
+    const [tt] = await svc.promotableTicketTypes(db, eventId).then((ts) => ts.filter((t) => t.id === ticketTypeId));
+    const deadline = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: event.timezone, timeZoneName: "short" }).format(entry.holdExpiresAt!);
+    const props = {
+      brand: { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL },
+      event: { name: event.name, url: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, when: formatDateRange(event.startsAt, event.endsAt, event.timezone), where: event.locationType === "online" ? "Online" : [event.venueName, event.city].filter(Boolean).join(", "), calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}` },
+      url, ticketTypeName: tt?.name ?? "General admission", deadline,
+    };
+    revalidatePath(`/dashboard/events/${eventId}/waitlist`);
+    try {
+      const { html, text } = await renderEmail(React.createElement(WaitlistOffer, props));
+      await sendEmail({ to: entry.email, subject: waitlistOfferSubject(props), html, text });
+    } catch (e) {
+      return { ok: true, message: `Spot reserved until ${deadline}, but the email could not be sent (${e instanceof Error ? e.message : "unknown error"}). Send them this link: ${url}` };
+    }
+    return { ok: true, message: `Offer emailed to ${entry.email}; the spot is held until ${deadline}.` };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function removeWaitlistEntryAction(eventId: string, entryId: string): Promise<ActionResult> {
+  try {
+    await requireEvent(eventId, "manage_attendees");
+    await svc.removeWaitlistEntry(db, eventId, entryId);
+    revalidatePath(`/dashboard/events/${eventId}/waitlist`);
     return { ok: true };
   } catch (e) {
     return fail(e);

@@ -4,8 +4,9 @@ import { and, eq, inArray, isNull, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { attendees, events, orders, orderItems, organizations, registrationFields, ticketTypes } from "@ot/db";
 import { buildAnswersSchema, computeOrder, currentEdition, newId } from "@ot/core";
-import { consumeEventInvite } from "@ot/core/services";
+import { capacityAllows, consumeEventInvite, consumeWaitlistOffer } from "@ot/core/services";
 import { eventAccess } from "@/lib/event-access";
+import { waitlistOffer } from "@/lib/waitlist-access";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { createOrderPaymentIntent } from "@/lib/stripe";
@@ -73,6 +74,13 @@ export async function POST(req: Request) {
   const now = new Date();
   if ((tt.salesStartAt && tt.salesStartAt > now) || (tt.salesEndAt && tt.salesEndAt < now)) return NextResponse.json({ error: "Sales for this ticket are closed." }, { status: 409 });
 
+  // a waitlist offer unlocks exactly one seat of one ticket type for the person it was made to
+  const offer = event.waitlistEnabled ? await waitlistOffer(event.id, now) : null;
+  if (offer) {
+    if (offer.email !== input.email) return NextResponse.json({ error: `This reserved spot is for ${offer.email}. Register with that email address.` }, { status: 403 });
+    if (offer.ticketTypeId !== tt.id) return NextResponse.json({ error: "Your reserved spot is for a different ticket type." }, { status: 400 });
+    if (input.guests.length > 0) return NextResponse.json({ error: "A waitlist spot covers one person; guests can join the waitlist separately." }, { status: 400 });
+  }
   if (input.guests.length > 0 && !event.guestsEnabled) return NextResponse.json({ error: "This event doesn't allow guests." }, { status: 400 });
   if (input.guests.length > event.maxGuests) return NextResponse.json({ error: `You can bring up to ${event.maxGuests} guest${event.maxGuests === 1 ? "" : "s"}.` }, { status: 400 });
   const quantity = 1 + input.guests.length;
@@ -116,6 +124,10 @@ export async function POST(req: Request) {
       .limit(1);
     if (dup) return { duplicate: dup.email };
     if (invite && !(await consumeEventInvite(tx, invite.id, now))) return { inviteExhausted: true as const };
+    // the offer's held seat is released here so the reservation below can take it
+    if (offer && !(await consumeWaitlistOffer(tx, offer.id, orderId, now))) return { offerLapsed: true as const };
+    // event-level capacity (locks the event row); ticket-type quantity is enforced by the conditional UPDATE below
+    if (!(await capacityAllows(tx, event.id, quantity, { now }))) return { soldOut: true as const };
 
     // atomic inventory reservation
     const reserve = await tx.update(ticketTypes)
@@ -152,6 +164,7 @@ export async function POST(req: Request) {
     const who = result.duplicate === input.email ? "This email is" : `${result.duplicate} is`;
     return NextResponse.json({ error: `${who} already registered for this event.` }, { status: 409 });
   }
+  if ("offerLapsed" in result) return NextResponse.json({ error: "Your reserved spot expired. If another opens up, the host can offer it to you again." }, { status: 409 });
   if ("inviteExhausted" in result) return NextResponse.json({ error: "This invitation has already been used the maximum number of times." }, { status: 409 });
   if ("soldOut" in result) return NextResponse.json({ error: quantity > 1 ? "Not enough tickets left for your whole party." : "That ticket just sold out." }, { status: 409 });
 

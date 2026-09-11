@@ -167,7 +167,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
           <Toggle label="Ask for a phone number" help="Optional field with SMS opt-in for tickets and reminders." checked={v.collectPhone} onChange={(c) => set("collectPhone", c)} />
           <Toggle label="Allow guests (+1)" help="Each guest gets a separate ticket." checked={v.guestsEnabled} onChange={(c) => set("guestsEnabled", c)} />
           {v.guestsEnabled && <Field label="Max guests per registration" htmlFor="maxg"><Input id="maxg" type="number" min={1} max={20} value={v.maxGuests} onChange={(e) => set("maxGuests", Number(e.target.value) || 1)} /></Field>}
-          <Toggle label="Waitlist when sold out" help="Coming soon." checked={v.waitlistEnabled} onChange={(c) => set("waitlistEnabled", c)} />
+          <Toggle label="Waitlist when sold out" help="Visitors can queue; you offer spots from the Waitlist tab as seats free up." checked={v.waitlistEnabled} onChange={(c) => set("waitlistEnabled", c)} />
           <Toggle label="Buyer pays the service fee" help="Cloud edition: show the 0.99% as a line item." checked={v.feePassThrough} onChange={(c) => set("feePassThrough", c)} />
           <Field label="Refund policy" htmlFor="refund" optional help="Shown at checkout for paid tickets." className="sm:col-span-2"><Textarea id="refund" rows={3} value={v.refundPolicy} onChange={(e) => set("refundPolicy", e.target.value)} /></Field>
         </div>

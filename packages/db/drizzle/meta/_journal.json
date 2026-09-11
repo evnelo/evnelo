@@ -85,6 +85,13 @@
       "when": 1789069534770,
       "tag": "0011_mute_lady_ursula",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1789092512320,
+      "tag": "0012_waitlist_offers",
+      "breakpoints": true
     }
   ]
 }

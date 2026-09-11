@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const tabs: { href: string; label: string; absolute?: (id: string) => string }[] = [
   { href: "", label: "Overview" }, { href: "/edit", label: "Edit" }, { href: "/tickets", label: "Tickets" },
-  { href: "/form", label: "Form" }, { href: "/invites", label: "Invites" }, { href: "/attendees", label: "Attendees" }, { href: "/orders", label: "Orders" },
+  { href: "/form", label: "Form" }, { href: "/invites", label: "Invites" }, { href: "/attendees", label: "Attendees" }, { href: "/waitlist", label: "Waitlist" }, { href: "/orders", label: "Orders" },
   { href: "/checkin", label: "Check-in", absolute: (id) => `/dashboard/checkin/${id}` },
 ];
 

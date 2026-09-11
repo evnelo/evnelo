@@ -24,7 +24,7 @@ export function startJobLoop() {
       const r = await runJobs();
       g.__otJobLastRunAt = new Date();
       g.__otJobLastError = undefined;
-      if (r.sent || r.failed || r.retried || r.skipped || r.requeued || r.expiredHolds || r.reconciled) console.log("[jobs]", JSON.stringify(r));
+      if (r.sent || r.failed || r.retried || r.skipped || r.requeued || r.expiredHolds || r.expiredOffers || r.reconciled) console.log("[jobs]", JSON.stringify(r));
     } catch (e) {
       g.__otJobLastError = (e as Error).message;
       captureError("jobs.loop", e);

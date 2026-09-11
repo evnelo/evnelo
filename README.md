@@ -139,6 +139,7 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] Uploads everywhere: org logo, host avatars, sponsor logos, cover crop; private registration file fields with authenticated downloads
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [x] Stripe Payment Element after order creation: signed redirect recovery, server-confirmed success, a `processing` state for delayed payment methods with hourly reconciliation against Stripe, and hold expiry that cancels the PaymentIntent before releasing seats (a payment that lands after seats were released is refunded automatically)
+- [x] Design system (2026-09-11): `docs/DESIGN.md` direction, warm tokens, CSS-only motion, refreshed primitives, editorial public pages (discover, event, registration, ticket, organizer, auth), dashboard chrome kit and door scanner, branded emails, favicon and generated Open Graph cards
 - [x] Privacy: attendee data export and erasure, organization takeout and deletion, abuse reports (`/report`, `ABUSE_EMAIL`)
 - [x] Discount codes: percent/fixed, use limits, expiry; validated and spent atomically at checkout; audit trail on the order
 - [x] Waitlist: join when sold out, organizer-driven offers that hold a seat for 24h, claim links, automatic release; event capacity enforced at checkout

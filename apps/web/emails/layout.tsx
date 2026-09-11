@@ -5,8 +5,8 @@ import { Body, Container, Head, Hr, Html, Img, Link, Preview, Section, Text } fr
 export type EmailBrand = { orgName: string; orgLogoUrl?: string | null; accent?: string | null; appUrl: string };
 
 export const colors = {
-  background: "#f5f5f3", card: "#ffffff", border: "#dcdcd6", ink: "#000000", muted: "#6a6b66", accent: "#16603a",
-  paper: "#f1e6b2", paperInk: "#2b2407",
+  background: "#f6f4ee", card: "#ffffff", border: "#ddd9cd", ink: "#17170f", muted: "#6b6a60", accent: "#16603a",
+  paper: "#f1e6b2", paperInk: "#2b2407", perforation: "#c9bd85",
 };
 export const fonts = {
   sans: "Geist, Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
@@ -27,7 +27,7 @@ export function EmailLayout({ brand, preview, children, footer }: { brand: Email
               <Text style={{ margin: 0, fontFamily: fonts.display, fontSize: 20, color: colors.ink }}>{brand.orgName}</Text>
             )}
           </Section>
-          <Section style={{ backgroundColor: colors.card, border: `1px solid ${colors.border}`, borderRadius: 12, padding: "28px 28px 24px" }}>
+          <Section style={{ backgroundColor: colors.card, border: `1px solid ${colors.border}`, borderRadius: 16, padding: "32px 32px 28px" }}>
             {children}
           </Section>
           <Section style={{ padding: "20px 4px 0" }}>
@@ -43,14 +43,14 @@ export function EmailLayout({ brand, preview, children, footer }: { brand: Email
 }
 
 export function Title({ children }: { children: React.ReactNode }) {
-  return <Text style={{ margin: "0 0 12px", fontFamily: fonts.display, fontSize: 28, lineHeight: "32px", letterSpacing: "-0.01em", color: colors.ink }}>{children}</Text>;
+  return <Text style={{ margin: "0 0 14px", fontFamily: fonts.display, fontSize: 32, lineHeight: "36px", letterSpacing: "-0.015em", fontWeight: 500, color: colors.ink }}>{children}</Text>;
 }
 export function Para({ children, muted, style }: { children: React.ReactNode; muted?: boolean; style?: React.CSSProperties }) {
   return <Text style={{ margin: "0 0 12px", fontSize: 15, lineHeight: "23px", color: muted ? colors.muted : colors.ink, ...style }}>{children}</Text>;
 }
 export function ButtonLink({ href, children, accent }: { href: string; children: React.ReactNode; accent?: string | null }) {
   return (
-    <Link href={href} style={{ display: "inline-block", backgroundColor: accent || colors.accent, color: "#ffffff", fontSize: 14, fontWeight: 500, textDecoration: "none", padding: "11px 18px", borderRadius: 8 }}>
+    <Link href={href} style={{ display: "inline-block", backgroundColor: accent || colors.accent, color: "#ffffff", fontSize: 14, fontWeight: 500, textDecoration: "none", padding: "12px 20px", borderRadius: 10 }}>
       {children}
     </Link>
   );
@@ -62,15 +62,28 @@ export function Divider() {
 /** What every ticket-bearing email shows about the event. */
 export type EmailEvent = { name: string; url: string; when: string; where: string; onlineUrl?: string | null; calendarUrl: string };
 
+const eyebrow: React.CSSProperties = { margin: 0, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: colors.muted };
+
 export function EventBlock({ event }: { event: EmailEvent }) {
   return (
-    <Section style={{ margin: "4px 0 16px" }}>
-      <Para style={{ margin: 0 }}><strong>{event.when}</strong></Para>
-      <Para muted style={{ margin: 0 }}>{event.where}</Para>
+    <Section style={{ margin: "4px 0 20px", padding: "14px 16px", borderLeft: `3px solid ${colors.accent}`, backgroundColor: colors.background, borderRadius: "0 10px 10px 0" }}>
+      <Text style={eyebrow}>When</Text>
+      <Para style={{ margin: "2px 0 10px" }}><strong>{event.when}</strong></Para>
+      <Text style={eyebrow}>Where</Text>
+      <Para style={{ margin: "2px 0 0" }}>{event.where}</Para>
       {event.onlineUrl && (
-        <Para style={{ margin: "8px 0 0" }}>Join link: <Link href={event.onlineUrl} style={{ color: colors.accent }}>{event.onlineUrl}</Link></Para>
+        <Para style={{ margin: "10px 0 0" }}><Link href={event.onlineUrl} style={{ color: colors.accent, fontWeight: 500 }}>Join online →</Link></Para>
       )}
     </Section>
+  );
+}
+
+/** Secondary actions (calendar, wallets) as small outlined pills. */
+export function PillLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link href={href} style={{ display: "inline-block", border: `1px solid ${colors.border}`, color: colors.ink, fontSize: 13, fontWeight: 500, textDecoration: "none", padding: "8px 14px", borderRadius: 999, marginRight: 8, marginBottom: 8, backgroundColor: colors.card }}>
+      {children}
+    </Link>
   );
 }
 
@@ -79,22 +92,23 @@ export type EmailTicket = { attendeeName: string; ticketTypeName: string; url: s
 
 export function TicketCard({ ticket, accent }: { ticket: EmailTicket; accent?: string | null }) {
   return (
-    <Section style={{ backgroundColor: colors.paper, color: colors.paperInk, borderRadius: 10, padding: 16, marginBottom: 12 }}>
+    <Section style={{ backgroundColor: colors.paper, color: colors.paperInk, borderRadius: 12, marginBottom: 12 }}>
       <table role="presentation" width="100%" cellPadding={0} cellSpacing={0} style={{ borderCollapse: "collapse" }}>
         <tbody>
           <tr>
-            <td style={{ verticalAlign: "top", paddingRight: 12 }}>
-              <Text style={{ margin: 0, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: colors.paperInk, opacity: 0.6 }}>Admit</Text>
-              <Text style={{ margin: "2px 0 0", fontFamily: fonts.display, fontSize: 20, lineHeight: "24px", color: colors.paperInk }}>{ticket.attendeeName}</Text>
+            <td style={{ verticalAlign: "top", padding: "18px 16px 18px 20px" }}>
+              <Text style={{ margin: 0, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: colors.paperInk, opacity: 0.6 }}>Admit one</Text>
+              <Text style={{ margin: "4px 0 0", fontFamily: fonts.display, fontSize: 22, lineHeight: "26px", fontWeight: 500, color: colors.paperInk }}>{ticket.attendeeName}</Text>
               <Text style={{ margin: "2px 0 0", fontSize: 13, color: colors.paperInk, opacity: 0.75 }}>
                 {ticket.ticketTypeName}{ticket.guestOf ? `, guest of ${ticket.guestOf}` : ""}
               </Text>
-              <Text style={{ margin: "14px 0 0" }}>
-                <ButtonLink href={ticket.url} accent={accent}>View ticket</ButtonLink>
+              <Text style={{ margin: "16px 0 0" }}>
+                <ButtonLink href={ticket.url} accent={accent}>Open ticket</ButtonLink>
               </Text>
             </td>
-            <td width={112} style={{ verticalAlign: "top", textAlign: "right" }}>
-              <Img src={ticket.qrUrl} alt="Ticket QR code" width={112} height={112} style={{ width: 112, height: 112, backgroundColor: "#ffffff", borderRadius: 6, padding: 6 }} />
+            <td width={144} style={{ verticalAlign: "middle", textAlign: "center", padding: "16px 16px 16px 12px", borderLeft: `2px dashed ${colors.perforation}` }}>
+              <Img src={ticket.qrUrl} alt="Ticket QR code" width={112} height={112} style={{ width: 112, height: 112, backgroundColor: "#ffffff", borderRadius: 8, padding: 6, display: "inline-block" }} />
+              <Text style={{ margin: "6px 0 0", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: colors.paperInk, opacity: 0.55 }}>Scan at the door</Text>
             </td>
           </tr>
         </tbody>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "@react-email/components";
-import { ButtonLink, Divider, EmailLayout, EventBlock, Para, TicketCard, Title, colors, type EmailBrand, type EmailEvent, type EmailTicket } from "./layout";
+import { ButtonLink, Divider, EmailLayout, EventBlock, Para, PillLink, TicketCard, Title, colors, type EmailBrand, type EmailEvent, type EmailTicket } from "./layout";
 
 export type RegistrationConfirmationProps = {
   brand: EmailBrand;
@@ -22,11 +22,10 @@ export default function RegistrationConfirmation({ brand, event, tickets, wallet
       </Para>
       <EventBlock event={event} />
       {tickets.map((t) => <TicketCard key={t.url} ticket={t} accent={brand.accent} />)}
-      <Para muted style={{ margin: "16px 0 0", fontSize: 13 }}>
-        <Link href={event.calendarUrl} style={{ color: colors.muted }}>Add to calendar</Link>
-        {wallet?.apple && <> · <Link href={wallet.apple} style={{ color: colors.muted }}>Apple Wallet</Link></>}
-        {wallet?.google && <> · <Link href={wallet.google} style={{ color: colors.muted }}>Google Wallet</Link></>}
-        {" · "}<Link href={event.url} style={{ color: colors.muted }}>Event page</Link>
+      <Para style={{ margin: "16px 0 0" }}>
+        <PillLink href={event.calendarUrl}>Add to calendar</PillLink>
+        {wallet?.apple && <PillLink href={wallet.apple}>Apple Wallet</PillLink>}
+        {wallet?.google && <PillLink href={wallet.google}>Google Wallet</PillLink>}
       </Para>
       <Divider />
       <Para muted style={{ margin: 0, fontSize: 13 }}>

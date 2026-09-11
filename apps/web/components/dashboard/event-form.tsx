@@ -108,7 +108,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
           <Field label="Description" htmlFor="desc" optional help="Markdown is supported." className="sm:col-span-2"><Textarea id="desc" rows={6} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
           <Field label="Tags" htmlFor="tags" optional help="Comma separated. Used for discovery." className="sm:col-span-2"><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="design, meetup" /></Field>
           <div className="sm:col-span-2 grid gap-5 md:grid-cols-[minmax(0,1fr)_10rem]">
-            <ImageUploadField label="Cover image" value={v.coverImageUrl} onChange={(url) => set("coverImageUrl", url)} uploadsEnabled={uploadsEnabled} />
+            <ImageUploadField label="Cover image" croppable value={v.coverImageUrl} onChange={(url) => set("coverImageUrl", url)} uploadsEnabled={uploadsEnabled} />
             <ImageUploadField label="Event logo" value={v.logoUrl} onChange={(url) => set("logoUrl", url)} aspect="square" uploadsEnabled={uploadsEnabled} />
           </div>
         </div>
@@ -186,11 +186,13 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
       <CollapsibleSection title="Hosts" description="People shown on the event page." defaultOpen={v.hosts.length > 0}>
         <div className="space-y-3">
           {v.hosts.map((h, i) => (
-            <div key={i} className="grid gap-2 rounded-md border bg-muted/30 p-3 sm:grid-cols-[1fr_1fr_1fr_auto]">
-              <Input value={h.name} placeholder="Name" aria-label="Host name" onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
-              <Input value={h.title} placeholder="Title" aria-label="Host title" onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)))} />
-              <Input type="url" value={h.avatarUrl} placeholder="Avatar URL" aria-label="Avatar URL" onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, avatarUrl: e.target.value } : x)))} />
-              <Button type="button" variant="ghost" size="icon" aria-label="Remove host" onClick={() => set("hosts", v.hosts.filter((_, j) => j !== i))}><X className="size-4" /></Button>
+            <div key={i} className="space-y-3 rounded-md border bg-muted/30 p-3">
+              <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
+                <Input value={h.name} placeholder="Name" aria-label="Host name" onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
+                <Input value={h.title} placeholder="Title" aria-label="Host title" onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)))} />
+                <Button type="button" variant="ghost" size="icon" aria-label="Remove host" onClick={() => set("hosts", v.hosts.filter((_, j) => j !== i))}><X className="size-4" /></Button>
+              </div>
+              <ImageUploadField label="Avatar" aspect="avatar" uploadsEnabled={uploadsEnabled} value={h.avatarUrl} onChange={(url) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, avatarUrl: url } : x)))} />
             </div>
           ))}
           <Button type="button" variant="outline" size="sm" onClick={() => set("hosts", [...v.hosts, { name: "", title: "", avatarUrl: "", socialLinks: [] }])}><Plus className="size-4" /> Add host</Button>
@@ -200,12 +202,14 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
       <CollapsibleSection title="Sponsors" description="Logos appear on the event page in this order." defaultOpen={v.sponsors.length > 0}>
         <div className="space-y-3">
           {v.sponsors.map((s, i) => (
-            <div key={i} className="grid gap-2 rounded-md border bg-muted/30 p-3 sm:grid-cols-[1fr_8rem_1fr_1fr_auto]">
-              <Input value={s.name} placeholder="Name" aria-label="Sponsor name" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
-              <Input value={s.tier} placeholder="Tier" aria-label="Tier" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, tier: e.target.value } : x)))} />
-              <Input type="url" value={s.logoUrl} placeholder="Logo URL" aria-label="Logo URL" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, logoUrl: e.target.value } : x)))} />
-              <Input type="url" value={s.website} placeholder="Website" aria-label="Website" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, website: e.target.value } : x)))} />
-              <Button type="button" variant="ghost" size="icon" aria-label="Remove sponsor" onClick={() => set("sponsors", v.sponsors.filter((_, j) => j !== i))}><X className="size-4" /></Button>
+            <div key={i} className="space-y-3 rounded-md border bg-muted/30 p-3">
+              <div className="grid gap-2 sm:grid-cols-[1fr_8rem_1fr_auto]">
+                <Input value={s.name} placeholder="Name" aria-label="Sponsor name" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
+                <Input value={s.tier} placeholder="Tier" aria-label="Tier" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, tier: e.target.value } : x)))} />
+                <Input type="url" value={s.website} placeholder="Website" aria-label="Website" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, website: e.target.value } : x)))} />
+                <Button type="button" variant="ghost" size="icon" aria-label="Remove sponsor" onClick={() => set("sponsors", v.sponsors.filter((_, j) => j !== i))}><X className="size-4" /></Button>
+              </div>
+              <ImageUploadField label="Logo" aspect="thumb" uploadsEnabled={uploadsEnabled} value={s.logoUrl} onChange={(url) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, logoUrl: url } : x)))} />
             </div>
           ))}
           <Button type="button" variant="outline" size="sm" onClick={() => set("sponsors", [...v.sponsors, { name: "", logoUrl: "", tier: "", website: "", socialLinks: [] }])}><Plus className="size-4" /> Add sponsor</Button>

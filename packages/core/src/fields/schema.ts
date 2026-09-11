@@ -1,8 +1,10 @@
 import { z } from "zod";
 import type { RegistrationField } from "@ot/db";
 import { visibleFieldKeys, type Answers } from "./conditions";
+import { isRegistrationFileKey } from "./files";
 
-type FieldDef = Pick<RegistrationField, "key" | "label" | "type" | "required" | "options" | "condition" | "position" | "scope" | "ticketTypeIds">;
+type FieldDef = Pick<RegistrationField, "key" | "label" | "type" | "required" | "options" | "condition" | "position" | "scope" | "ticketTypeIds">
+  & Partial<Pick<RegistrationField, "eventId">>;
 
 const E164 = /^\+[1-9]\d{6,14}$/;
 
@@ -26,9 +28,11 @@ function fieldSchema(f: FieldDef): z.ZodTypeAny {
     }
     case "checkbox": s = z.boolean(); break;
     case "consent": s = z.literal(true, { errorMap: () => ({ message: "Required" }) }); break;
-    case "file": s = z.string().url(); break;
+    // the answer is the private object key of the upload, never a URL, and never another event's key
+    case "file": s = z.string().trim().refine((v) => v === "" || isRegistrationFileKey(v, f.eventId), "Upload a file"); break;
   }
   if (f.required) {
+    if (f.type === "file") return z.string().trim().min(1, "Required").refine((v) => isRegistrationFileKey(v, f.eventId), "Upload a file");
     if (f.type === "multi_select") s = s.refine((v) => Array.isArray(v) && v.length > 0, "Choose at least one");
     if (f.type === "checkbox") s = z.literal(true, { errorMap: () => ({ message: "Required" }) });
     if (s instanceof z.ZodString) s = s.min(1, "Required");

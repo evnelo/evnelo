@@ -1,5 +1,5 @@
-import { countAttendeesByStatus, listAttendees } from "@ot/core/services";
-import { can } from "@ot/core";
+import { countAttendeesByStatus, listAttendees, listRegistrationFields } from "@ot/core/services";
+import { can, registrationFileDownloadPath } from "@ot/core";
 import type { Attendee } from "@ot/db";
 import { db } from "@/lib/db";
 import { requireEvent, statusLabel, statusVariant } from "@/lib/dashboard";
@@ -19,7 +19,10 @@ export default async function AttendeesPage({ params, searchParams }: { params: 
   const { role } = await requireEvent(id);
   const manage = can(role, "manage_attendees");
   const st = (statuses.includes(status as never) ? status : "all") as Attendee["status"] | "all";
-  const [rows, counts] = await Promise.all([listAttendees(db, id, { q, status: st }), countAttendeesByStatus(db, id)]);
+  const [rows, counts, fields] = await Promise.all([listAttendees(db, id, { q, status: st }), countAttendeesByStatus(db, id), listRegistrationFields(db, id)]);
+  // file answers hold a private object key; this link is the only way to read one
+  const fileFields = fields.filter((f) => f.type === "file" && f.scope !== "order");
+  const showFiles = manage && fileFields.length > 0;
   const fmt = (d: Date) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(d);
 
   return (
@@ -43,9 +46,9 @@ export default async function AttendeesPage({ params, searchParams }: { params: 
       ) : null}
 
       <Table>
-        <THead><TR><TH>Name</TH><TH>Email</TH><TH>Ticket</TH><TH>Status</TH><TH>Registered</TH>{manage && <TH className="text-right">Actions</TH>}</TR></THead>
+        <THead><TR><TH>Name</TH><TH>Email</TH><TH>Ticket</TH><TH>Status</TH><TH>Registered</TH>{showFiles && <TH>Files</TH>}{manage && <TH className="text-right">Actions</TH>}</TR></THead>
         <TBody>
-          {rows.length === 0 && <TR><TD colSpan={6} className="py-8 text-center text-muted-foreground">No attendees match.</TD></TR>}
+          {rows.length === 0 && <TR><TD colSpan={7} className="py-8 text-center text-muted-foreground">No attendees match.</TD></TR>}
           {rows.map(({ attendee: a, ticketTypeName, ticketToken, ticketRevokedAt, hostName, orderStatus }) => (
             <TR key={a.id}>
               <TD>
@@ -56,6 +59,16 @@ export default async function AttendeesPage({ params, searchParams }: { params: 
               <TD>{ticketTypeName}<div className="text-xs text-muted-foreground">{orderStatus === "pending" ? "payment pending" : orderStatus}</div></TD>
               <TD><Badge variant={statusVariant[a.status]}>{statusLabel(a.status)}</Badge></TD>
               <TD className="whitespace-nowrap text-muted-foreground">{fmt(a.createdAt)}</TD>
+              {showFiles && (
+                <TD className="space-y-1">
+                  {fileFields.map((f) => {
+                    const href = registrationFileDownloadPath(String(a.answers[f.key] ?? ""));
+                    return href
+                      ? <a key={f.key} href={href} className="block text-xs underline underline-offset-4">{f.label}</a>
+                      : <span key={f.key} className="block text-xs text-muted-foreground">—</span>;
+                  })}
+                </TD>
+              )}
               {manage && (
                 <TD className="text-right">
                   <div className="flex justify-end gap-1">

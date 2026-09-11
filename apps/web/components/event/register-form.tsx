@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { RegistrationFileField } from "@/components/event/registration-file-field";
 import { formatMoney } from "@/lib/utils";
 import { DiscountCodeField, type AppliedDiscount } from "./discount-code-field";
 
@@ -119,6 +120,18 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
     );
     const help = f.helpText && <p className="mt-1 text-xs text-muted-foreground">{f.helpText}</p>;
     switch (f.type) {
+      case "file":
+        // the answer is the uploaded object's key, set by the uploader rather than typed
+        return (
+          <div key={name}>{label}
+            <RegistrationFileField
+              eventId={eventId}
+              inputId={name}
+              onChange={(key) => { form.setValue(name, key, { shouldValidate: form.formState.isSubmitted }); update(f.key, key); }}
+            />
+            {help}{err(name)}
+          </div>
+        );
       case "long_text":
         return <div key={name}>{label}<Textarea id={name} placeholder={f.placeholder ?? undefined} className="mt-1.5" {...reg} />{help}{err(name)}</div>;
       case "select":

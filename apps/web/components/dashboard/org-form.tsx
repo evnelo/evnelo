@@ -8,11 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Field, FormMessage } from "@/components/ui/form-field";
+import { ImageUploadField } from "@/components/dashboard/image-upload-field";
 import { updateOrgAction } from "@/app/dashboard/actions";
 
 type Values = { name: string; slug: string; website: string; logoUrl: string; accentColor: string; feePassThrough: boolean; socialLinks: { platform: string; url: string }[] };
 
-export function OrgForm({ org, readOnly }: { org: Values; readOnly: boolean }) {
+export function OrgForm({ org, readOnly, uploadsEnabled }: { org: Values; readOnly: boolean; uploadsEnabled: boolean }) {
   const [v, setV] = useState<Values>(org);
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
   const [pending, start] = useTransition();
@@ -34,7 +35,10 @@ export function OrgForm({ org, readOnly }: { org: Values; readOnly: boolean }) {
           <Field label="Name" htmlFor="org-name"><Input id="org-name" value={v.name} onChange={(e) => set("name", e.target.value)} required /></Field>
           <Field label="Public URL" htmlFor="org-slug" help="/o/…  Lowercase letters, numbers, hyphens."><Input id="org-slug" value={v.slug} onChange={(e) => set("slug", e.target.value)} pattern="[a-z0-9\-]{3,60}" /></Field>
           <Field label="Website" htmlFor="org-web" optional help="Enter example.com and we'll add https:// automatically."><Input id="org-web" type="text" inputMode="url" autoCapitalize="none" autoCorrect="off" value={v.website} onChange={(e) => set("website", e.target.value)} onBlur={() => set("website", normalizeWebsiteUrl(v.website))} placeholder="example.com" /></Field>
-          <Field label="Logo URL" htmlFor="org-logo" optional help="Shown on event pages and emails."><Input id="org-logo" type="url" value={v.logoUrl} onChange={(e) => set("logoUrl", e.target.value)} placeholder="https://…/logo.png" /></Field>
+          <div>
+            <ImageUploadField id="org-logo" label="Logo" aspect="thumb" uploadsEnabled={uploadsEnabled} value={v.logoUrl} onChange={(url) => set("logoUrl", url)} />
+            <p className="mt-1.5 text-xs text-muted-foreground">Shown on event pages and emails.</p>
+          </div>
           <Field label="Accent colour" htmlFor="org-accent" optional help="Buttons in emails and on ticket pages.">
             <div className="flex gap-2">
               <input type="color" aria-label="Pick colour" value={v.accentColor || "#16603a"} onChange={(e) => set("accentColor", e.target.value)} className="h-9 w-12 cursor-pointer rounded-md border bg-card p-1" />

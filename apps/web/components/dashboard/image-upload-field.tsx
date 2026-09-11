@@ -1,24 +1,38 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ImagePlus, Loader2, Trash2 } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Crop, ImagePlus, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-/**
- * Cover/logo picker. With S3 configured: presign → POST the file straight to the bucket →
- * confirm with the server, which returns the URL to store. Without S3: a plain URL field.
- */
-export function ImageUploadField({ label, value, onChange, aspect = "video", uploadsEnabled }: {
+// only pulled in when someone actually crops a cover
+const ImageCropDialog = dynamic(() => import("./image-crop-dialog").then((m) => m.ImageCropDialog), { ssr: false });
+
+type Props = {
   label: string;
   value: string;
   onChange: (url: string) => void;
-  aspect?: "video" | "square";
+  /** "video" is the 16:7 cover, "square" a logo, "avatar"/"thumb" compact 48px previews. */
+  aspect?: "video" | "square" | "avatar" | "thumb";
   uploadsEnabled: boolean;
-}) {
+  /** Offer the 16:7 crop step before uploading. Covers only. */
+  croppable?: boolean;
+  id?: string;
+};
+
+/**
+ * Cover/logo/avatar picker. With S3 configured: presign → POST the file straight to the bucket →
+ * confirm with the server, which returns the URL to store. Without S3: a plain URL field.
+ */
+export function ImageUploadField({ label, value, onChange, aspect = "video", uploadsEnabled, croppable = false, id }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string>();
+  const [pendingCrop, setPendingCrop] = useState<File>();
+  const compact = aspect === "avatar" || aspect === "thumb";
+  const round = aspect === "avatar";
+  const fieldId = id ?? `image-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
   const upload = async (file?: File) => {
     if (!file) return;
@@ -44,35 +58,71 @@ export function ImageUploadField({ label, value, onChange, aspect = "video", upl
     }
   };
 
+  const choose = (file?: File) => {
+    if (!file) return;
+    setError(undefined);
+    if (croppable) return setPendingCrop(file);
+    void upload(file);
+  };
+
+  const preview = value
+    ? <img src={value} alt="" className={`size-full object-cover ${round ? "rounded-full" : ""}`} />
+    : (
+      <div className="flex size-full flex-col items-center justify-center gap-2 p-2 text-center text-muted-foreground">
+        <ImagePlus className={compact ? "size-4" : "size-6"} />
+        {!compact && <span className="text-sm">No image yet</span>}
+      </div>
+    );
+
+  const controls = uploadsEnabled ? (
+    <>
+      <input ref={inputRef} id={fieldId} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(event) => { void choose(event.target.files?.[0]); event.target.value = ""; }} />
+      <div className="flex flex-wrap gap-2">
+        <Button type="button" variant="outline" size="sm" disabled={uploading} onClick={() => inputRef.current?.click()}>
+          {uploading ? <Loader2 className="animate-spin" /> : croppable ? <Crop /> : <ImagePlus />}
+          {uploading ? "Uploading…" : value ? (compact ? "Replace" : "Replace image") : compact ? "Upload" : "Upload image"}
+        </Button>
+        {value && <Button type="button" variant="ghost" size="sm" disabled={uploading} onClick={() => onChange("")}><Trash2 /> Remove</Button>}
+      </div>
+    </>
+  ) : (
+    <Input id={fieldId} type="url" value={value} onChange={(e) => onChange(e.target.value)} placeholder="https://… (image uploads need S3 configured)" aria-label={`${label} URL`} />
+  );
+
+  const dialog = pendingCrop && (
+    <ImageCropDialog
+      file={pendingCrop}
+      onCancel={() => setPendingCrop(undefined)}
+      onCropped={(cropped) => { setPendingCrop(undefined); void upload(cropped); }}
+    />
+  );
+
+  if (compact) {
+    return (
+      <div className="space-y-1.5">
+        <span className="text-sm font-medium">{label}</span>
+        <div className="flex items-center gap-3">
+          <div className={`size-12 shrink-0 overflow-hidden border border-dashed bg-muted/30 ${round ? "rounded-full" : "rounded-md"}`}>{preview}</div>
+          <div className="min-w-0 flex-1">{controls}</div>
+        </div>
+        {error && <p className="text-xs text-destructive">{error}</p>}
+        {dialog}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-medium">{label}</span>
         {uploadsEnabled && <span className="text-xs text-muted-foreground">JPEG, PNG or WebP · max 5 MB</span>}
       </div>
-      <div className={`relative overflow-hidden rounded-lg border border-dashed bg-muted/30 ${aspect === "video" ? "aspect-video" : "aspect-square max-w-40"}`}>
-        {value ? <img src={value} alt="" className="size-full object-cover" /> : (
-          <div className="flex size-full flex-col items-center justify-center gap-2 p-4 text-center text-sm text-muted-foreground">
-            <ImagePlus className="size-6" />
-            <span>No image yet</span>
-          </div>
-        )}
+      <div className={`relative overflow-hidden rounded-lg border border-dashed bg-muted/30 ${aspect === "video" ? "aspect-[16/7]" : "aspect-square max-w-40"}`}>
+        {preview}
       </div>
-      {uploadsEnabled ? (
-        <>
-          <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(event) => { void upload(event.target.files?.[0]); event.target.value = ""; }} />
-          <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="outline" size="sm" disabled={uploading} onClick={() => inputRef.current?.click()}>
-              {uploading ? <Loader2 className="animate-spin" /> : <ImagePlus />}
-              {uploading ? "Uploading…" : value ? "Replace image" : "Upload image"}
-            </Button>
-            {value && <Button type="button" variant="ghost" size="sm" disabled={uploading} onClick={() => onChange("")}><Trash2 /> Remove</Button>}
-          </div>
-        </>
-      ) : (
-        <Input type="url" value={value} onChange={(e) => onChange(e.target.value)} placeholder="https://… (image uploads need S3 configured)" aria-label={`${label} URL`} />
-      )}
+      {controls}
       {error && <p className="text-xs text-destructive">{error}</p>}
+      {dialog}
     </div>
   );
 }

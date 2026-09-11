@@ -1,6 +1,16 @@
 import { randomBytes } from "node:crypto";
-import { DeleteObjectCommand, HeadObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, GetObjectCommand, HeadObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import {
+  MAX_REGISTRATION_FILE_BYTES,
+  REGISTRATION_FILE_TYPES,
+  parseRegistrationFileKey,
+  registrationFileKey,
+  registrationFilePrefix,
+  type ParsedRegistrationFileKey,
+  type RegistrationFileType,
+} from "@ot/core";
 import { env } from "./env";
 
 /**
@@ -103,5 +113,73 @@ export async function verifyUploadedImage(key: string): Promise<{ ok: true; url:
 }
 
 export async function deleteUploadedImage(key: string) {
+  await s3().send(new DeleteObjectCommand({ Bucket: storageEnv.bucket!, Key: key }));
+}
+
+/* ---------- registration file answers ---------- */
+
+/**
+ * Files a registrant attaches to a `file` question live under
+ * `{S3_KEY_PREFIX}/registrations/{eventId}/` and are **private**: the policy carries no ACL, so
+ * the object inherits the bucket's default and is never reachable over CloudFront. Organizers read
+ * one through an authenticated route that mints a short presigned GET.
+ */
+export function registrationUploadPrefix(eventId: string) {
+  return registrationFilePrefix(storageEnv.keyPrefix, eventId);
+}
+
+export function newRegistrationFileKey(eventId: string, contentType: RegistrationFileType) {
+  return registrationFileKey(storageEnv.keyPrefix, eventId, randomBytes(16).toString("hex"), REGISTRATION_FILE_TYPES[contentType]);
+}
+
+export async function presignRegistrationUpload(eventId: string, contentType: RegistrationFileType) {
+  const key = newRegistrationFileKey(eventId, contentType);
+  const { url, fields } = await createPresignedPost(s3(), {
+    Bucket: storageEnv.bucket!,
+    Key: key,
+    Conditions: [
+      ["content-length-range", 1, MAX_REGISTRATION_FILE_BYTES],
+      ["eq", "$Content-Type", contentType],
+      ["eq", "$key", key], // no `starts-with`: one signature, one object
+    ],
+    Fields: { "Content-Type": contentType },
+    Expires: 300,
+  });
+  return { url, fields, key };
+}
+
+/**
+ * Confirms a submitted answer is an object this event's registrants uploaded: right prefix, right
+ * event, present in the bucket, allowed type, within the cap. Returns null otherwise, so a
+ * fabricated key can never be stored as an answer or turned into a download link.
+ */
+export async function verifyRegistrationFile(key: unknown, eventId: string): Promise<(ParsedRegistrationFileKey & { contentType: string; contentLength: number }) | null> {
+  const parsed = parseRegistrationFileKey(key, { eventId, keyPrefix: storageEnv.keyPrefix });
+  if (!parsed) return null;
+  try {
+    const head = await s3().send(new HeadObjectCommand({ Bucket: storageEnv.bucket!, Key: parsed.key }));
+    const contentType = (head.ContentType ?? "").split(";", 1)[0]!.trim().toLowerCase();
+    const contentLength = head.ContentLength ?? 0;
+    if (!(contentType in REGISTRATION_FILE_TYPES) || contentLength < 1 || contentLength > MAX_REGISTRATION_FILE_BYTES) return null;
+    return { ...parsed, contentType, contentLength };
+  } catch {
+    return null;
+  }
+}
+
+/** Short-lived GET for one private file, with the download filename baked into the signature. */
+export function presignRegistrationDownload(key: string, options: { filename: string; expiresIn?: number }) {
+  return getSignedUrl(
+    s3(),
+    new GetObjectCommand({
+      Bucket: storageEnv.bucket!,
+      Key: key,
+      ResponseContentDisposition: `attachment; filename="${options.filename.replace(/["\\]/g, "")}"`,
+    }),
+    { expiresIn: options.expiresIn ?? 120 },
+  );
+}
+
+export async function deleteRegistrationFile(key: string) {
   await s3().send(new DeleteObjectCommand({ Bucket: storageEnv.bucket!, Key: key }));
 }

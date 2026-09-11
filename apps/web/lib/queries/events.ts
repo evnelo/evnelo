@@ -1,7 +1,9 @@
 import { cache } from "react";
 import { and, asc, eq } from "drizzle-orm";
 import { events, eventHosts, eventSponsors, registrationFields, ticketTypes, tags, eventTags, organizations } from "@ot/db";
-import { findEventForLegacySlug, getEventByOrgAndSlug, listPublicEvents } from "@ot/core/services";
+import {
+  findEventForLegacySlug, getEventByOrgAndSlug, listPublicCities, listPublicEvents, listPublicTags, type PublicEventSearch,
+} from "@ot/core/services";
 import { db } from "@/lib/db";
 
 /** Everything the public event page needs, by the canonical (organization slug, event slug) pair. */
@@ -29,6 +31,14 @@ async function loadEventRelations(event: typeof events.$inferSelect, org: typeof
   return { event, org, hosts, sponsors, ticketTypes: types, fields, tags: eventTagRows };
 }
 
-export function listDiscoverableEvents(opts: { city?: string; limit?: number } = {}) {
+export function listDiscoverableEvents(opts: PublicEventSearch = {}) {
   return listPublicEvents(db, opts);
+}
+
+export function listDiscoverableTags(limit?: number) {
+  return listPublicTags(db, limit);
+}
+
+export function listDiscoverableCities(limit?: number) {
+  return listPublicCities(db, limit);
 }

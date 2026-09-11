@@ -24,6 +24,7 @@ const storageEnv = {
   endpoint: env.S3_ENDPOINT,
   cloudfrontDomain: env.CLOUDFRONT_DOMAIN,
   keyPrefix: env.S3_KEY_PREFIX.replace(/^\/+|\/+$/g, ""),
+  uploadAcl: env.S3_UPLOAD_ACL,
 };
 
 export const storageConfigured = Boolean(storageEnv.bucket && storageEnv.region && storageEnv.accessKeyId && storageEnv.secretAccessKey);
@@ -53,6 +54,8 @@ export function uploadKey(organizationId: string, contentType: ImageType) {
 export function publicUrl(key: string, cfg: { cloudfrontDomain?: string; endpoint?: string; bucket: string; region: string } = { cloudfrontDomain: storageEnv.cloudfrontDomain, endpoint: storageEnv.endpoint, bucket: storageEnv.bucket!, region: storageEnv.region! }) {
   if (cfg.cloudfrontDomain) return `https://${cfg.cloudfrontDomain.replace(/^https?:\/\//, "").replace(/\/$/, "")}/${key}`;
   if (cfg.endpoint) return `${cfg.endpoint.replace(/\/$/, "")}/${cfg.bucket}/${key}`;
+  // bucket names with dots break the wildcard TLS certificate of virtual-hosted URLs; use path style for them
+  if (cfg.bucket.includes(".")) return `https://s3.${cfg.region}.amazonaws.com/${cfg.bucket}/${key}`;
   return `https://${cfg.bucket}.s3.${cfg.region}.amazonaws.com/${key}`;
 }
 
@@ -71,8 +74,13 @@ export async function presignImageUpload(organizationId: string, contentType: Im
       ["content-length-range", 1, MAX_IMAGE_BYTES],
       ["eq", "$Content-Type", contentType],
       ["starts-with", "$key", uploadPrefix(organizationId)],
+      ...(storageEnv.uploadAcl ? [{ acl: storageEnv.uploadAcl }] : []),
     ],
-    Fields: { "Content-Type": contentType, "Cache-Control": "public, max-age=31536000, immutable" },
+    Fields: {
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=31536000, immutable",
+      ...(storageEnv.uploadAcl ? { acl: storageEnv.uploadAcl } : {}),
+    },
     Expires: 300,
   });
   return { url, fields, key, publicUrl: publicUrl(key) };

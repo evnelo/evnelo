@@ -99,7 +99,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
       <Section title="Basics" description="The minimum details people need to recognize your event.">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Event name" htmlFor="name" className="sm:col-span-2"><Input id="name" value={v.name} onChange={(e) => set("name", e.target.value)} required maxLength={160} autoFocus={mode === "create"} /></Field>
-          <Field label="Event URL" htmlFor="slug" help={publicEventPath(organizationSlug, v.slug || "…")} className="sm:col-span-2"><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9-]{3,80}" /></Field>
+          <Field label="Event URL" htmlFor="slug" help={publicEventPath(organizationSlug, v.slug || "…")} className="sm:col-span-2"><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9\-]{3,80}" /></Field>
         </div>
       </Section>
 

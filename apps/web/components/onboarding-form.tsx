@@ -34,7 +34,7 @@ export function OnboardingForm({
           name="slug"
           value={slug}
           onChange={(event) => setSlug(event.target.value)}
-          pattern="[a-z0-9-]{3,60}"
+          pattern="[a-z0-9\-]{3,60}"
           placeholder={suggestedSlug}
         />
       </Field>

@@ -55,7 +55,7 @@ Create keys under Dashboard → Settings → API keys (owners and admins). Organ
 
 ## Image storage
 
-Uploads never pass through the web process: the browser asks `/api/uploads` for a presigned S3 POST and sends the file to the bucket directly, then confirms so the server can verify size and type. Set `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION` and `S3_BUCKET` (the SDK-standard `AWS_*` names are accepted too); add `S3_ENDPOINT` for R2, MinIO or another S3-compatible store, and `CLOUDFRONT_DOMAIN` to serve images through CloudFront. Every object is written under `S3_KEY_PREFIX` (default `openticket`), so the bucket can be shared with other applications. The bucket needs a CORS rule allowing `POST` from your `APP_URL`, and objects under `openticket/` must be publicly readable (bucket policy, or CloudFront in front of a private bucket). Without these variables the editor accepts image URLs instead.
+Uploads never pass through the web process: the browser asks `/api/uploads` for a presigned S3 POST and sends the file to the bucket directly, then confirms so the server can verify size and type. Set `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION` and `S3_BUCKET` (the SDK-standard `AWS_*` names are accepted too); add `S3_ENDPOINT` for R2, MinIO or another S3-compatible store, and `CLOUDFRONT_DOMAIN` to serve images through CloudFront. Every object is written under `S3_KEY_PREFIX` (default `openticket`), so the bucket can be shared with other applications. The bucket needs a CORS rule allowing `POST` from your `APP_URL`, and objects under `openticket/` must be publicly readable: a bucket policy, CloudFront origin access in front of a private bucket, or, for buckets that still use object ACLs, `S3_UPLOAD_ACL=public-read` so each upload is written with that ACL. Without these variables the editor accepts image URLs instead.
 
 ## Notifications
 
@@ -97,7 +97,7 @@ This is the canonical implementation order and cross-session progress tracker. U
 7. [ ] **Discovery search, filters, calendar, and sitemap**
    - Complete when `/discover` supports query/city/tag/date/free-or-paid/location filters, list and calendar views, near-me discovery, featured/upcoming sections, and public-only sitemap/SEO coverage.
 8. [ ] **Complete uploads with S3/R2 and remaining image fields**
-   - Existing foundation: authenticated, bounded, decoded/re-encoded local event cover/logo uploads with quotas and cleanup.
+   - Existing foundation: direct-to-S3 presigned uploads for event covers and logos (verified 2026-09-10 against a real bucket behind CloudFront), keys under `openticket/`, size/type verified after upload.
    - Complete when organization logos, host avatars, sponsor logos, registration file fields, crop controls, and persistent S3-compatible Cloud storage are implemented.
 9. [ ] **Health endpoint, registration abuse controls, and privacy workflows**
    - Complete when health/readiness checks, registration/login abuse limits, Cloud moderation/reporting, and attendee/org PII export plus hard deletion are implemented and documented.

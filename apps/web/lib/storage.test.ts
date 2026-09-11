@@ -7,6 +7,7 @@ describe("S3 storage helpers", () => {
     expect(publicUrl("uploads/o/x.jpg", { cloudfrontDomain: "cdn.example.com", bucket: "b", region: "us-east-1" })).toBe("https://cdn.example.com/uploads/o/x.jpg");
     expect(publicUrl("uploads/o/x.jpg", { endpoint: "https://accountid.r2.cloudflarestorage.com", bucket: "b", region: "auto" })).toBe("https://accountid.r2.cloudflarestorage.com/b/uploads/o/x.jpg");
     expect(publicUrl("uploads/o/x.jpg", { bucket: "b", region: "eu-west-1" })).toBe("https://b.s3.eu-west-1.amazonaws.com/uploads/o/x.jpg");
+    expect(publicUrl("uploads/o/x.jpg", { bucket: "my.dotted.bucket", region: "us-east-1" })).toBe("https://s3.us-east-1.amazonaws.com/my.dotted.bucket/uploads/o/x.jpg");
   });
 
   it("namespaces keys by organization with a random name and the right extension", () => {

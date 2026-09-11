@@ -241,7 +241,7 @@ Attendee preferences: per-attendee unsubscribe from reminders; confirmations alw
 | Email | **Resend** with React Email templates |
 | Auth | Auth.js (magic link, Google); API keys hashed at rest |
 | Jobs | MySQL-backed queue (reminders, webhook delivery, SMS/email sending) — no Redis dependency for self-hosters; BullMQ optional on Cloud |
-| Storage | S3-compatible (R2 on Cloud), direct browser uploads via presigned POST, CloudFront in front; all keys under `S3_KEY_PREFIX` (default `openticket`) so one bucket can be shared; no local-disk mode |
+| Storage | S3-compatible (R2 on Cloud), direct browser uploads via presigned POST, CloudFront in front; all keys under `S3_KEY_PREFIX` (default `openticket`) so one bucket can be shared; optional `S3_UPLOAD_ACL=public-read` for ACL-style buckets (decided 2026-09-10 after testing against InEvent's bucket, which has no public bucket policy); no local-disk mode |
 | Search | MySQL full-text for v1; Meilisearch optional adapter for Cloud discovery |
 | Maps | Mapbox/Google geocoding behind an interface; static map on event page |
 | Testing | Vitest, Playwright for checkout and check-in flows, Stripe test clocks |

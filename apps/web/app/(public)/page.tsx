@@ -5,6 +5,7 @@ import { listDiscoverableEvents } from "@/lib/queries/events";
 import { Button } from "@/components/ui/button";
 import { EventCard } from "@/components/discover/event-card";
 import { Hero } from "@/components/marketing/hero";
+import { GITHUB_REPO_URL } from "@/components/marketing/github-badge";
 
 export const metadata: Metadata = {
   title: "Evnelo: events, in motion",
@@ -88,7 +89,7 @@ export default async function HomePage() {
               ))}
             </ul>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild variant="dark"><a href="https://github.com/evnelo/evnelo" rel="noopener noreferrer">View the source</a></Button>
+              <Button asChild variant="dark"><a href={GITHUB_REPO_URL} rel="noopener noreferrer">View the source</a></Button>
               <Button asChild variant="outline"><a href="/api/v1/docs">API reference</a></Button>
             </div>
           </div>

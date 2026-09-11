@@ -2,6 +2,7 @@ import Link from "next/link";
 import { currentUser } from "@/lib/auth/session";
 import { Brand } from "@/components/brand";
 import { buttonVariants } from "@/components/ui/button";
+import { GithubBadge } from "@/components/marketing/github-badge";
 import { cn } from "@/lib/utils";
 
 /** Public chrome: a sticky translucent header and a quiet footer. The dashboard has its own shell. */
@@ -15,6 +16,7 @@ export default async function PublicLayout({ children }: { children: React.React
           <div className="flex items-center gap-1 text-sm sm:gap-2">
             <Link href="/discover" className="press rounded-full px-3 py-2 hover:bg-muted/80">Discover</Link>
             <Link href="/#pricing" className="press hidden rounded-full px-3 py-2 hover:bg-muted/80 sm:inline-flex">Pricing</Link>
+            <GithubBadge className="hidden md:inline-flex" />
             {user ? (
               <Link href="/dashboard" className={cn(buttonVariants({ variant: "outline", size: "pill" }))}>Dashboard</Link>
             ) : (

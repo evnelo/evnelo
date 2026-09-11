@@ -52,3 +52,70 @@ describe("presigned S3 uploads", () => {
     }
   });
 });
+
+/** Registration answers are private: same signing path, deliberately different policy. */
+describe("presigned registration uploads", () => {
+  const saved = { ...process.env };
+  const EVENT = "01J00000000000000000000000";
+  beforeAll(() => {
+    for (const k of ["S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY", "S3_REGION", "S3_ENDPOINT"]) delete process.env[k];
+    // an upload ACL is configured for images; the registration policy must still refuse to use it
+    Object.assign(process.env, {
+      AWS_ACCESS_KEY_ID: "AKIATEST", AWS_SECRET_ACCESS_KEY: "secret", AWS_REGION: "us-east-1",
+      S3_BUCKET: "ot-test", CLOUDFRONT_DOMAIN: "cdn.example.com", S3_UPLOAD_ACL: "public-read", S3_KEY_PREFIX: "openticket",
+    });
+    vi.resetModules();
+  });
+  afterAll(() => { process.env = { ...saved }; vi.resetModules(); });
+
+  it("pins one key, the content type and a 10 MB ceiling, and never grants an ACL", async () => {
+    const { presignRegistrationUpload, registrationUploadPrefix } = await import("./storage");
+    expect(registrationUploadPrefix(EVENT)).toBe(`openticket/registrations/${EVENT}/`);
+    const r = await presignRegistrationUpload(EVENT, "application/pdf");
+    expect(r.url).toBe("https://ot-test.s3.us-east-1.amazonaws.com/");
+    expect(r.key).toMatch(new RegExp(`^openticket/registrations/${EVENT}/[a-f0-9]{32}\\.pdf$`));
+    expect(r.fields.key).toBe(r.key);
+    expect(r.fields["Content-Type"]).toBe("application/pdf");
+    const policy = JSON.parse(Buffer.from(r.fields.Policy!, "base64").toString("utf8")) as { conditions: unknown[] };
+    expect(policy.conditions).toContainEqual(["content-length-range", 1, 10 * 1024 * 1024]);
+    expect(policy.conditions).toContainEqual(["eq", "$Content-Type", "application/pdf"]);
+    expect(policy.conditions).toContainEqual(["eq", "$key", r.key]);
+    // no `starts-with` on the key and no public-read anywhere: one signature buys one private object
+    expect(policy.conditions.some((c) => JSON.stringify(c).includes("starts-with"))).toBe(false);
+    expect(policy.conditions.some((c) => JSON.stringify(c).includes("acl"))).toBe(false);
+    expect(r.fields.acl).toBeUndefined();
+    expect(JSON.stringify(r)).not.toContain("cdn.example.com"); // never a public URL
+  });
+
+  it("gives every allowed type its own extension and a fresh key", async () => {
+    const { presignRegistrationUpload } = await import("./storage");
+    for (const [type, extension] of [["application/pdf", "pdf"], ["image/jpeg", "jpg"], ["image/png", "png"], ["image/webp", "webp"]] as const) {
+      expect((await presignRegistrationUpload(EVENT, type)).key).toMatch(new RegExp(`\\.${extension}$`));
+    }
+    const [a, b] = await Promise.all([presignRegistrationUpload(EVENT, "image/png"), presignRegistrationUpload(EVENT, "image/png")]);
+    expect(a.key).not.toBe(b.key);
+  });
+
+  it("honours a shared bucket prefix", async () => {
+    const before = { ...process.env };
+    process.env.S3_KEY_PREFIX = "/shared/ot/";
+    vi.resetModules();
+    try {
+      const { presignRegistrationUpload } = await import("./storage");
+      expect((await presignRegistrationUpload(EVENT, "image/png")).key).toMatch(new RegExp(`^shared/ot/registrations/${EVENT}/[a-f0-9]{32}\\.png$`));
+    } finally {
+      process.env = { ...before };
+      vi.resetModules();
+    }
+  });
+
+  it("rejects a foreign event, prefix, folder or extension before any HEAD is attempted", async () => {
+    const { verifyRegistrationFile } = await import("./storage");
+    const name = "a".repeat(32);
+    expect(await verifyRegistrationFile(`openticket/registrations/01J00000000000000000000001/${name}.pdf`, EVENT)).toBeNull();
+    expect(await verifyRegistrationFile(`someone-else/registrations/${EVENT}/${name}.pdf`, EVENT)).toBeNull();
+    expect(await verifyRegistrationFile(`openticket/uploads/${EVENT}/${name}.pdf`, EVENT)).toBeNull();
+    expect(await verifyRegistrationFile(`openticket/registrations/${EVENT}/${name}.exe`, EVENT)).toBeNull();
+    expect(await verifyRegistrationFile(null, EVENT)).toBeNull();
+  });
+});

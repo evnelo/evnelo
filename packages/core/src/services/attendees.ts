@@ -1,5 +1,6 @@
 import { and, asc, desc, eq, inArray, isNull, like, or, sql } from "drizzle-orm";
 import { attendees, orders, orderItems, registrationFields, ticketTypes, tickets, type Attendee, type Database } from "@ot/db";
+import { registrationFileDownloadPath } from "../fields/files";
 import { issueTickets, queueEmailPerAddress } from "./fulfilment";
 
 export type AttendeeFilter = { q?: string; status?: Attendee["status"] | "all"; limit?: number };
@@ -104,7 +105,13 @@ export async function attendeesCsv(db: Database, eventId: string, appUrl: string
   ]);
   const orderAnswers = new Map<string, Record<string, unknown>>();
   for (const o of await db.select({ id: orders.id, answers: orders.answers }).from(orders).where(eq(orders.eventId, eventId))) orderAnswers.set(o.id, o.answers);
-  const fieldCols = fields.map((f) => ({ key: f.key, label: `${f.label} (${f.scope})`, scope: f.scope }));
+  const fieldCols = fields.map((f) => ({ key: f.key, label: `${f.label} (${f.scope})`, scope: f.scope, type: f.type }));
+  // file answers hold a private object key: export the authenticated download link, never the key
+  const cell = (col: (typeof fieldCols)[number], value: unknown) => {
+    if (col.type !== "file") return value;
+    const path = typeof value === "string" ? registrationFileDownloadPath(value) : null;
+    return path ? `${appUrl}${path}` : "";
+  };
   const header = ["name", "email", "phone", "sms_opt_in", "status", "ticket_type", "guest_of", "order_status", "registered_at", "ticket_url", ...fieldCols.map((c) => c.label)];
   const lines = [header.map(csvCell).join(",")];
   for (const r of rows.sort((a, b) => a.attendee.createdAt.getTime() - b.attendee.createdAt.getTime())) {
@@ -113,7 +120,7 @@ export async function attendeesCsv(db: Database, eventId: string, appUrl: string
     lines.push([
       a.name, a.email, a.phone ?? "", a.smsOptIn ? "yes" : "no", a.status, r.ticketTypeName, r.hostName ?? "", r.orderStatus,
       a.createdAt.toISOString(), r.ticketToken && !r.ticketRevokedAt ? `${appUrl}/t/${r.ticketToken}` : "",
-      ...fieldCols.map((c) => answers[c.key]),
+      ...fieldCols.map((c) => cell(c, answers[c.key])),
     ].map(csvCell).join(","));
   }
   return lines.join("\r\n") + "\r\n";

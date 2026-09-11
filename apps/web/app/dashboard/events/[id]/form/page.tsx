@@ -2,6 +2,7 @@ import { listRegistrationFields, listTicketTypes } from "@ot/core/services";
 import { can } from "@ot/core";
 import { db } from "@/lib/db";
 import { requireEvent } from "@/lib/dashboard";
+import { storageConfigured } from "@/lib/storage";
 import { FieldsBuilder } from "@/components/dashboard/fields-builder";
 
 export default async function FormPage({ params }: { params: Promise<{ id: string }> }) {
@@ -13,6 +14,7 @@ export default async function FormPage({ params }: { params: Promise<{ id: strin
       eventId={id}
       editable={can(role, "edit_events")}
       guestsEnabled={event.guestsEnabled}
+      filesEnabled={storageConfigured}
       ticketTypes={types.map((t) => ({ id: t.id, name: t.name }))}
       initial={fields.map((f) => ({
         id: f.id, key: f.key, label: f.label, helpText: f.helpText ?? "", placeholder: f.placeholder ?? "", type: f.type,

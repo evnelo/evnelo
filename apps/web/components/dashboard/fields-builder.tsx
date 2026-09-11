@@ -34,7 +34,7 @@ const SCOPE_LABELS = { attendee: "Each registrant", order: "Once per order", gue
 const OP_LABELS: Record<Rule["op"], string> = { eq: "is", neq: "is not", contains: "contains", empty: "is empty", not_empty: "is not empty" };
 const hasOptions = (t: FieldDraft["type"]) => t === "select" || t === "multi_select";
 
-export function FieldsBuilder({ eventId, initial, ticketTypes, editable, guestsEnabled }: { eventId: string; initial: FieldDraft[]; ticketTypes: { id: string; name: string }[]; editable: boolean; guestsEnabled: boolean }) {
+export function FieldsBuilder({ eventId, initial, ticketTypes, editable, guestsEnabled, filesEnabled }: { eventId: string; initial: FieldDraft[]; ticketTypes: { id: string; name: string }[]; editable: boolean; guestsEnabled: boolean; filesEnabled: boolean }) {
   const [fields, setFields] = useState<FieldDraft[]>(() => initial.map((f) => ({ ...f, optionsText: formatOptions(f.options) })));
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
@@ -84,7 +84,12 @@ export function FieldsBuilder({ eventId, initial, ticketTypes, editable, guestsE
                 <fieldset disabled={!editable} className="grid gap-4 border-t p-4 sm:grid-cols-2">
                   <Field label="Question" htmlFor={`f-${i}-label`}><Input id={`f-${i}-label`} value={f.label} onChange={(e) => update(i, { label: e.target.value, key: f.id ? f.key : slugify(e.target.value, 60).replace(/-/g, "_") })} /></Field>
                   <Field label="Key" htmlFor={`f-${i}-key`} help="Column name in exports and the API. Lowercase, underscores."><Input id={`f-${i}-key`} value={f.key} onChange={(e) => update(i, { key: e.target.value })} pattern="[a-z0-9_]{1,60}" /></Field>
-                  <Field label="Type" htmlFor={`f-${i}-type`}><Select id={`f-${i}-type`} value={f.type} onChange={(e) => update(i, { type: e.target.value as FieldDraft["type"] })}>{FIELD_TYPES.map((t) => <option key={t} value={t}>{FIELD_TYPE_LABELS[t]}</option>)}</Select></Field>
+                  <Field label="Type" htmlFor={`f-${i}-type`} help={!filesEnabled && f.type !== "file" ? "File upload needs S3 storage configured on this instance." : undefined}>
+                    <Select id={`f-${i}-type`} value={f.type} onChange={(e) => update(i, { type: e.target.value as FieldDraft["type"] })}>
+                      {FIELD_TYPES.filter((t) => t !== "file" || filesEnabled || f.type === "file").map((t) => <option key={t} value={t}>{FIELD_TYPE_LABELS[t]}</option>)}
+                    </Select>
+                    {!filesEnabled && f.type === "file" && <p className="mt-1.5 text-xs text-destructive">S3 storage is not configured, so registrants cannot upload this file. The form shows it as unavailable.</p>}
+                  </Field>
                   <Field label="Asked" htmlFor={`f-${i}-scope`}><Select id={`f-${i}-scope`} value={f.scope} onChange={(e) => update(i, { scope: e.target.value as FieldDraft["scope"], condition: null })}><option value="attendee">{SCOPE_LABELS.attendee}</option><option value="order">{SCOPE_LABELS.order}</option>{guestsEnabled && <option value="guest">{SCOPE_LABELS.guest}</option>}</Select></Field>
                   {hasOptions(f.type) && (
                     <Field label="Options" htmlFor={`f-${i}-opts`} help="One per line. Use “value | Label” to store a different value." className="sm:col-span-2">

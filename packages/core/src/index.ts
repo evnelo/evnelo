@@ -5,6 +5,7 @@ export * from "./visibility";
 export * from "./notifications";
 export * from "./fields/conditions";
 export * from "./fields/schema";
+export * from "./fields/files";
 export * from "./ids";
 export * from "./constants";
 export * from "./slug";

@@ -12,6 +12,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1130.0",
     "@aws-sdk/s3-presigned-post": "^3.1130.0",
+    "@aws-sdk/s3-request-presigner": "^3.1130.0",
     "@fontsource-variable/fraunces": "^5.1.0",
     "@hookform/resolvers": "^3.10.0",
     "@ot/core": "workspace:*",

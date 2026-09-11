@@ -15,6 +15,7 @@ import { checkoutStripeAccount, paymentsConfigured } from "@/lib/payment-flow";
 import { signPaymentResume } from "@/lib/payment-resume";
 import { clientAddress } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
+import { verifyRegistrationFile } from "@/lib/storage";
 
 export const runtime = "nodejs";
 const HOLD_MINUTES = 10;
@@ -102,6 +103,22 @@ export async function POST(req: Request) {
     ...guests.flatMap((g) => (g.parsed.success ? [] : g.parsed.error.issues.map((is) => ({ ...is, path: ["guests", g.index, ...is.path] })))),
   ];
   if (!att.success || !ord.success || issues.length) return NextResponse.json({ error: "Some answers need attention.", issues }, { status: 400 });
+
+  // `file` answers are object keys. The schema proved the shape and the event; confirm the object
+  // exists in our prefix with an allowed type before storing a key the dashboard will link to.
+  const fileAnswers = fields.filter((f) => f.type === "file").flatMap((f) => [
+    ...(att.data[f.key] ? [{ key: att.data[f.key], path: [f.key] }] : []),
+    ...(ord.data[f.key] ? [{ key: ord.data[f.key], path: [f.key] }] : []),
+    ...guests.flatMap((g) => (g.parsed.success && g.parsed.data[f.key] ? [{ key: g.parsed.data[f.key], path: ["guests", g.index, f.key] }] : [])),
+  ]);
+  const missingFiles = (await Promise.all(fileAnswers.map(async (a) => ((await verifyRegistrationFile(a.key, event.id)) ? null : a))))
+    .filter((a): a is (typeof fileAnswers)[number] => a !== null);
+  if (missingFiles.length) {
+    return NextResponse.json({
+      error: "Some answers need attention.",
+      issues: missingFiles.map((a) => ({ code: "custom", message: "Upload the file again", path: a.path })),
+    }, { status: 400 });
+  }
 
   const [org] = await db.select().from(organizations).where(eq(organizations.id, event.organizationId)).limit(1);
   const edition = currentEdition();

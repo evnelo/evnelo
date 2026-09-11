@@ -2,11 +2,13 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { FormMessage } from "@/components/ui/form-field";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
+import { EmptyCell, Note } from "@/components/dashboard/page-chrome";
 import { createApiKeyAction, revokeApiKeyAction } from "@/app/dashboard/actions";
 
 type Key = { id: string; name: string; prefix: string; scopes: string[]; lastUsedAt: string | null; revokedAt: string | null; createdAt: string };
@@ -20,35 +22,41 @@ export function ApiKeysPanel({ keys, canManage, docsUrl }: { keys: Key[]; canMan
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        Keys call the <a href={docsUrl} className="underline underline-offset-4">REST API</a> as this organization. Send them as <code className="rounded bg-muted px-1">Authorization: Bearer ot_live_…</code>. Read keys list and fetch; write keys also create.
-      </p>
+      <Note>
+        Keys call the <a href={docsUrl} className="underline decoration-dotted underline-offset-4">REST API</a> as this organization. Send them as <code className="rounded bg-card px-1 text-xs">Authorization: Bearer ot_live_…</code>. Read keys list and fetch; write keys also create.
+      </Note>
       {secret && (
-        <div className="rounded-md border border-primary/30 bg-accent p-3 text-sm">
+        <div className="animate-rise rounded-xl border border-primary/30 bg-accent p-4 text-sm">
           <p className="font-medium text-accent-foreground">Copy your new key now. It will not be shown again.</p>
-          <code className="mt-2 block select-all break-all rounded bg-card px-2 py-1.5 font-mono text-xs">{secret}</code>
+          <code className="mt-2 block select-all break-all rounded-lg bg-card px-3 py-2 font-mono text-xs">{secret}</code>
           <Button type="button" size="sm" variant="ghost" className="mt-2" onClick={() => setSecret(undefined)}>I've saved it</Button>
         </div>
       )}
       <Table>
-        <THead><TR><TH>Name</TH><TH>Key</TH><TH>Scopes</TH><TH>Last used</TH><TH>Created</TH>{canManage && <TH></TH>}</TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Name</TH><TH>Key</TH><TH>Scopes</TH><TH>Last used</TH><TH>Created</TH>{canManage && <TH></TH>}</TR></THead>
         <TBody>
-          {keys.length === 0 && <TR><TD colSpan={6} className="py-6 text-center text-muted-foreground">No API keys yet.</TD></TR>}
+          {keys.length === 0 && (
+            <TR className="hover:bg-transparent">
+              <TD colSpan={canManage ? 6 : 5}>
+                <EmptyCell icon={KeyRound} title="No API keys yet" description="Create one per integration so you can revoke a single tool without breaking the rest." />
+              </TD>
+            </TR>
+          )}
           {keys.map((k) => (
             <TR key={k.id} className={k.revokedAt ? "text-muted-foreground" : ""}>
               <TD className="font-medium">{k.name}{k.revokedAt && <Badge variant="muted" className="ml-2">revoked</Badge>}</TD>
               <TD className="font-mono text-xs">{k.prefix}…</TD>
               <TD className="space-x-1">{k.scopes.map((s) => <Badge key={s} variant="outline">{s}</Badge>)}</TD>
-              <TD>{fmt(k.lastUsedAt)}</TD>
-              <TD>{fmt(k.createdAt)}</TD>
-              {canManage && <TD className="text-right">{!k.revokedAt && <Button size="sm" variant="ghost" disabled={pending} onClick={() => { if (window.confirm(`Revoke "${k.name}"? Requests with it stop working immediately.`)) start(async () => { const r = await revokeApiKeyAction(k.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>Revoke</Button>}</TD>}
+              <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{fmt(k.lastUsedAt)}</TD>
+              <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{fmt(k.createdAt)}</TD>
+              {canManage && <TD className="text-right">{!k.revokedAt && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(`Revoke "${k.name}"? Requests with it stop working immediately.`)) start(async () => { const r = await revokeApiKeyAction(k.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>Revoke</Button>}</TD>}
             </TR>
           ))}
         </TBody>
       </Table>
       {canManage && (
         <form
-          className="flex flex-wrap items-end gap-3"
+          className="flex flex-wrap items-center gap-3 rounded-xl border border-border/80 bg-card p-3 shadow-card"
           onSubmit={(e) => {
             e.preventDefault();
             const fd = new FormData(e.currentTarget);
@@ -61,8 +69,8 @@ export function ApiKeysPanel({ keys, canManage, docsUrl }: { keys: Key[]; canMan
           }}
         >
           <div className="min-w-56 flex-1"><Input name="name" required placeholder="Key name, e.g. Zapier" aria-label="Key name" /></div>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="scopes" value="read" defaultChecked className="size-4 accent-[var(--primary)]" /> read</label>
-          <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="scopes" value="write" className="size-4 accent-[var(--primary)]" /> write</label>
+          <label className="flex cursor-pointer items-center gap-2 text-sm"><input type="checkbox" name="scopes" value="read" defaultChecked className="size-4 accent-[var(--primary)]" /> read</label>
+          <label className="flex cursor-pointer items-center gap-2 text-sm"><input type="checkbox" name="scopes" value="write" className="size-4 accent-[var(--primary)]" /> write</label>
           <Button type="submit" disabled={pending}>Create key</Button>
         </form>
       )}

@@ -21,7 +21,7 @@ export function OrgForm({ org, readOnly, uploadsEnabled }: { org: Values; readOn
 
   return (
     <form
-      className="max-w-2xl space-y-5"
+      className="space-y-5"
       onSubmit={(e) => {
         e.preventDefault();
         start(async () => {
@@ -41,18 +41,18 @@ export function OrgForm({ org, readOnly, uploadsEnabled }: { org: Values; readOn
           </div>
           <Field label="Accent colour" htmlFor="org-accent" optional help="Buttons in emails and on ticket pages.">
             <div className="flex gap-2">
-              <input type="color" aria-label="Pick colour" value={v.accentColor || "#16603a"} onChange={(e) => set("accentColor", e.target.value)} className="h-9 w-12 cursor-pointer rounded-md border bg-card p-1" />
+              <input type="color" aria-label="Pick colour" value={v.accentColor || "#16603a"} onChange={(e) => set("accentColor", e.target.value)} className="h-10 w-12 shrink-0 cursor-pointer rounded-lg border border-input bg-card p-1" />
               <Input id="org-accent" value={v.accentColor} onChange={(e) => set("accentColor", e.target.value)} placeholder="#16603a" pattern="#[0-9a-fA-F]{6}" />
             </div>
           </Field>
           <Field label="Service fee" htmlFor="org-fee" help="Default for new events: pass the platform fee to the buyer as a line item, or absorb it.">
-            <label className="flex h-9 items-center gap-2 text-sm"><Switch id="org-fee" checked={v.feePassThrough} onCheckedChange={(c) => set("feePassThrough", c)} /> Buyer pays the service fee</label>
+            <label className="press flex h-10 cursor-pointer items-center gap-2 text-sm"><Switch id="org-fee" checked={v.feePassThrough} onCheckedChange={(c) => set("feePassThrough", c)} /> Buyer pays the service fee</label>
           </Field>
         </div>
 
-        <div>
-          <p className="text-sm font-medium">Social links</p>
-          <div className="mt-2 space-y-2">
+        <div className="hairline pt-5">
+          <p className="eyebrow">Social links</p>
+          <div className="mt-2.5 space-y-2">
             {v.socialLinks.map((l, i) => (
               <div key={i} className="flex gap-2">
                 <div className="w-36"><Select value={l.platform} onChange={(e) => set("socialLinks", v.socialLinks.map((x, j) => (j === i ? { ...x, platform: e.target.value } : x)))} aria-label="Platform">{SOCIAL_PLATFORMS.map((p) => <option key={p} value={p}>{p}</option>)}</Select></div>
@@ -65,7 +65,7 @@ export function OrgForm({ org, readOnly, uploadsEnabled }: { org: Values; readOn
         </div>
       </fieldset>
       <FormMessage error={msg.error} success={msg.success} />
-      {!readOnly && <Button type="submit" disabled={pending}>{pending ? "Saving…" : "Save"}</Button>}
+      {!readOnly && <div className="hairline flex justify-end pt-5"><Button type="submit" disabled={pending}>{pending ? "Saving…" : "Save organization"}</Button></div>}
     </form>
   );
 }

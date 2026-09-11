@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { ChevronRight, ScanLine } from "lucide-react";
 import { listOrgEvents } from "@ot/core/services";
 import { db } from "@/lib/db";
 import { requireOrg } from "@/lib/auth/session";
 import { formatDateRange } from "@/lib/utils";
+import { DateLeaf, EmptyState, PageHeader } from "@/components/dashboard/page-chrome";
 
 export const metadata = { title: "Check-in" };
 
@@ -12,22 +14,37 @@ export default async function CheckInIndexPage() {
   const rows = (await listOrgEvents(db, org.id, "published")).filter((r) => r.event.endsAt.getTime() > Date.now() - 24 * 3600_000);
   return (
     <div>
-      <h1 className="display text-3xl">Check-in</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{org.name}. Open an event on the phone at the door; scanning needs camera access.</p>
-      <ul className="mt-6 divide-y rounded-lg border">
-        {rows.length === 0 && <li className="p-4 text-sm text-muted-foreground">No published upcoming events.</li>}
-        {rows.map(({ event, registrations, checkedIn }) => (
-          <li key={event.id}>
-            <Link href={`/dashboard/checkin/${event.id}`} className="flex items-center justify-between gap-3 p-4 hover:bg-muted/50">
-              <div className="min-w-0">
-                <p className="truncate font-medium">{event.name}</p>
-                <p className="text-xs text-muted-foreground">{formatDateRange(event.startsAt, event.endsAt, event.timezone)}</p>
-              </div>
-              <span className="whitespace-nowrap text-sm tabular-nums text-muted-foreground">{checkedIn} / {registrations} in</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <PageHeader title="Check-in" description={`${org.name}. Open an event on the phone at the door; scanning needs camera access.`} />
+      {rows.length === 0 ? (
+        <EmptyState
+          className="mt-10"
+          icon={ScanLine}
+          title="Nothing to scan today"
+          description="Published events appear here from the moment they go live until a day after they end."
+        />
+      ) : (
+        <ul className="mt-8 space-y-2.5">
+          {rows.map(({ event, registrations, checkedIn }, i) => (
+            <li key={event.id} className="animate-rise" style={{ ["--stagger" as string]: Math.min(i, 12) }}>
+              <Link
+                href={`/dashboard/checkin/${event.id}`}
+                className="press lift flex min-h-[4.5rem] items-center gap-4 rounded-xl border border-border/80 bg-card p-4 shadow-card focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/25"
+              >
+                <DateLeaf date={event.startsAt} timezone={event.timezone} className="shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-display text-lg leading-tight" style={{ fontVariationSettings: '"opsz" 36' }}>{event.name}</p>
+                  <p className="mt-0.5 truncate text-xs text-muted-foreground">{formatDateRange(event.startsAt, event.endsAt, event.timezone)}</p>
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="eyebrow">In</p>
+                  <p className="font-display text-lg tabular-nums leading-tight" style={{ fontVariationSettings: '"opsz" 32' }}>{checkedIn} / {registrations}</p>
+                </div>
+                <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

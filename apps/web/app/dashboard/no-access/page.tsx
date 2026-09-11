@@ -1,8 +1,16 @@
+import { Lock } from "lucide-react";
+import { EmptyState, PageHeader } from "@/components/dashboard/page-chrome";
+
 export default function NoAccessPage() {
   return (
     <div>
-      <h1 className="display text-3xl">No access</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Your role in this organization doesn't allow that. Ask an owner or admin to change it.</p>
+      <PageHeader title="No access" description="Roles decide what each person in an organization can open." />
+      <EmptyState
+        className="mt-10"
+        icon={Lock}
+        title="This area isn't yours to open"
+        description="Your role in this organization doesn't allow that. Ask an owner or admin to change it."
+      />
     </div>
   );
 }

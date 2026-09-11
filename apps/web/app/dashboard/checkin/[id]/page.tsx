@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createHash } from "node:crypto";
+import { ChevronLeft } from "lucide-react";
 import { can } from "@ot/core";
 import { checkInStats, listCheckInAttendees, recentCheckIns } from "@ot/core/services";
 import { db } from "@/lib/db";
 import { checkInAccess } from "@/lib/checkin-access";
 import { formatDateRange } from "@/lib/utils";
 import { CheckInScanner } from "@/components/dashboard/check-in-scanner";
+import { PageHeader } from "@/components/dashboard/page-chrome";
 
 export const metadata = { title: "Check-in" };
 
@@ -26,13 +28,19 @@ export default async function CheckInPage({ params }: { params: Promise<{ id: st
   };
   return (
     <div>
-      <p className="text-xs text-muted-foreground">
-        <Link href="/dashboard/checkin" className="hover:underline">Check-in</Link> /
-        {can(role, "view_events") && <> <Link href={`/dashboard/events/${id}`} className="hover:underline">Event</Link> /</>}
-      </p>
-      <h1 className="display mt-1 text-3xl">{event.name}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{formatDateRange(event.startsAt, event.endsAt, event.timezone)}</p>
-      <div className="mt-5">
+      <PageHeader
+        title={event.name}
+        description={formatDateRange(event.startsAt, event.endsAt, event.timezone)}
+        above={
+          <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+            <Link href="/dashboard/checkin" className="press -ml-1 inline-flex items-center gap-1 rounded-md py-1 pr-2 hover:text-foreground">
+              <ChevronLeft className="size-3.5" aria-hidden /> All check-in
+            </Link>
+            {can(role, "view_events") && <Link href={`/dashboard/events/${id}`} className="press rounded-md underline decoration-dotted underline-offset-4 hover:text-foreground">Event dashboard</Link>}
+          </div>
+        }
+      />
+      <div className="mt-6">
         <CheckInScanner eventId={id} initial={initial} />
       </div>
     </div>

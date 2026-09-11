@@ -5,6 +5,8 @@ export async function register() {
   // edge bundle never pulls in mysql2 through the job loop.
   if (process.env.NEXT_RUNTIME === "nodejs") {
     await import("./sentry.server.config");
+    const { migrateOnStart } = await import("./lib/migrate");
+    await migrateOnStart(); // throws on failure: better a container that does not start than one on the wrong schema
     const { startJobLoop } = await import("./lib/notifications/loop");
     startJobLoop();
   }

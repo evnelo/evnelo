@@ -65,6 +65,10 @@ Templates are React Email components in `apps/web/emails`; preview them in devel
 
 Delivery status comes back through webhooks: point Resend at `/api/webhooks/resend` (set `RESEND_WEBHOOK_SECRET`) and, in the Vonage application, set the status URL to `/api/webhooks/vonage/status` and the inbound URL to `/api/webhooks/vonage/inbound` (STOP/START handling; `VONAGE_SIGNATURE_SECRET` verifies both).
 
+## Deploying
+
+`docker build -t openticket .` produces a self-contained image: Next's standalone server, the traced production dependencies, static assets and the migrations folder, running as the unprivileged `node` user. At boot it applies pending migrations (`MIGRATE_ON_START=true`, serialised across replicas with a MySQL lock) and starts the in-process job loop (`JOBS_INLINE=true`); override either in your orchestrator, for example `JOBS_INLINE=false` plus a cron hitting `/api/jobs/run` when you run several replicas. The image has a `HEALTHCHECK` on `/api/health`. Browser-side Sentry needs `--build-arg NEXT_PUBLIC_SENTRY_DSN=…` because Next inlines public variables at build time. `docker compose up` runs the image against a MySQL container with the root `.env`. CI (`.github/workflows/ci.yml`) runs migrations, typecheck, tests and the production build against MySQL 8.4, and checks the Docker image builds.
+
 ## Operations
 
 - **Health:** `GET /api/health` returns `200 {"status":"ok"}` when the database answers within two seconds and the in-process job loop ticked in the last two minutes (or `JOBS_INLINE=false`), else `503`. Point your load balancer, Docker `HEALTHCHECK` or uptime monitor at it. It is unauthenticated and says nothing about the deployment.

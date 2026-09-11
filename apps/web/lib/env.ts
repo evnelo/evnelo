@@ -19,6 +19,8 @@ const schema = z.object({
   EMAIL_FROM: z.string().default("OpenTicket <tickets@example.com>"),
   VONAGE_SIGNATURE_SECRET: z.string().optional(), // dashboard → Settings → signature secret; verifies status/inbound webhooks
   JOBS_INLINE: z.enum(["true", "false"]).default("true"), // run the notification loop inside the web process
+  MIGRATE_ON_START: z.enum(["true", "false"]).default("false"), // apply pending migrations when the server boots (Docker default: true)
+  DB_MIGRATIONS_DIR: z.string().optional(),
   // address autocomplete: "photon" (komoot's public OSM instance, no key; addresses are sent to a third party),
   // "mapbox" (needs MAPBOX_TOKEN), or "none"
   GEOCODER: z.enum(["photon", "mapbox", "none"]).default("photon"),
@@ -63,7 +65,8 @@ const schema = z.object({
 export const env = schema.parse(Object.fromEntries(Object.entries(process.env).map(([k, v]) => [k, v === "" ? undefined : v])));
 // Auth.js derives magic-link and callback URLs from the request host unless AUTH_URL is set; in
 // production that must come from the operator, never from an attacker-controlled Host header.
-if (process.env.NODE_ENV === "production" && !process.env.APP_URL) throw new Error("APP_URL must be set in production (it anchors sign-in links and payment return URLs).");
+const building = process.env.NEXT_PHASE === "phase-production-build"; // `next build` loads page modules with NODE_ENV=production and no deployment env
+if (process.env.NODE_ENV === "production" && !building && !process.env.APP_URL) throw new Error("APP_URL must be set in production (it anchors sign-in links and payment return URLs).");
 process.env.AUTH_URL ??= env.APP_URL;
 export const smsAuthMode: "application" | "basic" | null =
   env.VONAGE_APPLICATION_ID && env.VONAGE_PRIVATE_KEY ? "application" : env.VONAGE_API_KEY && env.VONAGE_API_SECRET ? "basic" : null;

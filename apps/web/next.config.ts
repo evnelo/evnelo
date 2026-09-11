@@ -17,6 +17,9 @@ if (!process.env.AUTH_URL && process.env.APP_URL) {
 
 const config: NextConfig = {
   transpilePackages: ["@ot/core", "@ot/db"],
+  // self-contained server for the Docker image; the monorepo root is the tracing root so workspace packages are included
+  output: "standalone",
+  outputFileTracingRoot: path.resolve(__dirname, "../.."),
   images: { remotePatterns: [{ protocol: "https", hostname: "**" }] },
   serverExternalPackages: ["mysql2", "@sentry/nextjs"],
   async headers() {

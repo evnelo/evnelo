@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7
 FROM node:22-alpine AS base
 RUN corepack enable && corepack prepare pnpm@9.15.9 --activate
 WORKDIR /app
@@ -8,15 +9,31 @@ COPY apps/web/package.json apps/web/
 COPY packages/db/package.json packages/db/
 COPY packages/core/package.json packages/core/
 COPY packages/mcp/package.json packages/mcp/
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile
 
 FROM deps AS build
 COPY . .
+# NEXT_PUBLIC_* values are inlined at build time; pass them as build args when you want browser error reporting
+ARG NEXT_PUBLIC_SENTRY_DSN
+ARG NEXT_PUBLIC_SENTRY_ENVIRONMENT
+# lib/env.ts validates the environment when a page module loads, which happens while `next build`
+# collects page data. These placeholders satisfy it; nothing connects to a database during the
+# build, and the runner stage does not inherit them.
+ENV NEXT_TELEMETRY_DISABLED=1 DATABASE_URL=mysql://build:build@localhost:3306/build AUTH_SECRET=build-time-placeholder-not-used-at-runtime
 RUN pnpm build
 
-FROM base AS runner
-ENV NODE_ENV=production
-COPY --from=build /app ./
+# Runtime: Next's standalone output (server + traced node_modules) plus static assets and the
+# migrations folder. No pnpm, no sources, no dev dependencies.
+FROM node:22-alpine AS runner
+ENV NODE_ENV=production PORT=3000 HOSTNAME=0.0.0.0 NEXT_TELEMETRY_DISABLED=1
+# Defaults for a single-container deployment; override in your orchestrator
+ENV MIGRATE_ON_START=true JOBS_INLINE=true
+WORKDIR /app
+COPY --from=build --chown=node:node /app/apps/web/.next/standalone ./
+COPY --from=build --chown=node:node /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=build --chown=node:node /app/apps/web/public ./apps/web/public
+COPY --from=build --chown=node:node /app/packages/db/drizzle ./packages/db/drizzle
+USER node
 EXPOSE 3000
-# Runs pending migrations, then starts the web app
-CMD ["sh", "-c", "pnpm db:migrate && pnpm --filter @ot/web start"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 CMD wget -qO- http://127.0.0.1:3000/api/health >/dev/null || exit 1
+CMD ["node", "apps/web/server.js"]

@@ -65,6 +65,13 @@ Templates are React Email components in `apps/web/emails`; preview them in devel
 
 Delivery status comes back through webhooks: point Resend at `/api/webhooks/resend` (set `RESEND_WEBHOOK_SECRET`) and, in the Vonage application, set the status URL to `/api/webhooks/vonage/status` and the inbound URL to `/api/webhooks/vonage/inbound` (STOP/START handling; `VONAGE_SIGNATURE_SECRET` verifies both).
 
+## Operations
+
+- **Health:** `GET /api/health` returns `200 {"status":"ok"}` when the database answers within two seconds and the in-process job loop ticked in the last two minutes (or `JOBS_INLINE=false`), else `503`. Point your load balancer, Docker `HEALTHCHECK` or uptime monitor at it. It is unauthenticated and says nothing about the deployment.
+- **Abuse limits:** registration (`POST /api/orders`) is capped per email, per event and, when `API_TRUSTED_PROXY_HEADER` is set, per client; sign-in links are capped per address and per client. All limits share the `api_rate_limits` table, so they hold across replicas. Set `API_TRUSTED_PROXY_HEADER` to the header your proxy writes or clients cannot be told apart and only the shared ceilings apply.
+- **Security headers:** every response carries a Content Security Policy (Stripe, the S3 upload origin and https images allowed), `frame-ancestors 'none'`, nosniff, a referrer policy, a permissions policy (camera and geolocation for the app itself) and, when `APP_URL` is https, HSTS. The API reference at `/api/v1/docs` has its own policy for the Scalar bundle. The policy is built in `apps/web/lib/security-headers.js`.
+- **Error reporting:** set `SENTRY_DSN` (server) and `NEXT_PUBLIC_SENTRY_DSN` (browser, build time) to send unexpected failures to Sentry. Without them errors are still logged with a stable `[scope]` prefix. Notification retries are logged as warnings; only a notification that exhausts its retries is reported.
+
 ## Wallet passes
 
 Optional. Set the `APPLE_*` variables (Pass Type ID certificate, key, Apple WWDR cert, team id) to serve `.pkpass` files at `/t/{token}/wallet/apple`, and `GOOGLE_WALLET_ISSUER_ID` plus a service-account JSON to serve "Save to Google Wallet" links at `/t/{token}/wallet/google`. The buttons only appear on the ticket page when the keys are present.

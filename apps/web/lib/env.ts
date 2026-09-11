@@ -42,6 +42,9 @@ const schema = z.object({
   // leave unset for buckets with ACLs disabled, where sending an ACL makes the upload fail
   S3_UPLOAD_ACL: z.enum(["public-read"]).optional(),
   CLOUDFRONT_DOMAIN: z.string().optional(),
+  // error reporting (optional): server DSN is read at runtime; the browser DSN (NEXT_PUBLIC_SENTRY_DSN) is inlined at build time
+  SENTRY_DSN: z.string().url().optional(),
+  SENTRY_ENVIRONMENT: z.string().optional(),
   // Google sign-in (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),

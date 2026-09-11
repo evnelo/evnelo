@@ -18,9 +18,17 @@ if (!process.env.AUTH_URL && process.env.APP_URL) {
 const config: NextConfig = {
   transpilePackages: ["@ot/core", "@ot/db"],
   images: { remotePatterns: [{ protocol: "https", hostname: "**" }] },
-  serverExternalPackages: ["mysql2"],
+  serverExternalPackages: ["mysql2", "@sentry/nextjs"],
   async headers() {
-    return [{ source: "/(.*)", headers: [{ key: "Referrer-Policy", value: "strict-origin-when-cross-origin" }, { key: "X-Content-Type-Options", value: "nosniff" }] }];
+    // required by absolute path: Next compiles this file in isolation and drops static imports of local modules
+    const { apiDocsContentSecurityPolicy, securityHeaders, securityHeadersFromProcessEnv } =
+      require(path.resolve(__dirname, "lib/security-headers.js")) as typeof import("./lib/security-headers.js");
+    const base = securityHeaders(securityHeadersFromProcessEnv());
+    return [
+      { source: "/(.*)", headers: base },
+      // later entries override earlier ones for the same key: the API reference needs the Scalar CDN
+      { source: "/api/v1/docs", headers: [{ key: "Content-Security-Policy", value: apiDocsContentSecurityPolicy() }] },
+    ];
   },
 };
 

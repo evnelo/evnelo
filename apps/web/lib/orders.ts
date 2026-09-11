@@ -2,6 +2,7 @@
  * Stripe-aware order operations: thin bindings of the core fulfilment services plus the few
  * places that must talk to Stripe (cancel, refund, retrieve). Business rules stay in @ot/core.
  */
+import { captureError } from "@/lib/observability";
 import type Stripe from "stripe";
 import * as svc from "@ot/core/services";
 import { db } from "./db";
@@ -62,12 +63,12 @@ export const expireHolds = () => svc.expireHolds(db, async (order) => {
     try {
       intent = await stripe.paymentIntents.retrieve(order.stripePaymentIntentId, {}, on(order.stripeAccountId));
     } catch (retrieveError) {
-      console.error("expireHolds: unable to verify Stripe intent", retrieveError);
+      captureError("jobs.expireHolds.retrieveIntent", retrieveError, { orderId: order.id });
       return false;
     }
     if (intent.status === "canceled") return true;
     const result = await settlePaymentIntent(intent, order.stripeAccountId);
-    if (result === "ignored") console.error("expireHolds: unable to cancel Stripe intent", intent.status, cancelError);
+    if (result === "ignored") captureError("jobs.expireHolds.cancelIntent", cancelError, { orderId: order.id, intentStatus: intent.status });
     return false;
   }
 });
@@ -85,7 +86,7 @@ export async function reconcileProcessingOrders() {
       const intent = await stripe.paymentIntents.retrieve(order.stripePaymentIntentId, {}, on(order.stripeAccountId));
       if ((await settlePaymentIntent(intent, order.stripeAccountId)) !== "ignored") settled++;
     } catch (error) {
-      console.error("reconcileProcessingOrders", order.id, error);
+      captureError("jobs.reconcileProcessingOrders", error, { orderId: order.id });
     }
   }
   return settled;

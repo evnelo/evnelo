@@ -1,3 +1,4 @@
+import { captureError } from "@/lib/observability";
 import { and, asc, eq, gte, inArray, isNull, lt, lte, sql } from "drizzle-orm";
 import { attendees, events, notifications, tickets } from "@ot/db";
 import { NOTIFICATION_RETRY_LIMIT, STUCK_SENDING_MS, newId, reminderDedupeKey, reminderSlots, retryDelayMs } from "@ot/core";
@@ -96,7 +97,9 @@ export async function processNotifications(limit = 50) {
         stats.retried++;
         await db.update(notifications).set({ status: "queued", scheduledFor: new Date(Date.now() + retryDelayMs(n.attempts)), error }).where(eq(notifications.id, id));
       }
-      console.error(`[notifications] ${n.channel}/${n.template} to ${n.recipient} attempt ${n.attempts}: ${error}`);
+      // retries are expected (provider hiccups); only a notification we give up on is an incident
+      if (n.attempts >= NOTIFICATION_RETRY_LIMIT) captureError("notifications.failed", e, { notificationId: n.id, channel: n.channel, template: n.template, attempts: n.attempts });
+      else console.warn(`[notifications] ${n.channel}/${n.template} ${n.id} attempt ${n.attempts} failed, will retry: ${error}`);
     }
   }
   return stats;
@@ -108,14 +111,14 @@ let lastScheduled = 0;
 /** One pass of everything. Safe to call from a timer, a cron hit, or a test. Reminder scheduling runs at most once a minute. */
 export async function runJobs(opts: { force?: boolean } = {}) {
   // lapsed checkout holds: cancel the PaymentIntent at Stripe, then give the seats back
-  const expiredHolds = await expireHolds().catch((e) => { console.error("[jobs] expireHolds", e); return 0; });
+  const expiredHolds = await expireHolds().catch((e) => { captureError("jobs.expireHolds", e); return 0; });
   const requeued = await requeueStuck();
   let scheduled = 0;
   let reconciled = 0;
   if (opts.force || Date.now() - lastScheduled >= SCHEDULE_EVERY_MS) {
     scheduled = await scheduleReminders();
-    reconciled = await reconcileProcessingOrders().catch((e) => { console.error("[jobs] reconcileProcessingOrders", e); return 0; });
-    await purgeApiHousekeeping(db).catch((e) => console.error("[jobs] purgeApiHousekeeping", e));
+    reconciled = await reconcileProcessingOrders().catch((e) => { captureError("jobs.reconcileProcessingOrders", e); return 0; });
+    await purgeApiHousekeeping(db).catch((e) => captureError("jobs.purgeApiHousekeeping", e));
     lastScheduled = Date.now();
   }
   const processed = await processNotifications();

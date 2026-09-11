@@ -279,6 +279,7 @@ Notes:
 - Every send goes through `notifications` table → queue → provider adapter → provider webhook updates status (delivered / bounced / failed)
 - SMS gate: `event.isPaid || smsUnlocks.exists(event) || edition === self_hosted`
 - Templates: React Email for email; short, variable-only templates for SMS (160-char budget, no links shortened through third parties — use `/t/{token}`)
+- Launch hardening (decided 2026-09-10): registration and magic-link requests are rate limited in the shared `api_rate_limits` table (per email/address, per event, and per client when the proxy header is trusted); `/api/health` reports database and job-loop state for load balancers; every response carries a CSP that allows Stripe and the S3 upload origin (nonce-based scripts are a follow-up); errors go through one `captureError` helper with optional Sentry. Stripe Connect onboarding for Cloud is deferred until after the staging deploy.
 - Job runner (decided 2026-09-09): no Redis. The web process polls `notifications` every 10s (`JOBS_INLINE`), claiming rows with a conditional UPDATE so multiple replicas are safe; serverless deployments call `POST /api/jobs/run` from a cron. Reminders are upserted per attendee/hour/channel with a dedupe key so moving an event reschedules them. Guests sharing the host's email are covered by the host's emails (one email per address, listing every ticket).
 
 ### 8.7 Security & compliance

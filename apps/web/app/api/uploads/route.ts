@@ -1,3 +1,4 @@
+import { captureError } from "@/lib/observability";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { env } from "@/lib/env";
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
   try {
     return NextResponse.json(await presignImageUpload(access.org.id, parsed.data.contentType));
   } catch (error) {
-    console.error("[uploads] presign failed", error);
+    captureError("uploads.presign", error);
     return NextResponse.json({ error: "Image storage is unavailable right now." }, { status: 503 });
   }
 }

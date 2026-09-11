@@ -24,6 +24,7 @@
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.1.0",
     "@scalar/nextjs-api-reference": "0.11.18",
+    "@sentry/nextjs": "^10.74.0",
     "@stripe/react-stripe-js": "^3.10.0",
     "@stripe/stripe-js": "^7.9.0",
     "@vonage/auth": "^1.12.0",

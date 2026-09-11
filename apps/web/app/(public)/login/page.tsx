@@ -1,11 +1,15 @@
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
+import { z } from "zod";
 import { auth, googleEnabled, signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FormMessage } from "@/components/ui/form-field";
 import { safeNextPath } from "@/lib/auth/session";
+import { clientAddressFromHeaders } from "@/lib/api-http";
+import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 
 export const metadata = { title: "Sign in", robots: "noindex" };
 
@@ -13,6 +17,8 @@ const errorText: Record<string, string> = {
   Verification: "That sign-in link has expired or was already used. Request a new one.",
   AccessDenied: "You can't sign in with that account.",
   Configuration: "Sign-in isn't configured on this instance yet. Check RESEND_API_KEY.",
+  RateLimited: "Too many sign-in links requested. Wait 15 minutes and try again.",
+  InvalidEmail: "Enter a valid email address.",
   Default: "Something went wrong signing you in. Try again.",
 };
 
@@ -25,6 +31,16 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     "use server";
     const address = String(formData.get("email") ?? "").trim().toLowerCase();
     const to = safeNextPath(String(formData.get("next") ?? ""));
+    const back = to !== "/dashboard" ? `&next=${encodeURIComponent(to)}` : "";
+    if (!z.string().email().max(254).safeParse(address).success) redirect(`/login?error=InvalidEmail${back}`);
+    // Each link is an email we pay for and a token that stays valid for 15 minutes: cap requests
+    // per address, and per client when a trusted proxy header identifies one.
+    const client = clientAddressFromHeaders(await headers());
+    const allowed = await Promise.all([
+      consumeSharedRateLimit("login:email", address, 3, 15 * 60_000),
+      client ? consumeSharedRateLimit("login:client", client, 10, 15 * 60_000) : true,
+    ]);
+    if (allowed.includes(false)) redirect(`/login?error=RateLimited&email=${encodeURIComponent(address)}${back}`);
     try {
       await signIn("resend", { email: address, redirectTo: to, redirect: false });
     } catch (e) {

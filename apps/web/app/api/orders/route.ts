@@ -1,3 +1,4 @@
+import { captureError } from "@/lib/observability";
 import { NextResponse } from "next/server";
 import { and, eq, inArray, isNull, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
@@ -9,6 +10,8 @@ import { createOrderPaymentIntent } from "@/lib/stripe";
 import { fulfilFreeOrder, releaseOrder } from "@/lib/orders";
 import { checkoutStripeAccount, paymentsConfigured } from "@/lib/payment-flow";
 import { signPaymentResume } from "@/lib/payment-resume";
+import { clientAddress } from "@/lib/api-http";
+import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 
 export const runtime = "nodejs";
 const HOLD_MINUTES = 10;
@@ -42,6 +45,16 @@ export async function POST(req: Request) {
   const parsed = body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Check the form and try again.", issues: parsed.error.issues }, { status: 400 });
   const input = parsed.data;
+
+  // Abuse limits: per client when a trusted proxy header identifies one, per email, and a per-event
+  // ceiling that keeps a scripted flood from exhausting holds or the notification queue.
+  const address = clientAddress(req);
+  const allowed = await Promise.all([
+    address ? consumeSharedRateLimit("register:client", address, 10, 10 * 60_000) : true,
+    consumeSharedRateLimit("register:email", input.email, 5, 10 * 60_000),
+    consumeSharedRateLimit("register:event", input.eventId, 600, 60_000),
+  ]);
+  if (allowed.includes(false)) return NextResponse.json({ error: "Too many registration attempts. Wait a few minutes and try again." }, { status: 429, headers: { "Retry-After": "60" } });
 
   const [event] = await db.select().from(events).where(eq(events.id, input.eventId)).limit(1);
   if (!event || event.status !== "published") return NextResponse.json({ error: "This event isn't open for registration." }, { status: 404 });
@@ -142,7 +155,7 @@ export async function POST(req: Request) {
       stripeAccountId, receiptEmail: input.email,
     });
   } catch (e) {
-    console.error("createOrderPaymentIntent", e);
+    captureError("orders.createPaymentIntent", e, { eventId: event.id });
     await releaseOrder(orderId, "failed"); // give the hold back, don't strand inventory
     return NextResponse.json({ error: "Payments are unavailable right now. Please try again in a few minutes." }, { status: 503 });
   }

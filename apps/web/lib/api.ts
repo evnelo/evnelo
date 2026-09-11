@@ -1,3 +1,4 @@
+import { captureError } from "@/lib/observability";
 import { ApiAuthError, ApiRequestError, type ApiKeyContext, type ApiRateLimit, type ApiScope, authenticateApiKey, consumeApiRateLimit, consumeRateLimit, parseBearerToken } from "@ot/core/services";
 import { db } from "@/lib/db";
 import { ApiHttpError, apiJson, authFailureBucket } from "@/lib/api-http";
@@ -40,6 +41,6 @@ export function apiError(error: unknown, context?: ApiRequestContext | ApiRateLi
     const headers = error.status === 429 ? { "Retry-After": String(error.retryAfter ?? 1) } : undefined;
     return apiJson({ error: { code: error.code, message: error.message } }, { status: error.status, headers }, error.rateLimit ?? consumedRateLimit);
   }
-  console.error("[api]", error);
+  captureError("api.unhandled", error);
   return apiJson({ error: { code: "internal_error", message: "An unexpected error occurred." } }, { status: 500 }, consumedRateLimit);
 }

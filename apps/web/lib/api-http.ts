@@ -73,9 +73,14 @@ function configuredTrustedProxyHeader(): TrustedProxyHeader | undefined {
  * The client IP, or null when no trusted proxy header is configured. For x-forwarded-for the
  * last hop is used: proxies append, so the last entry is the one the trusted proxy wrote.
  */
-export function clientAddress(request: Request, trustedProxyHeader?: TrustedProxyHeader): string | null {
+export function clientAddress(request: Request, trustedProxyHeader: TrustedProxyHeader | undefined = configuredTrustedProxyHeader()): string | null {
+  return clientAddressFromHeaders(request.headers, trustedProxyHeader);
+}
+
+/** Same as clientAddress, for server actions that only have `headers()`. */
+export function clientAddressFromHeaders(headers: Headers, trustedProxyHeader: TrustedProxyHeader | undefined = configuredTrustedProxyHeader()): string | null {
   if (!trustedProxyHeader) return null;
-  const raw = request.headers.get(trustedProxyHeader)?.trim();
+  const raw = headers.get(trustedProxyHeader)?.trim();
   if (!raw) return null;
   const candidate = trustedProxyHeader === "x-forwarded-for" ? raw.split(",").map((v) => v.trim()).filter(Boolean).at(-1) : raw;
   return candidate && isIP(candidate) ? candidate : null;

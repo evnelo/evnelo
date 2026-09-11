@@ -11,8 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FormMessage } from "@/components/ui/form-field";
+import { SectionCard } from "@/components/dashboard/page-chrome";
 import { saveEventAction } from "@/app/dashboard/actions";
 import { AddressAutocomplete } from "@/components/dashboard/address-autocomplete";
 import { ImageUploadField } from "@/components/dashboard/image-upload-field";
@@ -94,7 +94,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
       onSubmit={(e) => { e.preventDefault(); submit(); }}
       // `invalid` doesn't bubble, so catch it in the capture phase and open the collapsed section that holds the field
       onInvalidCapture={(e) => { const details = (e.target as HTMLElement).closest("details"); if (details && !details.open) details.open = true; }}
-      className="space-y-6 pb-24"
+      className="space-y-4 pb-28"
     >
       <Section title="Basics" description="The minimum details people need to recognize your event.">
         <div className="grid gap-5 sm:grid-cols-2">
@@ -114,19 +114,22 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
         </div>
       </CollapsibleSection>
 
-      <Section title="When">
+      <Section title="When" description="Times are stored in UTC and shown to everyone in the event's own zone.">
         <div className="grid gap-5 sm:grid-cols-3">
           <Field label="Starts" htmlFor="starts"><Input id="starts" type="datetime-local" value={v.startsLocal} onChange={(e) => set("startsLocal", e.target.value)} required /></Field>
           <Field label="Ends" htmlFor="ends"><Input id="ends" type="datetime-local" value={v.endsLocal} onChange={(e) => set("endsLocal", e.target.value)} required /></Field>
           <Field label="Time zone" htmlFor="tz"><Select id="tz" value={v.timezone} onChange={(e) => set("timezone", e.target.value)}>{TIMEZONES.map((z) => <option key={z} value={z}>{z}</option>)}</Select></Field>
         </div>
-        {status === "published" && <p className="mt-3 text-xs text-muted-foreground">Changing the time of a published event emails every attendee.</p>}
+        {status === "published" && <p className="hairline mt-4 pt-3 text-xs text-muted-foreground">Changing the time of a published event emails every attendee.</p>}
       </Section>
 
-      <Section title="Where">
-        <div className="mb-4 flex gap-4 text-sm">
+      <Section title="Where" description="Where people turn up, or the link they join.">
+        <div className="mb-5 inline-flex rounded-lg border border-border/80 bg-muted/40 p-0.5 text-sm">
           {(["in_person", "online", "hybrid"] as const).map((t) => (
-            <label key={t} className="flex items-center gap-2"><input type="radio" name="locationType" checked={v.locationType === t} onChange={() => set("locationType", t)} className="accent-[var(--primary)]" /> {t === "in_person" ? "In person" : t === "online" ? "Online" : "Hybrid"}</label>
+            <label key={t} className={`press cursor-pointer rounded-md px-3 py-1.5 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[var(--ring)] ${v.locationType === t ? "bg-card font-medium shadow-card" : "text-muted-foreground hover:text-foreground"}`}>
+              <input type="radio" name="locationType" checked={v.locationType === t} onChange={() => set("locationType", t)} className="sr-only" />
+              {t === "in_person" ? "In person" : t === "online" ? "Online" : "Hybrid"}
+            </label>
           ))}
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
@@ -152,7 +155,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
         </div>
       </Section>
 
-      <Section title="Registration">
+      <Section title="Registration" description="Who can find the event, and how many can come.">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Visibility" htmlFor="vis" help={v.visibility === "public" ? "Listed on Discover and indexed by search engines." : v.visibility === "unlisted" ? "Anyone with the link; not listed or indexed." : "Only people with an invite link."}>
             <Select id="vis" value={v.visibility} onChange={(e) => set("visibility", e.target.value as Values["visibility"])}><option value="public">Public</option><option value="unlisted">Unlisted</option><option value="private">Private</option></Select>
@@ -171,8 +174,8 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
           <Toggle label="Buyer pays the service fee" help="Cloud edition: show the 0.99% as a line item." checked={v.feePassThrough} onChange={(c) => set("feePassThrough", c)} />
           <Field label="Refund policy" htmlFor="refund" optional help="Shown at checkout for paid tickets." className="sm:col-span-2"><Textarea id="refund" rows={3} value={v.refundPolicy} onChange={(e) => set("refundPolicy", e.target.value)} /></Field>
         </div>
-        <div className="mt-5 border-t pt-5">
-          <p className="text-sm font-medium">Reminders</p>
+        <div className="hairline mt-5 pt-5">
+          <p className="eyebrow">Reminders</p>
           <div className="mt-2 flex flex-wrap items-center gap-5 text-sm">
             <label className="flex items-center gap-2"><input type="checkbox" checked={v.reminder24} onChange={(e) => set("reminder24", e.target.checked)} className="size-4 accent-[var(--primary)]" /> 24 hours before</label>
             <label className="flex items-center gap-2"><input type="checkbox" checked={v.reminder1} onChange={(e) => set("reminder1", e.target.checked)} className="size-4 accent-[var(--primary)]" /> 1 hour before</label>
@@ -186,7 +189,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
       <CollapsibleSection title="Hosts" description="People shown on the event page." defaultOpen={v.hosts.length > 0}>
         <div className="space-y-3">
           {v.hosts.map((h, i) => (
-            <div key={i} className="space-y-3 rounded-md border bg-muted/30 p-3">
+            <div key={i} className="space-y-3 rounded-lg border border-border/80 bg-muted/25 p-3">
               <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
                 <Input value={h.name} placeholder="Name" aria-label="Host name" onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
                 <Input value={h.title} placeholder="Title" aria-label="Host title" onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)))} />
@@ -202,7 +205,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
       <CollapsibleSection title="Sponsors" description="Logos appear on the event page in this order." defaultOpen={v.sponsors.length > 0}>
         <div className="space-y-3">
           {v.sponsors.map((s, i) => (
-            <div key={i} className="space-y-3 rounded-md border bg-muted/30 p-3">
+            <div key={i} className="space-y-3 rounded-lg border border-border/80 bg-muted/25 p-3">
               <div className="grid gap-2 sm:grid-cols-[1fr_8rem_1fr_auto]">
                 <Input value={s.name} placeholder="Name" aria-label="Sponsor name" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
                 <Input value={s.tier} placeholder="Tier" aria-label="Tier" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, tier: e.target.value } : x)))} />
@@ -216,10 +219,14 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
         </div>
       </CollapsibleSection>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t bg-background/95 backdrop-blur lg:left-[15rem]">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 lg:px-8">
-          <div className="min-w-0 flex-1"><FormMessage error={msg.error} success={msg.success} /></div>
-          <Button type="submit" disabled={pending}>{pending ? "Saving…" : mode === "create" ? "Create draft" : "Save changes"}</Button>
+      <div className="surface-glass fixed inset-x-0 bottom-0 z-10 border-t border-border/80 lg:left-64">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10">
+          <div className="min-w-0 flex-1">
+            {msg.error || msg.success
+              ? <FormMessage error={msg.error} success={msg.success} />
+              : <p className="truncate text-xs text-muted-foreground">{mode === "create" ? "Nothing is public until you publish." : "Changes go live as soon as you save."}</p>}
+          </div>
+          <Button type="submit" size="lg" className="h-10 rounded-lg px-5 text-sm" disabled={pending}>{pending ? "Saving…" : mode === "create" ? "Create draft" : "Save changes"}</Button>
         </div>
       </div>
     </form>
@@ -227,35 +234,43 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
 }
 
 function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
-  return (
-    <Card>
-      <CardHeader><CardTitle className="text-base">{title}</CardTitle>{description && <CardDescription>{description}</CardDescription>}</CardHeader>
-      <CardContent>{children}</CardContent>
-    </Card>
-  );
+  return <SectionCard title={title} description={description}>{children}</SectionCard>;
 }
 
+const SECTION_GRID = "grid gap-x-10 gap-y-5 md:grid-cols-[13.5rem_minmax(0,1fr)]";
+
+/**
+ * Same card and same two-column rhythm as `Section`, but folded away until it is needed.
+ * `details`/`summary` keeps it working before hydration and lets `onInvalidCapture` above
+ * pop a section open when a hidden field fails validation.
+ */
 function CollapsibleSection({ title, description, children, defaultOpen = false }: { title: string; description?: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <details className="group rounded-lg border bg-card text-card-foreground" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-4 [&::-webkit-details-marker]:hidden">
-        <span>
+    <details className="group rounded-xl border border-border/80 bg-card text-card-foreground shadow-card" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
+      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-5 sm:p-6 md:grid md:grid-cols-[13.5rem_minmax(0,1fr)] md:gap-x-10 [&::-webkit-details-marker]:hidden">
+        <span className="block min-w-0 md:pt-px">
           <span className="block text-sm font-medium">{title}</span>
-          {description && <span className="mt-1 block text-sm text-muted-foreground">{description}</span>}
+          {description && <span className="mt-1.5 block text-sm leading-relaxed text-muted-foreground">{description}</span>}
         </span>
-        <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+        <span className="flex shrink-0 items-center justify-end gap-4 text-sm text-muted-foreground md:justify-between">
+          <span className="hidden md:inline">{open ? "Hide" : "Edit"}</span>
+          <ChevronDown className="size-4 shrink-0 transition-transform group-open:rotate-180" />
+        </span>
       </summary>
-      <div className="border-t p-4">{children}</div>
+      <div className={`${SECTION_GRID} px-5 pb-5 sm:px-6 sm:pb-6`}>
+        <span aria-hidden className="hidden md:block" />
+        <div className="hairline min-w-0 pt-5 md:border-t-0 md:pt-0">{children}</div>
+      </div>
     </details>
   );
 }
 
 function Toggle({ label, help, checked, onChange }: { label: string; help?: string; checked: boolean; onChange: (c: boolean) => void }) {
   return (
-    <label className="flex items-start gap-3 rounded-md border p-3">
+    <label className="press flex cursor-pointer items-start gap-3 rounded-lg border border-border/80 bg-muted/25 p-3 hover:bg-muted/50">
       <Switch checked={checked} onCheckedChange={onChange} className="mt-0.5" />
-      <span><span className="block text-sm font-medium">{label}</span>{help && <span className="block text-xs text-muted-foreground">{help}</span>}</span>
+      <span><span className="block text-sm font-medium">{label}</span>{help && <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">{help}</span>}</span>
     </label>
   );
 }

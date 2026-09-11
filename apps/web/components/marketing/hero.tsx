@@ -14,7 +14,7 @@ export function Hero() {
           <p className="eyebrow flex items-center gap-3 tracking-[0.2em]"><span className="h-0.5 w-6 bg-pulse" aria-hidden /> Open event infrastructure</p>
           <h1 className="display mt-5 text-[clamp(2.75rem,5vw,4.25rem)]">From first click to front gate.</h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground">Publish events, sell tickets, message attendees, and run check-in in one open platform, or self-host it on your own stack.</p>
-          <p className="mt-4 text-lg"><strong className="font-bold">0.99%</strong> on paid tickets. Free events stay free.</p>
+          <p className="mt-4 text-lg"><strong className="font-bold">0.99%</strong> on paid tickets, through your own Stripe account. Free events stay free.</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg" className="rounded-full px-7"><Link href="/login">Host an event <ArrowRight className="size-4" /></Link></Button>
             <Button asChild size="lg" variant="outline" className="rounded-full px-7"><Link href="/discover">Explore events</Link></Button>

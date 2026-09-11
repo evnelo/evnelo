@@ -42,13 +42,13 @@ export default async function HomePage() {
             <div>
               <p className="eyebrow text-paper/60">Pricing</p>
               <h2 className="display mt-3 text-4xl sm:text-5xl">Lower fees than any other platform.</h2>
-              <p className="mt-5 max-w-md text-paper/75">Most platforms take 3 to 5 percent plus a fee on every ticket. Evnelo takes 0.99% on paid tickets and nothing on free ones. Payment processing is Stripe&rsquo;s, at Stripe&rsquo;s rate, and you can pass the fee to buyers or absorb it.</p>
+              <p className="mt-5 max-w-md text-paper/75">Most platforms take 3 to 5 percent plus a fee on every ticket. Evnelo takes 0.99% on paid tickets and nothing on free ones. You connect your own Stripe account, so ticket money goes straight to you and never sits with us; Stripe&rsquo;s processing fee applies at Stripe&rsquo;s rate, and you can pass fees to buyers or absorb them.</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {[
                 { title: "Free events", price: "$0", note: "No platform fee, no per-ticket fee, unlimited attendees." },
-                { title: "Paid events", price: "0.99%", note: "On the ticket price. A $25 ticket costs you 25 cents, plus Stripe." , accent: true },
-                { title: "Self-hosted", price: "$0", note: "Open source. One container, your MySQL, your Stripe keys. No platform fee ever." },
+                { title: "Paid events", price: "0.99%", note: "On the ticket price, charged through your connected Stripe account. A $25 ticket costs you 25 cents, plus Stripe." , accent: true },
+                { title: "Self-hosted", price: "$0", note: "Open source. One container, your MySQL, your own Stripe keys. No platform fee, ever." },
               ].map((p) => (
                 <div key={p.title} className={p.accent ? "rounded-lg bg-pulse p-6 text-white" : "rounded-lg border border-paper/15 p-6"}>
                   <p className={p.accent ? "text-sm font-medium text-white/80" : "text-sm font-medium text-paper/60"}>{p.title}</p>
@@ -133,7 +133,7 @@ const { data } = await evnelo.GET("/api/v1/events");`}</code></pre>
           <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h2 className="display text-4xl sm:text-5xl">Make gathering flow.</h2>
-              <p className="mt-3 max-w-lg text-white/85">Create your first event in a few minutes. No card needed for free events.</p>
+              <p className="mt-3 max-w-lg text-white/85">Create your first event in a few minutes. Free events need nothing; paid events need your Stripe account.</p>
             </div>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" variant="dark"><Link href="/login">Host an event</Link></Button>

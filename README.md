@@ -1,6 +1,6 @@
 # Evnelo
 
-**Events, in motion.** Open event infrastructure you can run yourself. Publish an event, sell or give away tickets, collect registrations with your own questions, email and text attendees, scan them in at the door. Free events are free; the cloud edition charges 0.99% on paid tickets, self-hosting charges nothing beyond your own Stripe fees.
+**Events, in motion.** Open event infrastructure you can run yourself. Publish an event, sell or give away tickets, collect registrations with your own questions, email and text attendees, scan them in at the door. Free events are free. Paid tickets always run through the organizer's own Stripe account: the cloud edition takes 0.99% as an application fee at checkout and Stripe's processing applies on the organizer's account; self-hosting uses your own Stripe keys and has no platform fee at all.
 
 Built with TypeScript end to end: Next.js 15 (App Router, React 19), Tailwind v4, MySQL 8 via Drizzle, Stripe, Resend for email, Vonage for SMS, S3-compatible storage for images. One database, one container, three optional API keys.
 

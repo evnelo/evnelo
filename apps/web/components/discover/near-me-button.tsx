@@ -45,8 +45,8 @@ export function NearMeButton({ query, active }: { query: string; active: boolean
 
   const busy = locating || pending;
   return (
-    <div className="flex flex-col gap-1">
-      <Button type="button" variant={active ? "default" : "outline"} onClick={locate} disabled={busy} aria-pressed={active}>
+    <div className="flex flex-col items-center gap-1">
+      <Button type="button" variant={active ? "default" : "outline"} size="pill" className="h-11 px-5" onClick={locate} disabled={busy} aria-pressed={active}>
         {busy ? <LoaderCircle className="animate-spin" /> : <Crosshair />}
         {active ? "Near you" : "Near me"}
       </Button>

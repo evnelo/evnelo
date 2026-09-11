@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { X } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarPlus, SearchX, X } from "lucide-react";
 import {
   DISCOVER_PAGE_SIZE,
   calendarMonth,
@@ -17,9 +17,11 @@ import type { PublicEventSearch } from "@ot/core/services";
 import { listDiscoverableCities, listDiscoverableEvents, listDiscoverableTags } from "@/lib/queries/events";
 import { publicEventPath, serializeJsonLd } from "@/lib/urls";
 import { env } from "@/lib/env";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import { DiscoverCalendar } from "@/components/discover/calendar";
 import { EventCard } from "@/components/discover/event-card";
-import { FilterBar } from "@/components/discover/filter-bar";
+import { CustomDateForm, FilterToolbar, SearchForm, TopicChips } from "@/components/discover/filter-bar";
 
 /**
  * Filters live in the URL, so every combination is its own shareable, crawlable page and none of
@@ -61,6 +63,20 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   };
 }
 
+/** An icon in a soft circle, one sentence, one action. */
+function EmptyState({ icon, title, body, action }: { icon: React.ReactNode; title: string; body: React.ReactNode; action: React.ReactNode }) {
+  return (
+    <div className="animate-rise mx-auto mt-16 max-w-md text-center">
+      <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-accent text-accent-foreground [&_svg]:size-6">{icon}</div>
+      <p className="display mt-5 text-2xl">{title}</p>
+      <p className="mt-2 text-sm text-muted-foreground">{body}</p>
+      <div className="mt-6">{action}</div>
+    </div>
+  );
+}
+
+const stagger = (index: number) => ({ ["--stagger" as string]: Math.min(index, 12) });
+
 export default async function DiscoverPage({ searchParams }: Props) {
   const filters = parseDiscoverFilters(await searchParams);
   const now = new Date();
@@ -89,6 +105,7 @@ export default async function DiscoverPage({ searchParams }: Props) {
   const featuredIds = new Set(featured.map((e) => e.id));
   const rest = featured.length > 0 ? events.filter((e) => !featuredIds.has(e.id)) : events;
 
+  const clearAllHref = discoverHref(filters, { q: null, city: null, tag: null, date: null, from: null, to: null, price: null, format: null, lat: null, lng: null, offset: 0 });
   const active: { label: string; href: string }[] = [
     filters.q && { label: `“${filters.q}”`, href: discoverHref(filters, { q: null, offset: 0 }) },
     filters.city && { label: filters.city, href: discoverHref(filters, { city: null, offset: 0 }) },
@@ -106,101 +123,135 @@ export default async function DiscoverPage({ searchParams }: Props) {
     })),
   } : null;
 
+  const countLabel = `${events.length}${hasMore ? "+" : ""} ${events.length === 1 ? "event" : "events"}${filters.offset > 0 ? ` from #${filters.offset + 1}` : ""}`;
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
+    <>
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />}
 
-      <h1 className="display text-5xl sm:text-6xl">{headline(filters, tagName)}</h1>
-      <p className="mt-3 max-w-prose text-muted-foreground">
-        Public events from every host on the platform. Free events are free to run; paid events cost the host 0.99%.
-      </p>
-
-      <FilterBar filters={filters} tags={tags} cities={cities} />
-
-      {active.length > 0 && (
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          {active.map((item) => (
-            <Link key={item.label} href={item.href} className="inline-flex items-center gap-1 rounded-full border bg-secondary px-2.5 py-1 text-xs hover:bg-muted">
-              {item.label}
-              <X className="size-3" />
-              <span className="sr-only">Remove filter</span>
-            </Link>
-          ))}
-          <Link href={discoverHref(filters, { q: null, city: null, tag: null, date: null, from: null, to: null, price: null, format: null, lat: null, lng: null, offset: 0 })} className="text-xs underline underline-offset-4">
-            Clear all
-          </Link>
+      <section className="border-b border-border/70">
+        <div className="mx-auto max-w-6xl px-4 pb-10 pt-12 text-center sm:px-6 sm:pb-14 sm:pt-20">
+          <p className="eyebrow animate-rise">Discover</p>
+          <h1 className="display animate-rise mt-3 text-5xl sm:text-7xl" style={stagger(1)}>{headline(filters, tagName)}</h1>
+          <p className="animate-rise mx-auto mt-4 max-w-xl text-base text-muted-foreground sm:text-lg" style={stagger(2)}>
+            Talks, workshops, dinners and meetups from every host on OpenTicket.
+          </p>
+          <div className="animate-rise" style={stagger(3)}>
+            <SearchForm filters={filters} cities={cities} />
+          </div>
         </div>
-      )}
+      </section>
 
-      {grid ? (
-        <>
-          <DiscoverCalendar grid={grid} events={events} filters={filters} today={today} />
-          {events.length === 0 && (
-            <p className="mt-4 text-sm text-muted-foreground">Nothing scheduled this month. Try another month or clear a filter.</p>
-          )}
-        </>
-      ) : events.length === 0 ? (
-        <div className="mt-12 rounded-xl border border-dashed p-10 text-center">
-          {filtered ? (
-            <>
-              <p className="font-medium">No events match these filters.</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Try a wider date range or{" "}
-                <Link href={discoverHref(filters, { q: null, city: null, tag: null, date: null, from: null, to: null, price: null, format: null, lat: null, lng: null, offset: 0 })} className="underline underline-offset-4">
-                  clear the filters
-                </Link>.
-              </p>
-            </>
+      <FilterToolbar filters={filters} />
+
+      <div className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+        {(filters.date === "custom" || tags.length > 0 || active.length > 0) && (
+          <div className="mt-6 space-y-4">
+            <CustomDateForm filters={filters} />
+            <TopicChips filters={filters} tags={tags} />
+            {active.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="eyebrow mr-1">Showing</span>
+                {active.map((item) => (
+                  <Link key={item.label} href={item.href} className="press tap-area inline-flex h-9 items-center gap-1.5 rounded-full bg-foreground pl-3.5 pr-2.5 text-[13px] font-medium text-background hover:bg-foreground/85">
+                    {item.label}
+                    <X className="size-3.5" aria-hidden />
+                    <span className="sr-only">Remove filter</span>
+                  </Link>
+                ))}
+                <Link href={clearAllHref} className="press tap-area inline-flex h-9 items-center px-2 text-[13px] text-muted-foreground underline underline-offset-4 hover:text-foreground">
+                  Clear all
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+
+        {grid ? (
+          <>
+            <DiscoverCalendar grid={grid} events={events} filters={filters} today={today} />
+            {events.length === 0 && (
+              <EmptyState
+                icon={<CalendarPlus />}
+                title="Nothing scheduled this month."
+                body="Try another month or clear a filter."
+                action={<Link href={discoverHref(filters, { month: grid.next, offset: 0 })} className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>Next month <ArrowRight /></Link>}
+              />
+            )}
+          </>
+        ) : events.length === 0 ? (
+          filtered ? (
+            <EmptyState
+              icon={<SearchX />}
+              title="No events match these filters."
+              body="Try a wider date range or clear the filters."
+              action={<Link href={clearAllHref} className={cn(buttonVariants({ size: "lg" }))}>Clear the filters</Link>}
+            />
           ) : filters.offset > 0 ? (
-            <>
-              <p className="font-medium">You reached the end.</p>
-              <p className="mt-1 text-sm text-muted-foreground"><Link href={discoverHref(filters, { offset: 0 })} className="underline underline-offset-4">Back to the start</Link>.</p>
-            </>
+            <EmptyState
+              icon={<ArrowLeft />}
+              title="You reached the end."
+              body="That is every upcoming public event on this page."
+              action={<Link href={discoverHref(filters, { offset: 0 })} className={cn(buttonVariants({ variant: "outline", size: "lg" }))}><ArrowLeft /> Back to the start</Link>}
+            />
           ) : (
-            <>
-              <p className="font-medium">No upcoming public events yet.</p>
-              <p className="mt-1 text-sm text-muted-foreground">Be the first: <Link href="/dashboard" className="underline underline-offset-4">host an event</Link>.</p>
-            </>
-          )}
-        </div>
-      ) : (
-        <>
-          {featured.length > 0 && (
-            <section className="mt-10">
-              <h2 className="text-sm font-medium text-muted-foreground">Featured</h2>
-              <ul className="mt-4 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-                {featured.map((event) => <li key={event.id}><EventCard event={event} featured /></li>)}
-              </ul>
-            </section>
-          )}
+            <EmptyState
+              icon={<CalendarPlus />}
+              title="No upcoming public events yet."
+              body="Be the first to host one."
+              action={<Link href="/dashboard" className={cn(buttonVariants({ size: "lg" }))}>Host an event</Link>}
+            />
+          )
+        ) : (
+          <>
+            {featured.length > 0 && (
+              <section className="mt-12">
+                <div className="flex items-baseline justify-between">
+                  <h2 className="display text-3xl">Featured</h2>
+                </div>
+                <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2">
+                  {featured.map((event, index) => (
+                    <li key={event.id} className={cn("animate-rise", index === 0 && "sm:col-span-2 lg:row-span-2")} style={stagger(index)}>
+                      <EventCard event={event} variant={index === 0 ? "featured" : "compact"} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
-          {rest.length > 0 && (
-            <section className="mt-10">
-              <h2 className="text-sm font-medium text-muted-foreground">
-                {isDefaultFeed ? "Upcoming" : `${events.length}${hasMore ? "+" : ""} ${events.length === 1 ? "event" : "events"}${filters.offset > 0 ? ` from #${filters.offset + 1}` : ""}`}
-              </h2>
-              <ul className="mt-4 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-                {rest.map((event) => <li key={event.id}><EventCard event={event} /></li>)}
-              </ul>
-            </section>
-          )}
+            {rest.length > 0 && (
+              <section className="mt-12">
+                <div className="flex items-baseline justify-between gap-4">
+                  <h2 className="display text-3xl">{isDefaultFeed ? "Upcoming" : countLabel}</h2>
+                  {isDefaultFeed && <span className="text-sm text-muted-foreground tabular-nums">{countLabel}</span>}
+                </div>
+                <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {rest.map((event, index) => (
+                    <li key={event.id} className="animate-rise" style={stagger(featured.length + index)}>
+                      <EventCard event={event} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
-          {(hasMore || filters.offset > 0) && (
-            <nav className="mt-12 flex items-center justify-center gap-3" aria-label="Pagination">
-              {filters.offset > 0 && (
-                <Link href={discoverHref(filters, { offset: Math.max(filters.offset - DISCOVER_PAGE_SIZE, 0) })} className="inline-flex h-10 items-center rounded-md border bg-card px-4 text-sm hover:bg-muted">
-                  Back
-                </Link>
-              )}
-              {hasMore && (
-                <Link href={discoverHref(filters, { offset: filters.offset + DISCOVER_PAGE_SIZE })} className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-                  Load more
-                </Link>
-              )}
-            </nav>
-          )}
-        </>
-      )}
-    </div>
+            {(hasMore || filters.offset > 0) && (
+              <nav className="mt-14 flex items-center justify-center gap-3" aria-label="Pagination">
+                {filters.offset > 0 && (
+                  <Link href={discoverHref(filters, { offset: Math.max(filters.offset - DISCOVER_PAGE_SIZE, 0) })} className={cn(buttonVariants({ variant: "outline", size: "lg" }), "rounded-full")}>
+                    <ArrowLeft /> Back
+                  </Link>
+                )}
+                {hasMore && (
+                  <Link href={discoverHref(filters, { offset: filters.offset + DISCOVER_PAGE_SIZE })} className={cn(buttonVariants({ size: "lg" }), "rounded-full")}>
+                    Load more <ArrowRight />
+                  </Link>
+                )}
+              </nav>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 }

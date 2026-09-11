@@ -34,6 +34,8 @@ This is the canonical implementation order and cross-session progress tracker. U
 
 ## Shipped
 
+- [x] Home page (2026-09-11): marketing landing at `/` with the tagline, pricing band (free events $0, paid 0.99%, self-hosted $0), the flow, open-source and developer sections, upcoming public events; Discover becomes a secondary page
+
 Foundation (M0) plus the first slice of M1/M2:
 
 - [x] Schema for the whole PRD data model, migrations committed, `pnpm db:seed` demo data

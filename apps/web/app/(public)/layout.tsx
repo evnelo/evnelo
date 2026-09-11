@@ -14,6 +14,7 @@ export default async function PublicLayout({ children }: { children: React.React
           <Link href="/" className="press shrink-0 rounded-md"><Brand /></Link>
           <div className="flex items-center gap-1 text-sm sm:gap-2">
             <Link href="/discover" className="press rounded-full px-3 py-2 hover:bg-muted/80">Discover</Link>
+            <Link href="/#pricing" className="press hidden rounded-full px-3 py-2 hover:bg-muted/80 sm:inline-flex">Pricing</Link>
             {user ? (
               <Link href="/dashboard" className={cn(buttonVariants({ variant: "outline", size: "pill" }))}>Dashboard</Link>
             ) : (

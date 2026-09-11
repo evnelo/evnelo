@@ -17,7 +17,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   return [
-    { url: `${env.APP_URL}/discover`, lastModified: now, changeFrequency: "hourly", priority: 1 },
+    { url: `${env.APP_URL}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
+    { url: `${env.APP_URL}/discover`, lastModified: now, changeFrequency: "hourly", priority: 0.9 },
     ...organizations.map((org) => ({
       url: `${env.APP_URL}${organizationPath(org.slug)}`,
       lastModified: org.updatedAt,

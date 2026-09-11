@@ -24,6 +24,15 @@ describe("OpenAPI contract", () => {
     expect(publicEvent.properties.orgSlug).toEqual({ type: "string" });
   });
 
+  it("documents the discovery filters and the price summary the cards rely on", () => {
+    const parameters = document.paths["/public/events"].get.parameters.map((p: { name: string }) => p.name);
+    expect(parameters).toEqual(["query", "city", "tag", "from", "to", "price", "format", "lat", "lng", "radiusKm", "limit", "offset"]);
+    const publicEvent = document.components.schemas.PublicEvent;
+    expect(publicEvent.required).toContain("isFree");
+    expect(publicEvent.properties.minPriceMinor.type).toEqual(["integer", "null"]);
+    expect(publicEvent.properties.distanceKm.type).toEqual(["number", "null"]);
+  });
+
   it("documents bounded JSON body failures", () => {
     const responses = document.paths["/events"].post.responses;
     expect(responses["400"]).toBeDefined();

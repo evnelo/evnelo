@@ -16,9 +16,19 @@ const queryInput = z.object({
   query: z.string().trim().max(160).optional(),
   city: z.string().trim().max(100).optional(),
   tag: z.string().trim().max(60).optional(),
+  from: z.coerce.date().optional(),
+  to: z.coerce.date().optional(),
+  price: z.enum(["free", "paid"]).optional(),
+  format: z.enum(["online", "in_person"]).optional(),
+  lat: z.coerce.number().min(-90).max(90).optional(),
+  lng: z.coerce.number().min(-180).max(180).optional(),
+  radiusKm: z.coerce.number().positive().max(500).default(25),
   limit: z.coerce.number().int().min(1).max(100).default(48),
-  offset: z.coerce.number().int().min(0).default(0),
-});
+  offset: z.coerce.number().int().min(0).max(5_000).default(0),
+}).transform(({ lat, lng, radiusKm, ...rest }) => ({
+  ...rest,
+  near: lat !== undefined && lng !== undefined ? { lat, lng, radiusKm } : undefined,
+}));
 
 export async function GET(request: Request) {
   let rateLimit: ApiRateLimit | undefined;

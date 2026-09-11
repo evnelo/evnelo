@@ -2,6 +2,7 @@ export * from "./edition";
 export * from "./fees";
 export * from "./sms";
 export * from "./visibility";
+export * from "./discovery";
 export * from "./notifications";
 export * from "./fields/conditions";
 export * from "./fields/schema";

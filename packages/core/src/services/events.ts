@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gte, inArray, isNull, like, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, isNotNull, isNull, like, lte, ne, or, sql } from "drizzle-orm";
 import { z } from "zod";
 import {
   attendees, checkIns, eventHosts, eventSponsors, eventTags, events, notifications, orders, organizations, tags, ticketTypes,
@@ -257,12 +257,77 @@ export async function listOrgEvents(db: Database, orgId: string, opts: OrgEvents
   return rows.map((r) => ({ ...r, registrations: Number(r.registrations), pending: Number(r.pending), revenue: Number(r.revenue), checkedIn: Number(r.checkedIn) }));
 }
 
-export type PublicEventSearch = { query?: string; city?: string; tag?: string; limit?: number; offset?: number };
+export type PublicEventSearch = {
+  query?: string;
+  city?: string;
+  tag?: string;
+  /** Instant window. `from` widens the default "not over yet" floor; `to` caps the start time. */
+  from?: Date;
+  to?: Date;
+  /** "free" = every visible ticket type costs nothing. */
+  price?: "free" | "paid";
+  /** Hybrid events count as both online and in person. */
+  format?: "online" | "in_person";
+  near?: { lat: number; lng: number; radiusKm: number };
+  limit?: number;
+  offset?: number;
+};
+
+export type PublicEvent = {
+  id: string; slug: string; name: string; descriptionMd: string | null; coverImageUrl: string | null;
+  startsAt: Date; endsAt: Date; timezone: string; city: string | null; country: string | null;
+  locationType: Event["locationType"]; venueName: string | null;
+  organizationId: string; orgName: string; orgSlug: string;
+  /** Pricing summary so a card can print "Free" or "from $25" without a second query. */
+  isFree: boolean; minPriceMinor: number | null; currency: string | null;
+  /** Great-circle distance from the `near` origin, present only when one was given. */
+  distanceKm: number | null;
+};
+
+/** Non-hidden ticket types are the ones a visitor can actually buy, so they define the price summary. */
+const visibleTicketTypes = sql`from ${ticketTypes} tt where tt.event_id = events.id and tt.hidden = 0`;
+const paidTicketExists = sql<boolean>`exists (select 1 ${visibleTicketTypes} and tt.price_minor > 0)`;
+/** An event with no visible ticket type is free to look at: publishing always adds a free one. */
+const noPaidTicket = sql<boolean>`(not ${paidTicketExists})`;
+const isFreeExpression = sql<number>`(not ${paidTicketExists})`;
+const minPriceExpression = sql<number | null>`(select min(tt.price_minor) ${visibleTicketTypes})`;
+const priceCurrencyExpression = sql<string | null>`(select tt.currency ${visibleTicketTypes} order by tt.price_minor asc, tt.position asc limit 1)`;
+
+/** Coordinates are free-text varchars; only cast rows that really hold a decimal number. */
+const hasCoordinates = sql<boolean>`(events.lat regexp '^-?[0-9]+(\\.[0-9]+)?$' and events.lng regexp '^-?[0-9]+(\\.[0-9]+)?$')`;
+
+/** Haversine great-circle distance in kilometres, clamped so floating point can't push acos out of domain. */
+function distanceKmExpression(lat: number, lng: number) {
+  return sql<number>`(6371 * acos(least(1, greatest(-1,
+    cos(radians(${lat})) * cos(radians(cast(events.lat as decimal(12, 8)))) * cos(radians(cast(events.lng as decimal(12, 8))) - radians(${lng}))
+    + sin(radians(${lat})) * sin(radians(cast(events.lat as decimal(12, 8))))))))`;
+}
+
+/** Cheap pre-filter so the trigonometry only runs on rows that can possibly be in range. */
+function boundingBox(lat: number, lng: number, radiusKm: number) {
+  const latDelta = radiusKm / 111.045;
+  const lngDelta = radiusKm / (111.045 * Math.max(Math.cos((lat * Math.PI) / 180), 0.01));
+  const box = [sql<boolean>`cast(events.lat as decimal(12, 8)) between ${lat - latDelta} and ${lat + latDelta}`];
+  // A box that would wrap the antimeridian is skipped: the Haversine filter still bounds the result.
+  if (lng - lngDelta >= -180 && lng + lngDelta <= 180) box.push(sql<boolean>`cast(events.lng as decimal(12, 8)) between ${lng - lngDelta} and ${lng + lngDelta}`);
+  return box;
+}
 
 /** Public-safe discovery projection used by the web UI and unauthenticated API. */
-export async function listPublicEvents(db: Database, opts: PublicEventSearch = {}) {
+export async function listPublicEvents(db: Database, opts: PublicEventSearch = {}): Promise<PublicEvent[]> {
   const where = [eq(events.visibility, "public"), eq(events.status, "published"), isNull(events.deletedAt), gte(events.endsAt, new Date())];
   if (opts.city) where.push(eq(events.city, opts.city));
+  if (opts.from) where.push(gte(events.endsAt, opts.from));
+  if (opts.to) where.push(lte(events.startsAt, opts.to));
+  if (opts.price === "free") where.push(noPaidTicket);
+  if (opts.price === "paid") where.push(paidTicketExists);
+  if (opts.format === "online") where.push(inArray(events.locationType, ["online", "hybrid"]));
+  if (opts.format === "in_person") where.push(inArray(events.locationType, ["in_person", "hybrid"]));
+  const near = opts.near;
+  const distance = near ? distanceKmExpression(near.lat, near.lng) : null;
+  if (near && distance) {
+    where.push(hasCoordinates, ...boundingBox(near.lat, near.lng, near.radiusKm), sql<boolean>`${distance} <= ${near.radiusKm}`);
+  }
   if (opts.tag) {
     where.push(sql<boolean>`exists (select 1 from ${eventTags} et join ${tags} t on t.id = et.tag_id where et.event_id = events.id and (t.slug = ${opts.tag} or t.name = ${opts.tag}))`);
   }
@@ -283,18 +348,81 @@ export async function listPublicEvents(db: Database, opts: PublicEventSearch = {
       )!);
     }
   }
-  return db
+  const rows = await db
     .select({
       id: events.id, slug: events.slug, name: events.name, descriptionMd: events.descriptionMd, coverImageUrl: events.coverImageUrl,
       startsAt: events.startsAt, endsAt: events.endsAt, timezone: events.timezone, city: events.city, country: events.country,
       locationType: events.locationType, venueName: events.venueName, organizationId: organizations.id, orgName: organizations.name, orgSlug: organizations.slug,
+      isFree: isFreeExpression, minPriceMinor: minPriceExpression, currency: priceCurrencyExpression,
+      distanceKm: distance ?? sql<number | null>`null`,
     })
     .from(events)
     .innerJoin(organizations, eq(events.organizationId, organizations.id))
     .where(and(...where))
     .orderBy(asc(events.startsAt), asc(events.id))
-    .limit(Math.min(Math.max(opts.limit ?? 48, 1), 100))
-    .offset(Math.max(opts.offset ?? 0, 0));
+    .limit(Math.min(Math.max(opts.limit ?? 48, 1), 200))
+    .offset(Math.min(Math.max(opts.offset ?? 0, 0), 5_000));
+
+  return rows.map((row) => ({
+    ...row,
+    isFree: Number(row.isFree) === 1,
+    minPriceMinor: row.minPriceMinor === null ? null : Number(row.minPriceMinor),
+    distanceKm: row.distanceKm === null ? null : Number(row.distanceKm),
+  }));
+}
+
+/** Tags that at least one upcoming public event uses, most used first: the discovery chip row. */
+export async function listPublicTags(db: Database, limit = 24) {
+  const rows = await db
+    .select({ slug: tags.slug, name: tags.name, count: sql<number>`count(*)` })
+    .from(eventTags)
+    .innerJoin(tags, eq(tags.id, eventTags.tagId))
+    .innerJoin(events, eq(events.id, eventTags.eventId))
+    .where(and(eq(events.visibility, "public"), eq(events.status, "published"), isNull(events.deletedAt), gte(events.endsAt, new Date())))
+    .groupBy(tags.slug, tags.name)
+    .orderBy(desc(sql`count(*)`), asc(tags.name))
+    .limit(Math.min(Math.max(limit, 1), 100));
+  return rows.map((row) => ({ ...row, count: Number(row.count) }));
+}
+
+/** Cities with upcoming public events: the manual fallback when geolocation is denied. */
+export async function listPublicCities(db: Database, limit = 40) {
+  const rows = await db
+    .select({ city: events.city, country: events.country, count: sql<number>`count(*)` })
+    .from(events)
+    .where(and(eq(events.visibility, "public"), eq(events.status, "published"), isNull(events.deletedAt), gte(events.endsAt, new Date()), isNotNull(events.city), ne(events.city, "")))
+    .groupBy(events.city, events.country)
+    .orderBy(desc(sql`count(*)`), asc(events.city))
+    .limit(Math.min(Math.max(limit, 1), 200));
+  return rows.map((row) => ({ city: row.city!, country: row.country, count: Number(row.count) }));
+}
+
+/**
+ * Everything a search engine may index: public, published, live events and the organizations
+ * behind them. `isDiscoverable` states the same rule for a single row; this is its query form.
+ * Unlisted and private events are never returned, so they can never reach the sitemap.
+ */
+export async function listIndexableEvents(db: Database, limit = 10_000) {
+  return db
+    .select({ slug: events.slug, orgSlug: organizations.slug, updatedAt: events.updatedAt, endsAt: events.endsAt })
+    .from(events)
+    .innerJoin(organizations, eq(events.organizationId, organizations.id))
+    .where(and(eq(events.visibility, "public"), eq(events.status, "published"), isNull(events.deletedAt), isNull(organizations.deletedAt)))
+    .orderBy(desc(events.startsAt), desc(events.id))
+    .limit(Math.min(Math.max(limit, 1), 50_000));
+}
+
+/** Organizations with at least one indexable event: an empty organization page is not worth crawling. */
+export async function listIndexableOrganizations(db: Database, limit = 10_000) {
+  return db
+    .select({ slug: organizations.slug, updatedAt: organizations.updatedAt })
+    .from(organizations)
+    .where(and(
+      isNull(organizations.deletedAt),
+      sql<boolean>`exists (select 1 from ${events} e where e.organization_id = organizations.id and e.visibility = 'public' and e.status = 'published' and e.deleted_at is null)`,
+    ))
+    .orderBy(asc(organizations.slug))
+    .limit(Math.min(Math.max(limit, 1), 50_000));
 }
 
 export async function getEventStats(db: Database, eventId: string) {

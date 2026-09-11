@@ -1,4 +1,5 @@
 import { captureError } from "@/lib/observability";
+import { deliverWebhooks } from "./webhooks";
 import { and, asc, eq, gte, inArray, isNull, lt, lte, sql } from "drizzle-orm";
 import { attendees, events, notifications, tickets } from "@ot/db";
 import { NOTIFICATION_RETRY_LIMIT, STUCK_SENDING_MS, newId, reminderDedupeKey, reminderSlots, retryDelayMs } from "@ot/core";
@@ -123,5 +124,6 @@ export async function runJobs(opts: { force?: boolean } = {}) {
     lastScheduled = Date.now();
   }
   const processed = await processNotifications();
-  return { expiredHolds, expiredOffers, reconciled, requeued, scheduled, ...processed };
+  const webhooks = await deliverWebhooks().catch((e) => { captureError("jobs.deliverWebhooks", e); return { delivered: 0, retried: 0, failed: 0 }; });
+  return { expiredHolds, expiredOffers, reconciled, requeued, scheduled, ...processed, webhooks };
 }

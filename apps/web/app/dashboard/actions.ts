@@ -374,3 +374,68 @@ export async function deleteDiscountCodeAction(eventId: string, id: string): Pro
     return fail(e);
   }
 }
+
+/* ---------- outbound webhooks ---------- */
+
+export async function createWebhookAction(input: unknown): Promise<ActionResult & { secret?: string }> {
+  const parsed = svc.webhookInput.safeParse(input);
+  if (!parsed.success) return zodFail(parsed.error);
+  try {
+    const { org } = await requireOrg("manage_org");
+    const row = await svc.createWebhook(db, org.id, parsed.data);
+    revalidatePath("/dashboard/settings");
+    return { ok: true, id: row.id, secret: row.secret, message: "Webhook created. Copy the signing secret now; it is shown once." };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function updateWebhookAction(id: string, input: unknown): Promise<ActionResult> {
+  const parsed = svc.webhookInput.partial().safeParse(input);
+  if (!parsed.success) return zodFail(parsed.error);
+  try {
+    const { org } = await requireOrg("manage_org");
+    const row = await svc.updateWebhook(db, org.id, id, parsed.data);
+    revalidatePath("/dashboard/settings");
+    return row ? { ok: true } : { ok: false, error: "Webhook not found." };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function rotateWebhookSecretAction(id: string): Promise<ActionResult & { secret?: string }> {
+  try {
+    const { org } = await requireOrg("manage_org");
+    const secret = await svc.rotateWebhookSecret(db, org.id, id);
+    return secret ? { ok: true, secret, message: "New signing secret. Update your receiver; the old secret stops working now." } : { ok: false, error: "Webhook not found." };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function deleteWebhookAction(id: string): Promise<ActionResult> {
+  try {
+    const { org } = await requireOrg("manage_org");
+    await svc.deleteWebhook(db, org.id, id);
+    revalidatePath("/dashboard/settings");
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/** Queue a synthetic `event.updated`-shaped ping so people can check their receiver end to end. */
+export async function testWebhookAction(id: string): Promise<ActionResult> {
+  try {
+    const { org } = await requireOrg("manage_org");
+    const hook = await svc.getWebhook(db, org.id, id);
+    if (!hook) return { ok: false, error: "Webhook not found." };
+    const { webhookDeliveries } = await import("@ot/db");
+    const { newId } = await import("@ot/core");
+    const now = new Date();
+    await db.insert(webhookDeliveries).values({ id: newId(), webhookId: hook.id, event: "test.ping", payload: { id: newId(), type: "test.ping", createdAt: now.toISOString(), organizationId: org.id, data: { message: "Hello from OpenTicket. Your receiver works." } }, nextAttemptAt: now });
+    return { ok: true, message: "Test delivery queued; it goes out within about 10 seconds. Check the deliveries list." };
+  } catch (e) {
+    return fail(e);
+  }
+}

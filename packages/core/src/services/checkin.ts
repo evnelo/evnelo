@@ -1,5 +1,6 @@
 import { and, desc, eq, isNull, like, or, sql } from "drizzle-orm";
-import { attendees, checkIns, tickets, ticketTypes, type Database } from "@ot/db";
+import { attendees, checkIns, events, tickets, ticketTypes, type Database } from "@ot/db";
+import { emitWebhookEvent } from "./webhooks";
 import { newId } from "../ids";
 
 /**
@@ -91,6 +92,10 @@ export async function checkInTicket(db: Database, eventId: string, ref: { token?
     where not exists (select 1 from ${checkIns} c where c.ticket_id = ${row.ticketId} and c.undone_at is null)
   `);
   const inserted = Number((result[0] as { affectedRows?: number }).affectedRows ?? 0) === 1;
+  if (inserted) {
+    const [ev] = await db.select({ organizationId: events.organizationId }).from(events).where(eq(events.id, eventId)).limit(1);
+    if (ev) await emitWebhookEvent(db, ev.organizationId, "attendee.checked_in", { eventId, ticketId: row.ticketId, attendeeId: row.attendeeId, name: row.name, email: row.email, ticketTypeName: row.ticketTypeName, method: by.method, checkedInAt: now.toISOString(), checkedInBy: by.userId });
+  }
   if (inserted) return { outcome: "ok", attendee: { ...attendee, checkedInAt: now }, checkedInAt: now };
   const [existing] = await db.select({ at: checkIns.createdAt }).from(checkIns).where(and(eq(checkIns.ticketId, row.ticketId), isNull(checkIns.undoneAt))).orderBy(desc(checkIns.createdAt)).limit(1);
   const at = existing?.at ?? attendee.checkedInAt;

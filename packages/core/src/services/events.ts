@@ -8,6 +8,8 @@ import { newId } from "../ids";
 import { slugify, slugSuffix } from "../slug";
 import type { DbOrTx } from "./db";
 import { queueEmailPerAddress } from "./fulfilment";
+import { emitWebhookEvent } from "./webhooks";
+import { eventPayload } from "./webhook-payloads";
 
 /* ---------- input ---------- */
 
@@ -155,6 +157,10 @@ export async function updateEvent(db: Database, eventId: string, input: EventInp
     await updateEventWithUniqueSlug(tx, eventId, before.slug, input);
     await setRelations(tx, eventId, input);
     const after = (await getEvent(tx, eventId))!;
+    if (after.status === "published") {
+      const payload = await eventPayload(tx, eventId);
+      if (payload) await emitWebhookEvent(tx, after.organizationId, "event.updated", payload);
+    }
     const changes: EventChanges = {
       schedule: before.startsAt.getTime() !== after.startsAt.getTime() || before.endsAt.getTime() !== after.endsAt.getTime() || before.timezone !== after.timezone,
       venue: before.locationType !== after.locationType || before.venueName !== after.venueName || before.address !== after.address || before.city !== after.city || before.onlineUrl !== after.onlineUrl,
@@ -188,6 +194,8 @@ export async function publishEvent(db: Database, eventId: string) {
   const [tt] = await db.select({ id: ticketTypes.id }).from(ticketTypes).where(eq(ticketTypes.eventId, eventId)).limit(1);
   if (!tt) await db.insert(ticketTypes).values({ id: newId(), eventId, name: "General admission", priceMinor: 0, quantity: event.capacity ?? null });
   await db.update(events).set({ status: "published", publishedAt: event.publishedAt ?? new Date() }).where(eq(events.id, eventId));
+  const payload = await eventPayload(db, eventId);
+  if (payload) await emitWebhookEvent(db, event.organizationId, "event.published", payload);
   return (await getEvent(db, eventId))!;
 }
 
@@ -201,6 +209,8 @@ export async function cancelEvent(db: Database, eventId: string) {
   if (!event) throw new Error("Event not found.");
   if (event.status === "cancelled") return event;
   await db.update(events).set({ status: "cancelled" }).where(eq(events.id, eventId));
+  const payload = await eventPayload(db, eventId);
+  if (payload) await emitWebhookEvent(db, event.organizationId, "event.cancelled", payload);
   const rows = await liveAttendees(db, eventId);
   await queueEmailPerAddress(db, event.organizationId, "event_cancelled", rows);
   for (const a of rows) {

@@ -4,6 +4,8 @@ import { attendees, notifications, orders, orderItems, ticketTypes, tickets, typ
 import { newId } from "../ids";
 import type { DbOrTx } from "./db";
 import { releaseDiscountCode } from "./discounts";
+import { emitWebhookEvent } from "./webhooks";
+import { orderPayload } from "./webhook-payloads";
 
 /**
  * Order fulfilment: tickets, seats and the notification rows that go with them.
@@ -54,6 +56,8 @@ export async function fulfilFreeOrder(db: Database, orderId: string) {
     const rows = await tx.select().from(attendees).where(eq(attendees.orderId, orderId));
     await queueEmailPerAddress(tx, order.organizationId, "approval_pending", rows.filter((a) => a.status === "pending_approval"));
     await issueTickets(tx, order.organizationId, rows);
+    const payload = await orderPayload(tx, orderId);
+    if (payload) await emitWebhookEvent(tx, order.organizationId, "registration.created", payload);
   });
 }
 
@@ -92,6 +96,11 @@ export async function markOrderPaid(db: Database, paymentIntentId: string) {
     const rows = await tx.select().from(attendees).where(eq(attendees.orderId, order.id));
     await queueEmailPerAddress(tx, order.organizationId, "approval_pending", rows.filter((a) => a.status === "pending_approval"));
     await issueTickets(tx, order.organizationId, rows);
+    const payload = await orderPayload(tx, order.id);
+    if (payload) {
+      await emitWebhookEvent(tx, order.organizationId, "registration.created", payload);
+      await emitWebhookEvent(tx, order.organizationId, "order.paid", payload);
+    }
     return "paid" as const;
   });
 }
@@ -169,8 +178,9 @@ export async function applyRefund(db: Database, refund: { paymentIntentId: strin
     await tx.update(orders)
       .set({ refundedMinor: refund.amountRefunded, status: full ? "refunded" : "partially_refunded" })
       .where(eq(orders.id, order.id));
-    if (!full || order.status === "refunded") return;
-    await cancelParty(tx, order.id, order.organizationId, order.status === "paid" || order.status === "partially_refunded", "refund_issued");
+    if (full && order.status !== "refunded") await cancelParty(tx, order.id, order.organizationId, order.status === "paid" || order.status === "partially_refunded", "refund_issued");
+    const payload = await orderPayload(tx, order.id);
+    if (payload) await emitWebhookEvent(tx, order.organizationId, "order.refunded", { ...payload, refund: { amountMinor: refund.amountRefunded, full } });
   });
 }
 

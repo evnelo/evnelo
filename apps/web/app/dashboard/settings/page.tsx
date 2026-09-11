@@ -1,4 +1,4 @@
-import { listApiKeys, listMembers, listPendingInvites } from "@ot/core/services";
+import { listApiKeys, listMembers, listPendingInvites, listWebhookDeliveries, listWebhooks, webhookDeliveryState } from "@ot/core/services";
 import { can, ROLE_LABELS } from "@ot/core";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
@@ -6,10 +6,15 @@ import { requireOrg } from "@/lib/auth/session";
 import { OrgForm } from "@/components/dashboard/org-form";
 import { MembersPanel } from "@/components/dashboard/members-panel";
 import { ApiKeysPanel } from "@/components/dashboard/api-keys-panel";
+import { WebhooksPanel } from "@/components/dashboard/webhooks-panel";
 
 export default async function SettingsPage() {
   const { org, role, user } = await requireOrg("view_events", "/dashboard/settings");
-  const [members, invites, apiKeys] = await Promise.all([listMembers(db, org.id), listPendingInvites(db, org.id), listApiKeys(db, org.id)]);
+  const [members, invites, apiKeys, hooks] = await Promise.all([listMembers(db, org.id), listPendingInvites(db, org.id), listApiKeys(db, org.id), listWebhooks(db, org.id)]);
+  const hookRows = await Promise.all(hooks.map(async (h) => ({
+    id: h.id, url: h.url, events: h.events, active: h.active, createdAt: h.createdAt.toISOString(),
+    recent: (await listWebhookDeliveries(db, org.id, h.id, 10)).map((d) => ({ id: d.id, event: d.event, state: webhookDeliveryState(d), attempts: d.attempts, responseStatus: d.responseStatus, createdAt: d.createdAt.toISOString() })),
+  })));
   return (
     <div className="space-y-10">
       <div>
@@ -33,6 +38,11 @@ export default async function SettingsPage() {
         <h2 className="text-lg font-medium">API keys</h2>
         <div className="mt-4">
           <ApiKeysPanel canManage={can(role, "manage_org")} docsUrl="/api/v1/docs" keys={apiKeys.map((k) => ({ ...k, lastUsedAt: k.lastUsedAt?.toISOString() ?? null, revokedAt: k.revokedAt?.toISOString() ?? null, createdAt: k.createdAt.toISOString() }))} />
+        </div>
+      </section>
+      <section>
+        <div className="mt-4">
+          <WebhooksPanel hooks={hookRows} editable={can(role, "manage_org")} />
         </div>
       </section>
       {env.EDITION === "cloud" && (

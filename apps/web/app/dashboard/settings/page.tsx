@@ -3,6 +3,7 @@ import { can, ROLE_LABELS } from "@ot/core";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { requireOrg } from "@/lib/auth/session";
+import { storageConfigured } from "@/lib/storage";
 import { OrgForm } from "@/components/dashboard/org-form";
 import { MembersPanel } from "@/components/dashboard/members-panel";
 import { ApiKeysPanel } from "@/components/dashboard/api-keys-panel";
@@ -19,7 +20,7 @@ export default async function SettingsPage() {
       <section>
         <h2 className="text-lg font-medium">Organization</h2>
         <div className="mt-4">
-          <OrgForm org={{ name: org.name, slug: org.slug, website: org.website ?? "", logoUrl: org.logoUrl ?? "", accentColor: org.accentColor ?? "", feePassThrough: org.feePassThrough, socialLinks: org.socialLinks }} readOnly={!can(role, "manage_org")} />
+          <OrgForm org={{ name: org.name, slug: org.slug, website: org.website ?? "", logoUrl: org.logoUrl ?? "", accentColor: org.accentColor ?? "", feePassThrough: org.feePassThrough, socialLinks: org.socialLinks }} readOnly={!can(role, "manage_org")} uploadsEnabled={storageConfigured} />
         </div>
       </section>
       <section>

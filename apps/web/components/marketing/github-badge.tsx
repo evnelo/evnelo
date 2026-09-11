@@ -1,6 +1,3 @@
-"use client";
-
-import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 export const GITHUB_REPO_URL = "https://github.com/evnelo/evnelo";
@@ -14,23 +11,18 @@ function GithubMark({ className }: { className?: string }) {
   );
 }
 
-/**
- * "Star us" style badge for the header, shown on the landing page only. No star count until there
- * is one worth showing; the slot is there (`count`) for when the repo goes public.
- */
-export function GithubBadge({ count, className }: { count?: number | null; className?: string }) {
-  const pathname = usePathname();
-  if (pathname !== "/") return null;
+/** Repository link shared by every public page and viewport. */
+export function GithubBadge({ className }: { className?: string }) {
   return (
     <a
       href={GITHUB_REPO_URL}
       rel="noopener noreferrer"
       target="_blank"
-      aria-label="Evnelo on GitHub"
-      className={cn("press inline-flex h-9 items-center overflow-hidden rounded-full border border-input bg-card text-sm font-medium hover:bg-muted/70", className)}
+      aria-label="evnelo/evnelo on GitHub"
+      className={cn("press inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-sm hover:bg-muted/80", className)}
     >
-      <span className="inline-flex items-center gap-1.5 px-3"><GithubMark className="size-4" /> GitHub</span>
-      {count != null && count > 0 && <span className="border-l border-input bg-muted px-2.5 text-xs tabular-nums text-muted-foreground">{Intl.NumberFormat("en", { notation: "compact" }).format(count)}</span>}
+      <GithubMark className="size-4 shrink-0" />
+      <span>evnelo/evnelo</span>
     </a>
   );
 }

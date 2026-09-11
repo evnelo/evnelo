@@ -11,12 +11,14 @@ export default async function PublicLayout({ children }: { children: React.React
   return (
     <>
       <header className="print-hide surface-glass sticky top-0 z-40 border-b border-border/70">
-        <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="press shrink-0 rounded-md"><Brand /></Link>
-          <div className="flex items-center gap-1 text-sm sm:gap-2">
+        <nav className="mx-auto grid h-28 max-w-6xl grid-cols-[1fr_auto] grid-rows-2 items-center gap-x-2 px-4 sm:px-6 md:flex md:h-16">
+          <Link href="/" className="press col-start-1 row-start-1 w-fit shrink-0 rounded-md md:mr-auto"><Brand /></Link>
+          <div className="col-start-1 row-start-2 flex items-center gap-1 text-sm sm:gap-2">
             <Link href="/discover" className="press rounded-full px-3 py-2 hover:bg-muted/80">Discover</Link>
             <Link href="/#pricing" className="press hidden rounded-full px-3 py-2 hover:bg-muted/80 sm:inline-flex">Pricing</Link>
-            <GithubBadge className="hidden md:inline-flex" />
+          </div>
+          <GithubBadge className="col-start-2 row-start-1 justify-self-end" />
+          <div className="col-start-2 row-start-2 flex items-center justify-end gap-1 text-sm sm:gap-2">
             {user ? (
               <Link href="/dashboard" className={cn(buttonVariants({ variant: "outline", size: "pill" }))}>Dashboard</Link>
             ) : (

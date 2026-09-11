@@ -27,7 +27,7 @@ The feel: excellent infrastructure that happens to be beautiful. Precise, welcom
 ## Signature elements
 
 - **Flow Line**: a 2px Pulse line through checkpoints (Lime/Sky nodes). Used on the default share card, hero and empty states; not on every screen. `.flow-line`, `.flow-node-*`.
-- Marketing hero: the reference-led ribbon is the exception to the thin Flow Line and gradient rules. `hero-scene.tsx` and `hero.css` share a 1000 × 620 canvas; cards anchor to their checkpoint coordinates, and narrow desktop layouts reserve extra space below the buttons. At ≤640px the five checkpoints stack in shared card/marker/caption rows, with avatars in a separate row. Preview cards are decorative and never intercept clicks. Concert photo: [Jay Wennington / Unsplash](https://unsplash.com/photos/people-gathering-in-a-concert-sl1-IazYY7I), saved locally under `public/marketing`; the demo QR points to evnelo.com.
+- Marketing hero: the reference-led ribbon is the exception to the thin Flow Line and gradient rules. `hero-scene.tsx` and `hero.css` share a 1000 × 620 canvas; cards anchor to their checkpoint coordinates. On desktop the scene follows the copy in normal flow, overlapping only the empty canvas above Discover; its fixed 10.8cqw card height leaves a 3rem gap below the buttons regardless of text wrapping or section width. Keep the hero height content-driven rather than adding viewport-specific offsets. At 641–1023px, a three-then-two grid uses 160px previews and connected checkpoints; at ≤640px the five checkpoints stack in shared card/marker/caption rows, with avatars in a separate row. Preview cards are decorative and never intercept clicks. Concert photo: [Jay Wennington / Unsplash](https://unsplash.com/photos/people-gathering-in-a-concert-sl1-IazYY7I), saved locally under `public/marketing`; the demo QR points to evnelo.com.
 - **Date leaf** (`.date-leaf`): month over day. Cards, event page, ticket, dashboard.
 - **Stamp** (`Badge variant="stamp"`): sparingly, for Sold out / Free / Cancelled.
 
@@ -40,6 +40,8 @@ The feel: excellent infrastructure that happens to be beautiful. Precise, welcom
 - Everything respects `prefers-reduced-motion`.
 
 ## Layout and product rules
+
+- Public header: the GitHub mark and `evnelo/evnelo` link stay visible on every public route and viewport, styled like the other navigation links. Below 768px the header uses two rows (112px); the Discover filter bar uses the matching sticky offset.
 
 - Public pages `max-w-6xl`, 24px gutters, generous whitespace; readable text ≤ 720px.
 - Dashboard: neutral. Pulse only for the primary action, selected states and intentional highlights. Page header = title + one-line description + one primary action.

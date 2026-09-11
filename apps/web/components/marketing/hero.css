@@ -66,17 +66,15 @@
 .hero-note-left { left: 4%; top: 86%; }
 .hero-note-left::after { color: var(--evnelo-pulse); }
 .hero-note-right { right: 4%; top: 83%; text-align: center; font-size: 2.7cqw; }
-/* Reserve more space under the copy as desktop text wraps, without stretching the ribbon. */
-@media (min-width: 1024px) and (max-width: 1151px) {
-  .hero-box { min-height: calc(62vw + (1152px - 100vw) * 0.375); }
-  .hero-scene { top: calc((1152px - 100vw) * 0.375); bottom: auto; aspect-ratio: 1000 / 620; }
+/* Flow after the copy, then overlap the canvas's empty upper-left area.
+   Discover's top is 56cqw (node) - 2cqw (gap) - 10.8cqw (card) = 43.2cqw.
+   This leaves 3rem below the buttons even when copy or container width changes. */
+@media (min-width: 1024px) {
+  .hero-scene { position: relative; inset: auto; aspect-ratio: 1000 / 620; margin-top: calc(3rem - 43.2cqw); }
+  .hero-event-card { height: 10.8cqw; }
 }
-/* Keep the scene's aspect ratio when it sits below the copy on tablet. */
-@media (min-width: 641px) and (max-width: 1023px) {
-  .hero-scene { position: relative; inset: auto; aspect-ratio: 1000 / 620; margin-top: 1.5rem; }
-}
-/* On phones each checkpoint has a readable card and caption on a vertical route. */
-@media (max-width: 640px) {
+/* Compact layouts share card sizing and normal-flow positioning. */
+@media (max-width: 1023px) {
   .hero-scene { position: relative; inset: auto; margin-top: 2.5rem; padding-left: 1.5rem; }
   .hero-scene::before { content: ""; position: absolute; left: 0.25rem; top: 3rem; bottom: 3rem; width: 2px; background: var(--evnelo-mist); }
   .hero-ribbon, .hero-sparkle, .hero-note { display: none; }
@@ -125,4 +123,20 @@
   .hero-avatars > * { width: 24cqw; height: 24cqw; border-width: 1.5px; }
   .hero-avatars > * + * { margin-left: -4cqw; }
   .hero-avatars span { font-size: 6cqw; }
+}
+
+/* Tablet: larger previews in a three-then-two journey instead of a mini desktop canvas. */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .hero-scene { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1.5rem; padding-left: 0; }
+  .hero-scene::before { display: none; }
+  .hero-step { grid-column: span 2; grid-template-columns: minmax(0, 1fr); grid-template-rows: 0 8.75rem 1rem auto; row-gap: 0.5rem; justify-items: center; min-height: 0; }
+  .hero-step + .hero-step { margin-top: 0; }
+  .hero-step-checkin { grid-column: 2 / span 2; }
+  .hero-step-attendance { grid-column: 4 / span 2; }
+  .hero-step .hero-card-wrap { width: min(100%, 10rem); grid-column: 1; grid-row: 2; align-self: end; }
+  .hero-step .hero-caption { grid-column: 1; grid-row: 4; text-align: center; align-self: start; }
+  .hero-node { grid-column: 1; grid-row: 3; left: auto; translate: none; width: 1rem; height: 1rem; }
+  .hero-attendance-card { height: 5rem; }
+  .hero-adornment { width: min(100%, 10rem); grid-column: 1; grid-row: 2; align-self: end; margin-bottom: 5.75rem; }
+  .hero-step-discover::after, .hero-step-register::after, .hero-step-checkin::after { content: ""; position: absolute; left: calc(50% + 1.25rem); top: calc(10.25rem - 1px); width: calc(100% - 1rem); height: 2px; background: var(--evnelo-mist); }
 }

@@ -35,7 +35,9 @@ This is the canonical implementation order and cross-session progress tracker. U
 ## Shipped
 
 - [x] Home page (2026-09-11): marketing landing at `/` with the tagline, pricing band (free events $0, paid 0.99%, self-hosted $0), the flow, open-source and developer sections, upcoming public events; Discover becomes a secondary page
-- [x] Hero refinement (2026-09-11): rising ribbon with aligned checkpoints, straight preview cards centered on their checkpoints, a local concert cover and QR asset; readable stacked journey on phones with a separate avatar row, responsive button clearance, and reduced-motion support.
+- [x] Hero refinement (2026-09-11): rising ribbon with aligned checkpoints, straight preview cards centered on their checkpoints, a local concert cover and QR asset; a three-then-two tablet journey and readable stacked journey on phones with a separate avatar row, content-driven desktop button clearance that adapts to copy and section width, and reduced-motion support.
+
+- [x] Public navigation (2026-09-11): GitHub icon with `evnelo/evnelo` text on every public route and viewport, standard navigation-link styling, and a two-row small-screen header with matching Discover filter offset.
 
 Foundation (M0) plus the first slice of M1/M2:
 

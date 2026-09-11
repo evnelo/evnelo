@@ -1,0 +1,10 @@
+# Caddy in front of the app: automatic HTTPS (Let's Encrypt), HTTP→HTTPS, www→apex.
+# SITE_ADDRESS comes from the compose environment (default evnelo.com).
+{$SITE_ADDRESS} {
+	encode zstd gzip
+	reverse_proxy app:3000
+}
+
+www.{$SITE_ADDRESS} {
+	redir https://{$SITE_ADDRESS}{uri} permanent
+}

@@ -164,6 +164,20 @@ docker run -d -p 3000:3000 --env-file .env -e APP_URL=https://tickets.example.co
 
 At boot the container applies pending migrations (`MIGRATE_ON_START=true`, serialised across replicas with a MySQL lock) and starts the job loop. It has a `HEALTHCHECK` on `/api/health`. `docker compose up --build` runs it against a MySQL container with the root `.env` for a one-box setup.
 
+### One VM with Caddy (the evnelo.com setup)
+
+`deploy/docker-compose.prod.yml` runs Caddy (automatic HTTPS from Let's Encrypt, `www` redirect), the app image and MySQL 8.4 on a single box; only Caddy publishes ports. On an Ubuntu VM with Docker installed, from the repository root:
+
+```bash
+cp .env.example .env           # fill in APP_URL=https://evnelo.com, AUTH_SECRET, Stripe, Resend, S3…
+echo "MYSQL_PASSWORD=$(openssl rand -hex 24)" >> .env
+echo "MYSQL_ROOT_PASSWORD=$(openssl rand -hex 24)" >> .env
+docker compose --env-file .env -f deploy/docker-compose.prod.yml up -d --build
+docker compose --env-file .env -f deploy/docker-compose.prod.yml logs -f app   # "ready" after migrations
+```
+
+`SITE_ADDRESS` in `.env` overrides the domain (default `evnelo.com`). The stack sets `API_TRUSTED_PROXY_HEADER=x-forwarded-for` because Caddy appends the client address to that header. To ship a new version: pull or sync the sources, run the same `up -d --build`; migrations apply on boot. `deploy/backup-db.sh` dumps the database nightly from cron and optionally copies it to S3.
+
 Production checklist:
 
 1. Set `APP_URL`, a fresh `AUTH_SECRET`, `DATABASE_URL`, and `API_TRUSTED_PROXY_HEADER` for your proxy.

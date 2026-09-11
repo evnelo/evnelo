@@ -1,0 +1,58 @@
+# Single-box production: Caddy (HTTPS from Let's Encrypt) → app → MySQL 8.4, all on one VM.
+# Run from the repository root, with the production values in the root .env:
+#
+#   docker compose --env-file .env -f deploy/docker-compose.prod.yml up -d --build
+#
+# .env must contain, on top of the application settings, MYSQL_PASSWORD and MYSQL_ROOT_PASSWORD
+# (used here to create the database and to build DATABASE_URL) and optionally SITE_ADDRESS.
+# Only Caddy publishes ports; the app and the database stay on the compose network.
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-evnelo.com}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on: [app]
+
+  app:
+    build:
+      context: ..
+      args:
+        NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN:-}
+        NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${SENTRY_ENVIRONMENT:-production}
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      DATABASE_URL: mysql://openticket:${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}@db:3306/openticket
+      # Caddy appends the client address to X-Forwarded-For; the app reads the last entry
+      API_TRUSTED_PROXY_HEADER: x-forwarded-for
+      MIGRATE_ON_START: "true"
+      JOBS_INLINE: "true"
+    expose: ["3000"]
+    depends_on:
+      db: { condition: service_healthy }
+
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    command: --innodb-buffer-pool-size=512M
+    environment:
+      MYSQL_DATABASE: openticket
+      MYSQL_USER: openticket
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
+    volumes: ["mysql-data:/var/lib/mysql"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      retries: 20
+
+volumes:
+  mysql-data:
+  caddy-data:
+  caddy-config:

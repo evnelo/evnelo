@@ -1,34 +1,43 @@
 import Link from "next/link";
 import { currentUser } from "@/lib/auth/session";
+import { Brand } from "@/components/brand";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-/** Public chrome: header and footer for event pages, discovery, tickets and sign-in. The dashboard has its own. */
+/** Public chrome: a sticky translucent header and a quiet footer. The dashboard has its own shell. */
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
   const user = await currentUser();
   return (
     <>
-      <header className="border-b">
-        <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="shrink-0 whitespace-nowrap font-display text-lg sm:text-xl" style={{ fontVariationSettings: '"opsz" 24, "SOFT" 100' }}>
-            OpenTicket
-          </Link>
-          <div className="flex items-center gap-3 text-sm sm:gap-5">
-            <Link href="/discover" className="hover:underline underline-offset-4">Discover</Link>
+      <header className="surface-glass sticky top-0 z-40 border-b border-border/70">
+        <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <Link href="/" className="press shrink-0 rounded-md"><Brand /></Link>
+          <div className="flex items-center gap-1 text-sm sm:gap-2">
+            <Link href="/discover" className="press rounded-full px-3 py-2 hover:bg-muted/80">Discover</Link>
             {user ? (
-              <Link href="/dashboard" className="rounded-md border px-3 py-1.5 hover:bg-muted">Dashboard</Link>
+              <Link href="/dashboard" className={cn(buttonVariants({ variant: "outline", size: "pill" }))}>Dashboard</Link>
             ) : (
               <>
-                <Link href="/login" className="whitespace-nowrap hover:underline underline-offset-4"><span className="sm:hidden">Host</span><span className="hidden sm:inline">Host an event</span></Link>
-                <Link href="/login" className="shrink-0 whitespace-nowrap rounded-md border px-2.5 py-1.5 hover:bg-muted sm:px-3">Sign in</Link>
+                <Link href="/login" className="press rounded-full px-3 py-2 hover:bg-muted/80">Sign in</Link>
+                <Link href="/login" className={cn(buttonVariants({ size: "pill" }), "shrink-0")}><span className="sm:hidden">Host</span><span className="hidden sm:inline">Host an event</span></Link>
               </>
             )}
           </div>
         </nav>
       </header>
       <main className="flex-1">{children}</main>
-      <footer className="border-t py-8 text-sm text-muted-foreground">
-        <div className="mx-auto flex max-w-6xl flex-wrap gap-x-6 gap-y-2 px-4">
-          <span>Open source, self-host it or use the cloud.</span>
-          <a href="https://github.com/openticket/openticket" className="hover:underline">GitHub</a>
+      <footer className="mt-16 border-t border-border/70 py-10 text-sm text-muted-foreground">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <div className="space-y-1">
+            <Brand size="sm" className="text-foreground" />
+            <p>Open-source ticketing. Free events are free; paid events cost the host 0.99%.</p>
+          </div>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <Link href="/discover" className="hover:text-foreground">Discover</Link>
+            <Link href="/login" className="hover:text-foreground">Host an event</Link>
+            <a href="/api/v1/docs" className="hover:text-foreground">API</a>
+            <a href="https://github.com/openticket/openticket" className="hover:text-foreground" rel="noopener noreferrer">GitHub</a>
+          </div>
         </div>
       </footer>
     </>

@@ -7,7 +7,7 @@ export const Select = React.forwardRef<HTMLSelectElement, React.SelectHTMLAttrib
   <div className="relative">
     <select
       ref={ref}
-      className={cn("flex h-9 w-full appearance-none rounded-md border border-input bg-card px-3 pr-8 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50", className)}
+      className={cn("flex h-9 w-full appearance-none rounded-lg border border-input bg-card px-3 pr-8 text-sm shadow-[inset_0_1px_1px_rgb(23_23_15/0.04)] transition-[box-shadow,border-color] duration-150 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/25 focus-visible:border-ring disabled:cursor-not-allowed disabled:opacity-50", className)}
       {...props}
     >
       {children}

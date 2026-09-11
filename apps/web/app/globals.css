@@ -4,16 +4,16 @@
 
 :root {
   /* base */
-  --background: #f5f5f3;
-  --foreground: #000000;
-  --muted: #ebebe7;
-  --muted-foreground: #6a6b66;
+  --background: #f6f4ee;
+  --foreground: #17170f;
+  --muted: #eceadf;
+  --muted-foreground: #6b6a60;
   --card: #ffffff;
-  --card-foreground: #000000;
+  --card-foreground: #17170f;
   --popover: #ffffff;
-  --popover-foreground: #000000;
-  --border: #dcdcd6;
-  --input: #dcdcd6;
+  --popover-foreground: #17170f;
+  --border: #ddd9cd;
+  --input: #ddd9cd;
   --ring: #16603a;
 
   /* house accent: gate green */
@@ -35,7 +35,9 @@
   --ticket-ink: #2b2407;
   --ticket-perforation: #c9bd85;
 
-  --radius: 0.625rem;
+  --radius: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(23 23 15 / 0.04), 0 4px 14px -6px rgb(23 23 15 / 0.10);
+  --shadow-lift: 0 2px 4px rgb(23 23 15 / 0.05), 0 14px 32px -12px rgb(23 23 15 / 0.22);
 }
 
 .dark {
@@ -91,7 +93,9 @@
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 6px);
+  --radius-xl: calc(var(--radius) + 4px);
+  --shadow-card: var(--shadow-card);
+  --shadow-lift: var(--shadow-lift);
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fraunces Variable", Georgia, serif;
@@ -182,4 +186,78 @@
     filter: none;
     opacity: 1;
   }
+}
+
+@layer components {
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground;
+  }
+  .hairline {
+    border-top: 1px dotted var(--border);
+  }
+  .press {
+    transition: transform 120ms ease, background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+  }
+  .press:active {
+    transform: scale(0.98);
+  }
+  .lift {
+    transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 200ms ease;
+  }
+  .lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+  }
+  .scrim {
+    background: linear-gradient(to top, rgb(23 23 15 / 0.72) 0%, rgb(23 23 15 / 0.28) 45%, transparent 100%);
+  }
+  .stamp {
+    @apply inline-flex items-center rounded-sm border-2 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.14em];
+    transform: rotate(-4deg);
+    border-color: currentColor;
+    mix-blend-mode: multiply;
+  }
+  .surface-glass {
+    background: color-mix(in oklab, var(--background) 82%, transparent);
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+  }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes panel-in {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 8px)) scale(0.985); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes panel-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, calc(-50% + 6px)) scale(0.99); }
+}
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sheet-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(16px); }
+}
+@layer utilities {
+  .animate-rise {
+    animation: rise 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--stagger, 0) * 40ms);
+  }
+  .animate-fade {
+    animation: fade 200ms ease both;
+  }
+  .animate-panel-in { animation: panel-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .animate-panel-out { animation: panel-out 120ms ease-in both; }
+  .animate-sheet-in { animation: sheet-in 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .animate-sheet-out { animation: sheet-out 140ms ease-in both; }
 }

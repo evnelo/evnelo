@@ -52,6 +52,7 @@ Useful local URLs:
 
 | URL | What |
 |---|---|
+| `/` | Marketing home with an illustrated event journey (stacked checkpoints on phones) |
 | `/discover` | Public listing |
 | `/dashboard` | Organizer dashboard |
 | `/dashboard/checkin` | Door scanner |

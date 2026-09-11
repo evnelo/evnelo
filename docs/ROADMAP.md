@@ -35,6 +35,7 @@ This is the canonical implementation order and cross-session progress tracker. U
 ## Shipped
 
 - [x] Home page (2026-09-11): marketing landing at `/` with the tagline, pricing band (free events $0, paid 0.99%, self-hosted $0), the flow, open-source and developer sections, upcoming public events; Discover becomes a secondary page
+- [x] Hero refinement (2026-09-11): rising ribbon with aligned checkpoints, straight preview cards centered on their checkpoints, a local concert cover and QR asset; readable stacked journey on phones with a separate avatar row, responsive button clearance, and reduced-motion support.
 
 Foundation (M0) plus the first slice of M1/M2:
 
@@ -62,5 +63,4 @@ Foundation (M0) plus the first slice of M1/M2:
 - [x] Private events: invitation links (email-bound or shareable, use budget, expiry) enforced on the page and at checkout; members always have access
 - [x] Check-in scanner: camera QR scanning, manual check-in by search, undo, live counters, offline manifest with queued sync; race-safe conditional insert; `checkin` role lands on `/dashboard/checkin`
 - [x] Image uploads go straight from the browser to S3 (or any S3-compatible bucket) with a presigned POST; CloudFront URLs when configured; event covers and logos today, organization logos, host avatars and sponsor logos still accept URLs
-
 

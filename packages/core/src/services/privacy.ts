@@ -8,7 +8,7 @@ import { newId } from "../ids";
 import type { DbOrTx } from "./db";
 
 /**
- * Privacy workflows (PRD §7.10, GDPR/LGPD): data-subject export, hard erasure of personal data,
+ * Privacy workflows(GDPR/LGPD): data-subject export, hard erasure of personal data,
  * organization export and deletion. Erasure keeps the rows that other records point to (an
  * attendee stays an attendee, an order stays an order) but replaces every personal field with a
  * fixed placeholder, so counts, revenue and audit trails survive without the person.

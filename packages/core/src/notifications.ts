@@ -1,5 +1,5 @@
 /**
- * Notification rules shared by the worker and the webhooks (PRD §7.7).
+ * Notification rules shared by the worker and the webhooks.
  * Sending itself lives in apps/web/lib/notifications; this file is pure.
  */
 

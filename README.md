@@ -4,10 +4,7 @@
 
 Built with TypeScript end to end: Next.js 15 (App Router, React 19), Tailwind v4, MySQL 8 via Drizzle, Stripe, Resend for email, Vonage for SMS, S3-compatible storage for images. One database, one container, three optional API keys.
 
-- Product spec: `docs/PRD.md`
-- Brand: `branding/EVNELO_BRAND.md`; how it is implemented: `docs/DESIGN.md`
-- Delivery history and post-launch list: `docs/ROADMAP.md`
-- Conventions for contributors and coding agents: `AGENTS.md`
+Conventions for contributors and coding agents are in `AGENTS.md`. Licensed under the Apache License 2.0.
 
 ## Features
 
@@ -70,7 +67,7 @@ packages/core      Business rules (pure) and the server-only service layer used 
 packages/db        Drizzle schema, migrations, seed
 packages/sdk       Generated TypeScript client (@ot/sdk)
 packages/mcp       MCP server over the REST API
-docs/              PRD, design system, roadmap
+deploy/            Single-VM production stack (Caddy, app, MySQL) and backup script
 ```
 
 Common commands from the repo root:
@@ -118,7 +115,7 @@ Storage needs a CORS rule on the bucket allowing `POST` from `APP_URL`, and obje
 - **Orders and inventory.** Registration reserves seats with a conditional update, so flash sales cannot oversell. Paid orders hold seats for 10 minutes while the Payment Element completes; the Stripe webhook settles them, delayed payment methods sit in `processing` and are reconciled hourly, and a lapsed hold cancels the PaymentIntent before returning seats. A payment that lands after seats were released is refunded automatically. Event capacity is enforced at checkout under a row lock and includes active waitlist offers.
 - **Guests.** Each +1 is a full attendee with their own ticket and QR, charged at the host's ticket price, asked the guest-scoped questions.
 - **Access.** Public and unlisted events are open; private events need an invitation link, which is stored in an event-scoped cookie and checked both on the page and at checkout. Organization members always have access.
-- **Notifications.** Every email and SMS is a row in `notifications`; the job loop sends them with retries and backoff, records provider status from the Resend and Vonage webhooks, and honours STOP. SMS on free events is gated per the PRD.
+- **Notifications.** Every email and SMS is a row in `notifications`; the job loop sends them with retries and backoff, records provider status from the Resend and Vonage webhooks, and honours STOP. On the cloud edition, SMS for free events is a paid unlock; self-hosted instances send SMS whenever Vonage is configured.
 - **Jobs.** The loop also expires holds, releases lapsed waitlist offers, schedules reminders, reconciles processing orders, delivers webhooks and purges housekeeping tables. Multiple replicas are safe: rows are claimed with conditional updates.
 - **Check-in.** A check-in is a conditional insert, so two staff scanning the same ticket at once produce one check-in. The scanner keeps a manifest of hashed ticket tokens so it can validate offline and replays queued check-ins when back online.
 - **Privacy.** Erasure anonymises in place (placeholders replace name, email, phone and answers; the ticket is revoked) so counts and financial records stay consistent. Organization deletion cancels events, revokes every ticket, erases everyone and disables keys and webhooks.
@@ -199,12 +196,14 @@ Serverless hosts (Vercel and similar) work with `JOBS_INLINE=false` plus a sched
 - **Security headers:** every response carries a CSP allowing Stripe and your upload origin, `frame-ancestors 'none'`, nosniff, referrer and permissions policies, and HSTS on https. Built in `apps/web/lib/security-headers.js`.
 - **Errors:** unexpected failures go through one helper that logs with a stable `[scope]` prefix and forwards to Sentry when configured. Notification retries are warnings; only a notification that exhausts its retries is an error.
 - **Moderation:** "Report this event" on public pages stores a row and emails `ABUSE_EMAIL`.
-- **Known follow-ups:** a sweep for registration files uploaded but never submitted, Stripe Connect onboarding for the cloud edition, and the rest of the post-launch list in `docs/ROADMAP.md`.
+- **Known follow-ups:** a sweep for registration files uploaded but never submitted, and Stripe Connect onboarding for the cloud edition.
 
 Internal identifiers keep the original working name: the repository, Docker image and database are `openticket`, packages are `@ot/*`, and cookies start with `ot_`. Everything a user or integrator sees says Evnelo.
 
 ## Contributing
 
-Read `AGENTS.md` first; it holds the conventions that keep the codebase coherent (service layer in `packages/core`, one rate limiter, how access to private events is decided, what must be updated when behaviour changes). Read `docs/DESIGN.md` before touching UI. Keep `README`, `docs/PRD.md` and `AGENTS.md` accurate in the same commit as a behaviour change.
+Read `AGENTS.md` first; it holds the conventions that keep the codebase coherent (service layer in `packages/core`, one rate limiter, how access to private events is decided, the design rules for UI work, what must be updated when behaviour changes). Keep the README and `AGENTS.md` accurate in the same commit as a behaviour change.
 
-License: to be decided between MIT and AGPL (see the open questions in `docs/PRD.md`).
+## License
+
+[Apache License 2.0](LICENSE). You can run, modify and redistribute Evnelo, including commercially, as long as you keep the license and notices; the license also grants a patent license from contributors.

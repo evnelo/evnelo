@@ -6,7 +6,7 @@ import type { Discount } from "../fees";
 import type { DbOrTx } from "./db";
 
 /**
- * Discount codes (PRD §7.2): percent or fixed amount off the order subtotal, with optional use
+ * Discount codes: percent or fixed amount off the order subtotal, with optional use
  * limit and expiry. Validation is pure (`discountProblem`) so the checkout preview and the order
  * route agree; the use is spent with a conditional update inside the order transaction.
  */

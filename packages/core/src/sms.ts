@@ -2,7 +2,7 @@ import type { Edition } from "./edition";
 import { SMS_UNLOCK_PRICE_MINOR } from "./fees";
 
 /**
- * SMS gate (PRD §5.2):
+ * SMS gate:
  *  - self-hosted: always allowed (organizer brings Vonage keys)
  *  - cloud + paid event: included
  *  - cloud + free event: requires the $5 unlock for that event

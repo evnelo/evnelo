@@ -6,7 +6,7 @@ import { newId } from "../ids";
 import type { DbOrTx } from "./db";
 
 /**
- * Waitlist (PRD §7.3). Sold-out means every visible ticket type is exhausted or the event
+ * Waitlist. Sold-out means every visible ticket type is exhausted or the event
  * capacity is reached. Promotion never oversells: it reserves the seat the same way checkout
  * does (conditional UPDATE on `ticket_types.held`, capacity counted with active offers) and the
  * offer lapses on a timer, returning the seat.

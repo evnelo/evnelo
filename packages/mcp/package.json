@@ -2,6 +2,7 @@
   "name": "@ot/mcp",
   "version": "0.1.0",
   "private": true,
+  "license": "Apache-2.0",
   "type": "module",
   "bin": {
     "openticket-mcp": "./src/server.ts"

@@ -6,7 +6,7 @@ import { newId } from "../ids";
 import type { DbOrTx } from "./db";
 
 /**
- * Private-event invitations (PRD §7.1 visibility). An invite is a link token, optionally bound
+ * Private-event invitations. An invite is a link token, optionally bound
  * to one email, with a use budget and an expiry. Opening `/i/{token}` stores the token in a
  * cookie scoped to the event; the event page and the order route honour it. Members of the
  * organization never need one.

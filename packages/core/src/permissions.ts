@@ -1,4 +1,4 @@
-/** Organization roles (PRD §7.1) and what each may do. */
+/** Organization roles and what each may do. */
 export type Role = "owner" | "admin" | "member" | "checkin";
 
 export type Action =

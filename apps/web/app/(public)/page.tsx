@@ -82,7 +82,7 @@ export default async function HomePage() {
           <div>
             <p className="eyebrow">Open source</p>
             <h2 className="display mt-3 text-4xl">Your events. Your data. Your stack.</h2>
-            <p className="mt-5 text-muted-foreground">Evnelo is open source. Host it yourself with one container and one MySQL database, plug in your own Stripe, Resend and Vonage keys, and keep every attendee record on your own infrastructure. Same product, no platform fee.</p>
+            <p className="mt-5 text-muted-foreground">Evnelo is open source under the Apache 2.0 license. Host it yourself with one container and one MySQL database, plug in your own Stripe, Resend and Vonage keys, and keep every attendee record on your own infrastructure. Same product, no platform fee.</p>
             <ul className="mt-6 space-y-2 text-sm">
               {["Attendee export and erasure built in", "Bring your own payment, email and SMS providers", "Migrations, health checks and backups documented", "Moving to or from the hosted edition is a database, not a rewrite"].map((t) => (
                 <li key={t} className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0 text-pulse" /> {t}</li>

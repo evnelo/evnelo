@@ -1,5 +1,5 @@
 /**
- * Fee model (PRD §5):
+ * Fee model:
  *  - free tickets: no platform fee
  *  - paid tickets on Cloud: 0.99% of gross ticket price
  *  - self-hosted: no platform fee, ever

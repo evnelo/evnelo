@@ -4,7 +4,7 @@
  * do more than an API key can. Configure with:
  *   EVNELO_URL=https://your-instance  EVNELO_API_KEY=ev_live_...
  *
- * `send_attendee_update` from the PRD is not implemented: the API has no endpoint for organizer
+ * `send_attendee_update` is not implemented: the API has no endpoint for organizer
  * broadcasts yet, and the tool would need one rather than a client-side loop over attendees.
  */
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";

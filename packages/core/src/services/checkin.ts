@@ -4,7 +4,7 @@ import { emitWebhookEvent } from "./webhooks";
 import { newId } from "../ids";
 
 /**
- * Door check-in (PRD §7.5). A ticket is checked in when it has a `check_ins` row with
+ * Door check-in. A ticket is checked in when it has a `check_ins` row with
  * `undone_at IS NULL`; undo sets `undone_at` and keeps the row for the audit trail. Check-in is
  * idempotent under concurrency: the insert is conditional on no active row existing, so two
  * staff scanning the same ticket in the same instant produce one check-in and one "already".

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Evnelo brand (branding/EVNELO_BRAND.md): Instrument Sans for everything, IBM Plex Mono for code.
+/* Evnelo brand (rules in AGENTS.md): Instrument Sans for everything, IBM Plex Mono for code.
    Paper + Ink + Pulse own the look; Lime and Sky are accents. Both fonts are bundled from npm in layout.tsx. */
 
 :root {

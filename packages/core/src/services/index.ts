@@ -1,5 +1,5 @@
 /**
- * Service layer (PRD §8.2): every business operation, taking the Drizzle database as its
+ * Service layer: every business operation, taking the Drizzle database as its
  * first argument. Consumed by Next.js route handlers and server actions, the REST API, and
  * the MCP server. Server-only: this subpath pulls in drizzle and node:crypto.
  */

@@ -1,5 +1,5 @@
 /**
- * Outbound webhook contract (PRD §7.9). Pure: shared by the delivery worker, the REST API, the
+ * Outbound webhook contract. Pure: shared by the delivery worker, the REST API, the
  * SDK docs and tests. Delivery itself lives in packages/core/src/services/webhooks.ts.
  */
 

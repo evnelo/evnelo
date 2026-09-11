@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** The Evnelo symbol from branding/logo.svg: Pulse by default, inherits currentColor for monochrome uses. */
+/** The Evnelo symbol: Pulse by default, inherits currentColor for monochrome uses. Do not redraw. */
 export function BrandSymbol({ className, title }: { className?: string; title?: string }) {
   return (
     <svg viewBox="0 0 450 450" aria-hidden={title ? undefined : true} role={title ? "img" : undefined} className={cn("size-6 shrink-0 text-pulse", className)} fill="currentColor">

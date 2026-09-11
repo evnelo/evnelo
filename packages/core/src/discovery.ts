@@ -1,5 +1,5 @@
 /**
- * Discovery filters and calendar maths (PRD §5 discovery).
+ * Discovery filters and calendar maths.
  *
  * Pure and browser-safe: the URL is the single source of truth for `/discover`, so parsing,
  * link building and calendar bucketing all live here and are shared by the page, the public

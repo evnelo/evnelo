@@ -20,6 +20,8 @@ const config: NextConfig = {
   // self-contained server for the Docker image; the monorepo root is the tracing root so workspace packages are included
   output: "standalone",
   outputFileTracingRoot: path.resolve(__dirname, "../.."),
+  // fonts for generated Open Graph images are read from disk at request time
+  outputFileTracingIncludes: { "/**/opengraph-image": ["./assets/fonts/**"], "/opengraph-image": ["./assets/fonts/**"] },
   images: { remotePatterns: [{ protocol: "https", hostname: "**" }] },
   serverExternalPackages: ["mysql2", "@sentry/nextjs"],
   async headers() {

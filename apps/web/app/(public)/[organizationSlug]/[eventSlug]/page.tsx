@@ -29,7 +29,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     robots: robotsFor(event),
     referrer: "no-referrer",
     alternates: { canonical },
-    openGraph: { title: event.name, url: canonical, images: event.coverImageUrl ? [event.coverImageUrl] : [], siteName: org.name, type: "website" },
+    // the share image comes from opengraph-image.tsx next to this page (cover + date + title), so no explicit images here
+    openGraph: { title: event.name, url: canonical, siteName: org.name, type: "website" },
+    twitter: { card: "summary_large_image", title: event.name, description: event.descriptionMd?.slice(0, 160) },
   };
 }
 

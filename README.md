@@ -114,8 +114,8 @@ This is the canonical implementation order and cross-session progress tracker. U
 8. [ ] **Complete uploads with S3/R2 and remaining image fields**
    - Existing foundation: direct-to-S3 presigned uploads for event covers and logos (verified 2026-09-10 against a real bucket behind CloudFront), keys under `openticket/`, size/type verified after upload.
    - Complete when organization logos, host avatars, sponsor logos, registration file fields, crop controls, and persistent S3-compatible Cloud storage are implemented.
-9. [ ] **Health endpoint, registration abuse controls, and privacy workflows**
-   - Complete when health/readiness checks, registration/login abuse limits, Cloud moderation/reporting, and attendee/org PII export plus hard deletion are implemented and documented.
+9. [x] **Health endpoint, registration abuse controls, and privacy workflows**
+   - Shipped 2026-09-10: `/api/health`; registration, sign-in, waitlist, discount-preview and report limits; per-attendee JSON export and irreversible erasure (placeholders replace name/email/phone/answers, ticket revoked, queued mail dropped, order contact anonymised when nobody live shares it) from the Attendees tab; organization takeout (`/dashboard/settings/export`) and owner-only deletion (cancels events, revokes tickets, erases everyone, disables keys and webhooks); "Report this event" on every public event page stores a report and emails `ABUSE_EMAIL` when set.
 10. [ ] **README/PRD reconciliation and release-readiness matrix**
     - Complete when implementation claims, package names, providers, storage behavior, routes, P0/P1 status, deployment instructions, accessibility/performance checks, and remaining post-launch work are accurately reflected in both documents.
 
@@ -139,6 +139,7 @@ Foundation (M0) plus the first slice of M1/M2:
 - [ ] Complete REST API resource coverage and generated TypeScript SDK (in progress)
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [x] Stripe Payment Element after order creation: signed redirect recovery, server-confirmed success, a `processing` state for delayed payment methods with hourly reconciliation against Stripe, and hold expiry that cancels the PaymentIntent before releasing seats (a payment that lands after seats were released is refunded automatically)
+- [x] Privacy: attendee data export and erasure, organization takeout and deletion, abuse reports (`/report`, `ABUSE_EMAIL`)
 - [x] Discount codes: percent/fixed, use limits, expiry; validated and spent atomically at checkout; audit trail on the order
 - [x] Waitlist: join when sold out, organizer-driven offers that hold a seat for 24h, claim links, automatic release; event capacity enforced at checkout
 - [x] Private events: invitation links (email-bound or shareable, use budget, expiry) enforced on the page and at checkout; members always have access

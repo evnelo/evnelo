@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { ConfirmButton } from "@/components/dashboard/confirm-button";
-import { approveAttendeesAction, cancelAttendeesAction, rejectAttendeesAction } from "../../../actions";
+import { approveAttendeesAction, cancelAttendeesAction, eraseAttendeeAction, rejectAttendeesAction } from "../../../actions";
 
 const statuses: (Attendee["status"] | "all")[] = ["all", "confirmed", "pending_approval", "waitlisted", "rejected", "cancelled"];
 
@@ -69,6 +69,12 @@ export default async function AttendeesPage({ params, searchParams }: { params: 
                       <>
                         {ticketToken && !ticketRevokedAt && <Button asChild size="sm" variant="ghost"><a href={`/t/${ticketToken}`} target="_blank" rel="noopener noreferrer">Ticket</a></Button>}
                         <ConfirmButton action={cancelAttendeesAction.bind(null, id)} fields={{ id: a.id }} size="sm" variant="ghost" confirm={`Cancel ${a.name}'s registration? Their ticket stops working and the seat is freed. No email is sent.`}>Cancel</ConfirmButton>
+                      </>
+                    )}
+                    {!a.deletedAt && (
+                      <>
+                        <Button asChild size="sm" variant="ghost"><a href={`/dashboard/events/${id}/attendees/${a.id}/export`}>Export</a></Button>
+                        <ConfirmButton action={eraseAttendeeAction.bind(null, id)} fields={{ id: a.id }} size="sm" variant="ghost" confirm={`Erase ${a.name}'s personal data? Name, email, phone and answers are replaced with placeholders, their ticket is revoked and queued emails are dropped. This cannot be undone.`}>Erase</ConfirmButton>
                       </>
                     )}
                   </div>

@@ -439,3 +439,25 @@ export async function testWebhookAction(id: string): Promise<ActionResult> {
     return fail(e);
   }
 }
+
+/* ---------- privacy ---------- */
+
+export async function eraseAttendeeAction(eventId: string, formData: FormData) {
+  const attendeeId = String(formData.get("id") ?? "");
+  await requireEvent(eventId, "manage_attendees");
+  await svc.eraseAttendee(db, eventId, attendeeId);
+  revalidatePath(`/dashboard/events/${eventId}/attendees`);
+}
+
+export async function deleteOrganizationAction(formData: FormData): Promise<ActionResult> {
+  try {
+    const { org, role } = await requireOrg("manage_org");
+    if (role !== "owner") return { ok: false, error: "Only an owner can delete the organization." };
+    if (String(formData.get("confirm") ?? "").trim() !== org.slug) return { ok: false, error: `Type the organization URL (${org.slug}) to confirm.` };
+    await svc.deleteOrganization(db, org.id);
+  } catch (e) {
+    return fail(e);
+  }
+  (await cookies()).delete(ORG_COOKIE);
+  redirect("/dashboard");
+}

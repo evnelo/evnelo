@@ -150,6 +150,7 @@ export default async function EventPage({ params }: Params) {
             waitlist={{ enabled: event.waitlistEnabled, offer: offer ? { email: offer.email, expiresAt: offer.holdExpiresAt.toISOString(), ticketTypeName: offeredTypes[0]?.name ?? "" } : null }} />
         </aside>
       </div>
+      <p className="mt-12 text-xs text-muted-foreground"><a href={`/report?event=${event.id}`} className="underline underline-offset-4">Report this event</a></p>
     </article>
   );
 }

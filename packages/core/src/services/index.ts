@@ -18,3 +18,4 @@ export * from "./discounts";
 export * from "./webhooks";
 export * from "./listings";
 export * from "./webhook-payloads";
+export * from "./privacy";

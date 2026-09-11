@@ -7,6 +7,7 @@ import { OrgForm } from "@/components/dashboard/org-form";
 import { MembersPanel } from "@/components/dashboard/members-panel";
 import { ApiKeysPanel } from "@/components/dashboard/api-keys-panel";
 import { WebhooksPanel } from "@/components/dashboard/webhooks-panel";
+import { DangerZone } from "@/components/dashboard/danger-zone";
 
 export default async function SettingsPage() {
   const { org, role, user } = await requireOrg("view_events", "/dashboard/settings");
@@ -45,6 +46,7 @@ export default async function SettingsPage() {
           <WebhooksPanel hooks={hookRows} editable={can(role, "manage_org")} />
         </div>
       </section>
+      {can(role, "manage_org") && <DangerZone slug={org.slug} isOwner={role === "owner"} />}
       {env.EDITION === "cloud" && (
         <section>
           <h2 className="text-lg font-medium">Payments</h2>

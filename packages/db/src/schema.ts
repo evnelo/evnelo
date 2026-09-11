@@ -496,6 +496,21 @@ export const webhookDeliveries = mysqlTable(
   (t) => [index("wd_pending").on(t.deliveredAt, t.nextAttemptAt)],
 );
 
+/** Abuse reports from the public event page (moderation queue; emailed to ABUSE_EMAIL when set). */
+export const eventReports = mysqlTable(
+  "event_reports",
+  {
+    id: id(),
+    eventId: ref("event_id").notNull(),
+    reason: mysqlEnum("reason", ["spam", "scam", "inappropriate", "copyright", "other"]).notNull(),
+    details: text("details"),
+    reporterEmail: varchar("reporter_email", { length: 255 }),
+    resolvedAt: datetime("resolved_at", { fsp: 3 }),
+    createdAt: createdAt(),
+  },
+  (t) => [index("er_event").on(t.eventId)],
+);
+
 /* ---------- auth (Auth.js) ---------- */
 
 // OAuth accounts linked to a user (Google today). Column names follow the Auth.js adapter contract.

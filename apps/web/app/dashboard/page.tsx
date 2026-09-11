@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import { listOrgEvents } from "@ot/core/services";
 import { can } from "@ot/core";
 import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 import { requireOrg } from "@/lib/auth/session";
 import { statusVariant } from "@/lib/dashboard";
 import { formatMoney } from "@/lib/utils";
@@ -11,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 
 export default async function EventsPage() {
-  const { org, role } = await requireOrg("view_events", "/dashboard");
+  const { org, role } = await requireOrg(undefined, "/dashboard");
+  if (!can(role, "view_events")) redirect(can(role, "check_in") ? "/dashboard/checkin" : "/dashboard/no-access");
   const rows = await listOrgEvents(db, org.id);
   const fmt = (d: Date, tz: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZone: tz }).format(d);
 

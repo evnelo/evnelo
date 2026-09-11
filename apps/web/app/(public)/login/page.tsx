@@ -18,6 +18,7 @@ const errorText: Record<string, string> = {
   AccessDenied: "You can't sign in with that account.",
   Configuration: "Sign-in isn't configured on this instance yet. Check RESEND_API_KEY.",
   RateLimited: "Too many sign-in links requested. Wait 15 minutes and try again.",
+  EmailSignin: "We couldn't send the sign-in email. Try again in a minute.",
   InvalidEmail: "Enter a valid email address.",
   Default: "Something went wrong signing you in. Try again.",
 };
@@ -42,7 +43,9 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     ]);
     if (allowed.includes(false)) redirect(`/login?error=RateLimited&email=${encodeURIComponent(address)}${back}`);
     try {
-      await signIn("resend", { email: address, redirectTo: to, redirect: false });
+      // with redirect:false Auth.js reports a failed send as an error URL instead of throwing
+      const result: unknown = await signIn("resend", { email: address, redirectTo: to, redirect: false });
+      if (typeof result === "string" && /[?&]error=/.test(result)) redirect(`/login?error=EmailSignin&email=${encodeURIComponent(address)}${back}`);
     } catch (e) {
       if (e instanceof AuthError) redirect(`/login?error=${e.type}`);
       throw e;

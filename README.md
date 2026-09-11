@@ -72,6 +72,10 @@ Delivery status comes back through webhooks: point Resend at `/api/webhooks/rese
 - **Security headers:** every response carries a Content Security Policy (Stripe, the S3 upload origin and https images allowed), `frame-ancestors 'none'`, nosniff, a referrer policy, a permissions policy (camera and geolocation for the app itself) and, when `APP_URL` is https, HSTS. The API reference at `/api/v1/docs` has its own policy for the Scalar bundle. The policy is built in `apps/web/lib/security-headers.js`.
 - **Error reporting:** set `SENTRY_DSN` (server) and `NEXT_PUBLIC_SENTRY_DSN` (browser, build time) to send unexpected failures to Sentry. Without them errors are still logged with a stable `[scope]` prefix. Notification retries are logged as warnings; only a notification that exhausts its retries is reported.
 
+## Check-in
+
+Door staff open `/dashboard/checkin` (the only dashboard area the `checkin` role can see) and pick the event. The page scans ticket QR codes with the phone camera, or checks people in by name from the confirmed list; every check-in can be undone. Counters update on each scan and every 30 seconds. The device keeps a manifest of confirmed tickets (SHA-256 of each token, never the token itself), so a phone that loses signal keeps validating scans and replays the queued check-ins when it is back online. Camera access needs https (or localhost); `Permissions-Policy` already allows it for the app's own origin.
+
 ## Wallet passes
 
 Optional. Set the `APPLE_*` variables (Pass Type ID certificate, key, Apple WWDR cert, team id) to serve `.pkpass` files at `/t/{token}/wallet/apple`, and `GOOGLE_WALLET_ISSUER_ID` plus a service-account JSON to serve "Save to Google Wallet" links at `/t/{token}/wallet/google`. The buttons only appear on the ticket page when the keys are present.
@@ -86,13 +90,13 @@ This is the canonical implementation order and cross-session progress tracker. U
 
 **Status legend:** `[ ]` pending · `[>]` in progress · `[x]` shipped · `[!]` blocked
 
-**Resume here:** Item 2 — Check-in scanner, manual check-in, and undo (not started).
+**Resume here:** Item 3 — Private-event invitations and access enforcement (not started).
 
 1. [x] **Payment Element and paid-checkout completion**
    - Existing foundation: atomic 10-minute inventory holds, PaymentIntent creation, Stripe webhooks, fees/tax calculation, and dashboard refunds.
    - Complete when buyers can confirm payment in the registration flow, recover from failures, see a clear success state/receipt, and the flow is verified end to end in Stripe test mode.
-2. [ ] **Check-in scanner, manual check-in, and undo**
-   - Complete when authorized check-in staff can scan signed ticket QR codes from a phone, search and check in manually, undo a check-in, and see synchronized counters; short offline operation must fail safely and resync.
+2. [x] **Check-in scanner, manual check-in, and undo**
+   - Shipped 2026-09-10: `/dashboard/checkin/{event}` scans ticket QR codes with the phone camera (jsQR), checks in by name from the confirmed list, undoes, shows live counters, and keeps working without signal (hashed ticket manifest on the device, queued check-ins replay when back online). Check-in is race-safe (conditional insert). The `checkin` role sees only this area.
 3. [ ] **Private-event invitations and access enforcement**
    - Complete when organizers can issue/revoke event invitations and private event pages plus registration validate an invite token or authorized membership while remaining `noindex`.
 4. [ ] **Waitlist enrollment and promotion**
@@ -130,7 +134,7 @@ Foundation (M0) plus the first slice of M1/M2:
 - [ ] Complete REST API resource coverage, generated TypeScript SDK, and outbound webhooks
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [x] Stripe Payment Element after order creation: signed redirect recovery, server-confirmed success, a `processing` state for delayed payment methods with hourly reconciliation against Stripe, and hold expiry that cancels the PaymentIntent before releasing seats (a payment that lands after seats were released is refunded automatically)
-- [ ] Check-in scanner
+- [x] Check-in scanner: camera QR scanning, manual check-in by search, undo, live counters, offline manifest with queued sync; race-safe conditional insert; `checkin` role lands on `/dashboard/checkin`
 - [x] Image uploads go straight from the browser to S3 (or any S3-compatible bucket) with a presigned POST; CloudFront URLs when configured; event covers and logos today, organization logos, host avatars and sponsor logos still accept URLs
 
 Contributor and agent notes: `AGENTS.md`.

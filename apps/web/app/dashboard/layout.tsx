@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { CalendarDays, Settings } from "lucide-react";
+import { CalendarDays, ScanLine, Settings } from "lucide-react";
+import { can } from "@ot/core";
 import { requireOrg } from "@/lib/auth/session";
 import { signOutAction, switchOrgAction } from "./actions";
 import { Select } from "@/components/ui/select";
@@ -7,7 +8,7 @@ import { Select } from "@/components/ui/select";
 export const metadata = { title: "Dashboard", robots: "noindex" };
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { user, org, memberships } = await requireOrg(undefined, "/dashboard");
+  const { user, org, role, memberships } = await requireOrg(undefined, "/dashboard");
   return (
     <div className="grid min-h-dvh lg:grid-cols-[15rem_1fr]">
       <aside className="flex flex-col border-b bg-card/60 lg:border-b-0 lg:border-r">
@@ -25,8 +26,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
           )}
         </div>
         <nav className="flex gap-1 px-2 pb-2 lg:flex-col lg:px-2 lg:pb-0">
-          <Link href="/dashboard" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"><CalendarDays className="size-4" /> Events</Link>
-          <Link href="/dashboard/settings" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"><Settings className="size-4" /> Settings</Link>
+          {can(role, "view_events") && <Link href="/dashboard" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"><CalendarDays className="size-4" /> Events</Link>}
+          {can(role, "check_in") && <Link href="/dashboard/checkin" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"><ScanLine className="size-4" /> Check-in</Link>}
+          {can(role, "view_events") && <Link href="/dashboard/settings" className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"><Settings className="size-4" /> Settings</Link>}
         </nav>
         <div className="mt-auto hidden border-t px-4 py-3 text-xs text-muted-foreground lg:block">
           <p className="truncate" title={user.email}>{user.name ?? user.email}</p>

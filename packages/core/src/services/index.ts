@@ -11,3 +11,4 @@ export * from "./tickets";
 export * from "./fields";
 export * from "./attendees";
 export * from "./api";
+export * from "./checkin";

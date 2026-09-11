@@ -63,6 +63,15 @@ export async function readJsonBody(request: Request, maxBytes = MAX_API_BODY_BYT
   }
 }
 
+/** CSRF guard for cookie-authenticated JSON routes: the Origin (or Referer) must be our own. */
+export function sameOriginRequest(request: Request, appUrl = env.APP_URL): boolean {
+  const expected = new URL(appUrl).origin;
+  const origin = request.headers.get("origin");
+  if (origin) return origin === expected;
+  const referer = request.headers.get("referer");
+  try { return !!referer && new URL(referer).origin === expected; } catch { return false; }
+}
+
 export type TrustedProxyHeader = "cf-connecting-ip" | "x-real-ip" | "x-forwarded-for";
 
 function configuredTrustedProxyHeader(): TrustedProxyHeader | undefined {

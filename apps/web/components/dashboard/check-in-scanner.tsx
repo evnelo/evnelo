@@ -1,0 +1,294 @@
+"use client";
+
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Camera, CameraOff, Search, Undo2, WifiOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { parseTicketToken } from "@/lib/ticket-token";
+
+/**
+ * Door scanner. Camera frames are decoded with jsQR; a decoded ticket is checked in through
+ * POST /api/checkin/{event}. The manifest (every confirmed ticket with a hash of its token) is
+ * kept in memory and refreshed every 30s: it powers the search list and lets the phone keep
+ * validating scans without signal, queueing check-ins to replay once it is back online.
+ */
+
+type ManifestTicket = { id: string; h: string; n: string; e: string; t: string; g: string | null; c: string | null };
+type Stats = { checkedIn: number; confirmed: number };
+type Recent = { ticketId: string; at: string; method: string; name: string; ticketTypeName: string };
+type Manifest = { generatedAt: string; stats: Stats; recent: Recent[]; tickets: ManifestTicket[] };
+type Outcome = "ok" | "already" | "not_found" | "revoked" | "not_confirmed" | "wrong_event" | "offline_ok" | "offline_unknown" | "error";
+type Result = { outcome: Outcome; name?: string; ticketType?: string; hostName?: string | null; checkedInAt?: string | null; ticketId?: string; at: number };
+type Queued = { ticketId: string; at: string };
+
+const OUTCOME: Record<Outcome, { title: string; tone: "ok" | "warn" | "bad" }> = {
+  ok: { title: "Checked in", tone: "ok" },
+  offline_ok: { title: "Checked in (offline, will sync)", tone: "ok" },
+  already: { title: "Already checked in", tone: "warn" },
+  not_confirmed: { title: "Registration not confirmed", tone: "bad" },
+  revoked: { title: "Ticket cancelled or refunded", tone: "bad" },
+  wrong_event: { title: "Ticket is for another event", tone: "bad" },
+  not_found: { title: "Not a valid ticket", tone: "bad" },
+  offline_unknown: { title: "Unknown ticket (offline)", tone: "bad" },
+  error: { title: "Could not check in", tone: "bad" },
+};
+
+const queueKey = (eventId: string) => `ot-checkin-queue-${eventId}`;
+const manifestKey = (eventId: string) => `ot-checkin-manifest-${eventId}`;
+const readJson = <T,>(key: string, fallback: T): T => { try { return JSON.parse(localStorage.getItem(key) ?? "") as T; } catch { return fallback; } };
+
+async function sha256Hex(text: string) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+const time = (iso: string | null | undefined) => (iso ? new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(new Date(iso)) : "");
+
+export function CheckInScanner({ eventId, initial }: { eventId: string; initial: Manifest }) {
+  const [manifest, setManifest] = useState<Manifest>(initial);
+  const [online, setOnline] = useState(true);
+  const [queue, setQueue] = useState<Queued[]>([]);
+  const [result, setResult] = useState<Result | null>(null);
+  const [mode, setMode] = useState<"scan" | "search">("scan");
+  const [query, setQuery] = useState("");
+  const [manual, setManual] = useState("");
+  const [camera, setCamera] = useState<"idle" | "on" | "denied" | "unsupported">("idle");
+  const [busy, setBusy] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const lastScan = useRef<{ token: string; hash: string; at: number }>({ token: "", hash: "", at: 0 });
+  const queueRef = useRef<Queued[]>([]);
+  const syncing = useRef(false);
+
+  // persistence: cached manifest + offline queue survive a reload at the door
+  useEffect(() => {
+    const cached = readJson<Manifest | null>(manifestKey(eventId), null);
+    if (cached && cached.generatedAt > initial.generatedAt) setManifest(cached);
+    const q = readJson<Queued[]>(queueKey(eventId), []);
+    queueRef.current = q; setQueue(q);
+    setOnline(navigator.onLine);
+    const up = () => setOnline(true), down = () => setOnline(false);
+    window.addEventListener("online", up); window.addEventListener("offline", down);
+    return () => { window.removeEventListener("online", up); window.removeEventListener("offline", down); };
+  }, [eventId, initial.generatedAt]);
+  useEffect(() => { try { localStorage.setItem(manifestKey(eventId), JSON.stringify(manifest)); } catch { /* storage full or disabled */ } }, [manifest, eventId]);
+  const saveQueue = (q: Queued[]) => { queueRef.current = q; setQueue(q); localStorage.setItem(queueKey(eventId), JSON.stringify(q)); };
+
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/checkin/${eventId}/manifest`, { cache: "no-store" });
+      if (!res.ok) return;
+      setManifest((await res.json()) as Manifest);
+      setOnline(true);
+    } catch { setOnline(false); }
+  }, [eventId]);
+  useEffect(() => {
+    const id = setInterval(() => { if (document.visibilityState === "visible") void refresh(); }, 30_000);
+    return () => clearInterval(id);
+  }, [refresh]);
+
+  const applyServer = (data: { stats?: Stats; recent?: Recent[] }) => setManifest((m) => ({ ...m, stats: data.stats ?? m.stats, recent: data.recent ?? m.recent }));
+  // online: the server response carries authoritative stats; offline: adjust the counter locally
+  const markLocal = (ticketId: string, checkedInAt: string | null, adjustStats = false) => setManifest((m) => {
+    const wasIn = m.tickets.find((t) => t.id === ticketId)?.c;
+    const delta = adjustStats ? (checkedInAt ? 1 : 0) - (wasIn ? 1 : 0) : 0;
+    return { ...m, stats: { ...m.stats, checkedIn: m.stats.checkedIn + delta }, tickets: m.tickets.map((t) => (t.id === ticketId ? { ...t, c: checkedInAt } : t)) };
+  });
+
+  // replay queued offline check-ins
+  const sync = useCallback(async () => {
+    if (syncing.current || !queueRef.current.length) return;
+    syncing.current = true;
+    try {
+      for (const item of [...queueRef.current]) {
+        const res = await fetch(`/api/checkin/${eventId}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ticketId: item.ticketId, method: "scan" }) });
+        if (!res.ok && res.status >= 500) break;
+        if (res.status === 401 || res.status === 403) break;
+        const data = (await res.json()) as { outcome: Outcome; stats?: Stats; recent?: Recent[] };
+        applyServer(data);
+        saveQueue(queueRef.current.filter((q) => q !== item));
+      }
+      setOnline(true);
+    } catch { setOnline(false); } finally { syncing.current = false; }
+  }, [eventId]);
+  useEffect(() => { if (online) void sync().then(refresh); }, [online, sync, refresh]);
+
+  const feedback = (tone: "ok" | "warn" | "bad") => { try { navigator.vibrate?.(tone === "ok" ? 80 : tone === "warn" ? [60, 60, 60] : [200, 80, 200]); } catch { /* unsupported */ } };
+  const show = (r: Omit<Result, "at">) => { setResult({ ...r, at: Date.now() }); feedback(OUTCOME[r.outcome].tone); };
+
+  const checkIn = useCallback(async (ref: { token?: string; ticketId?: string }, method: "scan" | "manual") => {
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/checkin/${eventId}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...ref, method }) });
+      if (!res.ok) { const data = (await res.json().catch(() => ({}))) as { error?: string }; show({ outcome: "error", name: data.error }); return; }
+      const data = (await res.json()) as { outcome: Outcome; attendee: { ticketId: string; name: string; ticketTypeName: string; hostName: string | null } | null; checkedInAt: string | null; stats: Stats; recent: Recent[] };
+      setOnline(true);
+      applyServer(data);
+      if (data.attendee) markLocal(data.attendee.ticketId, data.outcome === "ok" || data.outcome === "already" ? data.checkedInAt : null);
+      show({ outcome: data.outcome, name: data.attendee?.name, ticketType: data.attendee?.ticketTypeName, hostName: data.attendee?.hostName, checkedInAt: data.checkedInAt, ticketId: data.attendee?.ticketId });
+    } catch {
+      // no network: validate against the manifest and queue the check-in
+      setOnline(false);
+      const found = ref.ticketId ? manifest.tickets.find((t) => t.id === ref.ticketId) : manifest.tickets.find((t) => t.h === lastScan.current.hash);
+      if (!found) { show({ outcome: "offline_unknown" }); return; }
+      if (found.c) { show({ outcome: "already", name: found.n, ticketType: found.t, hostName: found.g, checkedInAt: found.c, ticketId: found.id }); return; }
+      const at = new Date().toISOString();
+      markLocal(found.id, at, true);
+      saveQueue([...queueRef.current, { ticketId: found.id, at }]);
+      show({ outcome: "offline_ok", name: found.n, ticketType: found.t, hostName: found.g, checkedInAt: at, ticketId: found.id });
+    } finally { setBusy(false); }
+  }, [eventId, manifest.tickets]);
+
+  const onToken = useCallback(async (raw: string, method: "scan" | "manual") => {
+    const token = parseTicketToken(raw);
+    if (!token) { show({ outcome: "not_found" }); return; }
+    const now = Date.now();
+    if (method === "scan" && lastScan.current.token === token && now - lastScan.current.at < 4_000) return; // same code still in frame
+    lastScan.current = { token, hash: await sha256Hex(token), at: now };
+    await checkIn({ token }, method);
+  }, [checkIn]);
+
+  const undo = async (ticketId: string) => {
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/checkin/${eventId}`, { method: "DELETE", headers: { "content-type": "application/json" }, body: JSON.stringify({ ticketId }) });
+      if (res.ok) { applyServer((await res.json()) as { stats: Stats; recent: Recent[] }); markLocal(ticketId, null); setResult(null); }
+    } catch { setOnline(false); } finally { setBusy(false); }
+  };
+
+  // camera + decode loop
+  useEffect(() => {
+    if (mode !== "scan") return;
+    let stream: MediaStream | undefined; let raf = 0; let stopped = false;
+    const video = videoRef.current;
+    if (!video) return;
+    if (!navigator.mediaDevices?.getUserMedia) { setCamera("unsupported"); return; }
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    let jsQR: typeof import("jsqr").default | undefined;
+    let lastDecode = 0;
+    const tick = () => {
+      if (stopped) return;
+      raf = requestAnimationFrame(tick);
+      const now = performance.now();
+      if (!jsQR || now - lastDecode < 120 || video.readyState < 2) return;
+      lastDecode = now;
+      const w = video.videoWidth, h = video.videoHeight;
+      if (!w || !h || !ctx) return;
+      const scale = Math.min(1, 640 / w);
+      canvas.width = Math.round(w * scale); canvas.height = Math.round(h * scale);
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(img.data, img.width, img.height, { inversionAttempts: "dontInvert" });
+      if (code?.data) void onToken(code.data, "scan");
+    };
+    (async () => {
+      try {
+        jsQR = (await import("jsqr")).default;
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
+        if (stopped) { stream.getTracks().forEach((t) => t.stop()); return; }
+        video.srcObject = stream;
+        await video.play();
+        setCamera("on");
+        raf = requestAnimationFrame(tick);
+      } catch { setCamera("denied"); }
+    })();
+    return () => { stopped = true; cancelAnimationFrame(raf); stream?.getTracks().forEach((t) => t.stop()); if (video) video.srcObject = null; };
+  }, [mode, onToken]);
+
+  const matches = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return manifest.tickets.slice(0, 50);
+    return manifest.tickets.filter((t) => t.n.toLowerCase().includes(q) || t.e.toLowerCase().includes(q)).slice(0, 50);
+  }, [manifest.tickets, query]);
+
+  const pct = manifest.stats.confirmed ? Math.round((manifest.stats.checkedIn / manifest.stats.confirmed) * 100) : 0;
+  const tone = result ? OUTCOME[result.outcome].tone : null;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-card px-4 py-3">
+        <div>
+          <p className="text-2xl font-semibold tabular-nums">{manifest.stats.checkedIn} <span className="text-base font-normal text-muted-foreground">/ {manifest.stats.confirmed} checked in · {pct}%</span></p>
+          <p className="text-xs text-muted-foreground">Updated {time(manifest.generatedAt)}{queue.length ? ` · ${queue.length} waiting to sync` : ""}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {!online && <span className="inline-flex items-center gap-1 rounded-full bg-[#fbf1d6] px-2 py-1 text-xs text-[#6b5300]"><WifiOff className="size-3.5" /> Offline: scans are saved and synced later</span>}
+          <div className="flex rounded-md border p-0.5">
+            <button type="button" onClick={() => setMode("scan")} className={cn("inline-flex items-center gap-1 rounded px-3 py-1.5 text-sm", mode === "scan" ? "bg-foreground text-background" : "text-muted-foreground")}><Camera className="size-4" /> Scan</button>
+            <button type="button" onClick={() => setMode("search")} className={cn("inline-flex items-center gap-1 rounded px-3 py-1.5 text-sm", mode === "search" ? "bg-foreground text-background" : "text-muted-foreground")}><Search className="size-4" /> Search</button>
+          </div>
+        </div>
+      </div>
+
+      {result && (
+        <div role="status" aria-live="assertive" className={cn("rounded-lg border-2 p-4", tone === "ok" && "border-[#2e7d4f] bg-[#e7f5ec]", tone === "warn" && "border-[#c9a227] bg-[#fbf1d6]", tone === "bad" && "border-destructive bg-destructive/10")}>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-lg font-semibold">{OUTCOME[result.outcome].title}</p>
+              {result.name && <p className="mt-0.5 text-xl">{result.name}{result.hostName ? <span className="text-sm text-muted-foreground"> · guest of {result.hostName}</span> : null}</p>}
+              {result.ticketType && <p className="text-sm text-muted-foreground">{result.ticketType}{result.outcome === "already" && result.checkedInAt ? ` · checked in at ${time(result.checkedInAt)}` : ""}</p>}
+              {result.outcome === "error" && result.name && <p className="text-sm text-muted-foreground">{result.name}</p>}
+            </div>
+            {(result.outcome === "ok" || result.outcome === "already") && result.ticketId && (
+              <Button variant="outline" size="sm" disabled={busy || !online} onClick={() => undo(result.ticketId!)}><Undo2 className="size-4" /> Undo</Button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {mode === "scan" ? (
+        <div className="space-y-3">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-black">
+            <video ref={videoRef} className="size-full object-cover" muted playsInline />
+            {camera !== "on" && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-6 text-center text-sm text-white/90">
+                <CameraOff className="size-6" />
+                {camera === "denied" ? "Camera access was blocked. Allow the camera for this site, or use Search to check people in by name." : camera === "unsupported" ? "This browser can't use the camera. Use Search, or paste a ticket link below." : "Starting camera…"}
+              </div>
+            )}
+            {camera === "on" && <div className="pointer-events-none absolute inset-[15%] rounded-lg border-2 border-white/70" />}
+          </div>
+          <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (manual.trim()) { void onToken(manual, "manual"); setManual(""); } }}>
+            <Input value={manual} onChange={(e) => setManual(e.target.value)} placeholder="Or paste a ticket link / code" aria-label="Ticket link or code" />
+            <Button type="submit" variant="outline" disabled={busy}>Check in</Button>
+          </form>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <Input autoFocus value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by name or email" aria-label="Search attendees" />
+          <ul className="divide-y rounded-lg border">
+            {matches.length === 0 && <li className="p-4 text-sm text-muted-foreground">No confirmed attendees match.</li>}
+            {matches.map((t) => (
+              <li key={t.id} className="flex items-center justify-between gap-3 p-3">
+                <div className="min-w-0">
+                  <p className="truncate font-medium">{t.n}{t.g ? <span className="text-xs text-muted-foreground"> · guest of {t.g}</span> : null}</p>
+                  <p className="truncate text-xs text-muted-foreground">{t.t} · {t.e}{t.c ? ` · in at ${time(t.c)}` : ""}</p>
+                </div>
+                {t.c ? (
+                  <Button size="sm" variant="ghost" disabled={busy || !online} onClick={() => undo(t.id)}><Undo2 className="size-4" /> Undo</Button>
+                ) : (
+                  <Button size="sm" disabled={busy} onClick={() => checkIn({ ticketId: t.id }, "manual")}>Check in</Button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {manifest.recent.length > 0 && (
+        <div>
+          <h2 className="text-sm font-medium text-muted-foreground">Recent</h2>
+          <ul className="mt-1 divide-y rounded-lg border text-sm">
+            {manifest.recent.slice(0, 10).map((r) => (
+              <li key={`${r.ticketId}-${r.at}`} className="flex items-center justify-between gap-3 px-3 py-2">
+                <span className="truncate">{r.name} <span className="text-muted-foreground">· {r.ticketTypeName} · {time(r.at)}{r.method === "manual" ? " · manual" : ""}</span></span>
+                <button type="button" className="text-xs text-muted-foreground underline underline-offset-4 disabled:opacity-50" disabled={busy || !online} onClick={() => undo(r.ticketId)}>Undo</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}

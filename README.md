@@ -94,7 +94,7 @@ This is the canonical implementation order and cross-session progress tracker. U
 
 **Status legend:** `[ ]` pending · `[>]` in progress · `[x]` shipped · `[!]` blocked
 
-**Resume here:** Item 5 — Discount-code checkout and management (not started).
+**Resume here:** Item 6 — REST API/MCP parity, API-key UI, and outbound webhooks (API keys shipped; resources, webhooks, MCP, SDK pending).
 
 1. [x] **Payment Element and paid-checkout completion**
    - Existing foundation: atomic 10-minute inventory holds, PaymentIntent creation, Stripe webhooks, fees/tax calculation, and dashboard refunds.
@@ -105,8 +105,8 @@ This is the canonical implementation order and cross-session progress tracker. U
    - Shipped 2026-09-10: the Invites tab issues email-bound or shareable links (`/i/{token}`, use budget, expiry, revoke); opening a link stores it in an event-scoped cookie; the event page and `POST /api/orders` both go through `eventAccess` (organization member, or valid invite; email-bound invites must match the registrant; uses are spent atomically inside the order transaction). Private pages stay `noindex` and 404 to everyone else. Online/hybrid tickets show the join link to confirmed attendees.
 4. [x] **Waitlist enrollment and promotion**
    - Shipped 2026-09-10: sold-out (ticket quantities or event capacity, which checkout now enforces under a row lock) shows "Join the waitlist"; the Waitlist tab offers a spot per person, which holds one seat (counted against capacity) for 24 hours and emails a claim link (`/w/{token}`); claiming converts the held seat inside the order transaction, email-bound; the job loop releases lapsed offers so they can be offered again. Joining sends a confirmation email.
-5. [ ] **Discount-code checkout and management**
-   - Complete when organizers can create/manage percentage and fixed discounts with expiry and usage limits, checkout validates and applies them atomically, and orders preserve the discount audit trail.
+5. [x] **Discount-code checkout and management**
+   - Shipped 2026-09-10: percent or fixed codes with use limits and expiry are managed on the Tickets tab; the checkout form validates a code through `POST /api/discounts/validate` and shows the new total (a 100% code makes the order free, no payment step); `POST /api/orders` re-validates, spends the use with a conditional update inside the order transaction, and stores `discountMinor` + `discountCodeId` on the order; a use is returned when a pending order expires or fails.
 6. [ ] **REST API/MCP parity, API-key UI, and outbound webhooks**
    - Complete when the documented organizations, events, ticket types, registration fields, orders, attendees/tickets, check-ins, discounts, and webhook resources exist; MCP tools call real endpoints; organizers can manage scoped keys/webhooks; TypeScript SDK generation and signed retrying outbound deliveries are available.
 7. [ ] **Discovery search, filters, calendar, and sitemap**
@@ -138,6 +138,7 @@ Foundation (M0) plus the first slice of M1/M2:
 - [ ] Complete REST API resource coverage, generated TypeScript SDK, and outbound webhooks
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [x] Stripe Payment Element after order creation: signed redirect recovery, server-confirmed success, a `processing` state for delayed payment methods with hourly reconciliation against Stripe, and hold expiry that cancels the PaymentIntent before releasing seats (a payment that lands after seats were released is refunded automatically)
+- [x] Discount codes: percent/fixed, use limits, expiry; validated and spent atomically at checkout; audit trail on the order
 - [x] Waitlist: join when sold out, organizer-driven offers that hold a seat for 24h, claim links, automatic release; event capacity enforced at checkout
 - [x] Private events: invitation links (email-bound or shareable, use budget, expiry) enforced on the page and at checkout; members always have access
 - [x] Check-in scanner: camera QR scanning, manual check-in by search, undo, live counters, offline manifest with queued sync; race-safe conditional insert; `checkin` role lands on `/dashboard/checkin`

@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatMoney } from "@/lib/utils";
+import { DiscountCodeField, type AppliedDiscount } from "./discount-code-field";
 
 type Props = {
   eventId: string;
@@ -34,6 +35,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
   const [answers, setAnswers] = useState<Answers>({});
   const [guestAnswers, setGuestAnswers] = useState<Answers[]>([]);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [discount, setDiscount] = useState<AppliedDiscount | null>(null);
 
   const forTicket = (f: RegistrationField) => !f.ticketTypeIds || f.ticketTypeIds.includes(ticketTypeId);
   const attendeeFields = useMemo(() => fields.filter((f) => f.scope === "attendee" && forTicket(f)), [fields, ticketTypeId]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -68,13 +70,17 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
 
   const selected = ticketTypes.find((t) => t.id === ticketTypeId);
   const partySize = 1 + guests.fields.length;
-  const totalMinor = (selected?.priceMinor ?? 0) * partySize;
+  const listMinor = (selected?.priceMinor ?? 0) * partySize;
+  // the applied discount was validated for this ticket type and party size; any change drops it
+  const totalMinor = discount ? discount.totalMinor : listMinor;
 
   function addGuest() {
+    setDiscount(null);
     guests.append({ name: "", email: "", answers: {} });
     setGuestAnswers((a) => [...a, {}]);
   }
   function removeGuest(i: number) {
+    setDiscount(null);
     guests.remove(i);
     setGuestAnswers((a) => a.filter((_, j) => j !== i));
   }
@@ -84,7 +90,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
     const res = await fetch("/api/orders", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ eventId, ticketTypeId, ...values }),
+      body: JSON.stringify({ eventId, ticketTypeId, ...values, discountCode: discount?.code }),
     });
     if (!res.ok) {
       setServerError((await res.json().catch(() => ({})))?.error ?? "Something went wrong. Try again.");
@@ -172,7 +178,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
               return (
                 <label key={t.id} className={`flex cursor-pointer items-center justify-between rounded-md border px-3 py-2.5 text-sm has-[:checked]:border-event has-[:checked]:bg-accent ${soldOut ? "opacity-50" : ""}`}>
                   <span className="flex items-center gap-2">
-                    <input type="radio" name="ticketType" value={t.id} checked={ticketTypeId === t.id} disabled={soldOut} onChange={() => setTicketTypeId(t.id)} className="accent-[var(--accent-event)]" />
+                    <input type="radio" name="ticketType" value={t.id} checked={ticketTypeId === t.id} disabled={soldOut} onChange={() => { setTicketTypeId(t.id); setDiscount(null); }} className="accent-[var(--accent-event)]" />
                     {t.name}
                   </span>
                   <span className="tabular-nums">{soldOut ? "Sold out" : t.priceMinor === 0 ? "Free" : formatMoney(t.priceMinor, t.currency)}</span>
@@ -237,11 +243,15 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
         </section>
       )}
 
+      {selected && selected.priceMinor > 0 && (
+        <DiscountCodeField key={`${ticketTypeId}:${partySize}`} eventId={eventId} ticketTypeId={ticketTypeId} quantity={partySize} applied={discount} onChange={setDiscount} />
+      )}
       {serverError && <p className="text-sm text-destructive">{serverError}</p>}
 
       <Button type="submit" variant="event" size="lg" className="w-full" disabled={form.formState.isSubmitting || !selected}>
         {totalMinor > 0
           ? `Continue to payment, ${formatMoney(totalMinor, selected!.currency)}${partySize > 1 ? ` for ${partySize}` : ""}`
+          : discount && listMinor > 0 ? (partySize > 1 ? `Register ${partySize} people, free with code` : "Register, free with code")
           : partySize > 1 ? `Register ${partySize} people` : "Register"}
       </Button>
     </form>

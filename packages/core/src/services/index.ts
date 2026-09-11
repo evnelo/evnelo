@@ -14,3 +14,4 @@ export * from "./api";
 export * from "./checkin";
 export * from "./invites";
 export * from "./waitlist";
+export * from "./discounts";

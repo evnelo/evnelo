@@ -3,6 +3,7 @@ import { and, eq, inArray, isNull, lt, sql } from "drizzle-orm";
 import { attendees, notifications, orders, orderItems, ticketTypes, tickets, type Attendee, type Database } from "@ot/db";
 import { newId } from "../ids";
 import type { DbOrTx } from "./db";
+import { releaseDiscountCode } from "./discounts";
 
 /**
  * Order fulfilment: tickets, seats and the notification rows that go with them.
@@ -119,6 +120,9 @@ export async function releaseOrder(db: Database, orderId: string, status: "faile
     const [res] = await tx.update(orders).set({ status }).where(and(eq(orders.id, orderId), inArray(orders.status, from)));
     if (res.affectedRows === 0) return false;
     await releaseHeldItems(tx, orderId);
+    // a discount use spent by an order that never paid goes back to the code
+    const [order] = await tx.select({ discountCodeId: orders.discountCodeId }).from(orders).where(eq(orders.id, orderId)).limit(1);
+    if (order?.discountCodeId) await releaseDiscountCode(tx, order.discountCodeId);
     await tx.update(attendees).set({ status: "cancelled" }).where(and(eq(attendees.orderId, orderId), inArray(attendees.status, ["confirmed", "pending_approval"])));
     return true;
   });

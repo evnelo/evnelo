@@ -4,7 +4,7 @@ import { and, eq, inArray, isNull, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { attendees, events, orders, orderItems, organizations, registrationFields, ticketTypes } from "@ot/db";
 import { buildAnswersSchema, computeOrder, currentEdition, newId } from "@ot/core";
-import { capacityAllows, consumeEventInvite, consumeWaitlistOffer } from "@ot/core/services";
+import { capacityAllows, consumeDiscountCode, consumeEventInvite, consumeWaitlistOffer, discountProblem, discountProblemMessage, findDiscountCode, toDiscount } from "@ot/core/services";
 import { eventAccess } from "@/lib/event-access";
 import { waitlistOffer } from "@/lib/waitlist-access";
 import { db } from "@/lib/db";
@@ -27,6 +27,7 @@ const body = z.object({
   email,
   phone: z.string().trim().optional().or(z.literal("")),
   smsOptIn: z.boolean().optional(),
+  discountCode: z.string().trim().max(40).optional().or(z.literal("")),
   attendee: z.record(z.unknown()).default({}),
   order: z.record(z.unknown()).default({}),
   // +1s: each becomes an attendee with its own ticket, priced at the host's ticket type
@@ -106,7 +107,13 @@ export async function POST(req: Request) {
   const [org] = await db.select().from(organizations).where(eq(organizations.id, event.organizationId)).limit(1);
   const edition = currentEdition();
   const stripeAccountId = checkoutStripeAccount(edition, org?.stripeAccountId);
-  const fees = computeOrder([{ unitPriceMinor: tt.priceMinor, quantity, taxRateBps: tt.taxRateBps }], { edition, feePassThrough: event.feePassThrough });
+  // discount code: validated here and spent inside the transaction; a 100% discount makes the order free
+  const discountCode = input.discountCode && tt.priceMinor > 0 ? await findDiscountCode(db, event.id, input.discountCode) : null;
+  if (input.discountCode && tt.priceMinor > 0) {
+    const problem = discountProblem(discountCode, now);
+    if (problem) return NextResponse.json({ error: discountProblemMessage[problem], issues: [{ path: ["discountCode"], message: discountProblemMessage[problem] }] }, { status: 400 });
+  }
+  const fees = computeOrder([{ unitPriceMinor: tt.priceMinor, quantity, taxRateBps: tt.taxRateBps }], { edition, feePassThrough: event.feePassThrough, discount: discountCode ? toDiscount(discountCode) : null });
   const isFree = fees.totalMinor === 0;
   if (!isFree && !paymentsConfigured(env.STRIPE_SECRET_KEY, env.STRIPE_PUBLISHABLE_KEY)) return NextResponse.json({ error: "This event can't take payments yet. Contact the host." }, { status: 503 });
   const orderId = newId();
@@ -126,6 +133,7 @@ export async function POST(req: Request) {
     if (invite && !(await consumeEventInvite(tx, invite.id, now))) return { inviteExhausted: true as const };
     // the offer's held seat is released here so the reservation below can take it
     if (offer && !(await consumeWaitlistOffer(tx, offer.id, orderId, now))) return { offerLapsed: true as const };
+    if (discountCode && !(await consumeDiscountCode(tx, discountCode.id, now))) return { discountGone: true as const };
     // event-level capacity (locks the event row); ticket-type quantity is enforced by the conditional UPDATE below
     if (!(await capacityAllows(tx, event.id, quantity, { now }))) return { soldOut: true as const };
 
@@ -141,7 +149,7 @@ export async function POST(req: Request) {
     await tx.insert(orders).values({
       id: orderId, eventId: event.id, organizationId: event.organizationId, email: input.email,
       status: isFree ? "free" : "pending", currency: tt.currency,
-      subtotalMinor: fees.subtotalMinor, taxMinor: fees.taxMinor, serviceFeeMinor: fees.serviceFeeMinor,
+      subtotalMinor: fees.subtotalMinor, discountMinor: fees.discountMinor, discountCodeId: discountCode?.id ?? null, taxMinor: fees.taxMinor, serviceFeeMinor: fees.serviceFeeMinor,
       totalMinor: fees.totalMinor, platformFeeMinor: fees.platformFeeMinor,
       holdExpiresAt,
       paidAt: isFree ? now : null, answers: ord.data, stripeAccountId,
@@ -164,6 +172,7 @@ export async function POST(req: Request) {
     const who = result.duplicate === input.email ? "This email is" : `${result.duplicate} is`;
     return NextResponse.json({ error: `${who} already registered for this event.` }, { status: 409 });
   }
+  if ("discountGone" in result) return NextResponse.json({ error: "That discount code was just used up. Remove it and try again." }, { status: 409 });
   if ("offerLapsed" in result) return NextResponse.json({ error: "Your reserved spot expired. If another opens up, the host can offer it to you again." }, { status: 409 });
   if ("inviteExhausted" in result) return NextResponse.json({ error: "This invitation has already been used the maximum number of times." }, { status: 409 });
   if ("soldOut" in result) return NextResponse.json({ error: quantity > 1 ? "Not enough tickets left for your whole party." : "That ticket just sold out." }, { status: 409 });

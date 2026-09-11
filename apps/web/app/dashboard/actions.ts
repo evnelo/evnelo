@@ -348,3 +348,29 @@ export async function removeWaitlistEntryAction(eventId: string, entryId: string
     return fail(e);
   }
 }
+
+/* ---------- discount codes ---------- */
+
+export async function createDiscountCodeAction(eventId: string, input: unknown): Promise<ActionResult> {
+  const parsed = svc.discountCodeInput.safeParse(input);
+  if (!parsed.success) return zodFail(parsed.error);
+  try {
+    await requireEvent(eventId, "edit_events");
+    const row = await svc.createDiscountCode(db, eventId, parsed.data);
+    revalidatePath(`/dashboard/events/${eventId}/tickets`);
+    return { ok: true, id: row.id, message: `Code ${row.code} created.` };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function deleteDiscountCodeAction(eventId: string, id: string): Promise<ActionResult> {
+  try {
+    await requireEvent(eventId, "edit_events");
+    await svc.deleteDiscountCode(db, eventId, id);
+    revalidatePath(`/dashboard/events/${eventId}/tickets`);
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}

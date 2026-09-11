@@ -8,13 +8,16 @@ import { organizationPath, publicEventPath, serializeJsonLd } from "@/lib/urls";
 import { SocialLinks } from "@/components/event/social-links";
 import { RegisterCard } from "@/components/event/register-card";
 import { env } from "@/lib/env";
+import { eventAccess } from "@/lib/event-access";
 
 type Params = { params: Promise<{ organizationSlug: string; eventSlug: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { organizationSlug, eventSlug } = await params;
   const data = await getPublicEvent(organizationSlug, eventSlug);
-  if (!data || !canView(data.event, { isMember: false, hasInvite: false })) return {};
+  if (!data) return {};
+  const access = await eventAccess(data.event);
+  if (!canView(data.event, { isMember: access.isMember, hasInvite: Boolean(access.invite) })) return {};
   const { event, org } = data;
   const canonical = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
   return {
@@ -37,8 +40,8 @@ export default async function EventPage({ params }: Params) {
     notFound();
   }
   const { event, org, hosts, sponsors, ticketTypes, fields, tags } = data;
-  // TODO(auth): resolve session membership + invite token; until then private events are hidden
-  if (!canView(event, { isMember: false, hasInvite: false })) notFound();
+  const access = await eventAccess(event);
+  if (!canView(event, { isMember: access.isMember, hasInvite: Boolean(access.invite) })) notFound();
 
   const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: event.timezone }).format(event.startsAt);
   const day = new Intl.DateTimeFormat("en-US", { day: "numeric", timeZone: event.timezone }).format(event.startsAt);
@@ -131,6 +134,9 @@ export default async function EventPage({ params }: Params) {
         </div>
 
         <aside className="lg:sticky lg:top-6 lg:self-start">
+          {event.visibility === "private" && (
+            <p className="mb-3 text-xs text-muted-foreground">{access.invite ? `Private event. Your invitation${access.invite.email ? ` for ${access.invite.email}` : ""} is active.` : "Private event. You can see it because you help run it."}</p>
+          )}
           <RegisterCard eventId={event.id} eventName={event.name} ticketTypes={ticketTypes} fields={fields}
             collectPhone={event.collectPhone} requiresApproval={event.requiresApproval} soldOut={soldOut}
             guestsEnabled={event.guestsEnabled} maxGuests={event.maxGuests} stripePublishableKey={env.STRIPE_PUBLISHABLE_KEY} />

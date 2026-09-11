@@ -17,6 +17,10 @@ import { searchAddresses, type AddressSuggestion } from "@/lib/geocoding";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { stripe } from "@/lib/stripe";
 import OrgInvite, { orgInviteSubject } from "@/emails/org-invite";
+import EventInvite, { eventInviteSubject } from "@/emails/event-invite";
+import { formatDateRange } from "@/lib/utils";
+import { publicEventPath } from "@/lib/urls";
+import { calendarPath } from "@/lib/calendar";
 
 export type ActionResult = { ok: true; message?: string; id?: string } | { ok: false; error: string; issues?: { path: (string | number)[]; message: string }[] };
 
@@ -252,6 +256,49 @@ export async function revokeApiKeyAction(id: string): Promise<ActionResult> {
     const { org } = await requireOrg("manage_org");
     await svc.revokeApiKey(db, org.id, id);
     revalidatePath("/dashboard/settings");
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/* ---------- event invitations ---------- */
+
+export async function createEventInviteAction(eventId: string, formData: FormData): Promise<ActionResult & { url?: string }> {
+  const parsed = svc.eventInviteInput.safeParse({ email: formData.get("email") ?? "", maxUses: formData.get("maxUses") || undefined, expiresInDays: formData.get("expiresInDays") || null });
+  if (!parsed.success) return zodFail(parsed.error);
+  try {
+    const { event, org } = await requireEvent(eventId, "edit_events");
+    const invite = await svc.createEventInvite(db, eventId, parsed.data);
+    const url = `${env.APP_URL}/i/${invite.token}`;
+    if (invite.email) {
+      const brand = { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL };
+      const emailEvent = {
+        name: event.name, url: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, when: formatDateRange(event.startsAt, event.endsAt, event.timezone),
+        where: event.locationType === "online" ? "Online" : [event.venueName, event.city].filter(Boolean).join(", "), calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}`,
+      };
+      const expires = invite.expiresAt ? new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric" }).format(invite.expiresAt) : null;
+      const props = { brand, event: emailEvent, url, expires };
+      try {
+        const { html, text } = await renderEmail(React.createElement(EventInvite, props));
+        await sendEmail({ to: invite.email, subject: eventInviteSubject(props), html, text });
+      } catch (e) {
+        revalidatePath(`/dashboard/events/${eventId}/invites`);
+        return { ok: true, id: invite.id, url, message: `Invite created, but the email could not be sent (${e instanceof Error ? e.message : "unknown error"}). Share the link yourself.` };
+      }
+    }
+    revalidatePath(`/dashboard/events/${eventId}/invites`);
+    return { ok: true, id: invite.id, url, message: invite.email ? `Invitation emailed to ${invite.email}.` : "Invite link created." };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function deleteEventInviteAction(eventId: string, id: string): Promise<ActionResult> {
+  try {
+    await requireEvent(eventId, "edit_events");
+    await svc.deleteEventInvite(db, eventId, id);
+    revalidatePath(`/dashboard/events/${eventId}/invites`);
     return { ok: true };
   } catch (e) {
     return fail(e);

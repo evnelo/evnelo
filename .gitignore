@@ -6,3 +6,6 @@ dist
 .turbo
 uploads/
 *.tsbuildinfo
+
+# local agent worktrees and session files
+.claude/

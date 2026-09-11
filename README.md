@@ -94,15 +94,15 @@ This is the canonical implementation order and cross-session progress tracker. U
 
 **Status legend:** `[ ]` pending · `[>]` in progress · `[x]` shipped · `[!]` blocked
 
-**Resume here:** Item 3 — Private-event invitations and access enforcement (not started).
+**Resume here:** Item 4 — Waitlist enrollment and promotion (not started).
 
 1. [x] **Payment Element and paid-checkout completion**
    - Existing foundation: atomic 10-minute inventory holds, PaymentIntent creation, Stripe webhooks, fees/tax calculation, and dashboard refunds.
    - Complete when buyers can confirm payment in the registration flow, recover from failures, see a clear success state/receipt, and the flow is verified end to end in Stripe test mode.
 2. [x] **Check-in scanner, manual check-in, and undo**
    - Shipped 2026-09-10: `/dashboard/checkin/{event}` scans ticket QR codes with the phone camera (jsQR), checks in by name from the confirmed list, undoes, shows live counters, and keeps working without signal (hashed ticket manifest on the device, queued check-ins replay when back online). Check-in is race-safe (conditional insert). The `checkin` role sees only this area.
-3. [ ] **Private-event invitations and access enforcement**
-   - Complete when organizers can issue/revoke event invitations and private event pages plus registration validate an invite token or authorized membership while remaining `noindex`.
+3. [x] **Private-event invitations and access enforcement**
+   - Shipped 2026-09-10: the Invites tab issues email-bound or shareable links (`/i/{token}`, use budget, expiry, revoke); opening a link stores it in an event-scoped cookie; the event page and `POST /api/orders` both go through `eventAccess` (organization member, or valid invite; email-bound invites must match the registrant; uses are spent atomically inside the order transaction). Private pages stay `noindex` and 404 to everyone else. Online/hybrid tickets show the join link to confirmed attendees.
 4. [ ] **Waitlist enrollment and promotion**
    - Complete when sold-out events can collect waitlist entries, organizers can promote them without overselling, promotion expires safely, and required email/SMS notifications are queued.
 5. [ ] **Discount-code checkout and management**
@@ -138,6 +138,7 @@ Foundation (M0) plus the first slice of M1/M2:
 - [ ] Complete REST API resource coverage, generated TypeScript SDK, and outbound webhooks
 - [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
 - [x] Stripe Payment Element after order creation: signed redirect recovery, server-confirmed success, a `processing` state for delayed payment methods with hourly reconciliation against Stripe, and hold expiry that cancels the PaymentIntent before releasing seats (a payment that lands after seats were released is refunded automatically)
+- [x] Private events: invitation links (email-bound or shareable, use budget, expiry) enforced on the page and at checkout; members always have access
 - [x] Check-in scanner: camera QR scanning, manual check-in by search, undo, live counters, offline manifest with queued sync; race-safe conditional insert; `checkin` role lands on `/dashboard/checkin`
 - [x] Image uploads go straight from the browser to S3 (or any S3-compatible bucket) with a presigned POST; CloudFront URLs when configured; event covers and logos today, organization logos, host avatars and sponsor logos still accept URLs
 

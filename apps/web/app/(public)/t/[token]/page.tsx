@@ -61,6 +61,9 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
         </div>
       </div>
       <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm">
+        {event.locationType !== "in_person" && event.onlineUrl && attendee.status === "confirmed" && event.status !== "cancelled" && (
+          <a href={event.onlineUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-9 items-center rounded-md bg-[var(--ticket-ink)] px-3 text-xs font-medium text-[var(--ticket-paper)]">Join online</a>
+        )}
         <a href={calendarPath(row.organizationSlug, event.slug)} className="underline underline-offset-4">Add to calendar</a>
         <a href={publicEventPath(row.organizationSlug, event.slug)} className="underline underline-offset-4">Event page</a>
         {(appleWalletConfigured || googleWalletConfigured) && (

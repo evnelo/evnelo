@@ -10,7 +10,7 @@ import { isHttpUrl, normalizeWebsiteUrl } from "../url";
 const url = z.string().transform(normalizeWebsiteUrl)
   .pipe(z.string().max(300).refine((value) => !value || isHttpUrl(value), "Must be a valid http:// or https:// URL"))
   .transform((v) => v || null);
-export const RESERVED_ORGANIZATION_SLUGS = new Set(["api", "dashboard", "dev", "discover", "e", "invite", "login", "o", "onboarding", "t", "unsubscribe"]);
+export const RESERVED_ORGANIZATION_SLUGS = new Set(["api", "dashboard", "dev", "discover", "e", "i", "invite", "login", "o", "onboarding", "t", "unsubscribe"]);
 const organizationSlug = z.string().trim()
   .regex(/^[a-z0-9-]{3,60}$/, "Lowercase letters, numbers and hyphens")
   .refine((slug) => !RESERVED_ORGANIZATION_SLUGS.has(slug), "This URL is reserved.");

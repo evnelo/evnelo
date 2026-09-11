@@ -4,6 +4,8 @@ import { and, eq, inArray, isNull, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { attendees, events, orders, orderItems, organizations, registrationFields, ticketTypes } from "@ot/db";
 import { buildAnswersSchema, computeOrder, currentEdition, newId } from "@ot/core";
+import { consumeEventInvite } from "@ot/core/services";
+import { eventAccess } from "@/lib/event-access";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { createOrderPaymentIntent } from "@/lib/stripe";
@@ -58,6 +60,14 @@ export async function POST(req: Request) {
 
   const [event] = await db.select().from(events).where(eq(events.id, input.eventId)).limit(1);
   if (!event || event.status !== "published") return NextResponse.json({ error: "This event isn't open for registration." }, { status: 404 });
+  // private events: an organization member, or a valid invite cookie (set by /i/{token}); email-bound invites must match
+  const access = event.visibility === "private" ? await eventAccess(event) : { isMember: false, invite: null, inviteProblem: null };
+  const invite = access.isMember ? null : access.invite;
+  if (event.visibility === "private" && !access.isMember && !invite) {
+    const why = access.inviteProblem === "exhausted" ? "Your invitation has already been used the maximum number of times." : access.inviteProblem === "expired" ? "Your invitation has expired." : "This event is invite-only. Open the invitation link you received to register.";
+    return NextResponse.json({ error: `${why} Ask the host for a new invitation.` }, { status: 403 });
+  }
+  if (invite?.email && invite.email !== input.email) return NextResponse.json({ error: `This invitation was sent to ${invite.email}. Register with that email address.` }, { status: 403 });
   const [tt] = await db.select().from(ticketTypes).where(and(eq(ticketTypes.id, input.ticketTypeId), eq(ticketTypes.eventId, event.id))).limit(1);
   if (!tt) return NextResponse.json({ error: "That ticket isn't available." }, { status: 404 });
   const now = new Date();
@@ -105,6 +115,7 @@ export async function POST(req: Request) {
       ))
       .limit(1);
     if (dup) return { duplicate: dup.email };
+    if (invite && !(await consumeEventInvite(tx, invite.id, now))) return { inviteExhausted: true as const };
 
     // atomic inventory reservation
     const reserve = await tx.update(ticketTypes)
@@ -141,6 +152,7 @@ export async function POST(req: Request) {
     const who = result.duplicate === input.email ? "This email is" : `${result.duplicate} is`;
     return NextResponse.json({ error: `${who} already registered for this event.` }, { status: 409 });
   }
+  if ("inviteExhausted" in result) return NextResponse.json({ error: "This invitation has already been used the maximum number of times." }, { status: 409 });
   if ("soldOut" in result) return NextResponse.json({ error: quantity > 1 ? "Not enough tickets left for your whole party." : "That ticket just sold out." }, { status: 409 });
 
   if (isFree) {

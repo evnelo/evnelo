@@ -1,32 +1,37 @@
-/* Hero scene: a container-query box, so % positions and cqw sizes scale as one piece on every viewport. */
-.hero-scene {
+/* Hero: one relative box; the copy sits top-left in normal flow and the scene is an absolute layer
+   over the whole hero, so the flow line can start under the copy and cross the full width.
+   Positions are % of the hero, sizes are cqw of it, so the composition scales as one piece. */
+.hero-box {
   container-type: inline-size;
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 11;
 }
+.hero-scene { position: absolute; inset: 0; pointer-events: none; }
 .hero-scene > * { position: absolute; }
 .hero-card {
   background: var(--evnelo-white);
-  border-radius: 1.8cqw;
-  box-shadow: 0 1.2cqw 3cqw rgb(20 21 26 / 0.10), 0 0.2cqw 0.6cqw rgb(20 21 26 / 0.06);
+  border-radius: 1.1cqw;
+  box-shadow: 0 1cqw 2.6cqw rgb(20 21 26 / 0.10), 0 0.15cqw 0.4cqw rgb(20 21 26 / 0.06);
   overflow: hidden;
-  will-change: transform;
+  pointer-events: auto;
 }
-.hero-label { font-weight: 700; font-size: 1.9cqw; letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap; }
-.hero-sub { font-size: 1.35cqw; color: var(--muted-foreground); margin-top: 0.25cqw; white-space: nowrap; line-height: 1.25; }
+.hero-label { font-weight: 700; font-size: 1.15cqw; letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap; }
+.hero-sub { font-size: 0.85cqw; color: var(--muted-foreground); margin-top: 0.15cqw; white-space: pre-line; line-height: 1.3; }
 .hero-note {
   font-family: "Caveat", "Segoe Script", "Bradley Hand", cursive;
   font-weight: 600;
-  font-size: 2.9cqw;
+  font-size: 1.9cqw;
   line-height: 1.05;
   color: var(--evnelo-ink);
 }
-.hero-sparkle { width: 3cqw; height: 3cqw; }
+.hero-sparkle { width: 1.9cqw; height: 1.9cqw; }
 .hero-sparkle line { stroke-width: 2.6; stroke-linecap: round; }
 .hero-ticket {
-  -webkit-mask: radial-gradient(circle at 0 50%, transparent 1.4cqw, #000 1.5cqw), radial-gradient(circle at 100% 50%, transparent 1.4cqw, #000 1.5cqw);
-  mask: radial-gradient(circle at 0 50%, transparent 1.4cqw, #000 1.5cqw), radial-gradient(circle at 100% 50%, transparent 1.4cqw, #000 1.5cqw);
+  -webkit-mask: radial-gradient(circle at 0 50%, transparent 0.9cqw, #000 1cqw), radial-gradient(circle at 100% 50%, transparent 0.9cqw, #000 1cqw);
+  mask: radial-gradient(circle at 0 50%, transparent 0.9cqw, #000 1cqw), radial-gradient(circle at 100% 50%, transparent 0.9cqw, #000 1cqw);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
+}
+/* below lg the copy stacks above the scene; the scene then needs its own height */
+@media (max-width: 1023px) {
+  .hero-scene { position: relative; inset: auto; aspect-ratio: 16 / 10; margin-top: 1rem; }
 }

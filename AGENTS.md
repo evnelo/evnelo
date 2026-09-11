@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Guidance for AI agents and new contributors working in this repo. Product spec lives in `docs/PRD.md`; setup and status in `README.md`. Keep this file short and operational.
+Guidance for AI agents and new contributors working in this repo. Product spec lives in `docs/PRD.md`; setup in `README.md`; shipped features and the post-launch list in `docs/ROADMAP.md`. Keep this file short and operational.
 
 ## What this is
 
@@ -98,10 +98,10 @@ If turbo fails with `Malformed Mach-o file`, a truncated hoisted copy exists at 
 
 ## Docs to keep current
 
-When you ship or change behaviour, update in the same commit: the README status list, `docs/PRD.md` where a product decision changed, and this file's conventions/gaps sections.
+When you ship or change behaviour, update in the same commit: the README (features, configuration, operations) and `docs/ROADMAP.md`, `docs/PRD.md` where a product decision changed, and this file's conventions/gaps sections.
 
 ## Known gaps (as of 2026-09-10)
 
-The REST API currently covers public event search and authenticated event list/get/create; the remaining resources expected by the MCP server, SDK generation, and outbound webhooks are not implemented yet. Other gaps: check-in scanner, uploads for org logos/host avatars/sponsor logos and S3 storage, waitlist, discount codes UI, Stripe Connect onboarding for Cloud, private-event invitations, and an org switcher beyond the cookie default.  Test data: `pnpm db:seed` creates the demo org but no user; sign in with any email and create your own org. See the README status list before adding anything, and update it when you ship a piece.
+Every roadmap item through v1 has shipped (see `docs/ROADMAP.md`); remaining work is the post-launch list there, starting with Stripe Connect onboarding for Cloud. Test data: `pnpm db:seed` creates the demo org but no user; sign in with any email and create your own org.
 
 Ticket QR codes are rendered locally at `/t/{token}/qr` (SVG). Calendar files come from `/api/calendar/{slug}.ics` for public and unlisted events only. Wallet passes: `/t/{token}/wallet/apple` and `/t/{token}/wallet/google`.

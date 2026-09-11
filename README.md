@@ -1,156 +1,190 @@
-# OpenTicket (working name)
+# OpenTicket
 
-Open-source event ticketing. An alternative to Luma, Partiful and Eventbrite that you can self-host with your own Stripe, Vonage and Resend keys, or use on the cloud edition at 0.99% on paid tickets and nothing on free ones.
+Open-source event ticketing you can run yourself. Publish an event, sell or give away tickets, collect registrations with your own questions, email and text attendees, scan them in at the door. Free events are free; the cloud edition charges 0.99% on paid tickets, self-hosting charges nothing beyond your own Stripe fees.
 
-Full product spec: `docs/PRD.md`.
+Built with TypeScript end to end: Next.js 15 (App Router, React 19), Tailwind v4, MySQL 8 via Drizzle, Stripe, Resend for email, Vonage for SMS, S3-compatible storage for images. One database, one container, three optional API keys.
 
-## Stack
+- Product spec: `docs/PRD.md`
+- Design system: `docs/DESIGN.md`
+- Delivery history and post-launch list: `docs/ROADMAP.md`
+- Conventions for contributors and coding agents: `AGENTS.md`
 
-TypeScript everywhere. Next.js 15 (App Router, React 19), shadcn/ui on Tailwind v4 with a custom theme, MySQL 8 via Drizzle, Stripe (Payment Element + Connect), Vonage SMS (Messages API with an application key, or the legacy API key), Resend email. pnpm + Turborepo monorepo.
+## Features
 
-```
-apps/web          Next.js app: public pages, dashboard, REST API, webhooks
-packages/db       Drizzle schema + migrations (MySQL)
-packages/core     Business logic: fees, SMS gate, visibility, custom-field conditions + zod builder
-packages/mcp      MCP server (stdio) over the REST API
-```
+**For attendees**
+- Event pages at `/{organization}/{event}` with cover, schedule, venue and map link, hosts, sponsors, and a share card generated for every event.
+- Registration in a dialog: ticket tiers, custom questions (conditional, per ticket type, per guest), guests (+1s) with their own tickets, discount codes, Stripe Payment Element for cards, Apple Pay, Google Pay, Pix and other local methods.
+- Tickets with a QR code at `/t/{token}`, a calendar file, Apple Wallet and Google Wallet passes, and the join link for online events once confirmed.
+- Waitlist when an event sells out, with timed offers when a seat frees up. Private events by invitation link.
+- Discovery at `/discover`: search, city, tag, date, price and format filters, a calendar view, near-me, and a sitemap for public events only.
+- Transactional email (React Email) and SMS: confirmation, approval, refund, reminders at 24h and 1h, event changes and cancellations, with STOP handling and an unsubscribe link.
 
-## Run it
+**For organizers**
+- Dashboard with events, registrations, revenue and check-in counts; an editor for schedule, venue with address autocomplete, visibility, approval, guests, capacity, reminders, hosts, sponsors, tags and links.
+- Ticket types with quantities, sales windows and tax; discount codes; a registration form builder with conditional questions and file uploads.
+- Attendees: search, approve or reject, cancel, export CSV, export or erase one person's data. Orders with full and partial Stripe refunds.
+- Invitations for private events, waitlist promotion, outbound webhooks, scoped API keys, organization takeout and deletion.
+- A door scanner that runs in the phone browser: camera QR scanning, search by name, undo, live counters, and offline operation with queued sync. A `checkin` role that sees nothing else.
+- Roles: owner, admin, member, check-in staff. Sign-in by magic link, optionally Google.
+
+**For developers**
+- REST API under `/api/v1` covering every resource, with idempotent writes, pagination, rate limits, an OpenAPI 3.1 document and interactive docs at `/api/v1/docs`.
+- `@ot/sdk`, a TypeScript client generated from the OpenAPI document, and an MCP server so agents can run events through the same API.
+- Signed outbound webhooks for registrations, payments, refunds, check-ins and event changes.
+
+## Getting started
+
+Prerequisites: Node 22, pnpm 9, Docker (for MySQL).
 
 ```bash
-cp .env.example .env         # fill in keys; Stripe/Vonage/Resend are optional for free events without SMS/email
-docker compose up db -d      # MySQL 8 on :3306
+git clone <this repo> openticket && cd openticket
+cp .env.example .env          # defaults work for local development
+docker compose up db -d       # MySQL 8 on localhost:3306
 pnpm install
-pnpm db:migrate              # migrations are committed; pnpm db:generate after schema changes
-pnpm db:seed                 # optional demo org + events
-pnpm dev                     # http://localhost:3000 — sign in at /login; in development the magic link is also printed to the console
+pnpm db:migrate               # apply the committed migrations
+pnpm db:seed                  # optional: a demo organization with a few events
+pnpm dev                      # http://localhost:3000
 ```
 
-Or everything in Docker: `docker compose up --build`.
+Sign in at `/login` with any email address. Without `RESEND_API_KEY` the magic link is printed in the terminal instead of emailed. The first sign-in creates your organization; the seeded demo organization can be joined by inviting yourself from its Settings once you are a member, or simply create your own.
 
-Upgrades that include discovery-index migrations can rebuild MySQL indexes. On a large existing installation, check free disk space and run `pnpm db:migrate` in a maintenance window before deploying the new web process. `APP_URL` is required in production: sign-in links and payment return URLs are built from it, never from the request host.
+Useful local URLs:
 
-Stripe webhooks locally: `stripe listen --forward-to localhost:3000/api/webhooks/stripe`.
+| URL | What |
+|---|---|
+| `/discover` | Public listing |
+| `/dashboard` | Organizer dashboard |
+| `/dashboard/checkin` | Door scanner |
+| `/api/v1/docs` | API reference |
+| `/dev/emails/registration_confirmation` | Email template previews (`?text=1` for the plain-text part) |
+| `/api/health` | Health check |
 
-## Tests
+Stripe locally: put test keys in `.env` and run `stripe listen --forward-to localhost:3000/api/webhooks/stripe`, then copy the printed signing secret into `STRIPE_WEBHOOK_SECRET`.
+
+### Repository layout
+
+```
+apps/web           Next.js app: public pages, dashboard, REST API, webhooks, jobs
+packages/core      Business rules (pure) and the server-only service layer used by the app, the API and MCP
+packages/db        Drizzle schema, migrations, seed
+packages/sdk       Generated TypeScript client (@ot/sdk)
+packages/mcp       MCP server over the REST API
+docs/              PRD, design system, roadmap
+```
+
+Common commands from the repo root:
 
 ```bash
-pnpm test        # vitest — core business rules and API primitives
+pnpm dev            # all packages in watch mode
+pnpm build          # production build
+pnpm test           # vitest in every package
 pnpm typecheck
-pnpm build
+pnpm db:generate    # after editing packages/db/src/schema.ts
+pnpm db:migrate
+pnpm db:seed
+pnpm --filter @ot/sdk generate   # regenerate the SDK after changing lib/openapi.ts
 ```
 
-## REST API
+## Configuration
 
-The first `/api/v1` slice is available for event discovery and organizer automation:
+Everything is read from the environment (the root `.env` in development). Empty values count as unset. `.env.example` documents each variable; the essentials:
 
-- `GET /api/v1/public/events` — public event search by text, city, or tag; no authentication required
-- `GET /api/v1/events` — list the API key's organization events, optionally filtered by status
-- `POST /api/v1/events` — create a draft event; accepts an optional `Idempotency-Key` retained for 24 hours
-- `GET /api/v1/events/{id}` — get an organization event with ticket types, tags, hosts, sponsors, and registration fields
-- `GET /api/v1/openapi.json` — OpenAPI 3.1 document for the implemented endpoints
-- `GET /api/v1/docs` — interactive Scalar API reference backed by the published OpenAPI document
+| Variable | Required | Notes |
+|---|---|---|
+| `APP_URL` | production | Public origin. Sign-in links, payment return URLs and share cards are built from it, never from the request host. |
+| `AUTH_SECRET` | yes | 32+ random bytes. Signs sessions, payment-resume tokens and the jobs endpoint. |
+| `DATABASE_URL` | yes | MySQL 8 connection string. |
+| `EDITION` | no | `self_hosted` (default) or `cloud`. |
+| `RESEND_API_KEY`, `EMAIL_FROM`, `RESEND_WEBHOOK_SECRET` | for email | Sending domain must be verified at Resend. Point Resend webhooks at `/api/webhooks/resend`. |
+| `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` | for paid tickets | Register `/api/webhooks/stripe` in the Stripe dashboard. |
+| `VONAGE_APPLICATION_ID` + `VONAGE_PRIVATE_KEY` (or `VONAGE_API_KEY` + `VONAGE_API_SECRET`), `VONAGE_FROM`, `VONAGE_SIGNATURE_SECRET` | for SMS | Status URL `/api/webhooks/vonage/status`, inbound URL `/api/webhooks/vonage/inbound`. |
+| `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION`, `S3_BUCKET` | for uploads | `S3_ENDPOINT` for R2 or MinIO, `CLOUDFRONT_DOMAIN` to serve through a CDN, `S3_KEY_PREFIX` (default `openticket`), `S3_UPLOAD_ACL=public-read` for ACL-style buckets. Without them the editor accepts image URLs. |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | no | Adds Google sign-in. |
+| `APPLE_PASS_TYPE_ID`, `APPLE_TEAM_ID`, `APPLE_PASS_CERT`, `APPLE_PASS_KEY`, `APPLE_PASS_KEY_PASSPHRASE`, `APPLE_WWDR_CERT` | no | Apple Wallet passes; the button appears only when set. |
+| `GOOGLE_WALLET_ISSUER_ID`, `GOOGLE_WALLET_SERVICE_ACCOUNT` | no | Google Wallet passes. |
+| `GEOCODER`, `PHOTON_URL`, `MAPBOX_TOKEN` | no | Address autocomplete: `photon` (default, public OSM instance), `mapbox`, or `none`. |
+| `API_TRUSTED_PROXY_HEADER` | production | The header your proxy writes (`cf-connecting-ip`, `x-real-ip` or `x-forwarded-for`). Enables per-client rate limits on registration, sign-in and the public API. |
+| `JOBS_INLINE` | no | `true` (default) runs the job loop inside the web process; `false` for serverless, then call `POST /api/jobs/run` with `Authorization: Bearer $AUTH_SECRET` every minute. |
+| `MIGRATE_ON_START` | no | Apply migrations at boot (the Docker image sets it). |
+| `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ENVIRONMENT` | no | Error reporting. The public DSN is inlined at build time. |
+| `ABUSE_EMAIL` | no | Where "Report this event" submissions are emailed. They are always stored. |
 
-Create keys under Dashboard → Settings → API keys (owners and admins). Organization endpoints use `Authorization: Bearer ot_live_...` with `read` or `write` scopes and enforce a per-key limit of 120 requests per minute; failed authentication attempts are throttled separately. Rate-limit headers (`X-RateLimit-*`, reset as unix seconds) are returned on every request that consumes quota; list endpoints paginate with `limit`/`offset` plus `pagination.nextOffset`; every write accepts an `Idempotency-Key` (replays return the original response with `Idempotency-Replayed: true`, a different body under the same key is a 409). JSON request bodies are capped at 256 KiB. Public discovery (`/api/v1/public/events`) takes the same filters as `/discover` behind a 3,000-request-per-minute global ceiling; set `API_TRUSTED_PROXY_HEADER` to add a per-client limit. Resources: organization, events (publish, cancel, stats), ticket types, registration fields, orders (refund), attendees (approve, reject, cancel, CSV), check-ins, discount codes, waitlist, invites, webhooks. The `@ot/sdk` package (`packages/sdk`) is generated from the OpenAPI document (`pnpm --filter @ot/sdk generate`) and exports `createOpenTicketClient` and `verifyWebhookSignature`; the MCP server in `packages/mcp` uses it.
+Storage needs a CORS rule on the bucket allowing `POST` from `APP_URL`, and objects under `openticket/uploads/` must be publicly readable (bucket policy, CloudFront origin access, or the ACL setting). Registration file uploads live under `openticket/registrations/` and stay private; they are served through an authenticated route.
 
-## Image storage
+## How it works
 
-Uploads never pass through the web process: the browser asks `/api/uploads` for a presigned S3 POST and sends the file to the bucket directly, then confirms so the server can verify size and type. Set `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION` and `S3_BUCKET` (the SDK-standard `AWS_*` names are accepted too); add `S3_ENDPOINT` for R2, MinIO or another S3-compatible store, and `CLOUDFRONT_DOMAIN` to serve images through CloudFront. Every object is written under `S3_KEY_PREFIX` (default `openticket`), so the bucket can be shared with other applications. The bucket needs a CORS rule allowing `POST` from your `APP_URL`, and objects under `openticket/` must be publicly readable: a bucket policy, CloudFront origin access in front of a private bucket, or, for buckets that still use object ACLs, `S3_UPLOAD_ACL=public-read` so each upload is written with that ACL. Without these variables the editor accepts image URLs instead.
+- **Orders and inventory.** Registration reserves seats with a conditional update, so flash sales cannot oversell. Paid orders hold seats for 10 minutes while the Payment Element completes; the Stripe webhook settles them, delayed payment methods sit in `processing` and are reconciled hourly, and a lapsed hold cancels the PaymentIntent before returning seats. A payment that lands after seats were released is refunded automatically. Event capacity is enforced at checkout under a row lock and includes active waitlist offers.
+- **Guests.** Each +1 is a full attendee with their own ticket and QR, charged at the host's ticket price, asked the guest-scoped questions.
+- **Access.** Public and unlisted events are open; private events need an invitation link, which is stored in an event-scoped cookie and checked both on the page and at checkout. Organization members always have access.
+- **Notifications.** Every email and SMS is a row in `notifications`; the job loop sends them with retries and backoff, records provider status from the Resend and Vonage webhooks, and honours STOP. SMS on free events is gated per the PRD.
+- **Jobs.** The loop also expires holds, releases lapsed waitlist offers, schedules reminders, reconciles processing orders, delivers webhooks and purges housekeeping tables. Multiple replicas are safe: rows are claimed with conditional updates.
+- **Check-in.** A check-in is a conditional insert, so two staff scanning the same ticket at once produce one check-in. The scanner keeps a manifest of hashed ticket tokens so it can validate offline and replays queued check-ins when back online.
+- **Privacy.** Erasure anonymises in place (placeholders replace name, email, phone and answers; the ticket is revoked) so counts and financial records stay consistent. Organization deletion cancels events, revokes every ticket, erases everyone and disables keys and webhooks.
 
-## Notifications
+## API, SDK and MCP
 
-Every email and SMS is a row in `notifications`; a worker drains the queue. Self-hosted, the worker runs inside the web process every 10 seconds (`JOBS_INLINE=true`, the default). On serverless hosts set `JOBS_INLINE=false` and call `POST /api/jobs/run` with `Authorization: Bearer $AUTH_SECRET` from a cron every minute.
+Create keys under Dashboard → Settings → API keys (owners and admins). Keys are `ot_live_…`, sent as `Authorization: Bearer`, scoped `read` or `write`, and limited to 120 requests per minute with a separate throttle on failed authentication.
 
-Templates are React Email components in `apps/web/emails`; preview them in development at `/dev/emails/registration_confirmation`, `/dev/emails/reminder`, `/dev/emails/approval_pending`, `/dev/emails/refund_issued` (add `?text=1` for the plain-text part).
+- Resources under `/api/v1`: organization, events (publish, cancel, stats), ticket types, registration fields, orders (refund), attendees (approve, reject, cancel, CSV), check-ins, discount codes, waitlist, invites, webhooks. `GET /api/v1/public/events` is unauthenticated and takes the same filters as `/discover`.
+- Every write accepts an `Idempotency-Key`; replays return the original response with `Idempotency-Replayed: true`, a different body under the same key is a 409. Lists paginate with `limit`/`offset` and `pagination.nextOffset`. Bodies are capped at 256 KiB. Rate-limit headers are returned on every request that consumes quota.
+- `GET /api/v1/openapi.json` is the contract; a test fails the build if a route is missing from it. `GET /api/v1/docs` is the interactive reference.
+- `@ot/sdk` (`packages/sdk`): `createOpenTicketClient({ baseUrl, apiKey })` on openapi-fetch, plus `verifyWebhookSignature`.
+- MCP (`packages/mcp`): list, get, create, update and publish events, ticket types, registrations, exports, stats and public search, through the SDK.
 
-Delivery status comes back through webhooks: point Resend at `/api/webhooks/resend` (set `RESEND_WEBHOOK_SECRET`) and, in the Vonage application, set the status URL to `/api/webhooks/vonage/status` and the inbound URL to `/api/webhooks/vonage/inbound` (STOP/START handling; `VONAGE_SIGNATURE_SECRET` verifies both).
+```json
+{ "mcpServers": { "openticket": { "command": "pnpm", "args": ["--filter", "@ot/mcp", "start"], "env": { "OPENTICKET_URL": "https://your-instance", "OPENTICKET_API_KEY": "ot_live_..." } } } }
+```
+
+### Outbound webhooks
+
+Add endpoints under Settings → Webhooks and pick events: `registration.created`, `order.paid`, `order.refunded`, `attendee.checked_in`, `event.published`, `event.updated`, `event.cancelled`. Each delivery is a JSON envelope (`id`, `type`, `createdAt`, `organizationId`, `data`) signed with HMAC-SHA256 over `{timestamp}.{body}`, sent as `openticket-signature: v1=…` with `openticket-timestamp` and `openticket-delivery-id`. Verify with the SDK helper and reject timestamps older than five minutes. Deliveries retry with exponential backoff up to eight attempts; the Settings page shows recent deliveries and can send a test ping or rotate the secret.
+
+## Testing
+
+```bash
+pnpm test                       # all packages
+pnpm --filter @ot/core test     # business rules, services, and integration tests
+pnpm --filter @ot/web test      # app helpers, routes, OpenAPI contract
+pnpm typecheck
+```
+
+Core integration tests (`packages/core/src/__tests__/*.integration.test.ts`) run against the local MySQL when it is reachable and skip otherwise; they prove the concurrency properties (rate limits, check-in, capacity) that mocks cannot. CI (`.github/workflows/ci.yml`) runs migrations, typecheck, tests and the production build against MySQL 8.4 on every push and pull request, and checks that the Docker image builds.
+
+To exercise flows by hand: `pnpm db:seed` gives you events with paid and free tickets; Stripe test cards work in the Payment Element; the door scanner can be tested by pasting a ticket link into its manual field.
 
 ## Deploying
 
-`docker build -t openticket .` produces a self-contained image: Next's standalone server, the traced production dependencies, static assets and the migrations folder, running as the unprivileged `node` user. At boot it applies pending migrations (`MIGRATE_ON_START=true`, serialised across replicas with a MySQL lock) and starts the in-process job loop (`JOBS_INLINE=true`); override either in your orchestrator, for example `JOBS_INLINE=false` plus a cron hitting `/api/jobs/run` when you run several replicas. The image has a `HEALTHCHECK` on `/api/health`. Browser-side Sentry needs `--build-arg NEXT_PUBLIC_SENTRY_DSN=…` because Next inlines public variables at build time. `docker compose up` runs the image against a MySQL container with the root `.env`. CI (`.github/workflows/ci.yml`) runs migrations, typecheck, tests and the production build against MySQL 8.4, and checks the Docker image builds.
+The Dockerfile produces a self-contained image (Next standalone server, traced production dependencies, static assets, migrations), about 300 MB, running as the unprivileged `node` user:
+
+```bash
+docker build -t openticket .                      # add --build-arg NEXT_PUBLIC_SENTRY_DSN=… for browser error reporting
+docker run -d -p 3000:3000 --env-file .env -e APP_URL=https://tickets.example.com openticket
+```
+
+At boot the container applies pending migrations (`MIGRATE_ON_START=true`, serialised across replicas with a MySQL lock) and starts the job loop. It has a `HEALTHCHECK` on `/api/health`. `docker compose up --build` runs it against a MySQL container with the root `.env` for a one-box setup.
+
+Production checklist:
+
+1. Set `APP_URL`, a fresh `AUTH_SECRET`, `DATABASE_URL`, and `API_TRUSTED_PROXY_HEADER` for your proxy.
+2. Verify a sending domain at Resend and set `EMAIL_FROM` on it; register the Resend, Stripe and Vonage webhook URLs on the public domain.
+3. Configure the S3 bucket (CORS from `APP_URL`, public read on `openticket/uploads/`, CloudFront optional).
+4. Serve over HTTPS. HSTS, a Content Security Policy and the other security headers are set automatically when `APP_URL` is `https://`.
+5. Several replicas: keep `MIGRATE_ON_START=true` (the lock handles it) and either leave `JOBS_INLINE=true` on one replica only or set it to `false` everywhere and hit `POST /api/jobs/run` from a cron.
+6. Back up MySQL. Uploads live in your bucket; the database holds everything else.
+
+Serverless hosts (Vercel and similar) work with `JOBS_INLINE=false` plus a scheduled call to `/api/jobs/run`; the standalone image is for VMs, Fly, Railway, ECS, Kubernetes and the like.
 
 ## Operations
 
-- **Health:** `GET /api/health` returns `200 {"status":"ok"}` when the database answers within two seconds and the in-process job loop ticked in the last two minutes (or `JOBS_INLINE=false`), else `503`. Point your load balancer, Docker `HEALTHCHECK` or uptime monitor at it. It is unauthenticated and says nothing about the deployment.
-- **Abuse limits:** registration (`POST /api/orders`) is capped per email, per event and, when `API_TRUSTED_PROXY_HEADER` is set, per client; sign-in links are capped per address and per client. All limits share the `api_rate_limits` table, so they hold across replicas. Set `API_TRUSTED_PROXY_HEADER` to the header your proxy writes or clients cannot be told apart and only the shared ceilings apply.
-- **Security headers:** every response carries a Content Security Policy (Stripe, the S3 upload origin and https images allowed), `frame-ancestors 'none'`, nosniff, a referrer policy, a permissions policy (camera and geolocation for the app itself) and, when `APP_URL` is https, HSTS. The API reference at `/api/v1/docs` has its own policy for the Scalar bundle. The policy is built in `apps/web/lib/security-headers.js`.
-- **Error reporting:** set `SENTRY_DSN` (server) and `NEXT_PUBLIC_SENTRY_DSN` (browser, build time) to send unexpected failures to Sentry. Without them errors are still logged with a stable `[scope]` prefix. Notification retries are logged as warnings; only a notification that exhausts its retries is reported.
+- **Health:** `GET /api/health` returns `200` when the database answers within two seconds and the job loop ticked in the last two minutes (or jobs run externally), else `503`. Unauthenticated and terse.
+- **Abuse limits:** registration, sign-in links, waitlist joins, discount previews and abuse reports are limited per identity and per event through one MySQL-backed limiter that holds across replicas.
+- **Security headers:** every response carries a CSP allowing Stripe and your upload origin, `frame-ancestors 'none'`, nosniff, referrer and permissions policies, and HSTS on https. Built in `apps/web/lib/security-headers.js`.
+- **Errors:** unexpected failures go through one helper that logs with a stable `[scope]` prefix and forwards to Sentry when configured. Notification retries are warnings; only a notification that exhausts its retries is an error.
+- **Moderation:** "Report this event" on public pages stores a row and emails `ABUSE_EMAIL`.
+- **Known follow-ups:** a sweep for registration files uploaded but never submitted, Stripe Connect onboarding for the cloud edition, and the rest of the post-launch list in `docs/ROADMAP.md`.
 
-## Check-in
+## Contributing
 
-Door staff open `/dashboard/checkin` (the only dashboard area the `checkin` role can see) and pick the event. The page scans ticket QR codes with the phone camera, or checks people in by name from the confirmed list; every check-in can be undone. Counters update on each scan and every 30 seconds. The device keeps a manifest of confirmed tickets (SHA-256 of each token, never the token itself), so a phone that loses signal keeps validating scans and replays the queued check-ins when it is back online. Camera access needs https (or localhost); `Permissions-Policy` already allows it for the app's own origin.
+Read `AGENTS.md` first; it holds the conventions that keep the codebase coherent (service layer in `packages/core`, one rate limiter, how access to private events is decided, what must be updated when behaviour changes). Read `docs/DESIGN.md` before touching UI. Keep `README`, `docs/PRD.md` and `AGENTS.md` accurate in the same commit as a behaviour change.
 
-## Wallet passes
-
-Optional. Set the `APPLE_*` variables (Pass Type ID certificate, key, Apple WWDR cert, team id) to serve `.pkpass` files at `/t/{token}/wallet/apple`, and `GOOGLE_WALLET_ISSUER_ID` plus a service-account JSON to serve "Save to Google Wallet" links at `/t/{token}/wallet/google`. The buttons only appear on the ticket page when the keys are present.
-
-## Editions
-
-`EDITION=self_hosted` (default) or `EDITION=cloud`. Same code, one flag. Cloud adds the 0.99% platform fee, Stripe Connect onboarding, the $5 SMS unlock for free events, and the global discovery dashboard. See `packages/core/src/fees.ts` and `sms.ts` for the exact rules.
-
-## Delivery sequence
-
-This is the canonical implementation order and cross-session progress tracker. Update it whenever an item starts, ships, or becomes blocked.
-
-**Status legend:** `[ ]` pending · `[>]` in progress · `[x]` shipped · `[!]` blocked
-
-**Resume here:** the delivery sequence is complete (2026-09-10). Next: staging deployment and the post-launch list at the end of this section.
-
-1. [x] **Payment Element and paid-checkout completion**
-   - Existing foundation: atomic 10-minute inventory holds, PaymentIntent creation, Stripe webhooks, fees/tax calculation, and dashboard refunds.
-   - Complete when buyers can confirm payment in the registration flow, recover from failures, see a clear success state/receipt, and the flow is verified end to end in Stripe test mode.
-2. [x] **Check-in scanner, manual check-in, and undo**
-   - Shipped 2026-09-10: `/dashboard/checkin/{event}` scans ticket QR codes with the phone camera (jsQR), checks in by name from the confirmed list, undoes, shows live counters, and keeps working without signal (hashed ticket manifest on the device, queued check-ins replay when back online). Check-in is race-safe (conditional insert). The `checkin` role sees only this area.
-3. [x] **Private-event invitations and access enforcement**
-   - Shipped 2026-09-10: the Invites tab issues email-bound or shareable links (`/i/{token}`, use budget, expiry, revoke); opening a link stores it in an event-scoped cookie; the event page and `POST /api/orders` both go through `eventAccess` (organization member, or valid invite; email-bound invites must match the registrant; uses are spent atomically inside the order transaction). Private pages stay `noindex` and 404 to everyone else. Online/hybrid tickets show the join link to confirmed attendees.
-4. [x] **Waitlist enrollment and promotion**
-   - Shipped 2026-09-10: sold-out (ticket quantities or event capacity, which checkout now enforces under a row lock) shows "Join the waitlist"; the Waitlist tab offers a spot per person, which holds one seat (counted against capacity) for 24 hours and emails a claim link (`/w/{token}`); claiming converts the held seat inside the order transaction, email-bound; the job loop releases lapsed offers so they can be offered again. Joining sends a confirmation email.
-5. [x] **Discount-code checkout and management**
-   - Shipped 2026-09-10: percent or fixed codes with use limits and expiry are managed on the Tickets tab; the checkout form validates a code through `POST /api/discounts/validate` and shows the new total (a 100% code makes the order free, no payment step); `POST /api/orders` re-validates, spends the use with a conditional update inside the order transaction, and stores `discountMinor` + `discountCodeId` on the order; a use is returned when a pending order expires or fails.
-6. [x] **REST API/MCP parity, API-key UI, and outbound webhooks**
-   - Shipped 2026-09-10: 35 documented `/api/v1` paths covering the organization, events (incl. publish/cancel/stats), ticket types, registration fields, orders (incl. refund), attendees (incl. approve/reject/cancel and CSV), check-ins, discount codes, waitlist, invites and webhooks; `Idempotency-Key` on every write; the OpenAPI document is contract-tested against the route tree; `@ot/sdk` is generated from it (openapi-fetch client plus webhook signature verification); the MCP server calls the API through the SDK; outbound webhooks are signed and retried. API-created invites and waitlist offers return the link but do not send email; refunds return 202 and settle through the Stripe webhook.
-7. [x] **Discovery search, filters, calendar, and sitemap**
-   - Shipped 2026-09-10: `/discover` with query, city, tag, date presets/range, free/paid, online/in-person and near-me (browser geolocation → `lat`/`lng`/`radius`) filters, list and month-calendar views (`view=calendar`, days in each event's own time zone), Featured and Upcoming sections, load-more pagination, `ItemList` JSON-LD; `sitemap.xml` (public published events and organization pages only) and `robots.txt` (dashboard, API, ticket, invite and waitlist links disallowed). The public REST search takes the same filters.
-8. [x] **Complete uploads with S3/R2 and remaining image fields**
-   - Shipped 2026-09-10: the same direct-to-S3 field now serves organization logos, host avatars and sponsor logos (compact variants) with a 16:7 crop for covers; registration `file` fields upload straight to a private prefix (`openticket/registrations/{eventId}/`, no ACL, 10 MB, PDF/JPEG/PNG/WebP), store the object key as the answer, are HEAD-verified at submission, and are downloaded from the Attendees tab through an authenticated route that redirects to a two-minute presigned GET. Files uploaded but never submitted are not swept yet (add a lifecycle rule or a sweep).
-9. [x] **Health endpoint, registration abuse controls, and privacy workflows**
-   - Shipped 2026-09-10: `/api/health`; registration, sign-in, waitlist, discount-preview and report limits; per-attendee JSON export and irreversible erasure (placeholders replace name/email/phone/answers, ticket revoked, queued mail dropped, order contact anonymised when nobody live shares it) from the Attendees tab; organization takeout (`/dashboard/settings/export`) and owner-only deletion (cancels events, revokes tickets, erases everyone, disables keys and webhooks); "Report this event" on every public event page stores a report and emails `ABUSE_EMAIL` when set.
-10. [x] **README/PRD reconciliation and release-readiness matrix**
-    - Done 2026-09-10 with the merges above. Remaining post-launch work, in suggested order: Stripe Connect onboarding for Cloud; SMS templates for waitlist/invite flows; per-ticket-type discount restrictions; automatic waitlist promotion on cancellation; a moderation queue UI for abuse reports; a sweep for orphaned registration uploads; nonce-based CSP; organizer broadcast emails (`send_attendee_update` in MCP); `tz` cookie for discovery date presets; hosted SDK docs.
-
-## Status
-
-Foundation (M0) plus the first slice of M1/M2:
-
-- [x] Schema for the whole PRD data model, migrations committed, `pnpm db:seed` demo data
-- [x] Fee engine, refund proration, SMS gate, visibility rules (tested)
-- [x] Custom fields: required/optional, per-ticket-type, conditional show/hide with builder-time validation; one zod schema used in the browser and on the server; separate question sets for the registrant, the order, and each guest
-- [x] Guests (+1s): per-event toggle and limit; each guest is an attendee with their own ticket and QR, charged at the host's ticket price
-- [x] Theme tokens, shadcn primitives, event page, registration modal, ticket page, discovery grid
-- [x] Order creation with atomic inventory holds, hold release/expiry, one live registration per email, PaymentIntent with Connect application fee, Stripe webhook (paid, cancelled, refunded: full refunds revoke tickets and return seats), free-order fulfilment. Verified end to end in Stripe test mode.
-- [x] Ticket QR rendered locally, `.ics` calendar file, Apple Wallet (`.pkpass`) and Google Wallet passes (optional, key-gated)
-- [x] MCP server skeleton (tools mapped to the REST API)
-- [x] Auth: magic-link email sign-in (Auth.js, React Email), Google when configured; first sign-in creates the organization; org roles (owner, admin, member, check-in) with invites by email
-- [x] Organizer dashboard: events list with registrations, revenue and check-ins; event editor (venue, visibility, approval, guests, reminders, hosts, sponsors, tags, links); ticket types; registration form builder with conditional questions; attendees with search, approve/reject/cancel and CSV export; orders with Stripe refunds; org settings and members; public organization page `/o/{slug}` and event pages at `/{org}/{event}` (event slugs are unique per organization)
-- [x] Service layer in `packages/core/services` shared by the dashboard, the coming REST API, and the MCP server
-- [x] REST API foundation: public event search plus authenticated event list/get/create, scoped API keys managed from Settings, per-key and auth-failure rate limits, pagination, transactional idempotency for event creation, a published OpenAPI 3.1 document, and an interactive Scalar API reference
-- [x] Outbound webhooks: per-organization endpoints subscribed to `registration.created`, `order.paid`, `order.refunded`, `attendee.checked_in`, `event.published|updated|cancelled`; HMAC-SHA256 signed (`openticket-signature: v1=…` over `{timestamp}.{body}`), delivered by the job loop with exponential backoff, managed in Settings (test ping, pause, rotate secret, recent deliveries)
-- [x] REST API: every resource under `/api/v1` with `Idempotency-Key`, pagination, contract-tested OpenAPI, Scalar docs; `@ot/sdk` generated client; MCP tools on the SDK
-- [x] Uploads everywhere: org logo, host avatars, sponsor logos, cover crop; private registration file fields with authenticated downloads
-- [x] Notification worker: React Email templates (confirmation, approval pending, refund, reminder), Vonage SMS with the free/paid gate, 24h/1h reminders, retries with backoff, Resend and Vonage delivery webhooks, STOP handling, reminder unsubscribe link. Runs in-process (`JOBS_INLINE=true`) or via `POST /api/jobs/run` from a cron.
-- [x] Stripe Payment Element after order creation: signed redirect recovery, server-confirmed success, a `processing` state for delayed payment methods with hourly reconciliation against Stripe, and hold expiry that cancels the PaymentIntent before releasing seats (a payment that lands after seats were released is refunded automatically)
-- [x] Design system (2026-09-11): `docs/DESIGN.md` direction, warm tokens, CSS-only motion, refreshed primitives, editorial public pages (discover, event, registration, ticket, organizer, auth), dashboard chrome kit and door scanner, branded emails, favicon and generated Open Graph cards
-- [x] Privacy: attendee data export and erasure, organization takeout and deletion, abuse reports (`/report`, `ABUSE_EMAIL`)
-- [x] Discount codes: percent/fixed, use limits, expiry; validated and spent atomically at checkout; audit trail on the order
-- [x] Waitlist: join when sold out, organizer-driven offers that hold a seat for 24h, claim links, automatic release; event capacity enforced at checkout
-- [x] Private events: invitation links (email-bound or shareable, use budget, expiry) enforced on the page and at checkout; members always have access
-- [x] Check-in scanner: camera QR scanning, manual check-in by search, undo, live counters, offline manifest with queued sync; race-safe conditional insert; `checkin` role lands on `/dashboard/checkin`
-- [x] Image uploads go straight from the browser to S3 (or any S3-compatible bucket) with a presigned POST; CloudFront URLs when configured; event covers and logos today, organization logos, host avatars and sponsor logos still accept URLs
-
-Contributor and agent notes: `AGENTS.md`.
-
-## MCP
-
-```json
-{ "mcpServers": { "openticket": { "command": "npx", "args": ["-y", "@ot/mcp"], "env": { "OPENTICKET_URL": "https://your-instance", "OPENTICKET_API_KEY": "ot_live_..." } } } }
-```
+License: to be decided between MIT and AGPL (see the open questions in `docs/PRD.md`).

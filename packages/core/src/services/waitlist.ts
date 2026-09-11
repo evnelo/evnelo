@@ -79,6 +79,12 @@ export async function listWaitlist(db: Database, eventId: string) {
     .where(eq(waitlistEntries.eventId, eventId)).orderBy(asc(waitlistEntries.createdAt));
 }
 
+/** People still waiting or holding an offer (for tab counts). */
+export async function countOpenWaitlist(db: Database, eventId: string) {
+  const [row] = await db.select({ n: sql<number>`count(*)` }).from(waitlistEntries).where(and(eq(waitlistEntries.eventId, eventId), isNull(waitlistEntries.registeredAt)));
+  return Number(row?.n ?? 0);
+}
+
 export async function removeWaitlistEntry(db: Database, eventId: string, id: string) {
   return db.transaction(async (tx) => {
     const [entry] = await tx.select().from(waitlistEntries).where(and(eq(waitlistEntries.id, id), eq(waitlistEntries.eventId, eventId))).for("update");

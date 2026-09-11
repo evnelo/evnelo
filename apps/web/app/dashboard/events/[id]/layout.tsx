@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronLeft, ExternalLink } from "lucide-react";
-import { countAttendeesByStatus, listWaitlist } from "@ot/core/services";
+import { countAttendeesByStatus, countOpenWaitlist } from "@ot/core/services";
 import { db } from "@/lib/db";
 import { requireEvent, statusVariant } from "@/lib/dashboard";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +13,7 @@ export default async function EventLayout({ children, params }: { children: Reac
   const { id } = await params;
   const { event, org } = await requireEvent(id);
   const eventPath = publicEventPath(org.slug, event.slug);
-  const [counts, waitlist] = await Promise.all([countAttendeesByStatus(db, id), listWaitlist(db, id)]);
+  const [counts, waitlist] = await Promise.all([countAttendeesByStatus(db, id), countOpenWaitlist(db, id)]);
   const attendees = (counts.confirmed ?? 0) + (counts.pending_approval ?? 0);
 
   return (
@@ -38,7 +38,7 @@ export default async function EventLayout({ children, params }: { children: Reac
           <a href={eventPath} target="_blank" rel="noopener noreferrer">View page <ExternalLink className="size-4" /></a>
         </Button>
       </div>
-      <EventNav id={event.id} counts={{ attendees, waitlist: waitlist.length }} />
+      <EventNav id={event.id} counts={{ attendees, waitlist }} />
       <div className="mt-7">{children}</div>
     </div>
   );

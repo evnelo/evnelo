@@ -1,7 +1,7 @@
 # PRD — Open-Source Event Ticketing Platform
 
 **Working name:** _TBD_ (referred to below as "the Platform")
-**Status:** Draft v0.2 (guests and wallet passes added 2026-09-08)
+**Status:** v1.0 feature-complete for self-hosted launch (delivery sequence finished 2026-09-10; Cloud-only pieces such as Stripe Connect deferred)
 **Date:** 2026-09-08
 **Owner:** Mauricio Giordano
 
@@ -279,6 +279,8 @@ Notes:
 - Every send goes through `notifications` table → queue → provider adapter → provider webhook updates status (delivered / bounced / failed)
 - SMS gate: `event.isPaid || smsUnlocks.exists(event) || edition === self_hosted`
 - Templates: React Email for email; short, variable-only templates for SMS (160-char budget, no links shortened through third parties — use `/t/{token}`)
+- REST API (decided 2026-09-10): the API is a thin layer over the same services the dashboard uses; it never sends email on behalf of an organizer (invite and waitlist links are returned for the caller to deliver) and refunds are accepted (202) then settled by the Stripe webhook. The SDK is generated, not hand-written, so the OpenAPI document is the contract.
+- Registration files (decided 2026-09-10): private objects referenced by key, downloadable only through an authenticated route; images stay public because they are shown on public pages.
 - Privacy (decided 2026-09-10): erasure is in-place anonymisation rather than row deletion so financial records and counts stay consistent; organization deletion is owner-only, confirmed by typing the slug, immediate and irreversible (no grace period in v1). Abuse reports are stored on every edition and emailed to the operator's `ABUSE_EMAIL`; a moderation UI for Cloud is a follow-up.
 - Webhooks (decided 2026-09-10): signature is HMAC-SHA256 over `{timestamp}.{body}` with a 5-minute replay window (Stripe-style), secret shown once and rotatable; deliveries are queued inside the producing transaction and sent by the job loop, retried with exponential backoff up to 8 attempts (about a day), never following redirects. Test pings use the `test.ping` type.
 - Discovery (decided 2026-09-10): date presets resolve in the visitor's time zone only when the geolocation button has set `tz`, otherwise UTC; the calendar view caps at 200 events per month.

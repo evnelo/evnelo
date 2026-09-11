@@ -15,6 +15,7 @@ import { checkoutStripeAccount, paymentsConfigured } from "@/lib/payment-flow";
 import { signPaymentResume } from "@/lib/payment-resume";
 import { clientAddress } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
+import { CAPTCHA_FAILED_MESSAGE, verifyCaptcha } from "@/lib/captcha";
 import { verifyRegistrationFile } from "@/lib/storage";
 
 export const runtime = "nodejs";
@@ -29,6 +30,7 @@ const body = z.object({
   phone: z.string().trim().optional().or(z.literal("")),
   smsOptIn: z.boolean().optional(),
   discountCode: z.string().trim().max(40).optional().or(z.literal("")),
+  captchaToken: z.string().max(4_096).optional(),
   attendee: z.record(z.unknown()).default({}),
   order: z.record(z.unknown()).default({}),
   // +1s: each becomes an attendee with its own ticket, priced at the host's ticket type
@@ -60,6 +62,7 @@ export async function POST(req: Request) {
     consumeSharedRateLimit("register:event", input.eventId, 600, 60_000),
   ]);
   if (allowed.includes(false)) return NextResponse.json({ error: "Too many registration attempts. Wait a few minutes and try again." }, { status: 429, headers: { "Retry-After": "60" } });
+  if (!(await verifyCaptcha(input.captchaToken, "register", address))) return NextResponse.json({ error: CAPTCHA_FAILED_MESSAGE }, { status: 400 });
 
   const [event] = await db.select().from(events).where(eq(events.id, input.eventId)).limit(1);
   if (!event || event.status !== "published") return NextResponse.json({ error: "This event isn't open for registration." }, { status: 404 });

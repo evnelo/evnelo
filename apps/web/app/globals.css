@@ -412,3 +412,12 @@
     @apply rounded-md bg-ink text-paper font-mono text-[13px] leading-6;
   }
 }
+
+/* Navigation progress: a Pulse thread along the top edge while a clicked link is loading. */
+.nav-progress { position: fixed; inset-inline: 0; top: 0; z-index: 100; height: 3px; pointer-events: none; }
+.nav-progress-bar { height: 100%; background: var(--evnelo-pulse); box-shadow: 0 0 10px rgb(255 90 60 / 0.6); opacity: 0; transition: width 0.25s ease, opacity 0.3s ease; }
+.nav-progress[data-phase="loading"] .nav-progress-bar { opacity: 1; }
+.nav-progress[data-phase="done"] .nav-progress-bar { opacity: 0; transition: width 0.15s ease, opacity 0.35s ease 0.1s; }
+
+/* reCAPTCHA v3 badge: hidden as Google allows when its notice is shown next to the form (components/captcha.tsx). */
+.grecaptcha-badge { visibility: hidden; }

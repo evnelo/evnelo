@@ -11,6 +11,8 @@ import { FormMessage } from "@/components/ui/form-field";
 import { safeNextPath } from "@/lib/auth/session";
 import { clientAddressFromHeaders } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
+import { CAPTCHA_FAILED_MESSAGE, CAPTCHA_FIELD, verifyCaptcha } from "@/lib/captcha";
+import { CaptchaField } from "@/components/captcha";
 
 export const metadata = { title: "Sign in", robots: "noindex" };
 
@@ -19,6 +21,7 @@ const errorText: Record<string, string> = {
   AccessDenied: "You can't sign in with that account.",
   Configuration: "Sign-in isn't configured on this instance yet. Check RESEND_API_KEY.",
   RateLimited: "Too many sign-in links requested. Wait 15 minutes and try again.",
+  Captcha: CAPTCHA_FAILED_MESSAGE,
   EmailSignin: "We couldn't send the sign-in email. Try again in a minute.",
   InvalidEmail: "Enter a valid email address.",
   Default: "Something went wrong signing you in. Try again.",
@@ -71,6 +74,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       client ? consumeSharedRateLimit("login:client", client, 10, 15 * 60_000) : true,
     ]);
     if (allowed.includes(false)) redirect(`/login?error=RateLimited&email=${encodeURIComponent(address)}${back}`);
+    if (!(await verifyCaptcha(formData.get(CAPTCHA_FIELD), "login", client))) redirect(`/login?error=Captcha&email=${encodeURIComponent(address)}${back}`);
     try {
       // with redirect:false Auth.js reports a failed send as an error URL instead of throwing
       const result: unknown = await signIn("resend", { email: address, redirectTo: to, redirect: false });
@@ -109,6 +113,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
                   <Label htmlFor="email">Email</Label>
                   <Input id="email" name="email" type="email" required autoComplete="email" autoFocus defaultValue={email} className="mt-1.5 h-11" />
                 </div>
+                <CaptchaField action="login" />
                 <Button type="submit" size="lg" className="w-full">Email me a sign-in link</Button>
               </form>
               {googleEnabled && (

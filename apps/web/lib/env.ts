@@ -45,7 +45,11 @@ const schema = z.object({
   S3_UPLOAD_ACL: z.enum(["public-read"]).optional(),
   CLOUDFRONT_DOMAIN: z.string().optional(),
   // error reporting (optional): server DSN is read at runtime; the browser DSN (NEXT_PUBLIC_SENTRY_DSN) is inlined at build time
-  ABUSE_EMAIL: z.string().email().optional(), // abuse reports from public event pages are emailed here when set
+  ABUSE_EMAIL: z.string().email().optional(),
+  // bot check on sign-in, registration, waitlist and report forms; off until all three are set
+  CAPTCHA_PROVIDER: z.enum(["turnstile", "recaptcha"]).optional(),
+  CAPTCHA_SITE_KEY: z.string().optional(),
+  CAPTCHA_SECRET_KEY: z.string().optional(), // abuse reports from public event pages are emailed here when set
   SENTRY_DSN: z.string().url().optional(),
   SENTRY_ENVIRONMENT: z.string().optional(),
   // Google sign-in (optional)

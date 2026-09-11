@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { CaptchaField, captchaTokenFrom } from "@/components/captcha";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -86,12 +87,13 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
     setGuestAnswers((a) => a.filter((_, j) => j !== i));
   }
 
-  async function submit(values: Values) {
+  async function submit(values: Values, event?: React.BaseSyntheticEvent) {
     setServerError(null);
+    const captchaToken = captchaTokenFrom(event?.target);
     const res = await fetch("/api/orders", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ eventId, ticketTypeId, ...values, discountCode: discount?.code }),
+      body: JSON.stringify({ eventId, ticketTypeId, ...values, discountCode: discount?.code, captchaToken }),
     });
     if (!res.ok) {
       setServerError((await res.json().catch(() => ({})))?.error ?? "Something went wrong. Try again.");
@@ -283,6 +285,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
             </span>
           </div>
         )}
+        <CaptchaField action="register" />
         <Button type="submit" variant="event" size="lg" className="w-full" disabled={form.formState.isSubmitting || !selected}>
           {totalMinor > 0
             ? `Continue to payment, ${formatMoney(totalMinor, selected!.currency)}${partySize > 1 ? ` for ${partySize}` : ""}`

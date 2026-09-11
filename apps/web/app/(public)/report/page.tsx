@@ -9,6 +9,8 @@ import { db } from "@/lib/db";
 import { emailConfigured, env } from "@/lib/env";
 import { clientAddressFromHeaders } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
+import { CAPTCHA_FAILED_MESSAGE, CAPTCHA_FIELD, verifyCaptcha } from "@/lib/captcha";
+import { CaptchaField } from "@/components/captcha";
 import { captureError } from "@/lib/observability";
 import { renderEmail, sendEmail } from "@/lib/email";
 import { publicEventPath } from "@/lib/urls";
@@ -38,6 +40,7 @@ export default async function ReportPage({ searchParams }: { searchParams: Promi
     const client = clientAddressFromHeaders(await headers());
     const allowed = await Promise.all([client ? consumeSharedRateLimit("report:client", client, 5, 60 * 60_000) : true, consumeSharedRateLimit("report:event", parsed.data.eventId, 50, 60 * 60_000)]);
     if (allowed.includes(false)) redirect(`/report?event=${parsed.data.eventId}&error=limited`);
+    if (!(await verifyCaptcha(formData.get(CAPTCHA_FIELD), "report", client))) redirect(`/report?event=${parsed.data.eventId}&error=captcha`);
     const [target] = await db.select({ id: events.id, name: events.name, slug: events.slug, orgSlug: organizations.slug, orgName: organizations.name }).from(events).innerJoin(organizations, eq(organizations.id, events.organizationId)).where(eq(events.id, parsed.data.eventId)).limit(1);
     if (!target) redirect(`/report?error=invalid`);
     await createEventReport(db, parsed.data);
@@ -63,11 +66,13 @@ export default async function ReportPage({ searchParams }: { searchParams: Promi
         <>
           {error === "limited" && <div className="mb-4"><FormMessage error="Too many reports from your connection. Try again later." /></div>}
           {error === "invalid" && <div className="mb-4"><FormMessage error="Check the form and try again." /></div>}
+          {error === "captcha" && <div className="mb-4"><FormMessage error={CAPTCHA_FAILED_MESSAGE} /></div>}
           <form action={submit} className="space-y-5">
             <input type="hidden" name="eventId" value={row.id} />
             <div><Label htmlFor="reason">Reason</Label><Select id="reason" name="reason" className="mt-1.5 h-11" defaultValue="spam">{Object.entries(REASONS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select></div>
             <div><Label htmlFor="details">Details <span className="font-normal text-muted-foreground">(optional)</span></Label><Textarea id="details" name="details" rows={4} maxLength={2000} className="mt-1.5" /></div>
             <div><Label htmlFor="reporterEmail">Your email <span className="font-normal text-muted-foreground">(optional, if we may follow up)</span></Label><Input id="reporterEmail" name="reporterEmail" type="email" className="mt-1.5 h-11" /></div>
+            <CaptchaField action="report" />
             <Button type="submit" size="lg">Send report</Button>
           </form>
         </>

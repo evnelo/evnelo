@@ -109,6 +109,7 @@ Everything is read from the environment (the root `.env` in development). Empty 
 | `MIGRATE_ON_START` | no | Apply migrations at boot (the Docker image sets it). |
 | `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ENVIRONMENT` | no | Error reporting. The public DSN is inlined at build time. |
 | `ABUSE_EMAIL` | no | Where "Report this event" submissions are emailed. They are always stored. |
+| `CAPTCHA_PROVIDER`, `CAPTCHA_SITE_KEY`, `CAPTCHA_SECRET_KEY` | production | Bot check on sign-in links, registrations, waitlist joins and abuse reports. `turnstile` (Cloudflare, free, invisible for most people) or `recaptcha` (Google reCAPTCHA v3). Off until all three are set. |
 
 Storage needs a CORS rule on the bucket allowing `POST` from `APP_URL`, and objects under `openticket/uploads/` must be publicly readable (bucket policy, CloudFront origin access, or the ACL setting). Registration file uploads live under `openticket/registrations/` and stay private; they are served through an authenticated route.
 
@@ -182,17 +183,19 @@ Production checklist:
 
 1. Set `APP_URL`, a fresh `AUTH_SECRET`, `DATABASE_URL`, and `API_TRUSTED_PROXY_HEADER` for your proxy.
 2. Verify a sending domain at Resend and set `EMAIL_FROM` on it; register the Resend, Stripe and Vonage webhook URLs on the public domain.
-3. Configure the S3 bucket (CORS from `APP_URL`, public read on `openticket/uploads/`, CloudFront optional).
-4. Serve over HTTPS. HSTS, a Content Security Policy and the other security headers are set automatically when `APP_URL` is `https://`.
-5. Several replicas: keep `MIGRATE_ON_START=true` (the lock handles it) and either leave `JOBS_INLINE=true` on one replica only or set it to `false` everywhere and hit `POST /api/jobs/run` from a cron.
-6. Back up MySQL. Uploads live in your bucket; the database holds everything else.
+3. Create a Turnstile widget (Cloudflare dashboard → Turnstile, any domain, no DNS change needed) or a reCAPTCHA v3 key pair for the domain and set the three `CAPTCHA_*` variables.
+4. Configure the S3 bucket (CORS from `APP_URL`, public read on `openticket/uploads/`, CloudFront optional).
+5. Serve over HTTPS. HSTS, a Content Security Policy and the other security headers are set automatically when `APP_URL` is `https://`.
+6. Several replicas: keep `MIGRATE_ON_START=true` (the lock handles it) and either leave `JOBS_INLINE=true` on one replica only or set it to `false` everywhere and hit `POST /api/jobs/run` from a cron.
+7. Back up MySQL. Uploads live in your bucket; the database holds everything else.
 
 Serverless hosts (Vercel and similar) work with `JOBS_INLINE=false` plus a scheduled call to `/api/jobs/run`; the standalone image is for VMs, Fly, Railway, ECS, Kubernetes and the like.
 
 ## Operations
 
 - **Health:** `GET /api/health` returns `200` when the database answers within two seconds and the job loop ticked in the last two minutes (or jobs run externally), else `503`. Unauthenticated and terse.
-- **Abuse limits:** registration, sign-in links, waitlist joins, discount previews and abuse reports are limited per identity and per event through one MySQL-backed limiter that holds across replicas.
+- **Abuse limits:** registration, sign-in links, waitlist joins, discount previews and abuse reports are limited per identity and per event through one MySQL-backed limiter that holds across replicas. With `CAPTCHA_*` set, the four forms that send mail or hold inventory also need a Turnstile or reCAPTCHA token, verified server-side; a verification outage rejects rather than admits.
+- **Navigation feedback:** a thin progress bar along the top edge shows while a clicked link is loading (`components/navigation-progress.tsx`).
 - **Security headers:** every response carries a CSP allowing Stripe and your upload origin, `frame-ancestors 'none'`, nosniff, referrer and permissions policies, and HSTS on https. Built in `apps/web/lib/security-headers.js`.
 - **Errors:** unexpected failures go through one helper that logs with a stable `[scope]` prefix and forwards to Sentry when configured. Notification retries are warnings; only a notification that exhausts its retries is an error.
 - **Moderation:** "Report this event" on public pages stores a row and emails `ABUSE_EMAIL`.

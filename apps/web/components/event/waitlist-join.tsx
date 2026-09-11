@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CaptchaField, captchaTokenFrom } from "@/components/captcha";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -19,7 +20,7 @@ export function WaitlistJoin({ eventId, eventName }: { eventId: string; eventNam
     e.preventDefault();
     setBusy(true); setError(undefined);
     try {
-      const res = await fetch("/api/waitlist", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ eventId, name, email }) });
+      const res = await fetch("/api/waitlist", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ eventId, name, email, captchaToken: captchaTokenFrom(e.target) }) });
       const data = (await res.json().catch(() => ({}))) as { error?: string; already?: boolean };
       if (!res.ok) { setError(data.error ?? "Something went wrong. Try again."); return; }
       setDone(data.already ? "You're already on the waitlist. We'll email you if a spot opens up." : "You're on the waitlist. We'll email you a link to claim a spot if one opens up.");
@@ -39,6 +40,7 @@ export function WaitlistJoin({ eventId, eventName }: { eventId: string; eventNam
           <div><Label htmlFor="wl-name">Name</Label><Input id="wl-name" required value={name} onChange={(e) => setName(e.target.value)} className="mt-1.5 h-11" /></div>
           <div><Label htmlFor="wl-email">Email</Label><Input id="wl-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1.5 h-11" /></div>
           {error && <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">{error}</p>}
+          <CaptchaField action="waitlist" />
           <Button type="submit" variant="event" size="lg" className="w-full" disabled={busy}>{busy ? "Joining…" : "Join the waitlist"}</Button>
         </form>
       </DialogContent>

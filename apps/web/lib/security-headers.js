@@ -10,12 +10,25 @@
  */
 
 /**
- * @typedef {{ appUrl?: string; nodeEnv?: string; s3Endpoint?: string; s3Bucket?: string; s3Region?: string }} SecurityHeaderEnv
+ * @typedef {{ appUrl?: string; nodeEnv?: string; s3Endpoint?: string; s3Bucket?: string; s3Region?: string; captchaProvider?: string }} SecurityHeaderEnv
  */
 
 const STRIPE_SCRIPTS = ["https://js.stripe.com", "https://*.js.stripe.com"];
 const STRIPE_FRAMES = ["https://js.stripe.com", "https://*.js.stripe.com", "https://hooks.stripe.com"];
 const STRIPE_CONNECT = ["https://api.stripe.com", "https://maybe.stripe.com", "https://*.stripe.com"];
+/** Bot-check widgets (lib/captcha.ts): the script and the challenge iframe, per provider. */
+const CAPTCHA_ORIGINS = {
+  turnstile: { scripts: ["https://challenges.cloudflare.com"], frames: ["https://challenges.cloudflare.com"] },
+  recaptcha: { scripts: ["https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"], frames: ["https://www.google.com/recaptcha/", "https://recaptcha.google.com/recaptcha/"] },
+};
+
+/**
+ * @param {SecurityHeaderEnv} env
+ * @returns {{ scripts: string[]; frames: string[] }}
+ */
+function captchaOrigins(env) {
+  return (env.captchaProvider && CAPTCHA_ORIGINS[/** @type {keyof typeof CAPTCHA_ORIGINS} */ (env.captchaProvider)]) || { scripts: [], frames: [] };
+}
 
 /**
  * Origins the browser uploads to directly (presigned POST), derived the same way lib/storage.ts builds them.
@@ -41,12 +54,12 @@ function contentSecurityPolicy(env) {
   /** @type {Record<string, string[]>} */
   const directives = {
     "default-src": ["'self'"],
-    "script-src": ["'self'", "'unsafe-inline'", ...(dev ? ["'unsafe-eval'"] : []), ...STRIPE_SCRIPTS],
+    "script-src": ["'self'", "'unsafe-inline'", ...(dev ? ["'unsafe-eval'"] : []), ...STRIPE_SCRIPTS, ...captchaOrigins(env).scripts],
     "style-src": ["'self'", "'unsafe-inline'"],
     "img-src": ["'self'", "data:", "blob:", "https:"],
     "font-src": ["'self'", "data:"],
     "connect-src": ["'self'", ...(dev ? ["ws:", "wss:"] : []), ...STRIPE_CONNECT, ...uploadOrigins(env)],
-    "frame-src": STRIPE_FRAMES,
+    "frame-src": [...STRIPE_FRAMES, ...captchaOrigins(env).frames],
     "worker-src": ["'self'", "blob:"],
     "media-src": ["'self'", "blob:"],
     "object-src": ["'none'"],
@@ -101,7 +114,7 @@ function securityHeaders(env) {
 function securityHeadersFromProcessEnv(processEnv = process.env) {
   /** @param {string} k */
   const v = (k) => (processEnv[k]?.trim() ? processEnv[k]?.trim() : undefined);
-  return { appUrl: v("APP_URL"), nodeEnv: processEnv.NODE_ENV, s3Endpoint: v("S3_ENDPOINT"), s3Bucket: v("S3_BUCKET"), s3Region: v("S3_REGION") ?? v("AWS_REGION") };
+  return { appUrl: v("APP_URL"), nodeEnv: processEnv.NODE_ENV, s3Endpoint: v("S3_ENDPOINT"), s3Bucket: v("S3_BUCKET"), s3Region: v("S3_REGION") ?? v("AWS_REGION"), captchaProvider: v("CAPTCHA_PROVIDER") };
 }
 
-module.exports = { uploadOrigins, contentSecurityPolicy, apiDocsContentSecurityPolicy, securityHeaders, securityHeadersFromProcessEnv };
+module.exports = { uploadOrigins, captchaOrigins, contentSecurityPolicy, apiDocsContentSecurityPolicy, securityHeaders, securityHeadersFromProcessEnv };

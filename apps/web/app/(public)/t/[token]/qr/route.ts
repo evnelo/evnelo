@@ -16,7 +16,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ token: s
   if (!ticket) return new NextResponse("not found", { status: 404 });
 
   const url = `${env.APP_URL}/t/${token}`;
-  const color = { dark: "#2b2407", light: "#ffffff" };
+  const color = { dark: "var(--evnelo-ink)", light: "#ffffff" };
   const headers = { "cache-control": "private, max-age=86400", "x-robots-tag": "noindex" };
   if (format === "png") {
     const png = await QRCode.toBuffer(url, { type: "png", errorCorrectionLevel: "M", margin: 1, width: 320, color });

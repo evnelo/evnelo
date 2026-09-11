@@ -47,7 +47,7 @@ export default async function OrgPage({ params }: Params) {
         {org.logoUrl ? (
           <img src={org.logoUrl} alt="" className="size-20 rounded-2xl border border-border/80 bg-card object-contain p-2 shadow-card sm:size-24" />
         ) : (
-          <span aria-hidden className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-accent font-display text-3xl text-accent-foreground shadow-card sm:size-24" style={{ fontVariationSettings: '"opsz" 48' }}>{initials}</span>
+          <span aria-hidden className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-accent font-display text-3xl text-accent-foreground shadow-card sm:size-24">{initials}</span>
         )}
         <div className="min-w-0">
           <p className="eyebrow">Organizer</p>

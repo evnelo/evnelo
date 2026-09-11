@@ -32,12 +32,12 @@ export default async function CheckInIndexPage() {
               >
                 <DateLeaf date={event.startsAt} timezone={event.timezone} className="shrink-0" />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-display text-lg leading-tight" style={{ fontVariationSettings: '"opsz" 36' }}>{event.name}</p>
+                  <p className="truncate font-display text-lg leading-tight">{event.name}</p>
                   <p className="mt-0.5 truncate text-xs text-muted-foreground">{formatDateRange(event.startsAt, event.endsAt, event.timezone)}</p>
                 </div>
                 <div className="shrink-0 text-right">
                   <p className="eyebrow">In</p>
-                  <p className="font-display text-lg tabular-nums leading-tight" style={{ fontVariationSettings: '"opsz" 32' }}>{checkedIn} / {registrations}</p>
+                  <p className="font-display text-lg tabular-nums leading-tight">{checkedIn} / {registrations}</p>
                 </div>
                 <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
               </Link>

@@ -29,7 +29,7 @@ async function searchPhoton(term: string, fetcher: Fetcher, base: string): Promi
   const url = new URL("/api/", base);
   url.searchParams.set("q", term);
   url.searchParams.set("limit", "5");
-  const response = await fetcher(url, { headers: { Accept: "application/json", "User-Agent": "OpenTicket (https://github.com/openticket/openticket)" }, signal: AbortSignal.timeout(5000) });
+  const response = await fetcher(url, { headers: { Accept: "application/json", "User-Agent": "Evnelo/1.0 (https://evnelo.com)" }, signal: AbortSignal.timeout(5000) });
   if (!response.ok) throw new Error("Address search is temporarily unavailable.");
   const payload = await response.json() as { features?: Array<{ geometry?: { coordinates?: [number, number] }; properties?: Record<string, string> }> };
   return (payload.features ?? []).flatMap((feature) => {

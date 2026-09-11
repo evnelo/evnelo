@@ -71,7 +71,6 @@ export function DiscoverCalendar({ grid, events, filters, today }: { grid: Calen
                       day.key === today && "bg-primary text-primary-foreground",
                       !day.inMonth && day.key !== today && "text-muted-foreground/70",
                     )}
-                    style={{ fontVariationSettings: '"opsz" 24' }}
                   >
                     {day.day}
                   </span>

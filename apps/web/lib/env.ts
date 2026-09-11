@@ -13,10 +13,10 @@ const schema = z.object({
   VONAGE_API_SECRET: z.string().optional(),
   VONAGE_APPLICATION_ID: z.string().optional(),
   VONAGE_PRIVATE_KEY: z.string().optional(),
-  VONAGE_FROM: z.string().default("OpenTicket"),
+  VONAGE_FROM: z.string().default("Evnelo"),
   RESEND_API_KEY: z.string().optional(),
   RESEND_WEBHOOK_SECRET: z.string().optional(), // whsec_… from Resend → Webhooks, verifies delivery events
-  EMAIL_FROM: z.string().default("OpenTicket <tickets@example.com>"),
+  EMAIL_FROM: z.string().default("Evnelo <tickets@evnelo.com>"),
   VONAGE_SIGNATURE_SECRET: z.string().optional(), // dashboard → Settings → signature secret; verifies status/inbound webhooks
   JOBS_INLINE: z.enum(["true", "false"]).default("true"), // run the notification loop inside the web process
   MIGRATE_ON_START: z.enum(["true", "false"]).default("false"), // apply pending migrations when the server boots (Docker default: true)

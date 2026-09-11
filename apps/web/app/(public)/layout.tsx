@@ -30,13 +30,13 @@ export default async function PublicLayout({ children }: { children: React.React
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div className="space-y-1">
             <Brand size="sm" className="text-foreground" />
-            <p>Open-source ticketing. Free events are free; paid events cost the host 0.99%.</p>
+            <p>Events, in motion. Open event infrastructure: free events are free, paid events cost the host 0.99%.</p>
           </div>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             <Link href="/discover" className="hover:text-foreground">Discover</Link>
             <Link href="/login" className="hover:text-foreground">Host an event</Link>
             <a href="/api/v1/docs" className="hover:text-foreground">API</a>
-            <a href="https://github.com/openticket/openticket" className="hover:text-foreground" rel="noopener noreferrer">GitHub</a>
+            <a href="https://evnelo.com" className="hover:text-foreground">evnelo.com</a>
           </div>
         </div>
       </footer>

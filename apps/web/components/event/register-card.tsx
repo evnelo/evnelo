@@ -172,7 +172,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
         <div className="min-w-0">
           <p className="eyebrow">{requiresApproval ? "Registration, approval required" : guestsEnabled ? "Registration, guests welcome" : "Registration"}</p>
           {priceLabel && !free && (
-            <p className="display mt-2 text-4xl tabular-nums" style={{ fontVariationSettings: '"opsz" 48, "SOFT" 40' }}>{priceLabel}</p>
+            <p className="display mt-2 text-4xl tabular-nums">{priceLabel}</p>
           )}
           {free && <p className="mt-2"><Badge variant="stamp" className="text-primary">Free</Badge></p>}
         </div>

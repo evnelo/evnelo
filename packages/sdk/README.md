@@ -1,11 +1,11 @@
 # @ot/sdk
 
-Typed TypeScript client for the OpenTicket REST API (`/api/v1`), generated from the same OpenAPI document the server publishes at `/api/v1/openapi.json`. Built on [openapi-fetch](https://openapi-ts.dev/openapi-fetch/): every path, parameter, request body and response is typed from `src/schema.d.ts`, so a wrong path or a missing field is a compile error.
+Typed TypeScript client for the Evnelo REST API (`/api/v1`), generated from the same OpenAPI document the server publishes at `/api/v1/openapi.json`. Built on [openapi-fetch](https://openapi-ts.dev/openapi-fetch/): every path, parameter, request body and response is typed from `src/schema.d.ts`, so a wrong path or a missing field is a compile error.
 
 ```ts
-import { createOpenTicketClient } from "@ot/sdk";
+import { createEvneloClient } from "@ot/sdk";
 
-const client = createOpenTicketClient({ baseUrl: "https://tickets.example.com", apiKey: process.env.OPENTICKET_API_KEY });
+const client = createEvneloClient({ baseUrl: "https://tickets.example.com", apiKey: process.env.EVNELO_API_KEY });
 
 const { data, error } = await client.GET("/events", { params: { query: { status: "published" } } });
 if (error) throw new Error(`${error.error.code}: ${error.error.message}`);
@@ -24,7 +24,7 @@ Responses are `{ data, error, response }`; list endpoints return `{ data, pagina
 
 ## Webhooks
 
-`verifyWebhookSignature(secret, timestamp, rawBody, signature)` and `verifyWebhookRequest(secret, headers, rawBody)` check the `openticket-signature` header (HMAC-SHA256 over `{timestamp}.{body}`, 5-minute replay window) with the secret returned once when the webhook was created. Pass the raw body bytes as received; re-serializing changes the signature.
+`verifyWebhookSignature(secret, timestamp, rawBody, signature)` and `verifyWebhookRequest(secret, headers, rawBody)` check the `evnelo-signature` header (HMAC-SHA256 over `{timestamp}.{body}`, 5-minute replay window) with the secret returned once when the webhook was created. Pass the raw body bytes as received; re-serializing changes the signature.
 
 ```ts
 import { verifyWebhookRequest } from "@ot/sdk";

@@ -47,7 +47,7 @@ export function SectionTray({ title, description, actions, children, className, 
     <section className={cn("rounded-xl border p-5 sm:p-6", tone === "destructive" ? "border-destructive/35 bg-destructive/[0.04]" : "border-border/80 bg-muted/30", className)}>
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <div className="min-w-0 flex-1 basis-72">
-          <h2 className={cn("font-display text-xl leading-tight", tone === "destructive" && "text-destructive")} style={{ fontVariationSettings: '"opsz" 36' }}>{title}</h2>
+          <h2 className={cn("font-display text-xl leading-tight", tone === "destructive" && "text-destructive")}>{title}</h2>
           {description && <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">{description}</p>}
         </div>
         {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
@@ -62,7 +62,7 @@ export function PanelHeader({ title, description, actions, className }: { title:
   return (
     <div className={cn("flex flex-wrap items-start justify-between gap-x-6 gap-y-3", className)}>
       <div className="min-w-0 flex-1 basis-64">
-        <h2 className="font-display text-xl leading-tight" style={{ fontVariationSettings: '"opsz" 36' }}>{title}</h2>
+        <h2 className="font-display text-xl leading-tight">{title}</h2>
         {description && <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">{description}</p>}
       </div>
       {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
@@ -85,7 +85,7 @@ export function Stat({ label, value, sub, className }: { label: React.ReactNode;
   return (
     <div className={cn("min-w-0", className)}>
       <p className="eyebrow">{label}</p>
-      <p className="mt-1 truncate font-display text-3xl tabular-nums leading-none" style={{ fontVariationSettings: '"opsz" 48, "SOFT" 40' }}>{value}</p>
+      <p className="mt-1 truncate font-display text-3xl tabular-nums leading-none">{value}</p>
       {sub && <p className="mt-1.5 truncate text-xs text-muted-foreground">{sub}</p>}
     </div>
   );
@@ -104,7 +104,7 @@ export function Metric({ label, value, sub, className }: { label: React.ReactNod
   return (
     <div className={cn("min-w-0", className)}>
       <p className="eyebrow">{label}</p>
-      <p className="mt-0.5 truncate font-display text-lg tabular-nums leading-tight" style={{ fontVariationSettings: '"opsz" 32, "SOFT" 40' }}>{value}</p>
+      <p className="mt-0.5 truncate font-display text-lg tabular-nums leading-tight">{value}</p>
       {sub && <p className="truncate text-[11px] text-muted-foreground">{sub}</p>}
     </div>
   );
@@ -129,7 +129,7 @@ export function EmptyState({ icon: Icon, title, description, action, className }
       <span className="flex size-14 items-center justify-center rounded-full bg-accent text-accent-foreground">
         <Icon className="size-6" strokeWidth={1.5} />
       </span>
-      <p className="mt-4 font-display text-xl" style={{ fontVariationSettings: '"opsz" 36' }}>{title}</p>
+      <p className="mt-4 font-display text-xl">{title}</p>
       {description && <p className="mx-auto mt-1.5 max-w-sm text-sm leading-relaxed text-muted-foreground">{description}</p>}
       {action && <div className="mt-5">{action}</div>}
     </div>
@@ -156,7 +156,7 @@ export function Note({ children, tone = "muted", className }: { children: React.
     <div
       className={cn(
         "rounded-xl border px-4 py-3 text-sm leading-relaxed",
-        tone === "warning" ? "border-[#e6d39a] bg-[#fbf1d6] text-[#5a4300]" : "border-border/70 bg-muted/50 text-muted-foreground",
+        tone === "warning" ? "border-warning-foreground/30 bg-warning text-[#5a4300]" : "border-border/70 bg-muted/50 text-muted-foreground",
         className,
       )}
     >

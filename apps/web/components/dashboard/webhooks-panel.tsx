@@ -32,7 +32,7 @@ export function WebhooksPanel({ hooks, editable }: { hooks: WebhookRow[]; editab
   return (
     <div className="space-y-4">
       <Note>
-        We POST a JSON envelope to your URL for the events you pick, signed with HMAC-SHA256 (<code className="rounded bg-card px-1 text-xs">openticket-signature: v1=…</code> over <code className="rounded bg-card px-1 text-xs">{"{timestamp}.{body}"}</code>). Failed deliveries retry with backoff for about a day.
+        We POST a JSON envelope to your URL for the events you pick, signed with HMAC-SHA256 (<code className="rounded bg-card px-1 text-xs">evnelo-signature: v1=…</code> over <code className="rounded bg-card px-1 text-xs">{"{timestamp}.{body}"}</code>). Failed deliveries retry with backoff for about a day.
       </Note>
       <Toolbar actions={editable && <Button size="sm" variant="outline" onClick={() => { setMsg({}); setSecret(undefined); setOpen((o) => !o); }}><Plus className="size-4" /> Add webhook</Button>}>
         <p className="eyebrow">{hooks.length} endpoint{hooks.length === 1 ? "" : "s"}</p>

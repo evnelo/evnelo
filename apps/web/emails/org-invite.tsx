@@ -2,7 +2,7 @@ import * as React from "react";
 import { ButtonLink, EmailLayout, Para, Title, type EmailBrand } from "./layout";
 
 export type OrgInviteProps = { brand: EmailBrand; url: string; orgName: string; role: string; invitedBy?: string | null };
-export const orgInviteSubject = (p: OrgInviteProps) => `You're invited to ${p.orgName} on OpenTicket`;
+export const orgInviteSubject = (p: OrgInviteProps) => `You're invited to ${p.orgName} on Evnelo`;
 
 export default function OrgInvite({ brand, url, orgName, role, invitedBy }: OrgInviteProps) {
   return (

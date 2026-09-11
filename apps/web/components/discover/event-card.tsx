@@ -74,10 +74,10 @@ export function EventCard({ event, variant = "default", className }: { event: Ca
                 <span aria-hidden>·</span>
                 <span className="inline-flex items-center gap-1"><PlaceIcon event={event} className="text-white/85" />{event.orgName}{where ? `, ${where}` : ""}</span>
               </p>
-              <h3 className="display mt-2 text-3xl text-white sm:text-4xl lg:text-5xl" style={{ fontVariationSettings: '"opsz" 72, "SOFT" 60' }}>{event.name}</h3>
+              <h3 className="display mt-2 text-3xl text-white sm:text-4xl lg:text-5xl">{event.name}</h3>
             </div>
             {price && (
-              <span className="shrink-0 rounded-full bg-white/95 px-3.5 py-1.5 font-display text-base text-foreground shadow-card" style={{ fontVariationSettings: '"opsz" 24' }}>{price}</span>
+              <span className="shrink-0 rounded-full bg-white/95 px-3.5 py-1.5 font-display text-base text-foreground shadow-card">{price}</span>
             )}
           </div>
         </article>
@@ -94,14 +94,14 @@ export function EventCard({ event, variant = "default", className }: { event: Ca
             {event.coverImageUrl ? (
               <img src={event.coverImageUrl} alt="" className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy" />
             ) : (
-              <div className="flex size-full items-center justify-center font-display text-7xl text-muted-foreground/30" aria-hidden style={{ fontVariationSettings: '"opsz" 96' }}>{day}</div>
+              <div className="flex size-full items-center justify-center font-display text-7xl text-muted-foreground/30" aria-hidden>{day}</div>
             )}
           </div>
           <div className={cn("date-leaf absolute bottom-0 left-4 z-10 translate-y-1/2 shadow-card", compact && "lg:bottom-auto lg:left-3 lg:top-3 lg:translate-y-0")}><span>{month}</span><span>{day}</span></div>
         </div>
         <div className={cn("flex flex-1 flex-col p-5 pt-10", compact && "lg:p-5")}>
           <p className="text-[13px] font-medium text-muted-foreground">{whenLabel(event)}</p>
-          <h3 className={cn("display mt-1.5 text-2xl", compact && "lg:text-xl")} style={{ fontVariationSettings: '"opsz" 32, "SOFT" 50' }}>{event.name}</h3>
+          <h3 className={cn("display mt-1.5 text-2xl", compact && "lg:text-xl")}>{event.name}</h3>
           <div className="mt-auto flex items-end justify-between gap-3 pt-4 text-sm text-muted-foreground">
             <p className="flex min-w-0 flex-wrap items-center gap-x-1.5">
               <PlaceIcon event={event} />
@@ -109,7 +109,7 @@ export function EventCard({ event, variant = "default", className }: { event: Ca
               {where && <span>· {where}</span>}
               {distance && <span>· {distance}</span>}
             </p>
-            {price && <span className={cn("shrink-0 font-display text-base text-foreground", price === "Free" && "text-accent-foreground")} style={{ fontVariationSettings: '"opsz" 24' }}>{price}</span>}
+            {price && <span className={cn("shrink-0 font-display text-base text-foreground", price === "Free" && "text-accent-foreground")}>{price}</span>}
           </div>
         </div>
       </article>

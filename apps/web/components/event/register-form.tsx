@@ -198,7 +198,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
                     <span className="block text-sm font-medium">{t.name}</span>
                     {t.description && <span className="mt-0.5 line-clamp-2 block text-xs text-muted-foreground">{t.description}</span>}
                   </span>
-                  <span className={cn("shrink-0 font-display text-lg tabular-nums", soldOut && "font-sans text-xs uppercase tracking-wide text-muted-foreground")} style={{ fontVariationSettings: '"opsz" 24' }}>
+                  <span className={cn("shrink-0 font-display text-lg tabular-nums", soldOut && "font-sans text-xs uppercase tracking-wide text-muted-foreground")}>
                     {soldOut ? "Sold out" : ticketPrice(t)}
                   </span>
                 </label>
@@ -277,7 +277,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
         {selected && (listMinor > 0 || partySize > 1) && (
           <div className="mb-3 flex items-baseline justify-between gap-3 text-sm">
             <span className="text-muted-foreground">{partySize > 1 ? `${partySize} × ${selected.name}` : selected.name}</span>
-            <span className="font-display text-xl tabular-nums" style={{ fontVariationSettings: '"opsz" 24' }}>
+            <span className="font-display text-xl tabular-nums">
               {discount && listMinor > 0 && discount.totalMinor !== listMinor && <s className="mr-2 text-sm text-muted-foreground">{formatMoney(listMinor, selected.currency)}</s>}
               {totalMinor === 0 ? "Free" : formatMoney(totalMinor, selected.currency)}
             </span>

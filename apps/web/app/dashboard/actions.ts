@@ -196,7 +196,7 @@ export async function inviteMemberAction(formData: FormData): Promise<ActionResu
   try {
     const { org, user } = await requireOrg("manage_members");
     const invite = await svc.inviteMember(db, { orgId: org.id, ...parsed.data });
-    const props = { brand: { orgName: "OpenTicket", appUrl: env.APP_URL }, url: `${env.APP_URL}/invite/${invite.token}`, orgName: org.name, role: ROLE_LABELS[invite.role], invitedBy: user.name ?? user.email };
+    const props = { brand: { orgName: "Evnelo", appUrl: env.APP_URL }, url: `${env.APP_URL}/invite/${invite.token}`, orgName: org.name, role: ROLE_LABELS[invite.role], invitedBy: user.name ?? user.email };
     try {
       const { html, text } = await renderEmail(React.createElement(OrgInvite, props));
       await sendEmail({ to: invite.email, subject: orgInviteSubject(props), html, text });
@@ -433,7 +433,7 @@ export async function testWebhookAction(id: string): Promise<ActionResult> {
     const { webhookDeliveries } = await import("@ot/db");
     const { newId } = await import("@ot/core");
     const now = new Date();
-    await db.insert(webhookDeliveries).values({ id: newId(), webhookId: hook.id, event: "test.ping", payload: { id: newId(), type: "test.ping", createdAt: now.toISOString(), organizationId: org.id, data: { message: "Hello from OpenTicket. Your receiver works." } }, nextAttemptAt: now });
+    await db.insert(webhookDeliveries).values({ id: newId(), webhookId: hook.id, event: "test.ping", payload: { id: newId(), type: "test.ping", createdAt: now.toISOString(), organizationId: org.id, data: { message: "Hello from Evnelo. Your receiver works." } }, nextAttemptAt: now });
     return { ok: true, message: "Test delivery queued; it goes out within about 10 seconds. Check the deliveries list." };
   } catch (e) {
     return fail(e);

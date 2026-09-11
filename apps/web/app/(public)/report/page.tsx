@@ -42,7 +42,7 @@ export default async function ReportPage({ searchParams }: { searchParams: Promi
     if (!target) redirect(`/report?error=invalid`);
     await createEventReport(db, parsed.data);
     if (env.ABUSE_EMAIL && emailConfigured) {
-      const props = { brand: { orgName: "OpenTicket", appUrl: env.APP_URL }, eventName: target.name, eventUrl: `${env.APP_URL}${publicEventPath(target.orgSlug, target.slug)}`, orgName: target.orgName, reason: REASONS[parsed.data.reason] ?? parsed.data.reason, details: parsed.data.details || null, reporterEmail: parsed.data.reporterEmail || null };
+      const props = { brand: { orgName: "Evnelo", appUrl: env.APP_URL }, eventName: target.name, eventUrl: `${env.APP_URL}${publicEventPath(target.orgSlug, target.slug)}`, orgName: target.orgName, reason: REASONS[parsed.data.reason] ?? parsed.data.reason, details: parsed.data.details || null, reporterEmail: parsed.data.reporterEmail || null };
       try {
         const { html, text } = await renderEmail(React.createElement(AbuseReport, props));
         await sendEmail({ to: env.ABUSE_EMAIL, subject: abuseReportSubject(props), html, text, replyTo: parsed.data.reporterEmail || undefined });
@@ -55,7 +55,7 @@ export default async function ReportPage({ searchParams }: { searchParams: Promi
     ? (error === "invalid" ? "That event could not be found." : "Open this page from an event to report it.")
     : sent
       ? <span className="text-foreground">Thanks. Your report about <strong>{row.name}</strong> was recorded{env.ABUSE_EMAIL ? " and sent to the operators of this instance" : ""}.</span>
-      : <>Reporting <strong className="text-foreground">{row.name}</strong> by {row.orgName}. Reports go to the people who run this OpenTicket instance, not to the host.</>;
+      : <>Reporting <strong className="text-foreground">{row.name}</strong> by {row.orgName}. Reports go to the people who run this Evnelo instance, not to the host.</>;
 
   return (
     <NarrowPage icon={<Flag />} eyebrow="Report" title="Report an event" description={description}>

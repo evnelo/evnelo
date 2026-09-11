@@ -6,10 +6,10 @@ export type { components, paths } from "./schema";
 /** Response and input objects by name, e.g. `Schemas["Event"]`. */
 export type Schemas = components["schemas"];
 
-export type OpenTicketClientOptions = {
+export type EvneloClientOptions = {
   /** Instance origin, e.g. `https://tickets.example.com`. The `/api/v1` prefix is added when missing. */
   baseUrl: string;
-  /** `ot_live_…` key from Dashboard → Settings → API keys. Optional for the public endpoints. */
+  /** `ev_live_…` key from Dashboard → Settings → API keys. Optional for the public endpoints. */
   apiKey?: string;
   /** Custom fetch (tests, proxies). Defaults to the global fetch. */
   fetch?: ClientOptions["fetch"];
@@ -27,21 +27,21 @@ export function apiBaseUrl(baseUrl: string): string {
  * Paths, parameters, bodies and responses come from the generated schema; a wrong path or
  * missing field is a compile error. Responses are `{ data, error, response }`.
  */
-export function createOpenTicketClient(options: OpenTicketClientOptions) {
+export function createEvneloClient(options: EvneloClientOptions) {
   return createClient<paths>({
     baseUrl: apiBaseUrl(options.baseUrl),
     fetch: options.fetch,
     headers: { ...(options.apiKey ? { Authorization: `Bearer ${options.apiKey}` } : {}), ...options.headers },
   });
 }
-export type OpenTicketClient = ReturnType<typeof createOpenTicketClient>;
+export type EvneloClient = ReturnType<typeof createEvneloClient>;
 
 /* ---------- outbound webhooks ---------- */
 
 /** Mirrors the contract in packages/core/src/webhooks.ts (the SDK does not depend on core). */
-export const WEBHOOK_SIGNATURE_HEADER = "openticket-signature";
-export const WEBHOOK_TIMESTAMP_HEADER = "openticket-timestamp";
-export const WEBHOOK_ID_HEADER = "openticket-delivery-id";
+export const WEBHOOK_SIGNATURE_HEADER = "evnelo-signature";
+export const WEBHOOK_TIMESTAMP_HEADER = "evnelo-timestamp";
+export const WEBHOOK_ID_HEADER = "evnelo-delivery-id";
 export const WEBHOOK_TOLERANCE_SECONDS = 300;
 
 export const WEBHOOK_EVENTS = [
@@ -66,8 +66,8 @@ export function signWebhook(secret: string, timestamp: number | string, body: st
 }
 
 /**
- * Constant-time check of `openticket-signature` (hex HMAC-SHA256 of `{timestamp}.{rawBody}`,
- * optionally prefixed `v1=`) with a replay window around `openticket-timestamp` (unix seconds).
+ * Constant-time check of `evnelo-signature` (hex HMAC-SHA256 of `{timestamp}.{rawBody}`,
+ * optionally prefixed `v1=`) with a replay window around `evnelo-timestamp` (unix seconds).
  * Pass the raw request body, not a re-serialized object.
  */
 export function verifyWebhookSignature(secret: string, timestamp: number | string, body: string, signature: string, now = Date.now(), toleranceSeconds = WEBHOOK_TOLERANCE_SECONDS): boolean {

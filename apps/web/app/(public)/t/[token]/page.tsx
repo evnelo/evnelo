@@ -50,7 +50,7 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
               <span>{month}</span><span>{day}</span>
             </div>
             <div className="min-w-0">
-              <h1 className="display text-3xl sm:text-4xl" style={{ fontVariationSettings: '"opsz" 48, "SOFT" 60' }}>{event.name}</h1>
+              <h1 className="display text-3xl sm:text-4xl">{event.name}</h1>
               <p className="mt-2 text-sm opacity-80">{formatDateRange(event.startsAt, event.endsAt, event.timezone)}</p>
               {event.venueName && <p className="text-sm opacity-80">{event.venueName}{event.city ? `, ${event.city}` : ""}</p>}
               {event.locationType === "online" && <p className="text-sm opacity-80">Online</p>}
@@ -59,7 +59,7 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
           <dl className="mt-8 grid grid-cols-2 gap-x-4 gap-y-5 text-sm">
             <div className="col-span-2 sm:col-span-1">
               <dt className="text-[11px] font-medium uppercase tracking-[0.12em] opacity-60">Admit</dt>
-              <dd className="mt-1 font-display text-xl" style={{ fontVariationSettings: '"opsz" 24' }}>{attendee.name}</dd>
+              <dd className="mt-1 font-display text-xl">{attendee.name}</dd>
               {host && <dd className="text-xs opacity-60">Guest of {host.name}</dd>}
             </div>
             <div>

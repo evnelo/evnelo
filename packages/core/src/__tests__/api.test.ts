@@ -13,15 +13,15 @@ function fakeDb(row: { id: string; organizationId: string; scopes: string[] } | 
 
 describe("API key primitives", () => {
   it("parses a case-insensitive Bearer token and rejects malformed headers", () => {
-    expect(parseBearerToken("Bearer ot_live_example")).toBe("ot_live_example");
-    expect(parseBearerToken("bearer ot_live_example")).toBe("ot_live_example");
+    expect(parseBearerToken("Bearer ev_live_example")).toBe("ev_live_example");
+    expect(parseBearerToken("bearer ev_live_example")).toBe("ev_live_example");
     expect(parseBearerToken("Basic abc")).toBeNull();
     expect(parseBearerToken("Bearer ")).toBeNull();
     expect(parseBearerToken(null)).toBeNull();
   });
 
   it("hashes the complete API key with SHA-256", () => {
-    expect(hashApiKey("ot_live_example")).toBe("42af7093f1e33afc128210b963fae1024fddde0c086a4fba4b1d4fe779dfeb9b");
+    expect(hashApiKey("ev_live_example")).toBe("baa423252b9a77cca4e2441ed9d22666603c52025904b8db86075a88d952ea01");
   });
 
   it("requires the requested scope", () => {
@@ -34,17 +34,17 @@ describe("API key primitives", () => {
   it("rejects missing and unknown API keys without revealing which failed", async () => {
     const missing = fakeDb(null);
     await expect(authenticateApiKey(missing.db, null, "read")).rejects.toMatchObject({ status: 401, code: "unauthorized" });
-    await expect(authenticateApiKey(missing.db, "Bearer ot_live_unknown", "read")).rejects.toMatchObject({ status: 401, code: "unauthorized" });
+    await expect(authenticateApiKey(missing.db, "Bearer ev_live_unknown", "read")).rejects.toMatchObject({ status: 401, code: "unauthorized" });
   });
 
   it("rejects a valid key without the required scope", async () => {
     const { db } = fakeDb({ id: "key-id", organizationId: "org-id", scopes: ["read"] });
-    await expect(authenticateApiKey(db, "Bearer ot_live_readonly", "write")).rejects.toMatchObject({ status: 403, code: "forbidden" });
+    await expect(authenticateApiKey(db, "Bearer ev_live_readonly", "write")).rejects.toMatchObject({ status: 403, code: "forbidden" });
   });
 
   it("returns the key context and records successful use", async () => {
     const fixture = fakeDb({ id: "key-id", organizationId: "org-id", scopes: ["read"] });
-    await expect(authenticateApiKey(fixture.db, "Bearer ot_live_valid", "read")).resolves.toEqual({
+    await expect(authenticateApiKey(fixture.db, "Bearer ev_live_valid", "read")).resolves.toEqual({
       apiKeyId: "key-id", organizationId: "org-id", scopes: ["read"],
     });
     expect(fixture.wasUpdated()).toBe(true);

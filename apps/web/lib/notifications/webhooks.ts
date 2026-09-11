@@ -24,7 +24,7 @@ export async function deliverWebhooks() {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          "user-agent": "OpenTicket-Webhooks/1.0",
+          "user-agent": "Evnelo-Webhooks/1.0",
           [WEBHOOK_ID_HEADER]: delivery.id,
           [WEBHOOK_TIMESTAMP_HEADER]: String(timestamp),
           [WEBHOOK_SIGNATURE_HEADER]: `v1=${signWebhook(webhook.secret, timestamp, body)}`,

@@ -1,47 +1,54 @@
-# OpenTicket design system
+# Evnelo design system (implementation notes)
 
-The feel: a good independent ticket office. Editorial, warm, precise. Serif headlines on cream paper,
-one confident green, a ticket you'd keep. Not a SaaS template.
+The brand book is `branding/EVNELO_BRAND.md`; it is the source of truth for identity. This file records how the brand is implemented in the codebase and the product rules that sit on top of it.
+
+The feel: excellent infrastructure that happens to be beautiful. Precise, welcoming, calm, slightly playful. Not ticket clichés, not enterprise blandness, not a dark hacker theme.
 
 ## Tokens (`apps/web/app/globals.css`)
 
-- Surfaces: `--background` cream (#f6f4ee), `--card` white, `--muted` warm grey. Ink is `--foreground` #17170f, never pure black.
-- Brand: `--primary` gate green #16603a. Events may override `--accent-event` for their own buttons and date leaf.
-- Ticket: `--ticket-paper` / `--ticket-ink` / `--ticket-perforation` are only for the ticket object and wallet-like surfaces.
-- Radius: `--radius` 12px; cards `rounded-xl` (16px), buttons and inputs `rounded-lg`, chips `rounded-full`.
-- Shadows: `shadow-card` (soft, warm) at rest, `shadow-lift` on hover. No hard drop shadows.
+- Brand palette as `--evnelo-*`: Ink #14151A, Paper #F7F7F2, Pulse #FF5A3C, Lime #C9F269, Sky #A8D8FF, Mist #E9EAE4, White. Tailwind utilities `bg-ink`, `text-paper`, `bg-pulse`, `bg-lime`, `bg-sky`, `border-mist`.
+- Semantic tokens map onto them: `--background` Paper, `--foreground` Ink, `--primary` Pulse with white foreground, `--border` Mist, `--input` #DADBD5, `--accent` a pale Pulse tint for selected states, `--success` Lime with Ink text, `--info` Sky, `--warning` a functional amber, `--destructive` #B42318 (an accessible red; never Pulse).
+- Events may override `--accent-event` for their own buttons and date leaf.
+- The ticket object uses `--ticket-paper` (Ink) and `--ticket-ink` (Paper): an ink pass with a Pulse edge, not yellow paper.
+- Radius: 8 / 12 / 16 / 24px (`rounded-sm/md/lg/xl`); controls 12px, primary cards 16px, marketing surfaces 24px. Pills only for statuses, tags and small filters.
+- Shadows are subtle (`shadow-card`); `shadow-lift` only on hover of clickable cards.
 
 ## Type
 
-- Display: Fraunces Variable (`.display`, `font-display`). Use it for page titles, event names, prices and big numbers. Optical size follows size: `opsz 144` for hero, `48` for cards, `24` for small marks.
-- UI: Geist Sans. Body 15px on public pages, 14px in the dashboard. Labels: `.eyebrow` (11px, tracking-wide, uppercase, muted).
-- Never letter-space the serif. Never bold the serif beyond 500.
+- Instrument Sans everywhere (`@fontsource-variable/instrument-sans`, bundled). `.display` = 700, tracking −0.03em, line-height 1.04. Weights: 700 hero, 600 headings and buttons, 500 labels, 400 body. Never below 400.
+- IBM Plex Mono only for code, ids, tokens and API examples (`font-mono`, `.code-panel`).
+- Sentence case; short lines; `.eyebrow` for small labels is the one sanctioned uppercase.
+
+## Logo
+
+- `components/brand.tsx`: `Brand` (symbol + lowercase wordmark set in Instrument Sans SemiBold) and `BrandSymbol` (symbol only, Pulse, inherits `currentColor` for monochrome). The path comes from `branding/logo.svg`; do not redraw it.
+- Favicon `app/icon.svg`: Pulse symbol on Ink. Clear space ≈ half the symbol height; minimum 20px symbol, 100px lockup.
 
 ## Signature elements
 
-- **Date leaf** (`.date-leaf`): month over day, like a tear-off calendar. Appears on cards, event page, ticket.
-- **Ticket** (`.ticket`): paper surface, perforation, QR on the stub. Only for admission.
-- **Stamp** (`Badge variant="stamp"`): rotated, inked border. Used sparingly for SOLD OUT / FREE / CANCELLED.
-- **Hairline** (`.hairline`): dotted separators, not solid greys, between editorial sections.
+- **Flow Line**: a 2px Pulse line through checkpoints (Lime/Sky nodes). Used on the default share card, hero and empty states; not on every screen. `.flow-line`, `.flow-node-*`.
+- **Date leaf** (`.date-leaf`): month over day. Cards, event page, ticket, dashboard.
+- **Stamp** (`Badge variant="stamp"`): sparingly, for Sold out / Free / Cancelled.
 
-## Motion (CSS only, no animation library)
+## Motion (CSS only)
 
-- Press: every button and clickable card scales to 0.98 while pressed (`.press` is built into `Button`).
-- Lift: cards `hover:-translate-y-0.5 hover:shadow-lift` over 200ms.
-- Enter: lists use `.animate-rise` with `--stagger` per item (max 12 items staggered, 40ms apart).
-- Dialogs: overlay fades, panel rises 8px and fades in 180ms, out 120ms.
+- Press: buttons and clickable cards scale to 0.98 while pressed (`.press`, built into `Button`).
+- Lift: `hover:-translate-y-0.5 hover:shadow-lift` over 200ms.
+- Enter: lists use `.animate-rise` with `--stagger` (40ms apart, max 12).
+- Dialogs: overlay fades, panel rises 8px in 180ms; bottom sheet on phones.
 - Everything respects `prefers-reduced-motion`.
 
-## Layout rhythm
+## Layout and product rules
 
-- Public pages: `max-w-6xl`, 24px gutters, sections separated by 64px on desktop, 40px on mobile.
-- Dashboard: `max-w-5xl`, page header = title (`.display text-3xl`) + one-line description + primary action on the right.
-- Empty states: an icon in a soft circle, one sentence, one action. Never a bare "No results".
-- Touch targets at least 44px on public pages and the scanner.
+- Public pages `max-w-6xl`, 24px gutters, generous whitespace; readable text ≤ 720px.
+- Dashboard: neutral. Pulse only for the primary action, selected states and intentional highlights. Page header = title + one-line description + one primary action.
+- Check-in: large names, oversized targets, Lime for a successful check-in (Ink text), amber for "already", deep red for refusals.
+- Ticket pages may be more expressive: photography, Pulse accents, the Flow Line.
+- Empty states: icon in a soft circle, one sentence, one action.
+- Contrast: body text AA. White on Pulse is 3.1:1, so keep Pulse buttons at 14px semibold or larger and never use Pulse for small text on Paper; Lime always carries Ink text.
 
-## Do / don't
+## Don't
 
-- Do let images breathe: covers get a 16:7 crop with a soft gradient scrim under text.
-- Do use tabular numbers for money and counts.
-- Don't add colour beyond green, ink, cream and the ticket paper; status badges use the muted tints already defined.
-- Don't introduce new component libraries; extend the primitives in `apps/web/components/ui`.
+- No new brand colours; functional colours stay clearly outside the palette.
+- No gradients beyond the cover scrim, no glassmorphism beyond the sticky header, no neon, no oversized shadows.
+- No competing logo variants.

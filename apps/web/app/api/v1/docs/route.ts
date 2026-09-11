@@ -9,7 +9,7 @@ export async function GET() {
   const scalarResponse = ApiReference({
     cdn: SCALAR_CDN_URL,
     nonce,
-    pageTitle: "OpenTicket API Reference",
+    pageTitle: "Evnelo API Reference",
     theme: "default",
     url: "/api/v1/openapi.json",
   })();

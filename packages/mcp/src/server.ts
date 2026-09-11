@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * OpenTicket MCP server (stdio). A thin layer over the REST API through @ot/sdk, so it can never
+ * Evnelo MCP server (stdio). A thin layer over the REST API through @ot/sdk, so it can never
  * do more than an API key can. Configure with:
- *   OPENTICKET_URL=https://your-instance  OPENTICKET_API_KEY=ot_live_...
+ *   EVNELO_URL=https://your-instance  EVNELO_API_KEY=ev_live_...
  *
  * `send_attendee_update` from the PRD is not implemented: the API has no endpoint for organizer
  * broadcasts yet, and the tool would need one rather than a client-side loop over attendees.
@@ -10,11 +10,11 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { createOpenTicketClient } from "@ot/sdk";
+import { createEvneloClient } from "@ot/sdk";
 
-const baseUrl = process.env.OPENTICKET_URL ?? "http://localhost:3000";
-const apiKey = process.env.OPENTICKET_API_KEY;
-const client = createOpenTicketClient({ baseUrl, apiKey });
+const baseUrl = process.env.EVNELO_URL ?? "http://localhost:3000";
+const apiKey = process.env.EVNELO_API_KEY;
+const client = createEvneloClient({ baseUrl, apiKey });
 
 type ApiError = { error?: { code?: string; message?: string; issues?: Array<{ path?: (string | number)[]; message?: string }> } };
 type ApiResult<T> = { data?: T; error?: unknown; response: Response };
@@ -27,14 +27,14 @@ function unwrap<T>(result: ApiResult<T>): T {
   const detail = body.error?.message ?? result.response.statusText ?? "request failed";
   const issues = body.error?.issues?.map((i) => `${(i.path ?? []).join(".") || "body"}: ${i.message}`).join("; ");
   const hint = {
-    401: apiKey ? "The API key was rejected. Check OPENTICKET_API_KEY (Dashboard → Settings → API keys)." : "Set OPENTICKET_API_KEY; only search_public_events works without a key.",
+    401: apiKey ? "The API key was rejected. Check EVNELO_API_KEY (Dashboard → Settings → API keys)." : "Set EVNELO_API_KEY; only search_public_events works without a key.",
     403: "The API key lacks the write scope this tool needs. Create a key with read + write scopes.",
     404: "No such object in this organization. Use list_events to find valid ids.",
     409: "The object is in a state that does not allow this (for example already published, or already used).",
     422: issues ? `Fix the input: ${issues}` : "The input did not validate.",
     429: "Rate limited (120 requests per minute per key). Wait a moment and retry.",
   }[status] ?? "";
-  throw new Error(`OpenTicket API ${status} ${body.error?.code ?? ""}: ${detail}${hint ? `\n${hint}` : ""}`.trim());
+  throw new Error(`Evnelo API ${status} ${body.error?.code ?? ""}: ${detail}${hint ? `\n${hint}` : ""}`.trim());
 }
 
 const text = (value: unknown) => ({ content: [{ type: "text" as const, text: typeof value === "string" ? value : JSON.stringify(value, null, 2) }] });
@@ -145,7 +145,7 @@ server.registerTool("get_event_stats", {
 }, ({ eventId }) => run(async () => unwrap(await client.GET("/events/{id}/stats", { params: { path: { id: eventId } } }))));
 
 server.registerResource("event", new ResourceTemplate("openticket://events/{eventId}", { list: undefined }), {
-  title: "OpenTicket event", description: "Event details with ticket types and registration fields", mimeType: "application/json",
+  title: "Evnelo event", description: "Event details with ticket types and registration fields", mimeType: "application/json",
 }, async (uri, { eventId }) => {
   const data = unwrap(await client.GET("/events/{id}", { params: { path: { id: String(eventId) } } }));
   return { contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(data, null, 2) }] };

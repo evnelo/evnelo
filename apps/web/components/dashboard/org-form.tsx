@@ -41,8 +41,8 @@ export function OrgForm({ org, readOnly, uploadsEnabled }: { org: Values; readOn
           </div>
           <Field label="Accent colour" htmlFor="org-accent" optional help="Buttons in emails and on ticket pages.">
             <div className="flex gap-2">
-              <input type="color" aria-label="Pick colour" value={v.accentColor || "#16603a"} onChange={(e) => set("accentColor", e.target.value)} className="h-10 w-12 shrink-0 cursor-pointer rounded-lg border border-input bg-card p-1" />
-              <Input id="org-accent" value={v.accentColor} onChange={(e) => set("accentColor", e.target.value)} placeholder="#16603a" pattern="#[0-9a-fA-F]{6}" />
+              <input type="color" aria-label="Pick colour" value={v.accentColor || "var(--evnelo-pulse)"} onChange={(e) => set("accentColor", e.target.value)} className="h-10 w-12 shrink-0 cursor-pointer rounded-lg border border-input bg-card p-1" />
+              <Input id="org-accent" value={v.accentColor} onChange={(e) => set("accentColor", e.target.value)} placeholder="var(--evnelo-pulse)" pattern="#[0-9a-fA-F]{6}" />
             </div>
           </Field>
           <Field label="Service fee" htmlFor="org-fee" help="Default for new events: pass the platform fee to the buyer as a line item, or absorb it.">

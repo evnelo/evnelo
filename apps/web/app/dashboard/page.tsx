@@ -86,7 +86,7 @@ function EventRow({ row }: { row: Row }) {
         <DateLeaf date={e.startsAt} timezone={e.timezone} className="shrink-0" />
         <div className="min-w-0 flex-1 basis-52">
           <div className="flex min-w-0 items-center gap-2">
-            <h3 className="truncate font-display text-lg leading-tight" style={{ fontVariationSettings: '"opsz" 36' }}>{e.name}</h3>
+            <h3 className="truncate font-display text-lg leading-tight">{e.name}</h3>
             <Badge variant={statusVariant[e.status]} className="shrink-0">{e.status}</Badge>
           </div>
           <p className="mt-1 flex min-w-0 items-center gap-1.5 truncate text-sm text-muted-foreground">

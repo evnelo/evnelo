@@ -28,7 +28,7 @@ export function PaymentStep(props: Props) {
       appearance: {
         theme: "stripe",
         variables: {
-          colorPrimary: "#16603a", colorText: "#17170f", colorDanger: "#a8341f", colorBackground: "#ffffff",
+          colorPrimary: "var(--evnelo-pulse)", colorText: "#17170f", colorDanger: "var(--destructive)", colorBackground: "#ffffff",
           colorTextSecondary: "#6b6a60", borderRadius: "10px", fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif",
         },
       },
@@ -104,7 +104,7 @@ function PaymentForm({ resumeToken, holdExpiresAt, onComplete }: Props) {
       </Button>
       <p className="flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <Lock className="size-3 shrink-0" aria-hidden />
-        Payments are securely processed by Stripe. OpenTicket does not store card details.
+        Payments are securely processed by Stripe. Evnelo does not store card details.
       </p>
     </form>
   );

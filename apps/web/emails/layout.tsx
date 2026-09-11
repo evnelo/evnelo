@@ -5,12 +5,12 @@ import { Body, Container, Head, Hr, Html, Img, Link, Preview, Section, Text } fr
 export type EmailBrand = { orgName: string; orgLogoUrl?: string | null; accent?: string | null; appUrl: string };
 
 export const colors = {
-  background: "#f6f4ee", card: "#ffffff", border: "#ddd9cd", ink: "#17170f", muted: "#6b6a60", accent: "#16603a",
-  paper: "#f1e6b2", paperInk: "#2b2407", perforation: "#c9bd85",
+  background: "#F7F7F2", card: "#FFFFFF", border: "#E9EAE4", ink: "#14151A", muted: "#6C6E73", accent: "#FF5A3C",
+  paper: "#14151A", paperInk: "#F7F7F2", perforation: "#3A3D44", lime: "#C9F269",
 };
 export const fonts = {
-  sans: "Geist, Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-  display: "Fraunces, 'Iowan Old Style', 'Palatino Linotype', Georgia, serif",
+  sans: "'Instrument Sans', Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+  display: "'Instrument Sans', Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
 };
 
 export function EmailLayout({ brand, preview, children, footer }: { brand: EmailBrand; preview: string; children: React.ReactNode; footer?: React.ReactNode }) {
@@ -24,7 +24,7 @@ export function EmailLayout({ brand, preview, children, footer }: { brand: Email
             {brand.orgLogoUrl ? (
               <Img src={brand.orgLogoUrl} alt={brand.orgName} height={28} style={{ height: 28, width: "auto", objectFit: "contain" }} />
             ) : (
-              <Text style={{ margin: 0, fontFamily: fonts.display, fontSize: 20, color: colors.ink }}>{brand.orgName}</Text>
+              <Text style={{ margin: 0, fontFamily: fonts.display, fontSize: 20, fontWeight: 600, letterSpacing: "-0.01em", color: colors.ink }}>{brand.orgName}</Text>
             )}
           </Section>
           <Section style={{ backgroundColor: colors.card, border: `1px solid ${colors.border}`, borderRadius: 16, padding: "32px 32px 28px" }}>
@@ -33,7 +33,7 @@ export function EmailLayout({ brand, preview, children, footer }: { brand: Email
           <Section style={{ padding: "20px 4px 0" }}>
             {footer}
             <Text style={{ margin: "8px 0 0", fontSize: 12, lineHeight: "18px", color: colors.muted }}>
-              Sent by {brand.orgName} through <Link href={brand.appUrl} style={{ color: colors.muted }}>OpenTicket</Link>. This is a transactional message about an event you registered for.
+              Sent by {brand.orgName} through <Link href={brand.appUrl} style={{ color: colors.muted }}>Evnelo</Link>. This is a transactional message about an event you registered for.
             </Text>
           </Section>
         </Container>
@@ -43,7 +43,7 @@ export function EmailLayout({ brand, preview, children, footer }: { brand: Email
 }
 
 export function Title({ children }: { children: React.ReactNode }) {
-  return <Text style={{ margin: "0 0 14px", fontFamily: fonts.display, fontSize: 32, lineHeight: "36px", letterSpacing: "-0.015em", fontWeight: 500, color: colors.ink }}>{children}</Text>;
+  return <Text style={{ margin: "0 0 14px", fontFamily: fonts.display, fontSize: 30, lineHeight: "36px", letterSpacing: "-0.03em", fontWeight: 700, color: colors.ink }}>{children}</Text>;
 }
 export function Para({ children, muted, style }: { children: React.ReactNode; muted?: boolean; style?: React.CSSProperties }) {
   return <Text style={{ margin: "0 0 12px", fontSize: 15, lineHeight: "23px", color: muted ? colors.muted : colors.ink, ...style }}>{children}</Text>;
@@ -97,8 +97,8 @@ export function TicketCard({ ticket, accent }: { ticket: EmailTicket; accent?: s
         <tbody>
           <tr>
             <td style={{ verticalAlign: "top", padding: "18px 16px 18px 20px" }}>
-              <Text style={{ margin: 0, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: colors.paperInk, opacity: 0.6 }}>Admit one</Text>
-              <Text style={{ margin: "4px 0 0", fontFamily: fonts.display, fontSize: 22, lineHeight: "26px", fontWeight: 500, color: colors.paperInk }}>{ticket.attendeeName}</Text>
+              <Text style={{ margin: 0, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: colors.accent }}>Admit one</Text>
+              <Text style={{ margin: "4px 0 0", fontFamily: fonts.display, fontSize: 22, lineHeight: "26px", fontWeight: 700, letterSpacing: "-0.02em", color: colors.paperInk }}>{ticket.attendeeName}</Text>
               <Text style={{ margin: "2px 0 0", fontSize: 13, color: colors.paperInk, opacity: 0.75 }}>
                 {ticket.ticketTypeName}{ticket.guestOf ? `, guest of ${ticket.guestOf}` : ""}
               </Text>
@@ -108,7 +108,7 @@ export function TicketCard({ ticket, accent }: { ticket: EmailTicket; accent?: s
             </td>
             <td width={144} style={{ verticalAlign: "middle", textAlign: "center", padding: "16px 16px 16px 12px", borderLeft: `2px dashed ${colors.perforation}` }}>
               <Img src={ticket.qrUrl} alt="Ticket QR code" width={112} height={112} style={{ width: 112, height: 112, backgroundColor: "#ffffff", borderRadius: 8, padding: 6, display: "inline-block" }} />
-              <Text style={{ margin: "6px 0 0", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: colors.paperInk, opacity: 0.55 }}>Scan at the door</Text>
+              <Text style={{ margin: "6px 0 0", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: colors.paperInk, opacity: 0.7 }}>Scan at the door</Text>
             </td>
           </tr>
         </tbody>

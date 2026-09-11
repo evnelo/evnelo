@@ -1,11 +1,11 @@
-# OpenTicket
+# Evnelo
 
-Open-source event ticketing you can run yourself. Publish an event, sell or give away tickets, collect registrations with your own questions, email and text attendees, scan them in at the door. Free events are free; the cloud edition charges 0.99% on paid tickets, self-hosting charges nothing beyond your own Stripe fees.
+**Events, in motion.** Open event infrastructure you can run yourself. Publish an event, sell or give away tickets, collect registrations with your own questions, email and text attendees, scan them in at the door. Free events are free; the cloud edition charges 0.99% on paid tickets, self-hosting charges nothing beyond your own Stripe fees.
 
 Built with TypeScript end to end: Next.js 15 (App Router, React 19), Tailwind v4, MySQL 8 via Drizzle, Stripe, Resend for email, Vonage for SMS, S3-compatible storage for images. One database, one container, three optional API keys.
 
 - Product spec: `docs/PRD.md`
-- Design system: `docs/DESIGN.md`
+- Brand: `branding/EVNELO_BRAND.md`; how it is implemented: `docs/DESIGN.md`
 - Delivery history and post-launch list: `docs/ROADMAP.md`
 - Conventions for contributors and coding agents: `AGENTS.md`
 
@@ -37,7 +37,7 @@ Built with TypeScript end to end: Next.js 15 (App Router, React 19), Tailwind v4
 Prerequisites: Node 22, pnpm 9, Docker (for MySQL).
 
 ```bash
-git clone <this repo> openticket && cd openticket
+git clone <this repo> evnelo && cd evnelo
 cp .env.example .env          # defaults work for local development
 docker compose up db -d       # MySQL 8 on localhost:3306
 pnpm install
@@ -123,21 +123,21 @@ Storage needs a CORS rule on the bucket allowing `POST` from `APP_URL`, and obje
 
 ## API, SDK and MCP
 
-Create keys under Dashboard → Settings → API keys (owners and admins). Keys are `ot_live_…`, sent as `Authorization: Bearer`, scoped `read` or `write`, and limited to 120 requests per minute with a separate throttle on failed authentication.
+Create keys under Dashboard → Settings → API keys (owners and admins). Keys are `ev_live_…`, sent as `Authorization: Bearer`, scoped `read` or `write`, and limited to 120 requests per minute with a separate throttle on failed authentication.
 
 - Resources under `/api/v1`: organization, events (publish, cancel, stats), ticket types, registration fields, orders (refund), attendees (approve, reject, cancel, CSV), check-ins, discount codes, waitlist, invites, webhooks. `GET /api/v1/public/events` is unauthenticated and takes the same filters as `/discover`.
 - Every write accepts an `Idempotency-Key`; replays return the original response with `Idempotency-Replayed: true`, a different body under the same key is a 409. Lists paginate with `limit`/`offset` and `pagination.nextOffset`. Bodies are capped at 256 KiB. Rate-limit headers are returned on every request that consumes quota.
 - `GET /api/v1/openapi.json` is the contract; a test fails the build if a route is missing from it. `GET /api/v1/docs` is the interactive reference.
-- `@ot/sdk` (`packages/sdk`): `createOpenTicketClient({ baseUrl, apiKey })` on openapi-fetch, plus `verifyWebhookSignature`.
+- `@ot/sdk` (`packages/sdk`): `createEvneloClient({ baseUrl, apiKey })` on openapi-fetch, plus `verifyWebhookSignature`.
 - MCP (`packages/mcp`): list, get, create, update and publish events, ticket types, registrations, exports, stats and public search, through the SDK.
 
 ```json
-{ "mcpServers": { "openticket": { "command": "pnpm", "args": ["--filter", "@ot/mcp", "start"], "env": { "OPENTICKET_URL": "https://your-instance", "OPENTICKET_API_KEY": "ot_live_..." } } } }
+{ "mcpServers": { "openticket": { "command": "pnpm", "args": ["--filter", "@ot/mcp", "start"], "env": { "EVNELO_URL": "https://your-instance", "EVNELO_API_KEY": "ev_live_..." } } } }
 ```
 
 ### Outbound webhooks
 
-Add endpoints under Settings → Webhooks and pick events: `registration.created`, `order.paid`, `order.refunded`, `attendee.checked_in`, `event.published`, `event.updated`, `event.cancelled`. Each delivery is a JSON envelope (`id`, `type`, `createdAt`, `organizationId`, `data`) signed with HMAC-SHA256 over `{timestamp}.{body}`, sent as `openticket-signature: v1=…` with `openticket-timestamp` and `openticket-delivery-id`. Verify with the SDK helper and reject timestamps older than five minutes. Deliveries retry with exponential backoff up to eight attempts; the Settings page shows recent deliveries and can send a test ping or rotate the secret.
+Add endpoints under Settings → Webhooks and pick events: `registration.created`, `order.paid`, `order.refunded`, `attendee.checked_in`, `event.published`, `event.updated`, `event.cancelled`. Each delivery is a JSON envelope (`id`, `type`, `createdAt`, `organizationId`, `data`) signed with HMAC-SHA256 over `{timestamp}.{body}`, sent as `evnelo-signature: v1=…` with `openticket-timestamp` and `openticket-delivery-id`. Verify with the SDK helper and reject timestamps older than five minutes. Deliveries retry with exponential backoff up to eight attempts; the Settings page shows recent deliveries and can send a test ping or rotate the secret.
 
 ## Testing
 
@@ -182,6 +182,8 @@ Serverless hosts (Vercel and similar) work with `JOBS_INLINE=false` plus a sched
 - **Errors:** unexpected failures go through one helper that logs with a stable `[scope]` prefix and forwards to Sentry when configured. Notification retries are warnings; only a notification that exhausts its retries is an error.
 - **Moderation:** "Report this event" on public pages stores a row and emails `ABUSE_EMAIL`.
 - **Known follow-ups:** a sweep for registration files uploaded but never submitted, Stripe Connect onboarding for the cloud edition, and the rest of the post-launch list in `docs/ROADMAP.md`.
+
+Internal identifiers keep the original working name: the repository, Docker image and database are `openticket`, packages are `@ot/*`, and cookies start with `ot_`. Everything a user or integrator sees says Evnelo.
 
 ## Contributing
 

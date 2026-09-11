@@ -32,8 +32,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (process.env.NODE_ENV === "production") throw new Error("RESEND_API_KEY is not set; magic-link sign-in needs email.");
           return; // dev without email: the link above is enough
         }
-        const { html, text } = await renderEmail(React.createElement(MagicLink, { brand: { orgName: "OpenTicket", appUrl: env.APP_URL }, url, host }));
-        await sendEmail({ to: identifier, subject: magicLinkSubject({ brand: { orgName: "OpenTicket", appUrl: env.APP_URL }, url, host }), html, text });
+        const { html, text } = await renderEmail(React.createElement(MagicLink, { brand: { orgName: "Evnelo", appUrl: env.APP_URL }, url, host }));
+        await sendEmail({ to: identifier, subject: magicLinkSubject({ brand: { orgName: "Evnelo", appUrl: env.APP_URL }, url, host }), html, text });
       },
     }),
     ...(googleEnabled ? [Google({ clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET, allowDangerousEmailAccountLinking: true })] : []),

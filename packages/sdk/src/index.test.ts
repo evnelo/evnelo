@@ -1,6 +1,6 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { WEBHOOK_SIGNATURE_HEADER, WEBHOOK_TIMESTAMP_HEADER, apiBaseUrl, createOpenTicketClient, signWebhook, verifyWebhookRequest, verifyWebhookSignature, type Schemas } from "./index";
+import { WEBHOOK_SIGNATURE_HEADER, WEBHOOK_TIMESTAMP_HEADER, apiBaseUrl, createEvneloClient, signWebhook, verifyWebhookRequest, verifyWebhookSignature, type Schemas } from "./index";
 
 function mockFetch(body: unknown, status = 200) {
   const calls: Request[] = [];
@@ -11,17 +11,17 @@ function mockFetch(body: unknown, status = 200) {
   return { calls, fetch };
 }
 
-describe("createOpenTicketClient", () => {
+describe("createEvneloClient", () => {
   it("prefixes /api/v1, sends the bearer key, and types paths and responses from the schema", async () => {
     const page = { data: [], pagination: { limit: 10, offset: 0, nextOffset: null } };
     const { calls, fetch } = mockFetch(page);
-    const client = createOpenTicketClient({ baseUrl: "https://tickets.example.com/", apiKey: "ot_live_test", fetch });
+    const client = createEvneloClient({ baseUrl: "https://tickets.example.com/", apiKey: "ev_live_test", fetch });
 
     const { data, error } = await client.GET("/events", { params: { query: { status: "published", limit: 10 } } });
     expect(error).toBeUndefined();
     expect(data?.pagination.nextOffset).toBeNull();
     expect(calls[0]?.url).toBe("https://tickets.example.com/api/v1/events?status=published&limit=10");
-    expect(calls[0]?.headers.get("authorization")).toBe("Bearer ot_live_test");
+    expect(calls[0]?.headers.get("authorization")).toBe("Bearer ev_live_test");
 
     const id = "01AAAAAAAAAAAAAAAAAAAAAAAA";
     await client.POST("/events/{id}/ticket-types", { params: { path: { id } }, body: { name: "General", priceMinor: 0 }, headers: { "Idempotency-Key": "abc" } });
@@ -40,7 +40,7 @@ describe("createOpenTicketClient", () => {
 
   it("surfaces documented errors as `error` with the documented shape", async () => {
     const { fetch } = mockFetch({ error: { code: "not_found", message: "Event not found." } }, 404);
-    const client = createOpenTicketClient({ baseUrl: "http://localhost:3000", apiKey: "k", fetch });
+    const client = createEvneloClient({ baseUrl: "http://localhost:3000", apiKey: "k", fetch });
     const { data, error, response } = await client.GET("/events/{id}", { params: { path: { id: "01AAAAAAAAAAAAAAAAAAAAAAAA" } } });
     expect(data).toBeUndefined();
     expect(error?.error.code).toBe("not_found");

@@ -36,8 +36,8 @@ const samples: Record<string, () => React.ReactElement> = {
   registration_rejected: () => React.createElement(RegistrationRejected, { brand, event, attendeeName: "Ana", paid: false }),
   event_updated: () => React.createElement(EventUpdated, { brand, event, attendeeName: "Ana", changes: { schedule: true, venue: false } }),
   event_cancelled: () => React.createElement(EventCancelled, { brand, event, attendeeName: "Ana", paid: true }),
-  magic_link: () => React.createElement(MagicLink, { brand: { ...brand, orgName: "OpenTicket" }, url: "#", host: "localhost:3000" }),
-  org_invite: () => React.createElement(OrgInvite, { brand: { ...brand, orgName: "OpenTicket" }, url: "#", orgName: "Demo Collective", role: "Admin", invitedBy: "Mauricio" }),
+  magic_link: () => React.createElement(MagicLink, { brand: { ...brand, orgName: "Evnelo" }, url: "#", host: "localhost:3000" }),
+  org_invite: () => React.createElement(OrgInvite, { brand: { ...brand, orgName: "Evnelo" }, url: "#", orgName: "Demo Collective", role: "Admin", invitedBy: "Mauricio" }),
 };
 
 export async function GET(req: Request, { params }: { params: Promise<{ template: string }> }) {

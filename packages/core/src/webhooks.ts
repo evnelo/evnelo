@@ -22,9 +22,9 @@ export function webhookRetryDelayMs(attempt: number): number {
 }
 
 /** Header names, and the string that gets signed: `{timestamp}.{body}`. */
-export const WEBHOOK_SIGNATURE_HEADER = "openticket-signature";
-export const WEBHOOK_TIMESTAMP_HEADER = "openticket-timestamp";
-export const WEBHOOK_ID_HEADER = "openticket-delivery-id";
+export const WEBHOOK_SIGNATURE_HEADER = "evnelo-signature";
+export const WEBHOOK_TIMESTAMP_HEADER = "evnelo-timestamp";
+export const WEBHOOK_ID_HEADER = "evnelo-delivery-id";
 export const WEBHOOK_TOLERANCE_SECONDS = 300;
 
 export function webhookSignedPayload(timestamp: number | string, body: string): string {

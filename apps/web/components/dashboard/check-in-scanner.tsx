@@ -36,9 +36,9 @@ const OUTCOME: Record<Outcome, { title: string; tone: "ok" | "warn" | "bad" }> =
 
 /** Sunlight legibility: a filled banner, not a tint. The band repeats the verdict as pure colour. */
 const TONE: Record<"ok" | "warn" | "bad", { panel: string; band: string; button: string }> = {
-  ok: { panel: "bg-[#14562f] text-white", band: "bg-[#5cc98b]", button: "border-white/40 bg-white/10 text-white hover:bg-white/20" },
-  warn: { panel: "bg-[#f2c541] text-[#2b2407]", band: "bg-[#8a6100]", button: "border-[#2b2407]/30 bg-[#2b2407]/5 text-[#2b2407] hover:bg-[#2b2407]/10" },
-  bad: { panel: "bg-[#8f2b16] text-white", band: "bg-[#f0805f]", button: "border-white/40 bg-white/10 text-white hover:bg-white/20" },
+  ok: { panel: "bg-lime text-ink", band: "bg-ink", button: "border-ink/30 bg-ink/5 text-ink hover:bg-ink/10" },
+  warn: { panel: "bg-[#FFD666] text-ink", band: "bg-[#8A6100]", button: "border-ink/30 bg-ink/5 text-ink hover:bg-ink/10" },
+  bad: { panel: "bg-[#8E1E14] text-white", band: "bg-[#FF9C8A]", button: "border-white/40 bg-white/10 text-white hover:bg-white/20" },
 };
 
 const queueKey = (eventId: string) => `ot-checkin-queue-${eventId}`;
@@ -219,7 +219,7 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
           <div className="min-w-0">
             <p className="eyebrow">Checked in</p>
-            <p className="mt-1 flex items-baseline gap-2 font-display leading-none" style={{ fontVariationSettings: '"opsz" 96, "SOFT" 40' }}>
+            <p className="mt-1 flex items-baseline gap-2 font-display leading-none">
               <span className="text-5xl tabular-nums">{manifest.stats.checkedIn}</span>
               <span className="text-xl tabular-nums text-muted-foreground">/ {manifest.stats.confirmed}</span>
             </p>
@@ -248,7 +248,7 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs text-muted-foreground">
           <span className="tabular-nums">{pct}% of confirmed tickets · updated {time(manifest.generatedAt)}{queue.length ? ` · ${queue.length} waiting to sync` : ""}</span>
-          {!online && <span className="inline-flex items-center gap-1 rounded-full bg-[#fbf1d6] px-2 py-1 font-medium text-[#6b5300]"><WifiOff className="size-3.5" /> Offline: scans are saved and synced later</span>}
+          {!online && <span className="inline-flex items-center gap-1 rounded-full bg-warning px-2 py-1 font-medium text-warning-foreground"><WifiOff className="size-3.5" /> Offline: scans are saved and synced later</span>}
         </div>
       </div>
 
@@ -259,7 +259,7 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
             <div className="min-w-0">
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] opacity-80">{OUTCOME[result.outcome].title}</p>
               {result.name && result.outcome !== "error" && (
-                <p className="mt-1 font-display text-3xl leading-tight" style={{ fontVariationSettings: '"opsz" 48' }}>
+                <p className="mt-1 font-display text-3xl leading-tight">
                   {result.name}
                 </p>
               )}

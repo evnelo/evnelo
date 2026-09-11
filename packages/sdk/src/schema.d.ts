@@ -546,7 +546,7 @@ export interface paths {
         put?: never;
         /**
          * Subscribe an endpoint to events
-         * @description The signing `secret` is returned in this response only. Deliveries carry `openticket-signature` (hex HMAC-SHA256 of `{timestamp}.{body}`), `openticket-timestamp` (unix seconds) and `openticket-delivery-id`, and are retried with backoff.
+         * @description The signing `secret` is returned in this response only. Deliveries carry `evnelo-signature` (hex HMAC-SHA256 of `{timestamp}.{body}`), `evnelo-timestamp` (unix seconds) and `evnelo-delivery-id`, and are retried with backoff.
          */
         post: operations["createWebhook"];
         delete?: never;

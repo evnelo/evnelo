@@ -1,68 +1,91 @@
 @import "tailwindcss";
 
-/* Fraunces Variable = display serif for event names; Geist = UI. Both bundled from npm in layout.tsx */
+/* Evnelo brand (branding/EVNELO_BRAND.md): Instrument Sans for everything, IBM Plex Mono for code.
+   Paper + Ink + Pulse own the look; Lime and Sky are accents. Both fonts are bundled from npm in layout.tsx. */
 
 :root {
-  /* base */
-  --background: #f6f4ee;
-  --foreground: #17170f;
-  --muted: #eceadf;
-  --muted-foreground: #6b6a60;
-  --card: #ffffff;
-  --card-foreground: #17170f;
-  --popover: #ffffff;
-  --popover-foreground: #17170f;
-  --border: #ddd9cd;
-  --input: #ddd9cd;
-  --ring: #16603a;
+  /* brand palette */
+  --evnelo-ink: #14151A;
+  --evnelo-paper: #F7F7F2;
+  --evnelo-pulse: #FF5A3C;
+  --evnelo-lime: #C9F269;
+  --evnelo-sky: #A8D8FF;
+  --evnelo-mist: #E9EAE4;
+  --evnelo-white: #FFFFFF;
 
-  /* house accent: gate green */
-  --primary: #16603a;
-  --primary-foreground: #f5f5f3;
-  --secondary: #ebebe7;
-  --secondary-foreground: #000000;
-  --accent: #e4efe7;
-  --accent-foreground: #0f4228;
-  --destructive: #a8341f;
-  --destructive-foreground: #f5f5f3;
+  /* semantic */
+  --background: var(--evnelo-paper);
+  --foreground: var(--evnelo-ink);
+  --muted: #F0F1EC;
+  --muted-foreground: #6C6E73;
+  --card: var(--evnelo-white);
+  --card-foreground: var(--evnelo-ink);
+  --popover: var(--evnelo-white);
+  --popover-foreground: var(--evnelo-ink);
+  --border: var(--evnelo-mist);
+  --input: #DADBD5;
+  --ring: var(--evnelo-pulse);
+
+  --primary: var(--evnelo-pulse);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--evnelo-mist);
+  --secondary-foreground: var(--evnelo-ink);
+  /* selected / highlighted: a pale Pulse tint with readable ink */
+  --accent: #FFE9E3;
+  --accent-foreground: #9A2E17;
+  /* functional colours outside the core palette: an accessible red, never Pulse */
+  --destructive: #B42318;
+  --destructive-foreground: #FFFFFF;
+  --success: var(--evnelo-lime);
+  --success-foreground: var(--evnelo-ink);
+  --info: var(--evnelo-sky);
+  --info-foreground: var(--evnelo-ink);
+  --warning: #FFF1C2;
+  --warning-foreground: #6B4B00;
 
   /* organizer-overridable per event */
   --accent-event: var(--primary);
   --accent-event-foreground: var(--primary-foreground);
 
-  /* the ticket object */
-  --ticket-paper: #f1e6b2;
-  --ticket-ink: #2b2407;
-  --ticket-perforation: #c9bd85;
+  /* the ticket object: an ink pass with a pulse edge */
+  --ticket-paper: var(--evnelo-ink);
+  --ticket-ink: var(--evnelo-paper);
+  --ticket-perforation: #3A3D44;
 
   --radius: 0.75rem;
-  --shadow-card: 0 1px 2px rgb(23 23 15 / 0.04), 0 4px 14px -6px rgb(23 23 15 / 0.10);
-  --shadow-lift: 0 2px 4px rgb(23 23 15 / 0.05), 0 14px 32px -12px rgb(23 23 15 / 0.22);
+  --shadow-card: 0 1px 2px rgb(20 21 26 / 0.04), 0 8px 24px rgb(20 21 26 / 0.06);
+  --shadow-lift: 0 2px 4px rgb(20 21 26 / 0.05), 0 16px 32px -12px rgb(20 21 26 / 0.18);
 }
 
 .dark {
-  --background: #161817;
-  --foreground: #ececE7;
-  --muted: #232624;
-  --muted-foreground: #9a9c96;
-  --card: #1d201e;
-  --card-foreground: #ececE7;
-  --popover: #1d201e;
-  --popover-foreground: #ececE7;
-  --border: #2e3230;
-  --input: #2e3230;
-  --ring: #3da46b;
-  --primary: #3da46b;
-  --primary-foreground: #0b1a11;
-  --secondary: #232624;
-  --secondary-foreground: #ececE7;
-  --accent: #1b2f24;
-  --accent-foreground: #9fdcb9;
-  --destructive: #d4553b;
-  --destructive-foreground: #161817;
-  --ticket-paper: #e5d89f;
-  --ticket-ink: #2b2407;
-  --ticket-perforation: #b8ab74;
+  --background: #111216;
+  --foreground: #F7F7F2;
+  --muted: #202227;
+  --muted-foreground: #A8AAB0;
+  --card: #1A1C21;
+  --card-foreground: #F7F7F2;
+  --popover: #1A1C21;
+  --popover-foreground: #F7F7F2;
+  --border: #2A2D32;
+  --input: #2A2D32;
+  --ring: #FF5A3C;
+  --primary: #FF5A3C;
+  --primary-foreground: #FFFFFF;
+  --secondary: #202227;
+  --secondary-foreground: #F7F7F2;
+  --accent: #3A1F18;
+  --accent-foreground: #FFB4A3;
+  --destructive: #E5533D;
+  --destructive-foreground: #111216;
+  --success: #C9F269;
+  --success-foreground: #14151A;
+  --info: #A8D8FF;
+  --info-foreground: #14151A;
+  --warning: #3A2E08;
+  --warning-foreground: #FFE08A;
+  --ticket-paper: #1A1C21;
+  --ticket-ink: #F7F7F2;
+  --ticket-perforation: #3A3D44;
 }
 
 @theme inline {
@@ -89,16 +112,29 @@
   --color-event-foreground: var(--accent-event-foreground);
   --color-ticket-paper: var(--ticket-paper);
   --color-ticket-ink: var(--ticket-ink);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-ink: var(--evnelo-ink);
+  --color-paper: var(--evnelo-paper);
+  --color-pulse: var(--evnelo-pulse);
+  --color-lime: var(--evnelo-lime);
+  --color-sky: var(--evnelo-sky);
+  --color-mist: var(--evnelo-mist);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
   --shadow-card: var(--shadow-card);
   --shadow-lift: var(--shadow-lift);
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces Variable", Georgia, serif;
+  --font-sans: "Instrument Sans Variable", "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-display: var(--font-sans);
 }
 
 @layer base {
@@ -111,7 +147,6 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
-    font-feature-settings: "ss01", "cv11";
   }
   ::selection {
     background: var(--accent);
@@ -130,13 +165,12 @@
 }
 
 @layer components {
-  /* display type: large, tight, soft optical axis */
+  /* display type: Instrument Sans, bold, tight tracking (brand type scale) */
   .display {
     font-family: var(--font-display);
-    font-variation-settings: "opsz" 144, "SOFT" 60, "WONK" 0;
-    letter-spacing: -0.02em;
-    line-height: 0.98;
-    font-weight: 500;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
     text-wrap: balance;
   }
 
@@ -149,8 +183,7 @@
     @apply w-full text-center text-xs font-medium bg-event text-event-foreground py-0.5 tracking-wide;
   }
   .date-leaf > span:last-child {
-    @apply text-2xl leading-none py-1.5 font-display;
-    font-variation-settings: "opsz" 36, "SOFT" 40;
+    @apply text-2xl leading-none py-1.5 font-semibold tracking-tight text-ink;
   }
 
   /* the ticket object: paper stub with a perforated edge before the QR */
@@ -361,4 +394,21 @@
   .animate-panel-out { animation: panel-out 120ms ease-in both; }
   .animate-sheet-in { animation: sheet-in 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
   .animate-sheet-out { animation: sheet-out 140ms ease-in both; }
+}
+
+@layer components {
+  /* Flow Line: the brand's motif, a rounded line through checkpoints. Use sparingly (hero, ticket, empty states). */
+  .flow-line {
+    stroke: var(--evnelo-pulse);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
+  .flow-node-lime { fill: var(--evnelo-lime); }
+  .flow-node-sky { fill: var(--evnelo-sky); }
+  .flow-node-pulse { fill: var(--evnelo-pulse); }
+  .code-panel {
+    @apply rounded-md bg-ink text-paper font-mono text-[13px] leading-6;
+  }
 }

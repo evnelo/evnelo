@@ -1,29 +1,34 @@
 import { ImageResponse } from "next/og";
-import { OG_SIZE, og, ogFonts } from "@/lib/og";
+import { OG_SIZE, SYMBOL_PATH, og, ogFontList } from "@/lib/og";
 
 export const runtime = "nodejs";
 export const size = OG_SIZE;
 export const contentType = "image/png";
-export const alt = "OpenTicket";
+export const alt = "Evnelo";
 
-/** Default share card for pages without their own (discover, organization pages, sign-in). */
+/** Default share card: wordmark, tagline, the Flow Line motif (brand book §15). */
 export default async function DefaultOgImage() {
-  const fonts = await ogFonts();
+  const fonts = await ogFontList();
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 72, background: og.cream, color: og.ink, fontFamily: "Geist" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 56, height: 56, borderRadius: 14, background: og.green }}>
-            <div style={{ width: 30, height: 20, borderRadius: 5, border: `3px solid ${og.cream}`, display: "flex" }} />
-          </div>
-          <span style={{ fontFamily: "Fraunces", fontSize: 40 }}>OpenTicket</span>
+      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 72, background: og.paper, color: og.ink, fontFamily: "Instrument Sans" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <svg viewBox="20 20 410 410" width={52} height={52}><path d={SYMBOL_PATH} fill={og.pulse} fillRule="evenodd" /></svg>
+          <span style={{ fontSize: 40, fontWeight: 600, letterSpacing: -1.5 }}>evnelo</span>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          <div style={{ fontFamily: "Fraunces", fontSize: 92, lineHeight: 1, letterSpacing: -2, display: "flex" }}>Tickets, without the tax on joy.</div>
-          <div style={{ fontSize: 32, color: og.muted, display: "flex" }}>Open-source ticketing. Free events are free; paid events cost the host 0.99%.</div>
+        <svg width="1056" height="120" viewBox="0 0 1056 120" style={{ position: "absolute", left: 72, top: 250 }}>
+          <path d="M8 90 C 200 90, 240 30, 420 30 S 640 90, 820 90 S 980 40, 1048 40" stroke={og.pulse} strokeWidth="3" fill="none" strokeLinecap="round" />
+          <circle cx="8" cy="90" r="9" fill={og.pulse} />
+          <circle cx="420" cy="30" r="9" fill={og.lime} stroke={og.ink} strokeWidth="2" />
+          <circle cx="820" cy="90" r="9" fill={og.sky} stroke={og.ink} strokeWidth="2" />
+          <circle cx="1048" cy="40" r="9" fill={og.pulse} />
+        </svg>
+        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          <div style={{ fontSize: 96, fontWeight: 700, lineHeight: 1, letterSpacing: -4, display: "flex" }}>Events, in motion.</div>
+          <div style={{ fontSize: 32, color: og.muted, display: "flex" }}>Open event infrastructure. Publish, register, attend.</div>
         </div>
       </div>
     ),
-    { ...OG_SIZE, fonts: [{ name: "Fraunces", data: fonts.display, weight: 500, style: "normal" }, { name: "Geist", data: fonts.sans, weight: 400, style: "normal" }, { name: "Geist", data: fonts.sansMedium, weight: 500, style: "normal" }] },
+    { ...OG_SIZE, fonts },
   );
 }

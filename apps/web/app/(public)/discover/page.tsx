@@ -57,7 +57,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const indexable = !filters.q && filters.offset === 0;
   return {
     title,
-    description: "Public events from every host on OpenTicket. Search by city, topic, date, price and distance.",
+    description: "Public events from every host on Evnelo. Search by city, topic, date, price and distance.",
     robots: indexable ? "index,follow" : "noindex,follow",
     alternates: { canonical: `${env.APP_URL}${discoverHref(filters, { offset: 0 })}` },
   };
@@ -134,7 +134,7 @@ export default async function DiscoverPage({ searchParams }: Props) {
           <p className="eyebrow animate-rise">Discover</p>
           <h1 className="display animate-rise mt-3 text-5xl sm:text-7xl" style={stagger(1)}>{headline(filters, tagName)}</h1>
           <p className="animate-rise mx-auto mt-4 max-w-xl text-base text-muted-foreground sm:text-lg" style={stagger(2)}>
-            Talks, workshops, dinners and meetups from every host on OpenTicket.
+            Talks, workshops, dinners and meetups from every host on Evnelo.
           </p>
           <div className="animate-rise" style={stagger(3)}>
             <SearchForm filters={filters} cities={cities} />

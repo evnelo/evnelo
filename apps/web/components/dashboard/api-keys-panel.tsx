@@ -23,7 +23,7 @@ export function ApiKeysPanel({ keys, canManage, docsUrl }: { keys: Key[]; canMan
   return (
     <div className="space-y-4">
       <Note>
-        Keys call the <a href={docsUrl} className="underline decoration-dotted underline-offset-4">REST API</a> as this organization. Send them as <code className="rounded bg-card px-1 text-xs">Authorization: Bearer ot_live_…</code>. Read keys list and fetch; write keys also create.
+        Keys call the <a href={docsUrl} className="underline decoration-dotted underline-offset-4">REST API</a> as this organization. Send them as <code className="rounded bg-card px-1 text-xs">Authorization: Bearer ev_live_…</code>. Read keys list and fetch; write keys also create.
       </Note>
       {secret && (
         <div className="animate-rise rounded-xl border border-primary/30 bg-accent p-4 text-sm">

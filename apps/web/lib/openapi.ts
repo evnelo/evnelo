@@ -168,10 +168,10 @@ const exampleWebhook = { id: "01J9Z6M5Y3K3F1Q2R8S9T0V1W8", organizationId: examp
 export const openApiDocument = {
   openapi: "3.1.0",
   info: {
-    title: "OpenTicket API",
+    title: "Evnelo API",
     version: "1.0.0",
     description: [
-      "Versioned JSON API for OpenTicket. Organization endpoints use scoped API keys (`Authorization: Bearer ot_live_…`, created under Dashboard → Settings → API keys) with `read` or `write` scope; public discovery does not require authentication.",
+      "Versioned JSON API for Evnelo. Organization endpoints use scoped API keys (`Authorization: Bearer ev_live_…`, created under Dashboard → Settings → API keys) with `read` or `write` scope; public discovery does not require authentication.",
       "Every organization endpoint is scoped to the key's organization: objects of other organizations answer 404. Money is integer minor units plus an ISO 4217 `currency`; timestamps are ISO 8601 in UTC.",
       "Lists paginate with `limit`/`offset` and return `pagination.nextOffset` (null on the last page). Writes accept `Idempotency-Key`. Validation failures are 422 with zod `issues`; JSON bodies are capped at 256 KiB.",
     ].join("\n\n"),
@@ -475,7 +475,7 @@ export const openApiDocument = {
       }),
       post: write({
         tags: ["Webhooks"], operationId: "createWebhook", summary: "Subscribe an endpoint to events",
-        description: "The signing `secret` is returned in this response only. Deliveries carry `openticket-signature` (hex HMAC-SHA256 of `{timestamp}.{body}`), `openticket-timestamp` (unix seconds) and `openticket-delivery-id`, and are retried with backoff.",
+        description: "The signing `secret` is returned in this response only. Deliveries carry `evnelo-signature` (hex HMAC-SHA256 of `{timestamp}.{body}`), `evnelo-timestamp` (unix seconds) and `evnelo-delivery-id`, and are retried with backoff.",
         requestBody: { schema: ref("WebhookInput") },
         ok: { status: "201", description: "Webhook created, with its secret", schema: dataSchema("WebhookWithSecret") },
       }),
@@ -530,7 +530,7 @@ export const openApiDocument = {
       RateLimitReset: { description: "Unix time (seconds) when the current window resets.", schema: { type: "integer" } },
     },
     securitySchemes: {
-      bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "ot_live_*", description: "Organization-scoped API key with read or write scope. Keys are SHA-256 hashed at rest and shown once at creation." },
+      bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "ev_live_*", description: "Organization-scoped API key with read or write scope. Keys are SHA-256 hashed at rest and shown once at creation." },
     },
     schemas: {
       Error: {

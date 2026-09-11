@@ -161,7 +161,7 @@ export async function purgeApiHousekeeping(db: Database, now = new Date()) {
 
 /* ---------- key management ---------- */
 
-export const API_KEY_PREFIX = "ot_live_";
+export const API_KEY_PREFIX = "ev_live_";
 
 /** Mint a key. The secret is returned exactly once; only its SHA-256 and a display prefix are stored. */
 export async function createApiKey(db: Database, input: { organizationId: string; name: string; scopes: ApiScope[] }) {

@@ -25,7 +25,7 @@ export async function googleWalletSaveUrl(t: TicketPassData): Promise<string> {
     ...(t.locationType !== "online" && t.venueName
       ? { venue: { name: text(t.venueName), address: text([t.address, t.city].filter(Boolean).join(", ") || t.venueName) } }
       : {}),
-    hexBackgroundColor: "#f1e6b2",
+    hexBackgroundColor: "#14151A",
     ...(t.logoUrl ? { logo: { sourceUri: { uri: t.logoUrl } } } : {}),
     ...(t.coverImageUrl ? { heroImage: { sourceUri: { uri: t.coverImageUrl } } } : {}),
   };
@@ -36,7 +36,7 @@ export async function googleWalletSaveUrl(t: TicketPassData): Promise<string> {
     ticketHolderName: t.attendeeName,
     ticketType: text(t.ticketTypeName),
     barcode: { type: "QR_CODE", value: t.ticketUrl, alternateText: t.attendeeName },
-    hexBackgroundColor: "#f1e6b2",
+    hexBackgroundColor: "#14151A",
     textModulesData: [{ id: "where", header: "Where", body: whereLabel(t) }],
     linksModuleData: { uris: [{ id: "ticket", uri: t.ticketUrl, description: "Ticket page" }] },
   };

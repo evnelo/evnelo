@@ -4,8 +4,8 @@ import { env } from "@/lib/env";
 import { secretFromEnv, whereLabel, type TicketPassData } from "./index";
 
 // The ticket's paper palette, so the pass matches /t/{token}
-const PAPER = "rgb(241, 230, 178)";
-const INK = "rgb(43, 36, 7)";
+const PAPER = "rgb(20, 21, 26)";
+const INK = "rgb(247, 247, 242)";
 
 /** Apple requires icon.png; until per-org artwork upload exists we ship a flat ink square. */
 function solidPng(size: number, rgb: [number, number, number]) {
@@ -29,7 +29,7 @@ export async function buildApplePass(t: TicketPassData): Promise<Buffer> {
     logoText: t.orgName,
     backgroundColor: PAPER,
     foregroundColor: INK,
-    labelColor: INK,
+    labelColor: "rgb(255, 90, 60)",
     relevantDate: t.startsAt.toISOString(),
     expirationDate: new Date(t.endsAt.getTime() + 24 * 3600_000).toISOString(),
     ...(t.lat != null && t.lng != null ? { locations: [{ latitude: t.lat, longitude: t.lng, relevantText: t.eventName }] } : {}),

@@ -18,7 +18,7 @@ export function buildIcs(e: {
   uid: string; start: Date; end: Date; summary: string; description?: string | null; location?: string | null; url: string;
 }) {
   const lines = [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//OpenTicket//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Evnelo//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
     "BEGIN:VEVENT",
     `UID:${e.uid}`, `DTSTAMP:${stamp(new Date())}`, `DTSTART:${stamp(e.start)}`, `DTEND:${stamp(e.end)}`,
     `SUMMARY:${esc(e.summary)}`,

@@ -40,7 +40,7 @@ function Avatar({ src, name, className }: { src: string | null; name: string; cl
   if (src) return <img src={src} alt="" className={cn("size-12 rounded-full border border-border/80 bg-card object-cover", className)} />;
   const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join("");
   return (
-    <span aria-hidden className={cn("flex size-12 shrink-0 items-center justify-center rounded-full bg-accent font-display text-lg text-accent-foreground", className)} style={{ fontVariationSettings: '"opsz" 24' }}>
+    <span aria-hidden className={cn("flex size-12 shrink-0 items-center justify-center rounded-full bg-accent font-display text-lg text-accent-foreground", className)}>
       {initials}
     </span>
   );
@@ -195,7 +195,7 @@ export default async function EventPage({ params }: Params) {
                   {sponsors.map((s) => (
                     <li key={s.id} className="flex min-w-40 flex-col justify-between gap-2 rounded-xl border border-border/80 bg-card px-4 py-3 shadow-card">
                       <a href={s.website ?? undefined} target="_blank" rel="noopener noreferrer" className="sponsor-logo inline-flex min-h-8 items-center">
-                        {s.logoUrl ? <img src={s.logoUrl} alt={s.name} className="h-8 w-auto max-w-40 object-contain" /> : <span className="font-display text-lg" style={{ fontVariationSettings: '"opsz" 24' }}>{s.name}</span>}
+                        {s.logoUrl ? <img src={s.logoUrl} alt={s.name} className="h-8 w-auto max-w-40 object-contain" /> : <span className="font-display text-lg">{s.name}</span>}
                       </a>
                       <div className="flex flex-wrap items-center gap-x-3">
                         {s.tier && <span className="eyebrow">{s.tier}</span>}

@@ -39,7 +39,7 @@ function TicketIllustration() {
         <div className="date-leaf border-[color:var(--ticket-perforation)]" style={{ ["--accent-event" as string]: "var(--ticket-ink)", ["--accent-event-foreground" as string]: "var(--ticket-paper)" }}>
           <span>Oct</span><span>15</span>
         </div>
-        <p className="display mt-5 text-2xl" style={{ fontVariationSettings: '"opsz" 36, "SOFT" 60' }}>Product Night</p>
+        <p className="display mt-5 text-2xl">Product Night</p>
         <p className="mt-1 text-xs opacity-70">Thursday, 7:00 PM · Cubo Itaú</p>
         <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.22em] opacity-55">Admit one</p>
       </div>
@@ -122,7 +122,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         </div>
       </div>
 
-      <aside className="my-8 hidden flex-col justify-center gap-12 rounded-2xl bg-muted px-12 py-16 lg:flex" aria-label="Why OpenTicket">
+      <aside className="my-8 hidden flex-col justify-center gap-12 rounded-2xl bg-muted px-12 py-16 lg:flex" aria-label="Why Evnelo">
         <TicketIllustration />
         <ul className="space-y-4">
           {REASONS.map(({ icon: Icon, text }) => (

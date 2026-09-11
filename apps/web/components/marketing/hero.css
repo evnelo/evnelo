@@ -67,9 +67,9 @@
 .hero-note-left::after { color: var(--evnelo-pulse); }
 .hero-note-right { right: 4%; top: 83%; text-align: center; font-size: 2.7cqw; }
 /* Reserve more space under the copy as desktop text wraps, without stretching the ribbon. */
-@media (min-width: 1024px) and (max-width: 1279px) {
-  .hero-box { min-height: calc(62vw + (1280px - 100vw) * 0.375); }
-  .hero-scene { top: calc((1280px - 100vw) * 0.375); bottom: auto; aspect-ratio: 1000 / 620; }
+@media (min-width: 1024px) and (max-width: 1151px) {
+  .hero-box { min-height: calc(62vw + (1152px - 100vw) * 0.375); }
+  .hero-scene { top: calc((1152px - 100vw) * 0.375); bottom: auto; aspect-ratio: 1000 / 620; }
 }
 /* Keep the scene's aspect ratio when it sits below the copy on tablet. */
 @media (min-width: 641px) and (max-width: 1023px) {

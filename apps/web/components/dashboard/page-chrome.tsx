@@ -14,7 +14,7 @@ export function PageHeader({ title, description, actions, above, className }: { 
     <header className={cn("flex flex-wrap items-start justify-between gap-x-6 gap-y-4", className)}>
       <div className="min-w-0 flex-1 basis-64">
         {above}
-        <h1 className="display truncate text-3xl">{title}</h1>
+        <h1 className="display text-3xl break-words">{title}</h1>
         {description && <div className="mt-1.5 max-w-2xl text-sm text-muted-foreground">{description}</div>}
       </div>
       {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
@@ -35,6 +35,38 @@ export function SectionCard({ title, description, aside, children, className }: 
         <div className="min-w-0">{children}</div>
       </div>
     </section>
+  );
+}
+
+/**
+ * The same section, but as a warm tray with the heading on top. Use it when the body already
+ * carries its own white surface (a table, a stack of cards) so two frames do not fight.
+ */
+export function SectionTray({ title, description, actions, children, className, tone = "default" }: { title: React.ReactNode; description?: React.ReactNode; actions?: React.ReactNode; children: React.ReactNode; className?: string; tone?: "default" | "destructive" }) {
+  return (
+    <section className={cn("rounded-xl border p-5 sm:p-6", tone === "destructive" ? "border-destructive/35 bg-destructive/[0.04]" : "border-border/80 bg-muted/30", className)}>
+      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
+        <div className="min-w-0 flex-1 basis-72">
+          <h2 className={cn("font-display text-xl leading-tight", tone === "destructive" && "text-destructive")} style={{ fontVariationSettings: '"opsz" 36' }}>{title}</h2>
+          {description && <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">{description}</p>}
+        </div>
+        {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
+      </div>
+      <div className="mt-5 min-w-0">{children}</div>
+    </section>
+  );
+}
+
+/** Sub-section heading inside a tab: serif title, description, actions on the right. */
+export function PanelHeader({ title, description, actions, className }: { title: React.ReactNode; description?: React.ReactNode; actions?: React.ReactNode; className?: string }) {
+  return (
+    <div className={cn("flex flex-wrap items-start justify-between gap-x-6 gap-y-3", className)}>
+      <div className="min-w-0 flex-1 basis-64">
+        <h2 className="font-display text-xl leading-tight" style={{ fontVariationSettings: '"opsz" 36' }}>{title}</h2>
+        {description && <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">{description}</p>}
+      </div>
+      {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
+    </div>
   );
 }
 

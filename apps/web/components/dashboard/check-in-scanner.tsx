@@ -34,6 +34,13 @@ const OUTCOME: Record<Outcome, { title: string; tone: "ok" | "warn" | "bad" }> =
   error: { title: "Could not check in", tone: "bad" },
 };
 
+/** Sunlight legibility: a filled banner, not a tint. The band repeats the verdict as pure colour. */
+const TONE: Record<"ok" | "warn" | "bad", { panel: string; band: string; button: string }> = {
+  ok: { panel: "bg-[#14562f] text-white", band: "bg-[#5cc98b]", button: "border-white/40 bg-white/10 text-white hover:bg-white/20" },
+  warn: { panel: "bg-[#f2c541] text-[#2b2407]", band: "bg-[#8a6100]", button: "border-[#2b2407]/30 bg-[#2b2407]/5 text-[#2b2407] hover:bg-[#2b2407]/10" },
+  bad: { panel: "bg-[#8f2b16] text-white", band: "bg-[#f0805f]", button: "border-white/40 bg-white/10 text-white hover:bg-white/20" },
+};
+
 const queueKey = (eventId: string) => `ot-checkin-queue-${eventId}`;
 const manifestKey = (eventId: string) => `ot-checkin-manifest-${eventId}`;
 const readJson = <T,>(key: string, fallback: T): T => { try { return JSON.parse(localStorage.getItem(key) ?? "") as T; } catch { return fallback; } };
@@ -207,31 +214,61 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-card px-4 py-3">
-        <div>
-          <p className="text-2xl font-semibold tabular-nums">{manifest.stats.checkedIn} <span className="text-base font-normal text-muted-foreground">/ {manifest.stats.confirmed} checked in · {pct}%</span></p>
-          <p className="text-xs text-muted-foreground">Updated {time(manifest.generatedAt)}{queue.length ? ` · ${queue.length} waiting to sync` : ""}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          {!online && <span className="inline-flex items-center gap-1 rounded-full bg-[#fbf1d6] px-2 py-1 text-xs text-[#6b5300]"><WifiOff className="size-3.5" /> Offline: scans are saved and synced later</span>}
-          <div className="flex rounded-md border p-0.5">
-            <button type="button" onClick={() => setMode("scan")} className={cn("inline-flex items-center gap-1 rounded px-3 py-1.5 text-sm", mode === "scan" ? "bg-foreground text-background" : "text-muted-foreground")}><Camera className="size-4" /> Scan</button>
-            <button type="button" onClick={() => setMode("search")} className={cn("inline-flex items-center gap-1 rounded px-3 py-1.5 text-sm", mode === "search" ? "bg-foreground text-background" : "text-muted-foreground")}><Search className="size-4" /> Search</button>
+      {/* the counter: the one number someone on the door glances at between scans */}
+      <div className="rounded-xl border border-border/80 bg-card p-4 shadow-card sm:p-5">
+        <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
+          <div className="min-w-0">
+            <p className="eyebrow">Checked in</p>
+            <p className="mt-1 flex items-baseline gap-2 font-display leading-none" style={{ fontVariationSettings: '"opsz" 96, "SOFT" 40' }}>
+              <span className="text-5xl tabular-nums">{manifest.stats.checkedIn}</span>
+              <span className="text-xl tabular-nums text-muted-foreground">/ {manifest.stats.confirmed}</span>
+            </p>
           </div>
+          <div className="flex shrink-0 rounded-full border border-border/80 bg-muted/50 p-1" role="group" aria-label="Check-in mode">
+            <button
+              type="button"
+              onClick={() => setMode("scan")}
+              aria-pressed={mode === "scan"}
+              className={cn("press inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm", mode === "scan" ? "bg-card font-medium text-foreground shadow-card" : "text-muted-foreground")}
+            >
+              <Camera className="size-4" /> Scan
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("search")}
+              aria-pressed={mode === "search"}
+              className={cn("press inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm", mode === "search" ? "bg-card font-medium text-foreground shadow-card" : "text-muted-foreground")}
+            >
+              <Search className="size-4" /> Search
+            </button>
+          </div>
+        </div>
+        <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-muted" aria-hidden>
+          <div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: `${pct}%` }} />
+        </div>
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs text-muted-foreground">
+          <span className="tabular-nums">{pct}% of confirmed tickets · updated {time(manifest.generatedAt)}{queue.length ? ` · ${queue.length} waiting to sync` : ""}</span>
+          {!online && <span className="inline-flex items-center gap-1 rounded-full bg-[#fbf1d6] px-2 py-1 font-medium text-[#6b5300]"><WifiOff className="size-3.5" /> Offline: scans are saved and synced later</span>}
         </div>
       </div>
 
       {result && (
-        <div role="status" aria-live="assertive" className={cn("rounded-lg border-2 p-4", tone === "ok" && "border-[#2e7d4f] bg-[#e7f5ec]", tone === "warn" && "border-[#c9a227] bg-[#fbf1d6]", tone === "bad" && "border-destructive bg-destructive/10")}>
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="text-lg font-semibold">{OUTCOME[result.outcome].title}</p>
-              {result.name && <p className="mt-0.5 text-xl">{result.name}{result.hostName ? <span className="text-sm text-muted-foreground"> · guest of {result.hostName}</span> : null}</p>}
-              {result.ticketType && <p className="text-sm text-muted-foreground">{result.ticketType}{result.outcome === "already" && result.checkedInAt ? ` · checked in at ${time(result.checkedInAt)}` : ""}</p>}
-              {result.outcome === "error" && result.name && <p className="text-sm text-muted-foreground">{result.name}</p>}
+        <div role="status" aria-live="assertive" className={cn("overflow-hidden rounded-xl shadow-lift", TONE[tone ?? "bad"].panel)}>
+          <div className={cn("h-2 w-full", TONE[tone ?? "bad"].band)} aria-hidden />
+          <div className="flex items-start justify-between gap-3 p-4 sm:p-5">
+            <div className="min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] opacity-80">{OUTCOME[result.outcome].title}</p>
+              {result.name && result.outcome !== "error" && (
+                <p className="mt-1 font-display text-3xl leading-tight" style={{ fontVariationSettings: '"opsz" 48' }}>
+                  {result.name}
+                </p>
+              )}
+              {result.hostName && <p className="text-sm opacity-80">Guest of {result.hostName}</p>}
+              {result.ticketType && <p className="mt-1 text-base opacity-90">{result.ticketType}{result.outcome === "already" && result.checkedInAt ? ` · in at ${time(result.checkedInAt)}` : ""}</p>}
+              {result.outcome === "error" && result.name && <p className="mt-1 text-sm opacity-80">{result.name}</p>}
             </div>
             {(result.outcome === "ok" || result.outcome === "already") && result.ticketId && (
-              <Button variant="outline" size="sm" disabled={busy || !online} onClick={() => undo(result.ticketId!)}><Undo2 className="size-4" /> Undo</Button>
+              <Button variant="outline" className={cn("shrink-0", TONE[tone ?? "bad"].button)} disabled={busy || !online} onClick={() => undo(result.ticketId!)}><Undo2 className="size-4" /> Undo</Button>
             )}
           </div>
         </div>
@@ -239,36 +276,49 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
 
       {mode === "scan" ? (
         <div className="space-y-3">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-black">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-black sm:aspect-[4/3]">
             <video ref={videoRef} className="size-full object-cover" muted playsInline />
             {camera !== "on" && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-6 text-center text-sm text-white/90">
-                <CameraOff className="size-6" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center text-sm text-white/90">
+                <CameraOff className="size-7" strokeWidth={1.5} />
                 {camera === "denied" ? "Camera access was blocked. Allow the camera for this site, or use Search to check people in by name." : camera === "unsupported" ? "This browser can't use the camera. Use Search, or paste a ticket link below." : "Starting camera…"}
               </div>
             )}
-            {camera === "on" && <div className="pointer-events-none absolute inset-[15%] rounded-lg border-2 border-white/70" />}
+            {camera === "on" && (
+              <>
+                {/* dim everything outside the target square and mark its corners */}
+                <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-[0_0_0_100vmax_rgb(0_0_0/0.45)]">
+                  {["left-0 top-0 border-l-4 border-t-4 rounded-tl-2xl", "right-0 top-0 border-r-4 border-t-4 rounded-tr-2xl", "left-0 bottom-0 border-l-4 border-b-4 rounded-bl-2xl", "right-0 bottom-0 border-r-4 border-b-4 rounded-br-2xl"].map((c) => (
+                    <span key={c} className={cn("absolute size-9 border-white", c)} />
+                  ))}
+                </div>
+                <p className="pointer-events-none absolute inset-x-0 bottom-4 text-center text-sm font-medium text-white drop-shadow">Point at the QR code on the ticket</p>
+              </>
+            )}
           </div>
           <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (manual.trim()) { void onToken(manual, "manual"); setManual(""); } }}>
-            <Input value={manual} onChange={(e) => setManual(e.target.value)} placeholder="Or paste a ticket link / code" aria-label="Ticket link or code" />
-            <Button type="submit" variant="outline" disabled={busy}>Check in</Button>
+            <Input value={manual} onChange={(e) => setManual(e.target.value)} placeholder="Or paste a ticket link / code" aria-label="Ticket link or code" className="h-12 text-base" />
+            <Button type="submit" variant="outline" className="h-12 shrink-0 px-5" disabled={busy}>Check in</Button>
           </form>
         </div>
       ) : (
         <div className="space-y-3">
-          <Input autoFocus value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by name or email" aria-label="Search attendees" />
-          <ul className="divide-y rounded-lg border">
-            {matches.length === 0 && <li className="p-4 text-sm text-muted-foreground">No confirmed attendees match.</li>}
-            {matches.map((t) => (
-              <li key={t.id} className="flex items-center justify-between gap-3 p-3">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" aria-hidden />
+            <Input autoFocus value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by name or email" aria-label="Search attendees" className="h-12 pl-11 text-base" />
+          </div>
+          <ul className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-card">
+            {matches.length === 0 && <li className="p-6 text-center text-sm text-muted-foreground">No confirmed attendees match.</li>}
+            {matches.map((t, i) => (
+              <li key={t.id} className={cn("flex min-h-14 items-center justify-between gap-3 px-3 py-2", i > 0 && "hairline")}>
                 <div className="min-w-0">
                   <p className="truncate font-medium">{t.n}{t.g ? <span className="text-xs text-muted-foreground"> · guest of {t.g}</span> : null}</p>
                   <p className="truncate text-xs text-muted-foreground">{t.t} · {t.e}{t.c ? ` · in at ${time(t.c)}` : ""}</p>
                 </div>
                 {t.c ? (
-                  <Button size="sm" variant="ghost" disabled={busy || !online} onClick={() => undo(t.id)}><Undo2 className="size-4" /> Undo</Button>
+                  <Button size="sm" variant="ghost" className="h-10 shrink-0 px-3 text-muted-foreground" disabled={busy || !online} onClick={() => undo(t.id)}><Undo2 className="size-4" /> Undo</Button>
                 ) : (
-                  <Button size="sm" disabled={busy} onClick={() => checkIn({ ticketId: t.id }, "manual")}>Check in</Button>
+                  <Button className="h-10 w-28 shrink-0" disabled={busy} onClick={() => checkIn({ ticketId: t.id }, "manual")}>Check in</Button>
                 )}
               </li>
             ))}
@@ -278,12 +328,12 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
 
       {manifest.recent.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-muted-foreground">Recent</h2>
-          <ul className="mt-1 divide-y rounded-lg border text-sm">
-            {manifest.recent.slice(0, 10).map((r) => (
-              <li key={`${r.ticketId}-${r.at}`} className="flex items-center justify-between gap-3 px-3 py-2">
-                <span className="truncate">{r.name} <span className="text-muted-foreground">· {r.ticketTypeName} · {time(r.at)}{r.method === "manual" ? " · manual" : ""}</span></span>
-                <button type="button" className="text-xs text-muted-foreground underline underline-offset-4 disabled:opacity-50" disabled={busy || !online} onClick={() => undo(r.ticketId)}>Undo</button>
+          <h2 className="eyebrow">Recent</h2>
+          <ul className="mt-2 overflow-hidden rounded-xl border border-border/80 bg-card text-sm shadow-card">
+            {manifest.recent.slice(0, 10).map((r, i) => (
+              <li key={`${r.ticketId}-${r.at}`} className={cn("flex min-h-12 items-center justify-between gap-3 px-3 py-2", i > 0 && "hairline")}>
+                <span className="min-w-0 truncate">{r.name} <span className="text-muted-foreground">· {r.ticketTypeName} · {time(r.at)}{r.method === "manual" ? " · manual" : ""}</span></span>
+                <button type="button" className="press shrink-0 rounded-md px-2 py-1 text-xs text-muted-foreground underline decoration-dotted underline-offset-4 disabled:opacity-50" disabled={busy || !online} onClick={() => undo(r.ticketId)}>Undo</button>
               </li>
             ))}
           </ul>

@@ -2,12 +2,14 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { Clock3 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { FormMessage } from "@/components/ui/form-field";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { formatMoney } from "@/lib/utils";
+import { EmptyCell, Note, PanelHeader } from "@/components/dashboard/page-chrome";
 import { promoteWaitlistAction, removeWaitlistEntryAction } from "@/app/dashboard/actions";
 
 export type WaitlistRow = { id: string; name: string | null; email: string; status: "waiting" | "offered" | "registered" | "expired"; ticketTypeName: string | null; createdAt: string; holdExpiresAt: string | null };
@@ -26,21 +28,32 @@ export function WaitlistPanel({ eventId, entries, editable, waitlistEnabled, tic
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border bg-muted/40 px-4 py-3 text-sm">
+      <PanelHeader
+        title="Waitlist"
+        description={entries.length > 0
+          ? `${waiting} waiting, ${entries.filter((e) => e.status === "offered").length} offered, ${entries.filter((e) => e.status === "registered").length} registered.`
+          : "The queue that forms once the event sells out."}
+      />
+      <Note tone={waitlistEnabled ? "muted" : "warning"}>
         {waitlistEnabled
           ? <>When the event sells out, visitors can join this list. Promoting someone holds one seat for them for 24 hours and emails a claim link; unclaimed seats go back to the pool.</>
           : <>The waitlist is off for this event (Edit → Registration options). People who joined earlier are still listed here.</>}
-        {entries.length > 0 && <span className="ml-1 text-muted-foreground">{waiting} waiting, {entries.filter((e) => e.status === "offered").length} offered, {entries.filter((e) => e.status === "registered").length} registered.</span>}
-      </div>
+      </Note>
       <FormMessage error={msg.error} success={msg.success} />
       <Table>
         <THead><TR><TH>Person</TH><TH>Joined</TH><TH>Status</TH>{editable && <TH className="text-right">Actions</TH>}</TR></THead>
         <TBody>
-          {entries.length === 0 && <TR><TD colSpan={4} className="py-8 text-center text-muted-foreground">Nobody on the waitlist.</TD></TR>}
+          {entries.length === 0 && (
+            <TR className="hover:bg-transparent">
+              <TD colSpan={editable ? 4 : 3}>
+                <EmptyCell icon={Clock3} title="Nobody on the waitlist" description="People queue here once every ticket is gone. You decide who gets the next free seat." />
+              </TD>
+            </TR>
+          )}
           {entries.map((e) => (
             <TR key={e.id}>
               <TD><div className="font-medium">{e.name ?? "—"}</div><div className="text-xs text-muted-foreground">{e.email}</div></TD>
-              <TD className="whitespace-nowrap text-muted-foreground">{fmt(e.createdAt)}</TD>
+              <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{fmt(e.createdAt)}</TD>
               <TD>
                 <Badge variant={variant[e.status]}>{e.status}</Badge>
                 {e.status === "offered" && e.holdExpiresAt && <div className="mt-0.5 text-xs text-muted-foreground">{e.ticketTypeName} until {fmt(e.holdExpiresAt)}</div>}
@@ -60,7 +73,7 @@ export function WaitlistPanel({ eventId, entries, editable, waitlistEnabled, tic
                       </>
                     )}
                     {e.status !== "registered" && (
-                      <Button size="sm" variant="ghost" disabled={pending} onClick={() => { if (window.confirm(`Remove ${e.email} from the waitlist?${e.status === "offered" ? " Their held seat is released." : ""}`)) start(async () => { const r = await removeWaitlistEntryAction(eventId, e.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>Remove</Button>
+                      <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(`Remove ${e.email} from the waitlist?${e.status === "offered" ? " Their held seat is released." : ""}`)) start(async () => { const r = await removeWaitlistEntryAction(eventId, e.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>Remove</Button>
                     )}
                   </div>
                 </TD>

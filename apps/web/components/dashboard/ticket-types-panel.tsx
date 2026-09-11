@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Plus, Ticket } from "lucide-react";
 import { formatMoney } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Field, FormMessage } from "@/components/ui/form-field";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
+import { EmptyCell, PanelHeader } from "@/components/dashboard/page-chrome";
 import { deleteTicketTypeAction, saveTicketTypeAction } from "@/app/dashboard/actions";
 
 export type TicketTypeRow = {
@@ -51,29 +52,39 @@ export function TicketTypesPanel({ eventId, types, editable, defaultCurrency, gu
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          {types.length === 0 ? "Publishing without a ticket type creates a free General admission ticket automatically." : guestsEnabled ? "Guests pay the same price as the registrant's ticket." : "Price 0 means free."}
-        </p>
-        {editable && <Button size="sm" onClick={() => { setMsg({}); setOpen({ draft: empty(defaultCurrency) }); }}><Plus className="size-4" /> Add ticket type</Button>}
-      </div>
+    <section className="space-y-4">
+      <PanelHeader
+        title="Ticket types"
+        description={types.length === 0 ? "Publishing without a ticket type creates a free General admission ticket automatically." : guestsEnabled ? "What people can buy, and how many of each. Guests pay the same price as the registrant's ticket." : "What people can buy, and how many of each. A price of 0 means free."}
+        actions={editable && <Button size="sm" onClick={() => { setMsg({}); setOpen({ draft: empty(defaultCurrency) }); }}><Plus className="size-4" /> Add ticket type</Button>}
+      />
       <FormMessage error={msg.error} success={msg.success} />
       <Table>
         <THead><TR><TH>Name</TH><TH className="text-right">Price</TH><TH className="text-right">Sold</TH><TH>Sales window</TH><TH></TH>{editable && <TH className="text-right"></TH>}</TR></THead>
         <TBody>
-          {types.length === 0 && <TR><TD colSpan={6} className="py-8 text-center text-muted-foreground">No ticket types yet.</TD></TR>}
+          {types.length === 0 && (
+            <TR className="hover:bg-transparent">
+              <TD colSpan={editable ? 6 : 5}>
+                <EmptyCell
+                  icon={Ticket}
+                  title="No ticket types yet"
+                  description="Add one for each thing people can buy — early bird, standard, students."
+                  action={editable ? <Button size="sm" variant="outline" onClick={() => { setMsg({}); setOpen({ draft: empty(defaultCurrency) }); }}><Plus className="size-4" /> Add ticket type</Button> : undefined}
+                />
+              </TD>
+            </TR>
+          )}
           {types.map((t) => (
             <TR key={t.id}>
               <TD><div className="font-medium">{t.name}</div>{t.description && <div className="max-w-md truncate text-xs text-muted-foreground">{t.description}</div>}</TD>
               <TD className="text-right tabular-nums">{t.priceMinor === 0 ? "Free" : formatMoney(t.priceMinor, t.currency)}{t.taxRateBps > 0 && <div className="text-xs text-muted-foreground">+{t.taxRateBps / 100}% tax</div>}</TD>
               <TD className="text-right tabular-nums">{t.sold}{t.quantity != null ? ` / ${t.quantity}` : ""}{t.held > 0 && <div className="text-xs text-muted-foreground">{t.held} held</div>}</TD>
-              <TD className="text-xs text-muted-foreground">{t.salesStartAt || t.salesEndAt ? `${t.salesStartAt ? new Date(t.salesStartAt).toLocaleDateString() : "now"} → ${t.salesEndAt ? new Date(t.salesEndAt).toLocaleDateString() : "event"}` : "Always"}</TD>
+              <TD className="whitespace-nowrap text-xs tabular-nums text-muted-foreground">{t.salesStartAt || t.salesEndAt ? `${t.salesStartAt ? new Date(t.salesStartAt).toLocaleDateString() : "now"} → ${t.salesEndAt ? new Date(t.salesEndAt).toLocaleDateString() : "event"}` : "Always"}</TD>
               <TD className="space-x-1">{t.hidden && <Badge variant="muted">hidden</Badge>}{t.accessCode && <Badge variant="outline">code</Badge>}</TD>
               {editable && (
                 <TD className="text-right">
                   <Button size="sm" variant="ghost" onClick={() => { setMsg({}); setOpen({ id: t.id, draft: fromRow(t) }); }}>Edit</Button>
-                  {t.sold === 0 && t.held === 0 && <Button size="sm" variant="ghost" disabled={pending} onClick={() => { if (window.confirm(`Delete "${t.name}"?`)) start(async () => { const r = await deleteTicketTypeAction(eventId, t.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>Delete</Button>}
+                  {t.sold === 0 && t.held === 0 && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(`Delete "${t.name}"?`)) start(async () => { const r = await deleteTicketTypeAction(eventId, t.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>Delete</Button>}
                 </TD>
               )}
             </TR>
@@ -86,10 +97,10 @@ export function TicketTypesPanel({ eventId, types, editable, defaultCurrency, gu
           <DialogTitle>{open?.id ? "Edit ticket type" : "New ticket type"}</DialogTitle>
           <DialogDescription>Price in {d?.currency ?? defaultCurrency}. Set quantity for a limited run.</DialogDescription>
           {d && (
-            <form className="mt-2 space-y-4" onSubmit={(e) => { e.preventDefault(); save(); }}>
+            <form className="mt-5 space-y-5" onSubmit={(e) => { e.preventDefault(); save(); }}>
               <Field label="Name" htmlFor="tt-name"><Input id="tt-name" value={d.name} onChange={(e) => setD("name", e.target.value)} required autoFocus /></Field>
               <Field label="Description" htmlFor="tt-desc" optional><Textarea id="tt-desc" rows={2} value={d.description} onChange={(e) => setD("description", e.target.value)} /></Field>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="hairline grid grid-cols-3 gap-3 pt-5">
                 <Field label="Price" htmlFor="tt-price"><Input id="tt-price" type="number" min={0} step="0.01" value={d.price} onChange={(e) => setD("price", e.target.value)} /></Field>
                 <Field label="Currency" htmlFor="tt-cur"><Input id="tt-cur" value={d.currency} onChange={(e) => setD("currency", e.target.value.toUpperCase())} maxLength={3} /></Field>
                 <Field label="Tax %" htmlFor="tt-tax"><Input id="tt-tax" type="number" min={0} max={100} step="0.01" value={d.taxRate} onChange={(e) => setD("taxRate", e.target.value)} /></Field>
@@ -97,15 +108,15 @@ export function TicketTypesPanel({ eventId, types, editable, defaultCurrency, gu
                 <Field label="Min per order" htmlFor="tt-min"><Input id="tt-min" type="number" min={1} value={d.minPerOrder} onChange={(e) => setD("minPerOrder", Number(e.target.value) || 1)} /></Field>
                 <Field label="Max per order" htmlFor="tt-max"><Input id="tt-max" type="number" min={1} value={d.maxPerOrder} onChange={(e) => setD("maxPerOrder", Number(e.target.value) || 1)} /></Field>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="hairline grid grid-cols-2 gap-3 pt-5">
                 <Field label="Sales start" htmlFor="tt-ss" optional><Input id="tt-ss" type="datetime-local" value={d.salesStartAt} onChange={(e) => setD("salesStartAt", e.target.value)} /></Field>
                 <Field label="Sales end" htmlFor="tt-se" optional><Input id="tt-se" type="datetime-local" value={d.salesEndAt} onChange={(e) => setD("salesEndAt", e.target.value)} /></Field>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <label className="flex h-9 items-center gap-2 text-sm"><Switch checked={d.hidden} onCheckedChange={(c) => setD("hidden", c)} /> Hidden from the event page</label>
+              <div className="grid grid-cols-2 items-end gap-3">
+                <label className="press flex h-10 cursor-pointer items-center gap-2 text-sm"><Switch checked={d.hidden} onCheckedChange={(c) => setD("hidden", c)} /> Hidden from the event page</label>
                 <Field label="Access code" htmlFor="tt-code" optional><Input id="tt-code" value={d.accessCode} onChange={(e) => setD("accessCode", e.target.value)} /></Field>
               </div>
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="hairline flex justify-end gap-2 pt-4">
                 <Button type="button" variant="ghost" onClick={() => setOpen(null)}>Cancel</Button>
                 <Button type="submit" disabled={pending}>{pending ? "Saving…" : "Save"}</Button>
               </div>
@@ -113,6 +124,6 @@ export function TicketTypesPanel({ eventId, types, editable, defaultCurrency, gu
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </section>
   );
 }

@@ -25,7 +25,7 @@ export default async function EventLayout({ children, params }: { children: Reac
         <div className="flex min-w-0 flex-1 basis-72 items-start gap-4">
           <DateLeaf date={event.startsAt} timezone={event.timezone} className="mt-0.5 shrink-0" />
           <div className="min-w-0">
-            <h1 className="display truncate text-3xl">{event.name}</h1>
+            <h1 className="display text-3xl break-words">{event.name}</h1>
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
               <Badge variant={statusVariant[event.status]}>{event.status}</Badge>
               <a href={eventPath} target="_blank" rel="noopener noreferrer" className="press inline-flex min-w-0 items-center gap-1 rounded text-muted-foreground underline decoration-dotted underline-offset-4 hover:text-foreground">

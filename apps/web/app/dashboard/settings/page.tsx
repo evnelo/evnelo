@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { listApiKeys, listMembers, listPendingInvites, listWebhookDeliveries, listWebhooks, webhookDeliveryState } from "@ot/core/services";
 import { can, ROLE_LABELS } from "@ot/core";
 import { db } from "@/lib/db";
@@ -9,6 +10,7 @@ import { MembersPanel } from "@/components/dashboard/members-panel";
 import { ApiKeysPanel } from "@/components/dashboard/api-keys-panel";
 import { WebhooksPanel } from "@/components/dashboard/webhooks-panel";
 import { DangerZone } from "@/components/dashboard/danger-zone";
+import { PageHeader, SectionCard, SectionTray } from "@/components/dashboard/page-chrome";
 
 export default async function SettingsPage() {
   const { org, role, user } = await requireOrg("view_events", "/dashboard/settings");
@@ -17,42 +19,49 @@ export default async function SettingsPage() {
     id: h.id, url: h.url, events: h.events, active: h.active, createdAt: h.createdAt.toISOString(),
     recent: (await listWebhookDeliveries(db, org.id, h.id, 10)).map((d) => ({ id: d.id, event: d.event, state: webhookDeliveryState(d), attempts: d.attempts, responseStatus: d.responseStatus, createdAt: d.createdAt.toISOString() })),
   })));
+  const publicUrl = `${env.APP_URL.replace(/^https?:\/\//, "")}/o/${org.slug}`;
+
   return (
-    <div className="space-y-10">
-      <div>
-        <h1 className="display text-3xl">Settings</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Public page: <a href={`/o/${org.slug}`} className="underline underline-offset-4">{env.APP_URL.replace(/^https?:\/\//, "")}/o/{org.slug}</a></p>
-      </div>
-      <section>
-        <h2 className="text-lg font-medium">Organization</h2>
-        <div className="mt-4">
+    <div>
+      <PageHeader
+        title="Settings"
+        description="How your organization looks in public, who can work in it, and how other systems talk to it."
+        actions={
+          <a href={`/o/${org.slug}`} target="_blank" rel="noopener noreferrer" className="press inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-[0_1px_1px_rgb(23_23_15/0.04)] hover:bg-muted/70">
+            <span className="max-w-56 truncate">{publicUrl}</span>
+            <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
+          </a>
+        }
+      />
+
+      <div className="mt-8 space-y-5">
+        <SectionCard title="Organization" description="Name, public URL, logo and the accent colour used in emails and on ticket pages.">
           <OrgForm org={{ name: org.name, slug: org.slug, website: org.website ?? "", logoUrl: org.logoUrl ?? "", accentColor: org.accentColor ?? "", feePassThrough: org.feePassThrough, socialLinks: org.socialLinks }} readOnly={!can(role, "manage_org")} uploadsEnabled={storageConfigured} />
-        </div>
-      </section>
-      <section>
-        <h2 className="text-lg font-medium">Members</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Owners and admins manage the organization; members create and run events; check-in staff can only scan tickets.</p>
-        <div className="mt-4">
+        </SectionCard>
+
+        <SectionTray title="Members" description="Owners and admins manage the organization; members create and run events; check-in staff can only scan tickets.">
           <MembersPanel members={members.map((m) => ({ ...m, since: m.since.toISOString() }))} invites={invites.map((i) => ({ id: i.id, email: i.email, role: i.role, expiresAt: i.expiresAt.toISOString() }))} canManage={can(role, "manage_members")} currentUserId={user.id} roleLabels={ROLE_LABELS} />
-        </div>
-      </section>
-      <section>
-        <h2 className="text-lg font-medium">API keys</h2>
-        <div className="mt-4">
+        </SectionTray>
+
+        <SectionTray title="API keys" description="Server-to-server access to this organization's events, orders and attendees.">
           <ApiKeysPanel canManage={can(role, "manage_org")} docsUrl="/api/v1/docs" keys={apiKeys.map((k) => ({ ...k, lastUsedAt: k.lastUsedAt?.toISOString() ?? null, revokedAt: k.revokedAt?.toISOString() ?? null, createdAt: k.createdAt.toISOString() }))} />
-        </div>
-      </section>
-      <section>
-        <div className="mt-4">
+        </SectionTray>
+
+        <SectionTray title="Webhooks" description="A signed JSON POST to your own endpoint whenever something happens here.">
           <WebhooksPanel hooks={hookRows} editable={can(role, "manage_org")} />
+        </SectionTray>
+
+        {env.EDITION === "cloud" && (
+          <SectionCard title="Payments" description="Paid tickets settle straight into your own Stripe account.">
+            <p className="text-sm text-muted-foreground">{org.stripeAccountId ? `Stripe account ${org.stripeAccountId} connected.` : "Connect your Stripe account to sell paid tickets. Coming with the Connect onboarding flow."}</p>
+          </SectionCard>
+        )}
+      </div>
+
+      {can(role, "manage_org") && (
+        <div className="hairline mt-12 pt-8">
+          <DangerZone slug={org.slug} isOwner={role === "owner"} />
         </div>
-      </section>
-      {can(role, "manage_org") && <DangerZone slug={org.slug} isOwner={role === "owner"} />}
-      {env.EDITION === "cloud" && (
-        <section>
-          <h2 className="text-lg font-medium">Payments</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{org.stripeAccountId ? `Stripe account ${org.stripeAccountId} connected.` : "Connect your Stripe account to sell paid tickets. Coming with the Connect onboarding flow."}</p>
-        </section>
       )}
     </div>
   );

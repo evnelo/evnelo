@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ClipboardList, Plus, X } from "lucide-react";
 import { FIELD_TYPES, FIELD_TYPE_LABELS, slugify } from "@ot/core";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Field, FormMessage } from "@/components/ui/form-field";
+import { EmptyState, PanelHeader } from "@/components/dashboard/page-chrome";
 import { saveFieldsAction } from "@/app/dashboard/actions";
 
 type Rule = { fieldKey: string; op: "eq" | "neq" | "contains" | "empty" | "not_empty"; value?: string };
@@ -52,20 +53,31 @@ export function FieldsBuilder({ eventId, initial, ticketTypes, editable, guestsE
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-sm text-muted-foreground">Name and email are always asked. Add your own questions below; each can apply to the registrant, the whole order, or each guest, and can be shown only when an earlier answer matches.</p>
-        {editable && <Button size="sm" onClick={add}><Plus className="size-4" /> Add question</Button>}
-      </div>
+      <PanelHeader
+        title="Registration form"
+        description="Name and email are always asked. Your own questions can apply to the registrant, the whole order or each guest, and can appear only when an earlier answer matches."
+        actions={editable && <Button size="sm" onClick={add}><Plus className="size-4" /> Add question</Button>}
+      />
       <FormMessage error={msg.error} success={msg.success} />
       <ol className="space-y-2">
-        {fields.length === 0 && <li className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">No custom questions yet.</li>}
+        {fields.length === 0 && (
+          <li>
+            <EmptyState
+              icon={ClipboardList}
+              title="Just name and email"
+              description="Add a question when you need something more — a dietary note, a company, a t-shirt size."
+              action={editable ? <Button size="sm" onClick={add}><Plus className="size-4" /> Add your first question</Button> : undefined}
+            />
+          </li>
+        )}
         {fields.map((f, i) => {
           const open = openIdx === i;
           const earlier = fields.slice(0, i).filter((x) => x.scope === f.scope && x.key);
           return (
-            <li key={f.id ?? `new-${i}`} className="rounded-lg border bg-card">
-              <div className="flex items-center gap-2 px-3 py-2">
-                <button type="button" onClick={() => setOpenIdx(open ? null : i)} className="flex min-w-0 flex-1 items-center gap-2 text-left">
+            <li key={f.id ?? `new-${i}`} className={`animate-rise rounded-xl border bg-card shadow-card ${open ? "border-primary/40" : "border-border/80"}`} style={{ ["--stagger" as string]: Math.min(i, 12) }}>
+              <div className="flex items-center gap-2 py-2 pl-3 pr-2">
+                <button type="button" onClick={() => setOpenIdx(open ? null : i)} className="press flex min-w-0 flex-1 flex-wrap items-center gap-2 rounded-md py-1 text-left">
+                  <span className="eyebrow w-5 shrink-0 tabular-nums">{i + 1}</span>
                   <span className="truncate text-sm font-medium">{f.label || <span className="text-muted-foreground">Untitled question</span>}</span>
                   <Badge variant="muted">{FIELD_TYPE_LABELS[f.type]}</Badge>
                   <Badge variant="outline">{SCOPE_LABELS[f.scope]}</Badge>
@@ -81,7 +93,7 @@ export function FieldsBuilder({ eventId, initial, ticketTypes, editable, guestsE
                 )}
               </div>
               {open && (
-                <fieldset disabled={!editable} className="grid gap-4 border-t p-4 sm:grid-cols-2">
+                <fieldset disabled={!editable} className="hairline grid gap-5 p-4 sm:grid-cols-2">
                   <Field label="Question" htmlFor={`f-${i}-label`}><Input id={`f-${i}-label`} value={f.label} onChange={(e) => update(i, { label: e.target.value, key: f.id ? f.key : slugify(e.target.value, 60).replace(/-/g, "_") })} /></Field>
                   <Field label="Key" htmlFor={`f-${i}-key`} help="Column name in exports and the API. Lowercase, underscores."><Input id={`f-${i}-key`} value={f.key} onChange={(e) => update(i, { key: e.target.value })} pattern="[a-z0-9_]{1,60}" /></Field>
                   <Field label="Type" htmlFor={`f-${i}-type`} help={!filesEnabled && f.type !== "file" ? "File upload needs S3 storage configured on this instance." : undefined}>
@@ -112,7 +124,7 @@ export function FieldsBuilder({ eventId, initial, ticketTypes, editable, guestsE
                   <div className="sm:col-span-2">
                     <label className="flex items-center gap-2 text-sm"><Switch checked={!!f.condition} disabled={earlier.length === 0} onCheckedChange={(c) => update(i, { condition: c ? { op: "and", rules: [{ fieldKey: earlier[0]!.key, op: "eq", value: "" }] } : null })} /> Show only when an earlier answer matches{earlier.length === 0 && <span className="text-xs text-muted-foreground">(add a question above it first)</span>}</label>
                     {f.condition && (
-                      <div className="mt-3 space-y-2 rounded-md border bg-muted/30 p-3">
+                      <div className="mt-3 space-y-2 rounded-lg border border-border/80 bg-muted/25 p-3">
                         <div className="flex items-center gap-2 text-sm">Show when <div className="w-24"><Select value={f.condition.op} aria-label="All or any" onChange={(e) => update(i, { condition: { ...f.condition!, op: e.target.value as "and" | "or" } })}><option value="and">all</option><option value="or">any</option></Select></div> of these match:</div>
                         {f.condition.rules.map((r, ri) => {
                           const target = earlier.find((x) => x.key === r.fieldKey);
@@ -142,7 +154,12 @@ export function FieldsBuilder({ eventId, initial, ticketTypes, editable, guestsE
           );
         })}
       </ol>
-      {editable && <div className="flex justify-end"><Button onClick={save} disabled={pending}>{pending ? "Saving…" : "Save form"}</Button></div>}
+      {editable && (
+        <div className="hairline flex items-center justify-between gap-4 pt-4">
+          <p className="text-xs text-muted-foreground">A question may only depend on one positioned above it.</p>
+          <Button onClick={save} disabled={pending}>{pending ? "Saving…" : "Save form"}</Button>
+        </div>
+      )}
     </div>
   );
 }

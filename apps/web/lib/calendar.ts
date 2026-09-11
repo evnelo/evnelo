@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { Event, Organization } from "@ot/db";
+import type { Event, Organization } from "@evnelo/db";
 import { env } from "@/lib/env";
 import { buildIcs } from "@/lib/ics";
 import { publicEventPath } from "@/lib/urls";
@@ -13,7 +13,7 @@ export function calendarResponse(row: { event: Event; org: Organization } | null
   const url = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
   const location = event.locationType === "online" ? "Online" : [event.venueName, event.address, event.city].filter(Boolean).join(", ") || null;
   const ics = buildIcs({
-    uid: `${event.id}@openticket`, start: event.startsAt, end: event.endsAt, summary: event.name,
+    uid: `${event.id}@evnelo`, start: event.startsAt, end: event.endsAt, summary: event.name,
     description: [event.descriptionMd, url].filter(Boolean).join("\n\n"), location, url,
   });
   return new NextResponse(ics, {

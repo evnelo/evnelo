@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { attendees, events, orderItems, orders } from "@ot/db";
+import { attendees, events, orderItems, orders } from "@evnelo/db";
 import type { DbOrTx } from "./db";
 
 /** What subscribers receive. Stable, documented shapes; ids are ULIDs, money is minor units. */

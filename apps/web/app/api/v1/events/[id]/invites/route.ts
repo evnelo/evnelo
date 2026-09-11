@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createEventInvite, eventInviteInput, listEventInvites, paginateAll } from "@ot/core/services";
+import { createEventInvite, eventInviteInput, listEventInvites, paginateAll } from "@evnelo/core/services";
 import { apiRoute, mutate, ok, pageQuery, parseBody, parseQuery, requireOrgEvent } from "@/lib/api";
 import { serializeInvite } from "@/lib/api-serializers";
 import { db } from "@/lib/db";

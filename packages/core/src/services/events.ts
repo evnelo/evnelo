@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   attendees, checkIns, eventHosts, eventSponsors, eventTags, events, notifications, orders, organizations, tags, ticketTypes,
   type Database, type Event, type SocialLink,
-} from "@ot/db";
+} from "@evnelo/db";
 import { newId } from "../ids";
 import { slugify, slugSuffix } from "../slug";
 import type { DbOrTx } from "./db";

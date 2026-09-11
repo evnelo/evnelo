@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ApiRequestError, consumeApiRateLimit, consumeRateLimit, listPublicEvents, type ApiRateLimit } from "@ot/core/services";
+import { ApiRequestError, consumeApiRateLimit, consumeRateLimit, listPublicEvents, type ApiRateLimit } from "@evnelo/core/services";
 import { apiError } from "@/lib/api";
 import {
   PUBLIC_API_GLOBAL_BUCKET,

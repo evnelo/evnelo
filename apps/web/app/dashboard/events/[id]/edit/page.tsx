@@ -1,4 +1,4 @@
-import { getEventWithRelations } from "@ot/core/services";
+import { getEventWithRelations } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { requireEvent } from "@/lib/dashboard";
 import { EventForm } from "@/components/dashboard/event-form";

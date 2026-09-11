@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getEvent } from "@ot/core/services";
-import type { Action } from "@ot/core";
+import { getEvent } from "@evnelo/core/services";
+import type { Action } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { requireOrg, type OrgContext } from "@/lib/auth/session";
 

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { listIndexableEvents, listIndexableOrganizations } from "@ot/core/services";
+import { listIndexableEvents, listIndexableOrganizations } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { organizationPath, publicEventPath } from "@/lib/urls";

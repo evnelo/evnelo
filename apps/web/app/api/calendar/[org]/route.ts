@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { findEventForLegacySlug } from "@ot/core/services";
+import { findEventForLegacySlug } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { calendarResponse } from "@/lib/calendar";
 

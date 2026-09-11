@@ -1,4 +1,4 @@
-import { getEventStats } from "@ot/core/services";
+import { getEventStats } from "@evnelo/core/services";
 import { apiRoute, ok, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

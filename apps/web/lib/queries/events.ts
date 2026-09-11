@@ -1,9 +1,9 @@
 import { cache } from "react";
 import { and, asc, eq } from "drizzle-orm";
-import { events, eventHosts, eventSponsors, registrationFields, ticketTypes, tags, eventTags, organizations } from "@ot/db";
+import { events, eventHosts, eventSponsors, registrationFields, ticketTypes, tags, eventTags, organizations } from "@evnelo/db";
 import {
   findEventForLegacySlug, getEventByOrgAndSlug, listPublicCities, listPublicEvents, listPublicTags, type PublicEventSearch,
-} from "@ot/core/services";
+} from "@evnelo/core/services";
 import { db } from "@/lib/db";
 
 /** Everything the public event page needs, by the canonical (organization slug, event slug) pair. */

@@ -1,5 +1,5 @@
 import { notFound, permanentRedirect } from "next/navigation";
-import { canView } from "@ot/core";
+import { canView } from "@evnelo/core";
 import { getPublicEventByLegacySlug } from "@/lib/queries/events";
 import { publicEventPath } from "@/lib/urls";
 

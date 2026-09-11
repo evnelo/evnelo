@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createDiscountCode, discountCodeInput, listDiscountCodes, paginateAll } from "@ot/core/services";
+import { createDiscountCode, discountCodeInput, listDiscountCodes, paginateAll } from "@evnelo/core/services";
 import { apiRoute, businessRule, mutate, ok, pageQuery, parseBody, parseQuery, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

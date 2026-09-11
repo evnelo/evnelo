@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import type { Adapter, AdapterAccount, AdapterSession, AdapterUser, VerificationToken } from "next-auth/adapters";
-import { accounts, sessions, users, verificationTokens, type Database } from "@ot/db";
-import { newId } from "@ot/core";
+import { accounts, sessions, users, verificationTokens, type Database } from "@evnelo/db";
+import { newId } from "@evnelo/core";
 
 /** Auth.js adapter over our own users/accounts/sessions/verification_tokens tables. */
 export function drizzleAdapter(db: Database): Adapter {

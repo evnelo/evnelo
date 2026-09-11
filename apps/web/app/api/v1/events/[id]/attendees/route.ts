@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ATTENDEE_STATUSES, listAttendeesPage, paginate } from "@ot/core/services";
+import { ATTENDEE_STATUSES, listAttendeesPage, paginate } from "@evnelo/core/services";
 import { apiRoute, ok, pageQuery, parseQuery, requireOrgEvent } from "@/lib/api";
 import { serializeAttendee } from "@/lib/api-serializers";
 import { db } from "@/lib/db";

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { BellOff } from "lucide-react";
-import { attendees, events, organizations } from "@ot/db";
+import { attendees, events, organizations } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { verifyUnsubscribeToken } from "@/lib/notifications/unsubscribe";
 import { Button } from "@/components/ui/button";

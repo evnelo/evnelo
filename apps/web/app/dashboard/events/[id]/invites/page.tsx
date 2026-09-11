@@ -1,5 +1,5 @@
-import { listEventInvites } from "@ot/core/services";
-import { can } from "@ot/core";
+import { listEventInvites } from "@evnelo/core/services";
+import { can } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { requireEvent } from "@/lib/dashboard";

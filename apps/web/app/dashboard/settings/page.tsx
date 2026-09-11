@@ -1,6 +1,6 @@
 import { ExternalLink } from "lucide-react";
-import { listApiKeys, listMembers, listPendingInvites, listWebhookDeliveries, listWebhooks, webhookDeliveryState } from "@ot/core/services";
-import { can, ROLE_LABELS } from "@ot/core";
+import { listApiKeys, listMembers, listPendingInvites, listWebhookDeliveries, listWebhooks, webhookDeliveryState } from "@evnelo/core/services";
+import { can, ROLE_LABELS } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { requireOrg } from "@/lib/auth/session";

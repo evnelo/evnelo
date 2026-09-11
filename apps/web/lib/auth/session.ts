@@ -1,12 +1,12 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { can, type Action, type Role } from "@ot/core";
-import { listMemberships } from "@ot/core/services";
-import type { Organization } from "@ot/db";
+import { can, type Action, type Role } from "@evnelo/core";
+import { listMemberships } from "@evnelo/core/services";
+import type { Organization } from "@evnelo/db";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
-export const ORG_COOKIE = "ot_org";
+export const ORG_COOKIE = "ev_org";
 
 /** A post-login destination we will actually honour: a same-origin path, never `//host` or a scheme. */
 export function safeNextPath(next: string | undefined | null, fallback = "/dashboard") {

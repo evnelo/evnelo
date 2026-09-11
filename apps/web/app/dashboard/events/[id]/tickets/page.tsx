@@ -1,5 +1,5 @@
-import { listDiscountCodes, listTicketTypes } from "@ot/core/services";
-import { can } from "@ot/core";
+import { listDiscountCodes, listTicketTypes } from "@evnelo/core/services";
+import { can } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { requireEvent } from "@/lib/dashboard";
 import { TicketTypesPanel } from "@/components/dashboard/ticket-types-panel";

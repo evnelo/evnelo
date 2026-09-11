@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Evnelo MCP server (stdio). A thin layer over the REST API through @ot/sdk, so it can never
+ * Evnelo MCP server (stdio). A thin layer over the REST API through @evnelo/sdk, so it can never
  * do more than an API key can. Configure with:
  *   EVNELO_URL=https://your-instance  EVNELO_API_KEY=ev_live_...
  *
@@ -10,7 +10,7 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { createEvneloClient } from "@ot/sdk";
+import { createEvneloClient } from "@evnelo/sdk";
 
 const baseUrl = process.env.EVNELO_URL ?? "http://localhost:3000";
 const apiKey = process.env.EVNELO_API_KEY;
@@ -75,7 +75,7 @@ const eventFields = {
 };
 const eventPatch = { ...eventFields, name: eventFields.name.optional(), timezone: eventFields.timezone.optional(), startsAt: eventFields.startsAt.optional(), endsAt: eventFields.endsAt.optional() };
 
-const server = new McpServer({ name: "openticket", version: "0.2.0" });
+const server = new McpServer({ name: "evnelo", version: "0.2.0" });
 
 server.registerTool("search_public_events", {
   description: "Search published public events across the instance (no API key needed). Filters: text, city, tag, date window, free/paid, format, near a coordinate.",
@@ -144,7 +144,7 @@ server.registerTool("get_event_stats", {
   inputSchema: { eventId: ulid },
 }, ({ eventId }) => run(async () => unwrap(await client.GET("/events/{id}/stats", { params: { path: { id: eventId } } }))));
 
-server.registerResource("event", new ResourceTemplate("openticket://events/{eventId}", { list: undefined }), {
+server.registerResource("event", new ResourceTemplate("evnelo://events/{eventId}", { list: undefined }), {
   title: "Evnelo event", description: "Event details with ticket types and registration fields", mimeType: "application/json",
 }, async (uri, { eventId }) => {
   const data = unwrap(await client.GET("/events/{id}", { params: { path: { id: String(eventId) } } }));

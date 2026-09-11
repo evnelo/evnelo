@@ -1,4 +1,4 @@
-/** Same rule as parseTicketToken in @ot/core/services, duplicated here because that subpath is server-only. */
+/** Same rule as parseTicketToken in @evnelo/core/services, duplicated here because that subpath is server-only. */
 export function parseTicketToken(input: string): string | null {
   const text = input.trim();
   if (!text) return null;

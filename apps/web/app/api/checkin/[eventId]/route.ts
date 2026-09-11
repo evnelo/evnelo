@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { checkInStats, checkInTicket, recentCheckIns, undoCheckIn } from "@ot/core/services";
+import { checkInStats, checkInTicket, recentCheckIns, undoCheckIn } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { readJsonBody, sameOriginRequest } from "@/lib/api-http";
 import { checkInAccess } from "@/lib/checkin-access";

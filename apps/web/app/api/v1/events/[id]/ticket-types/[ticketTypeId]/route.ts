@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { deleteTicketType, getTicketType, ticketTypeInput, ticketTypeInputFromRecord, upsertTicketType } from "@ot/core/services";
+import { deleteTicketType, getTicketType, ticketTypeInput, ticketTypeInputFromRecord, upsertTicketType } from "@evnelo/core/services";
 import { apiRoute, businessRule, mutate, notFound, parseBody, parseWith, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

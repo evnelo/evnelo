@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowDown, ArrowUp, ClipboardList, Plus, X } from "lucide-react";
-import { FIELD_TYPES, FIELD_TYPE_LABELS, slugify } from "@ot/core";
+import { FIELD_TYPES, FIELD_TYPE_LABELS, slugify } from "@evnelo/core";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

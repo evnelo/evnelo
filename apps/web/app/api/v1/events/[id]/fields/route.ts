@@ -1,4 +1,4 @@
-import { listRegistrationFields, registrationFieldsInput, saveRegistrationFields } from "@ot/core/services";
+import { listRegistrationFields, registrationFieldsInput, saveRegistrationFields } from "@evnelo/core/services";
 import { apiRoute, businessRule, mutate, ok, parseBody, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

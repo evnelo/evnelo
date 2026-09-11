@@ -1,5 +1,5 @@
-import { claimWebhookDeliveries, recordWebhookAttempt, signWebhook } from "@ot/core/services";
-import { WEBHOOK_ID_HEADER, WEBHOOK_RETRY_LIMIT, WEBHOOK_SIGNATURE_HEADER, WEBHOOK_TIMESTAMP_HEADER } from "@ot/core";
+import { claimWebhookDeliveries, recordWebhookAttempt, signWebhook } from "@evnelo/core/services";
+import { WEBHOOK_ID_HEADER, WEBHOOK_RETRY_LIMIT, WEBHOOK_SIGNATURE_HEADER, WEBHOOK_TIMESTAMP_HEADER } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { captureError } from "@/lib/observability";
 

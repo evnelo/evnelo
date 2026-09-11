@@ -1,4 +1,4 @@
-import { getOrderDetails } from "@ot/core/services";
+import { getOrderDetails } from "@evnelo/core/services";
 import { apiRoute, notFound, ok, requireOrgEvent } from "@/lib/api";
 import { serializeAttendee } from "@/lib/api-serializers";
 import { db } from "@/lib/db";

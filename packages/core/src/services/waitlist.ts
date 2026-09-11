@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { and, asc, eq, gt, isNotNull, isNull, lt, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
-import { attendees, events, orders, ticketTypes, waitlistEntries, type Database } from "@ot/db";
+import { attendees, events, orders, ticketTypes, waitlistEntries, type Database } from "@evnelo/db";
 import { newId } from "../ids";
 import type { DbOrTx } from "./db";
 

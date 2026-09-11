@@ -15,13 +15,13 @@ export async function migrateOnStart() {
   const folder = migrationsFolder();
   const conn = await mysql.createConnection({ uri: env.DATABASE_URL, timezone: "Z", multipleStatements: true });
   try {
-    const [rows] = await conn.query<mysql.RowDataPacket[]>("select get_lock('openticket_migrate', 120) as locked");
+    const [rows] = await conn.query<mysql.RowDataPacket[]>("select get_lock('evnelo_migrate', 120) as locked");
     if (rows[0]?.locked !== 1) throw new Error("Could not acquire the migration lock within 120s.");
     try {
       await migrate(drizzle(conn), { migrationsFolder: folder });
       console.log(`[migrate] up to date (${path.relative(process.cwd(), folder)})`);
     } finally {
-      await conn.query("select release_lock('openticket_migrate')");
+      await conn.query("select release_lock('evnelo_migrate')");
     }
   } finally {
     await conn.end();

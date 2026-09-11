@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { and, eq, isNull } from "drizzle-orm";
-import { attendees, events, organizations, ticketTypes, tickets } from "@ot/db";
+import { attendees, events, organizations, ticketTypes, tickets } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 

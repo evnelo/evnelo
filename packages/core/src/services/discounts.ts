@@ -1,6 +1,6 @@
 import { and, desc, eq, gt, isNull, lt, or, sql } from "drizzle-orm";
 import { z } from "zod";
-import { discountCodes, type Database } from "@ot/db";
+import { discountCodes, type Database } from "@evnelo/db";
 import { newId } from "../ids";
 import type { Discount } from "../fees";
 import type { DbOrTx } from "./db";

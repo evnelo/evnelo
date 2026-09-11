@@ -12,13 +12,13 @@ import { buildAnswersSchema } from "../fields/schema";
 const EVENT = "01J8ZK7V4T9QF2M6X0RHB3NCDE";
 const OTHER = "01J8ZK7V4T9QF2M6X0RHB3NCDF";
 const NAME = "a".repeat(32);
-const KEY = `openticket/registrations/${EVENT}/${NAME}.pdf`;
+const KEY = `evnelo/registrations/${EVENT}/${NAME}.pdf`;
 
 describe("registration file keys", () => {
   it("builds and parses an event-scoped key", () => {
-    expect(registrationFilePrefix("openticket", EVENT)).toBe(`openticket/registrations/${EVENT}/`);
-    expect(registrationFileKey("openticket", EVENT, NAME, "pdf")).toBe(KEY);
-    expect(parseRegistrationFileKey(KEY)).toEqual({ key: KEY, keyPrefix: "openticket", eventId: EVENT, name: NAME, extension: "pdf" });
+    expect(registrationFilePrefix("evnelo", EVENT)).toBe(`evnelo/registrations/${EVENT}/`);
+    expect(registrationFileKey("evnelo", EVENT, NAME, "pdf")).toBe(KEY);
+    expect(parseRegistrationFileKey(KEY)).toEqual({ key: KEY, keyPrefix: "evnelo", eventId: EVENT, name: NAME, extension: "pdf" });
   });
 
   it("accepts a shared multi-segment bucket prefix and trims slashes", () => {
@@ -30,21 +30,21 @@ describe("registration file keys", () => {
     expect(isRegistrationFileKey(KEY, EVENT)).toBe(true);
     expect(isRegistrationFileKey(KEY, OTHER)).toBe(false);
     expect(isRegistrationFileKey(KEY)).toBe(true);
-    expect(parseRegistrationFileKey(KEY, { keyPrefix: "openticket" })).not.toBeNull();
-    expect(parseRegistrationFileKey(KEY, { keyPrefix: "/openticket/" })).not.toBeNull();
+    expect(parseRegistrationFileKey(KEY, { keyPrefix: "evnelo" })).not.toBeNull();
+    expect(parseRegistrationFileKey(KEY, { keyPrefix: "/evnelo/" })).not.toBeNull();
     expect(parseRegistrationFileKey(KEY, { keyPrefix: "someone-else" })).toBeNull();
   });
 
   it("rejects traversal, the public prefix, wrong extensions and non-strings", () => {
     for (const bad of [
-      `openticket/registrations/${EVENT}/../../uploads/secret.pdf`,
+      `evnelo/registrations/${EVENT}/../../uploads/secret.pdf`,
       `../registrations/${EVENT}/${NAME}.pdf`,
-      `openticket/uploads/${EVENT}/${NAME}.pdf`,
-      `/openticket/registrations/${EVENT}/${NAME}.pdf`,
-      `openticket/registrations/${EVENT}/${NAME}.exe`,
-      `openticket/registrations/${EVENT}/${NAME.toUpperCase()}.pdf`,
-      `openticket/registrations/short/${NAME}.pdf`,
-      `https://cdn.example.com/openticket/registrations/${EVENT}/${NAME}.pdf`,
+      `evnelo/uploads/${EVENT}/${NAME}.pdf`,
+      `/evnelo/registrations/${EVENT}/${NAME}.pdf`,
+      `evnelo/registrations/${EVENT}/${NAME}.exe`,
+      `evnelo/registrations/${EVENT}/${NAME.toUpperCase()}.pdf`,
+      `evnelo/registrations/short/${NAME}.pdf`,
+      `https://cdn.example.com/evnelo/registrations/${EVENT}/${NAME}.pdf`,
       "",
       null,
       42,
@@ -76,7 +76,7 @@ describe("file answers", () => {
   it("accepts a key for this event and rejects URLs or other events", () => {
     const schema = buildAnswersSchema(field(true), { scope: "attendee" });
     expect(schema.safeParse({ cv: KEY }).success).toBe(true);
-    expect(schema.safeParse({ cv: `openticket/registrations/${OTHER}/${NAME}.pdf` }).success).toBe(false);
+    expect(schema.safeParse({ cv: `evnelo/registrations/${OTHER}/${NAME}.pdf` }).success).toBe(false);
     expect(schema.safeParse({ cv: "https://example.com/cv.pdf" }).success).toBe(false);
     expect(schema.safeParse({ cv: "" }).success).toBe(false);
   });

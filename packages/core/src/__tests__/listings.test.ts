@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { Event, TicketType } from "@ot/db";
+import type { Event, TicketType } from "@evnelo/db";
 import { eventInput } from "../services/events";
 import { eventInputFromRecord, paginate, paginateAll, ticketTypeInputFromRecord } from "../services/listings";
 import { ticketTypeInput } from "../services/tickets";
@@ -10,7 +10,7 @@ const event: Event = {
   coverImageUrl: null, logoUrl: null, timezone: "Europe/Lisbon", startsAt: now, endsAt: new Date(now.getTime() + 3_600_000),
   locationType: "in_person", venueName: "Loft", address: null, city: "Lisbon", country: "PT", lat: null, lng: null, onlineUrl: null,
   visibility: "public", status: "draft", requiresApproval: false, capacity: 120, waitlistEnabled: true, collectPhone: false,
-  guestsEnabled: true, maxGuests: 2, feePassThrough: false, refundPolicy: null, socialLinks: [{ platform: "x", url: "https://x.com/openticket" }],
+  guestsEnabled: true, maxGuests: 2, feePassThrough: false, refundPolicy: null, socialLinks: [{ platform: "x", url: "https://x.com/evnelo" }],
   reminderHours: [24, 1], publishedAt: null, deletedAt: null, createdAt: now, updatedAt: now,
 };
 

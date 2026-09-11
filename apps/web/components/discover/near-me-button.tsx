@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Crosshair, LoaderCircle } from "lucide-react";
-import { DEFAULT_RADIUS_KM } from "@ot/core";
+import { DEFAULT_RADIUS_KM } from "@evnelo/core";
 import { Button } from "@/components/ui/button";
 
 /**

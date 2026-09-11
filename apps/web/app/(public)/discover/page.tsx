@@ -12,8 +12,8 @@ import {
   zonedDayKey,
   type DiscoverFilters,
   type SearchParamRecord,
-} from "@ot/core";
-import type { PublicEventSearch } from "@ot/core/services";
+} from "@evnelo/core";
+import type { PublicEventSearch } from "@evnelo/core/services";
 import { listDiscoverableCities, listDiscoverableEvents, listDiscoverableTags } from "@/lib/queries/events";
 import { publicEventPath, serializeJsonLd } from "@/lib/urls";
 import { env } from "@/lib/env";

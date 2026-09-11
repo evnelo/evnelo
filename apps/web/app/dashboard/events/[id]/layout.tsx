@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronLeft, ExternalLink } from "lucide-react";
-import { countAttendeesByStatus, countOpenWaitlist } from "@ot/core/services";
+import { countAttendeesByStatus, countOpenWaitlist } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { requireEvent, statusVariant } from "@/lib/dashboard";
 import { Badge } from "@/components/ui/badge";

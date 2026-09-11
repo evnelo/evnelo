@@ -1,7 +1,7 @@
 {
-  "name": "@ot/sdk",
+  "name": "@evnelo/sdk",
   "version": "0.1.0",
-  "description": "TypeScript client for the OpenTicket REST API, generated from its OpenAPI document.",
+  "description": "TypeScript client for the Evnelo REST API, generated from its OpenAPI document.",
   "private": true,
   "license": "Apache-2.0",
   "type": "module",

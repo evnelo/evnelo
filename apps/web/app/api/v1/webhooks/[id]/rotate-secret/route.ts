@@ -1,4 +1,4 @@
-import { rotateWebhookSecret } from "@ot/core/services";
+import { rotateWebhookSecret } from "@evnelo/core/services";
 import { apiRoute, mutate, notFound } from "@/lib/api";
 
 export const runtime = "nodejs";

@@ -1,4 +1,4 @@
-import { deleteEventInvite } from "@ot/core/services";
+import { deleteEventInvite } from "@evnelo/core/services";
 import { apiRoute, notFound, ok, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

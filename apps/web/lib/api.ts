@@ -1,10 +1,10 @@
 import { z } from "zod";
-import type { Database, Event } from "@ot/db";
+import type { Database, Event } from "@evnelo/db";
 import { captureError } from "@/lib/observability";
 import {
   ApiAuthError, ApiRequestError, type ApiKeyContext, type ApiRateLimit, type ApiScope,
   apiRequestHash, authenticateApiKey, consumeApiRateLimit, consumeRateLimit, executeIdempotentRequest, getEvent, parseBearerToken,
-} from "@ot/core/services";
+} from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { ApiHttpError, apiJson, authFailureBucket, readJsonBody } from "@/lib/api-http";
 

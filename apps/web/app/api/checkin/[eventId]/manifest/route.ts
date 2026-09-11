@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
-import { checkInStats, listCheckInAttendees, recentCheckIns } from "@ot/core/services";
+import { checkInStats, listCheckInAttendees, recentCheckIns } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { checkInAccess } from "@/lib/checkin-access";
 

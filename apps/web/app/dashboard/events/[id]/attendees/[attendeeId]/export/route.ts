@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { exportAttendeeData } from "@ot/core/services";
+import { exportAttendeeData } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { requireEvent } from "@/lib/dashboard";
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { CalendarDays, LayoutGrid, MapPin, Search, X } from "lucide-react";
-import { DEFAULT_RADIUS_KM, DISCOVER_RADII_KM, discoverHref, discoverParams, type DiscoverFilters } from "@ot/core";
+import { DEFAULT_RADIUS_KM, DISCOVER_RADII_KM, discoverHref, discoverParams, type DiscoverFilters } from "@evnelo/core";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NearMeButton } from "@/components/discover/near-me-button";

@@ -1,4 +1,4 @@
-import type { ConditionGroup, ConditionRule } from "@ot/db";
+import type { ConditionGroup, ConditionRule } from "@evnelo/db";
 
 export type Answers = Record<string, unknown>;
 

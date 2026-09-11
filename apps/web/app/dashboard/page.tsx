@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CalendarPlus, ChevronRight, Globe, MapPin, Plus } from "lucide-react";
-import { listOrgEvents } from "@ot/core/services";
-import { can } from "@ot/core";
+import { listOrgEvents } from "@evnelo/core/services";
+import { can } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { requireOrg } from "@/lib/auth/session";

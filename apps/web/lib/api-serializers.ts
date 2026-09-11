@@ -1,8 +1,8 @@
-import type { Organization } from "@ot/db";
+import type { Organization } from "@evnelo/db";
 import {
   inviteStatus, waitlistStatus, webhookDeliveryState,
   type AttendeeView, type EventInvite, type WaitlistEntry, type Webhook, type WebhookDelivery,
-} from "@ot/core/services";
+} from "@evnelo/core/services";
 import { env } from "@/lib/env";
 
 /**

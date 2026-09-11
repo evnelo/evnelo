@@ -1,6 +1,6 @@
 import { and, asc, eq } from "drizzle-orm";
 import { z } from "zod";
-import { ticketTypes, type Database } from "@ot/db";
+import { ticketTypes, type Database } from "@evnelo/db";
 import { newId } from "../ids";
 
 export const ticketTypeInput = z.object({

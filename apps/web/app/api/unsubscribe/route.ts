@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import { attendees } from "@ot/db";
+import { attendees } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { verifyUnsubscribeToken } from "@/lib/notifications/unsubscribe";

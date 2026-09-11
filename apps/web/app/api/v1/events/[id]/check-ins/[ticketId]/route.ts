@@ -1,4 +1,4 @@
-import { undoCheckIn } from "@ot/core/services";
+import { undoCheckIn } from "@evnelo/core/services";
 import { apiRoute, notFound, ok, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

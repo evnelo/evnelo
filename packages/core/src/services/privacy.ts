@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   apiKeys, attendees, checkIns, discountCodes, eventInvites, eventReports, events, notifications, orderItems, orders, organizationMembers, organizations,
   registrationFields, ticketTypes, tickets, waitlistEntries, webhooks, type Database,
-} from "@ot/db";
+} from "@evnelo/db";
 import { newId } from "../ids";
 import type { DbOrTx } from "./db";
 

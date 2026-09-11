@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BarChart3, Ticket } from "lucide-react";
-import { getEventStats, listTicketTypes } from "@ot/core/services";
-import { can } from "@ot/core";
+import { getEventStats, listTicketTypes } from "@evnelo/core/services";
+import { can } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { requireEvent } from "@/lib/dashboard";

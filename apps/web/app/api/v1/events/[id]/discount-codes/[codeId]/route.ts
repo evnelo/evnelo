@@ -1,4 +1,4 @@
-import { deleteDiscountCode } from "@ot/core/services";
+import { deleteDiscountCode } from "@evnelo/core/services";
 import { apiRoute, notFound, ok, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

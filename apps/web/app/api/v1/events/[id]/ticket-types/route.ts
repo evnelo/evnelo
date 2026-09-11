@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getTicketType, listTicketTypes, paginateAll, ticketTypeInput, upsertTicketType } from "@ot/core/services";
+import { getTicketType, listTicketTypes, paginateAll, ticketTypeInput, upsertTicketType } from "@evnelo/core/services";
 import { apiRoute, mutate, ok, pageQuery, parseBody, parseQuery, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

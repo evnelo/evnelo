@@ -18,16 +18,16 @@ jobs:
       mysql:
         image: mysql:8.4
         env:
-          MYSQL_DATABASE: openticket
-          MYSQL_USER: openticket
-          MYSQL_PASSWORD: openticket
+          MYSQL_DATABASE: evnelo
+          MYSQL_USER: evnelo
+          MYSQL_PASSWORD: evnelo
           MYSQL_ROOT_PASSWORD: root
         ports: ["3306:3306"]
         options: >-
           --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -proot"
           --health-interval 5s --health-timeout 5s --health-retries 20
     env:
-      DATABASE_URL: mysql://openticket:openticket@127.0.0.1:3306/openticket
+      DATABASE_URL: mysql://evnelo:evnelo@127.0.0.1:3306/evnelo
       AUTH_SECRET: ci-only-secret-that-is-at-least-32-characters-long
       APP_URL: http://localhost:3000
       JOBS_INLINE: "false"

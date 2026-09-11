@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { isIP } from "node:net";
 import { env } from "@/lib/env";
-import type { ApiRateLimit } from "@ot/core/services";
+import type { ApiRateLimit } from "@evnelo/core/services";
 
 export const MAX_API_BODY_BYTES = 256 * 1024;
 export const PUBLIC_API_RATE_LIMIT = 60;
@@ -100,18 +100,18 @@ function hashedRateLimitBucket(identity: string): string {
   return `p${digest.slice(0, 25)}`;
 }
 
-export const PUBLIC_API_GLOBAL_BUCKET = hashedRateLimitBucket("openticket:public-api:global");
+export const PUBLIC_API_GLOBAL_BUCKET = hashedRateLimitBucket("evnelo:public-api:global");
 
 /** Per-client bucket, or null when clients can't be told apart (then only the global ceiling applies). */
 export function publicRateLimitBucket(request: Request, trustedProxyHeader = configuredTrustedProxyHeader()): string | null {
   const address = clientAddress(request, trustedProxyHeader);
-  return address ? hashedRateLimitBucket(`openticket:public-api:client:${address}`) : null;
+  return address ? hashedRateLimitBucket(`evnelo:public-api:client:${address}`) : null;
 }
 
 /** Bucket for failed authentication attempts: per client when attributable, else per presented key prefix. */
 export function authFailureBucket(request: Request, presentedKey: string | null, trustedProxyHeader = configuredTrustedProxyHeader()): string {
   const address = clientAddress(request, trustedProxyHeader);
-  return hashedRateLimitBucket(`openticket:api-auth-fail:${address ?? `prefix:${(presentedKey ?? "").slice(0, 12)}`}`);
+  return hashedRateLimitBucket(`evnelo:api-auth-fail:${address ?? `prefix:${(presentedKey ?? "").slice(0, 12)}`}`);
 }
 
 /** Standard headers; Reset is unix seconds, as clients and SDK generators expect. */

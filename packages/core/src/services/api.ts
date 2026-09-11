@@ -1,6 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
 import { and, desc, eq, isNull, lt, lte, or, sql } from "drizzle-orm";
-import { apiIdempotencyKeys, apiKeys, apiRateLimits, organizations, type Database } from "@ot/db";
+import { apiIdempotencyKeys, apiKeys, apiRateLimits, organizations, type Database } from "@evnelo/db";
 import { newId } from "../ids";
 import type { DbOrTx } from "./db";
 

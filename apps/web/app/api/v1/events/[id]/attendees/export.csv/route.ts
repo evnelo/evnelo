@@ -1,4 +1,4 @@
-import { attendeesCsv } from "@ot/core/services";
+import { attendeesCsv } from "@evnelo/core/services";
 import { apiRoute, requireOrgEvent } from "@/lib/api";
 import { rateLimitHeaders } from "@/lib/api-http";
 import { db } from "@/lib/db";

@@ -10,7 +10,7 @@ import {
   registrationFilePrefix,
   type ParsedRegistrationFileKey,
   type RegistrationFileType,
-} from "@ot/core";
+} from "@evnelo/core";
 import { env } from "./env";
 
 /**
@@ -19,7 +19,7 @@ import { env } from "./env";
  * proxies bytes. Public URLs point at CloudFront when configured, else the bucket.
  *
  * Key layout: `{S3_KEY_PREFIX}/uploads/{organizationId}/{random}.{ext}` (prefix defaults to
- * "openticket", so the bucket can be shared with other applications).
+ * "evnelo", so the bucket can be shared with other applications).
  */
 
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;

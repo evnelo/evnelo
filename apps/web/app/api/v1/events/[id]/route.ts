@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eventInput, eventInputFromRecord, getEventWithRelations, listRegistrationFields, updateEvent } from "@ot/core/services";
+import { eventInput, eventInputFromRecord, getEventWithRelations, listRegistrationFields, updateEvent } from "@evnelo/core/services";
 import { apiRoute, mutate, notFound, ok, parseBody, parseWith, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

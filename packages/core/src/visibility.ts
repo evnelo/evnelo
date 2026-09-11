@@ -1,4 +1,4 @@
-import type { Event } from "@ot/db";
+import type { Event } from "@evnelo/db";
 
 export function isDiscoverable(e: Pick<Event, "visibility" | "status" | "deletedAt">): boolean {
   return e.visibility === "public" && e.status === "published" && !e.deletedAt;

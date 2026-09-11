@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getWebhook, listWebhookDeliveries, paginate } from "@ot/core/services";
+import { getWebhook, listWebhookDeliveries, paginate } from "@evnelo/core/services";
 import { apiRoute, notFound, ok, pageQuery, parseQuery } from "@/lib/api";
 import { serializeWebhookDelivery } from "@/lib/api-serializers";
 import { db } from "@/lib/db";

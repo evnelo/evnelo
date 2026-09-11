@@ -1,6 +1,6 @@
 import { and, asc, eq, notInArray } from "drizzle-orm";
 import { z } from "zod";
-import { registrationFields, type ConditionGroup, type Database, type FieldOption } from "@ot/db";
+import { registrationFields, type ConditionGroup, type Database, type FieldOption } from "@evnelo/db";
 import { validateConditions } from "../fields/conditions";
 import { newId } from "../ids";
 

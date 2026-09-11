@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { canView } from "@ot/core";
+import { canView } from "@evnelo/core";
 import { getPublicEvent } from "@/lib/queries/events";
 import { OG_SIZE, SYMBOL_PATH, og, ogFontList } from "@/lib/og";
 import { formatMoney } from "@/lib/utils";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { normalizeWebsiteUrl } from "@ot/core";
+import { normalizeWebsiteUrl } from "@evnelo/core";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/ui/form-field";

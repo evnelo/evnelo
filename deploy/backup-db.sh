@@ -5,9 +5,9 @@
 set -eu
 dir="${BACKUP_DIR:-./backups}"
 mkdir -p "$dir"
-file="$dir/openticket-$(date -u +%Y%m%dT%H%M%SZ).sql.gz"
+file="$dir/evnelo-$(date -u +%Y%m%dT%H%M%SZ).sql.gz"
 docker compose --env-file .env -f deploy/docker-compose.prod.yml exec -T db \
-  sh -c 'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction --routines openticket' | gzip > "$file"
-find "$dir" -name 'openticket-*.sql.gz' -mtime +14 -delete
+  sh -c 'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction --routines evnelo' | gzip > "$file"
+find "$dir" -name 'evnelo-*.sql.gz' -mtime +14 -delete
 [ -n "${BACKUP_S3_URI:-}" ] && aws s3 cp "$file" "$BACKUP_S3_URI/" || true
 echo "wrote $file"

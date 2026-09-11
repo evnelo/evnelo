@@ -1,4 +1,4 @@
-import { WEBHOOK_EVENTS } from "@ot/core";
+import { WEBHOOK_EVENTS } from "@evnelo/core";
 import { apiRoute, ok } from "@/lib/api";
 
 export const runtime = "nodejs";

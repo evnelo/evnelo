@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { RegistrationField } from "@ot/db";
+import type { RegistrationField } from "@evnelo/db";
 import { visibleFieldKeys, type Answers } from "./conditions";
 import { isRegistrationFileKey } from "./files";
 

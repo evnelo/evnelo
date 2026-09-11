@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { checkInTicket, listCheckInsPage, paginate } from "@ot/core/services";
+import { checkInTicket, listCheckInsPage, paginate } from "@evnelo/core/services";
 import { apiRoute, mutate, ok, pageQuery, parseBody, parseQuery, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

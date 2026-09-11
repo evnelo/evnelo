@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { consumeRateLimit } from "@ot/core/services";
+import { consumeRateLimit } from "@evnelo/core/services";
 
 /** Bucket id for non-API-key limits (uploads, geocoding, payment checks): hashed so identities never land in the table. */
 export function sharedRateLimitBucket(scope: string, identity: string) {

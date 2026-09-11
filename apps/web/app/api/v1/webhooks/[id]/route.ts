@@ -1,4 +1,4 @@
-import { deleteWebhook, getWebhook, updateWebhook, webhookInput } from "@ot/core/services";
+import { deleteWebhook, getWebhook, updateWebhook, webhookInput } from "@evnelo/core/services";
 import { apiRoute, mutate, notFound, ok, parseBody } from "@/lib/api";
 import { serializeWebhook } from "@/lib/api-serializers";
 import { db } from "@/lib/db";

@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { createDb } from "@ot/db";
+import { createDb } from "@evnelo/db";
 import { consumeRateLimit } from "../services/api";
 
 /**
  * Runs against the local MySQL (docker compose up db) when reachable; skipped otherwise.
  * The point is the property mocks cannot prove: N concurrent consumers admit exactly `limit`.
  */
-const url = process.env.DATABASE_URL ?? "mysql://openticket:openticket@localhost:3306/openticket";
+const url = process.env.DATABASE_URL ?? "mysql://evnelo:evnelo@localhost:3306/evnelo";
 const db = createDb(url);
 const reachable = await db.execute("select 1").then(() => true, () => false);
 

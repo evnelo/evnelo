@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import { getEventInvite, inviteStatus } from "@ot/core/services";
-import { events, organizations } from "@ot/db";
+import { getEventInvite, inviteStatus } from "@evnelo/core/services";
+import { events, organizations } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { INVITE_COOKIE_MAX_AGE, inviteCookieName } from "@/lib/event-access";

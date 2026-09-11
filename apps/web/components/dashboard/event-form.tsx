@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown, Plus, X } from "lucide-react";
-import { SOCIAL_PLATFORMS, slugify } from "@ot/core";
+import { SOCIAL_PLATFORMS, slugify } from "@evnelo/core";
 import { TIMEZONES, utcToZonedLocal, zonedLocalToUtc } from "@/lib/tz";
 import { publicEventPath } from "@/lib/urls";
 import { Button } from "@/components/ui/button";

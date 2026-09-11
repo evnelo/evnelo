@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LogOut } from "lucide-react";
-import { can } from "@ot/core";
+import { can } from "@evnelo/core";
 import { requireOrg } from "@/lib/auth/session";
 import { signOutAction, switchOrgAction } from "./actions";
 import { Brand } from "@/components/brand";

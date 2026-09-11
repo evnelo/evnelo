@@ -1,7 +1,7 @@
 import * as React from "react";
 import { and, eq, inArray, isNull, sql } from "drizzle-orm";
-import { attendees, events, notifications, orders, organizations, smsUnlocks, ticketTypes, tickets, type Notification } from "@ot/db";
-import { currentEdition, reminderWhen, smsGate } from "@ot/core";
+import { attendees, events, notifications, orders, organizations, smsUnlocks, ticketTypes, tickets, type Notification } from "@evnelo/db";
+import { currentEdition, reminderWhen, smsGate } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { appleWalletConfigured, env, googleWalletConfigured, smsConfigured } from "@/lib/env";
 import { renderEmail, sendEmail } from "@/lib/email";

@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Copy, Plus, Webhook } from "lucide-react";
-import { WEBHOOK_EVENTS } from "@ot/core";
+import { WEBHOOK_EVENTS } from "@evnelo/core";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,7 +46,7 @@ export function WebhooksPanel({ hooks, editable }: { hooks: WebhookRow[]; editab
       )}
       {open && (
         <div className="animate-rise space-y-4 rounded-xl border border-border/80 bg-card p-4 shadow-card">
-          <Field label="Endpoint URL" htmlFor="wh-url" help="https only (http://localhost is allowed for development)."><Input id="wh-url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://example.com/openticket" /></Field>
+          <Field label="Endpoint URL" htmlFor="wh-url" help="https only (http://localhost is allowed for development)."><Input id="wh-url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://example.com/evnelo" /></Field>
           <fieldset>
             <legend className="eyebrow">Events</legend>
             <div className="mt-2 grid gap-1.5 sm:grid-cols-2">

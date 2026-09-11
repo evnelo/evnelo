@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ORDER_STATUSES, listOrdersPage, paginate } from "@ot/core/services";
+import { ORDER_STATUSES, listOrdersPage, paginate } from "@evnelo/core/services";
 import { apiRoute, ok, pageQuery, parseQuery, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

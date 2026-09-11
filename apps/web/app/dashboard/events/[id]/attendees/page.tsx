@@ -1,7 +1,7 @@
 import { Download, Search, Users } from "lucide-react";
-import { countAttendeesByStatus, listAttendees, listRegistrationFields } from "@ot/core/services";
-import { can, registrationFileDownloadPath } from "@ot/core";
-import type { Attendee } from "@ot/db";
+import { countAttendeesByStatus, listAttendees, listRegistrationFields } from "@evnelo/core/services";
+import { can, registrationFileDownloadPath } from "@evnelo/core";
+import type { Attendee } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { requireEvent, statusLabel, statusVariant } from "@/lib/dashboard";
 import { Badge } from "@/components/ui/badge";

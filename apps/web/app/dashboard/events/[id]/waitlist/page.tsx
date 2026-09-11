@@ -1,5 +1,5 @@
-import { listWaitlist, promotableTicketTypes, waitlistStatus } from "@ot/core/services";
-import { can } from "@ot/core";
+import { listWaitlist, promotableTicketTypes, waitlistStatus } from "@evnelo/core/services";
+import { can } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { requireEvent } from "@/lib/dashboard";
 import { WaitlistPanel } from "@/components/dashboard/waitlist-panel";

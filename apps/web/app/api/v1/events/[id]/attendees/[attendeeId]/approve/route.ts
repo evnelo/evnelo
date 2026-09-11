@@ -1,4 +1,4 @@
-import { approveAttendees } from "@ot/core/services";
+import { approveAttendees } from "@evnelo/core/services";
 import { attendeeAction } from "../action";
 
 export const runtime = "nodejs";

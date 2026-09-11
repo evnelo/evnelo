@@ -1,4 +1,4 @@
-import { publishEvent } from "@ot/core/services";
+import { publishEvent } from "@evnelo/core/services";
 import { apiRoute, businessRule, mutate, requireOrgEvent } from "@/lib/api";
 
 export const runtime = "nodejs";

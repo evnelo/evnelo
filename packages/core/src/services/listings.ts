@@ -1,5 +1,5 @@
 import { and, asc, desc, eq, isNull, like, or, sql } from "drizzle-orm";
-import { attendees, checkIns, orders, orderItems, organizations, ticketTypes, tickets, type Attendee, type Database, type Event, type Order, type TicketType } from "@ot/db";
+import { attendees, checkIns, orders, orderItems, organizations, ticketTypes, tickets, type Attendee, type Database, type Event, type Order, type TicketType } from "@evnelo/db";
 import { fromDbDatetime } from "./checkin";
 import type { EventInput } from "./events";
 import type { TicketTypeInput } from "./tickets";

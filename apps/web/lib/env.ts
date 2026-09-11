@@ -39,7 +39,7 @@ const schema = z.object({
   S3_BUCKET: z.string().optional(),
   S3_ENDPOINT: z.string().url().optional(),
   // every object key lives under this folder, so one bucket can be shared with other apps
-  S3_KEY_PREFIX: z.string().default("openticket"),
+  S3_KEY_PREFIX: z.string().default("evnelo"),
   // "public-read" for buckets that still use object ACLs (no public bucket policy / CloudFront OAC);
   // leave unset for buckets with ACLs disabled, where sending an ACL makes the upload fail
   S3_UPLOAD_ACL: z.enum(["public-read"]).optional(),

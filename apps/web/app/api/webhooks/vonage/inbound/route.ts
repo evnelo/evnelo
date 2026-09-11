@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import { attendees } from "@ot/db";
-import { smsKeyword } from "@ot/core";
+import { attendees } from "@evnelo/db";
+import { smsKeyword } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { verifyVonage } from "../_verify";
 

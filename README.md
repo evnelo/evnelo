@@ -26,7 +26,7 @@ Conventions for contributors and coding agents are in `AGENTS.md`. Licensed unde
 
 **For developers**
 - REST API under `/api/v1` covering every resource, with idempotent writes, pagination, rate limits, an OpenAPI 3.1 document and interactive docs at `/api/v1/docs`.
-- `@ot/sdk`, a TypeScript client generated from the OpenAPI document, and an MCP server so agents can run events through the same API.
+- `@evnelo/sdk`, a TypeScript client generated from the OpenAPI document, and an MCP server so agents can run events through the same API.
 - Signed outbound webhooks for registrations, payments, refunds, check-ins and event changes.
 
 ## Getting started
@@ -65,7 +65,7 @@ Stripe locally: put test keys in `.env` and run `stripe listen --forward-to loca
 apps/web           Next.js app: public pages, dashboard, REST API, webhooks, jobs
 packages/core      Business rules (pure) and the server-only service layer used by the app, the API and MCP
 packages/db        Drizzle schema, migrations, seed
-packages/sdk       Generated TypeScript client (@ot/sdk)
+packages/sdk       Generated TypeScript client (@evnelo/sdk)
 packages/mcp       MCP server over the REST API
 deploy/            Single-VM production stack (Caddy, app, MySQL) and backup script
 ```
@@ -80,7 +80,7 @@ pnpm typecheck
 pnpm db:generate    # after editing packages/db/src/schema.ts
 pnpm db:migrate
 pnpm db:seed
-pnpm --filter @ot/sdk generate   # regenerate the SDK after changing lib/openapi.ts
+pnpm --filter @evnelo/sdk generate   # regenerate the SDK after changing lib/openapi.ts
 ```
 
 ## Configuration
@@ -96,7 +96,7 @@ Everything is read from the environment (the root `.env` in development). Empty 
 | `RESEND_API_KEY`, `EMAIL_FROM`, `RESEND_WEBHOOK_SECRET` | for email | Sending domain must be verified at Resend. Point Resend webhooks at `/api/webhooks/resend`. |
 | `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` | for paid tickets | Register `/api/webhooks/stripe` in the Stripe dashboard. |
 | `VONAGE_APPLICATION_ID` + `VONAGE_PRIVATE_KEY` (or `VONAGE_API_KEY` + `VONAGE_API_SECRET`), `VONAGE_FROM`, `VONAGE_SIGNATURE_SECRET` | for SMS | Status URL `/api/webhooks/vonage/status`, inbound URL `/api/webhooks/vonage/inbound`. |
-| `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION`, `S3_BUCKET` | for uploads | `S3_ENDPOINT` for R2 or MinIO, `CLOUDFRONT_DOMAIN` to serve through a CDN, `S3_KEY_PREFIX` (default `openticket`), `S3_UPLOAD_ACL=public-read` for ACL-style buckets. Without them the editor accepts image URLs. |
+| `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION`, `S3_BUCKET` | for uploads | `S3_ENDPOINT` for R2 or MinIO, `CLOUDFRONT_DOMAIN` to serve through a CDN, `S3_KEY_PREFIX` (default `evnelo`), `S3_UPLOAD_ACL=public-read` for ACL-style buckets. Without them the editor accepts image URLs. |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | no | Adds Google sign-in. |
 | `APPLE_PASS_TYPE_ID`, `APPLE_TEAM_ID`, `APPLE_PASS_CERT`, `APPLE_PASS_KEY`, `APPLE_PASS_KEY_PASSPHRASE`, `APPLE_WWDR_CERT` | no | Apple Wallet passes; the button appears only when set. |
 | `GOOGLE_WALLET_ISSUER_ID`, `GOOGLE_WALLET_SERVICE_ACCOUNT` | no | Google Wallet passes. |
@@ -108,7 +108,7 @@ Everything is read from the environment (the root `.env` in development). Empty 
 | `ABUSE_EMAIL` | no | Where "Report this event" submissions are emailed. They are always stored. |
 | `CAPTCHA_PROVIDER`, `CAPTCHA_SITE_KEY`, `CAPTCHA_SECRET_KEY` | production | Bot check on sign-in links, registrations, waitlist joins and abuse reports. `turnstile` (Cloudflare, free, invisible for most people) or `recaptcha` (Google reCAPTCHA v3). Off until all three are set. |
 
-Storage needs a CORS rule on the bucket allowing `POST` from `APP_URL`, and objects under `openticket/uploads/` must be publicly readable (bucket policy, CloudFront origin access, or the ACL setting). Registration file uploads live under `openticket/registrations/` and stay private; they are served through an authenticated route.
+Storage needs a CORS rule on the bucket allowing `POST` from `APP_URL`, and objects under `evnelo/uploads/` must be publicly readable (bucket policy, CloudFront origin access, or the ACL setting). Registration file uploads live under `evnelo/registrations/` and stay private; they are served through an authenticated route.
 
 ## How it works
 
@@ -127,23 +127,23 @@ Create keys under Dashboard → Settings → API keys (owners and admins). Keys 
 - Resources under `/api/v1`: organization, events (publish, cancel, stats), ticket types, registration fields, orders (refund), attendees (approve, reject, cancel, CSV), check-ins, discount codes, waitlist, invites, webhooks. `GET /api/v1/public/events` is unauthenticated and takes the same filters as `/discover`.
 - Every write accepts an `Idempotency-Key`; replays return the original response with `Idempotency-Replayed: true`, a different body under the same key is a 409. Lists paginate with `limit`/`offset` and `pagination.nextOffset`. Bodies are capped at 256 KiB. Rate-limit headers are returned on every request that consumes quota.
 - `GET /api/v1/openapi.json` is the contract; a test fails the build if a route is missing from it. `GET /api/v1/docs` is the interactive reference.
-- `@ot/sdk` (`packages/sdk`): `createEvneloClient({ baseUrl, apiKey })` on openapi-fetch, plus `verifyWebhookSignature`.
+- `@evnelo/sdk` (`packages/sdk`): `createEvneloClient({ baseUrl, apiKey })` on openapi-fetch, plus `verifyWebhookSignature`.
 - MCP (`packages/mcp`): list, get, create, update and publish events, ticket types, registrations, exports, stats and public search, through the SDK.
 
 ```json
-{ "mcpServers": { "openticket": { "command": "pnpm", "args": ["--filter", "@ot/mcp", "start"], "env": { "EVNELO_URL": "https://your-instance", "EVNELO_API_KEY": "ev_live_..." } } } }
+{ "mcpServers": { "evnelo": { "command": "pnpm", "args": ["--filter", "@evnelo/mcp", "start"], "env": { "EVNELO_URL": "https://your-instance", "EVNELO_API_KEY": "ev_live_..." } } } }
 ```
 
 ### Outbound webhooks
 
-Add endpoints under Settings → Webhooks and pick events: `registration.created`, `order.paid`, `order.refunded`, `attendee.checked_in`, `event.published`, `event.updated`, `event.cancelled`. Each delivery is a JSON envelope (`id`, `type`, `createdAt`, `organizationId`, `data`) signed with HMAC-SHA256 over `{timestamp}.{body}`, sent as `evnelo-signature: v1=…` with `openticket-timestamp` and `openticket-delivery-id`. Verify with the SDK helper and reject timestamps older than five minutes. Deliveries retry with exponential backoff up to eight attempts; the Settings page shows recent deliveries and can send a test ping or rotate the secret.
+Add endpoints under Settings → Webhooks and pick events: `registration.created`, `order.paid`, `order.refunded`, `attendee.checked_in`, `event.published`, `event.updated`, `event.cancelled`. Each delivery is a JSON envelope (`id`, `type`, `createdAt`, `organizationId`, `data`) signed with HMAC-SHA256 over `{timestamp}.{body}`, sent as `evnelo-signature: v1=…` with `evnelo-timestamp` and `evnelo-delivery-id`. Verify with the SDK helper and reject timestamps older than five minutes. Deliveries retry with exponential backoff up to eight attempts; the Settings page shows recent deliveries and can send a test ping or rotate the secret.
 
 ## Testing
 
 ```bash
 pnpm test                       # all packages
-pnpm --filter @ot/core test     # business rules, services, and integration tests
-pnpm --filter @ot/web test      # app helpers, routes, OpenAPI contract
+pnpm --filter @evnelo/core test     # business rules, services, and integration tests
+pnpm --filter @evnelo/web test      # app helpers, routes, OpenAPI contract
 pnpm typecheck
 ```
 
@@ -156,8 +156,8 @@ To exercise flows by hand: `pnpm db:seed` gives you events with paid and free ti
 The Dockerfile produces a self-contained image (Next standalone server, traced production dependencies, static assets, migrations), about 300 MB, running as the unprivileged `node` user:
 
 ```bash
-docker build -t openticket .                      # add --build-arg NEXT_PUBLIC_SENTRY_DSN=… for browser error reporting
-docker run -d -p 3000:3000 --env-file .env -e APP_URL=https://tickets.example.com openticket
+docker build -t evnelo .                      # add --build-arg NEXT_PUBLIC_SENTRY_DSN=… for browser error reporting
+docker run -d -p 3000:3000 --env-file .env -e APP_URL=https://tickets.example.com evnelo
 ```
 
 At boot the container applies pending migrations (`MIGRATE_ON_START=true`, serialised across replicas with a MySQL lock) and starts the job loop. It has a `HEALTHCHECK` on `/api/health`. `docker compose up --build` runs it against a MySQL container with the root `.env` for a one-box setup.
@@ -181,7 +181,7 @@ Production checklist:
 1. Set `APP_URL`, a fresh `AUTH_SECRET`, `DATABASE_URL`, and `API_TRUSTED_PROXY_HEADER` for your proxy.
 2. Verify a sending domain at Resend and set `EMAIL_FROM` on it; register the Resend, Stripe and Vonage webhook URLs on the public domain.
 3. Create a Turnstile widget (Cloudflare dashboard → Turnstile, any domain, no DNS change needed) or a reCAPTCHA v3 key pair for the domain and set the three `CAPTCHA_*` variables.
-4. Configure the S3 bucket (CORS from `APP_URL`, public read on `openticket/uploads/`, CloudFront optional).
+4. Configure the S3 bucket (CORS from `APP_URL`, public read on `evnelo/uploads/`, CloudFront optional).
 5. Serve over HTTPS. HSTS, a Content Security Policy and the other security headers are set automatically when `APP_URL` is `https://`.
 6. Several replicas: keep `MIGRATE_ON_START=true` (the lock handles it) and either leave `JOBS_INLINE=true` on one replica only or set it to `false` everywhere and hit `POST /api/jobs/run` from a cron.
 7. Back up MySQL. Uploads live in your bucket; the database holds everything else.
@@ -197,8 +197,6 @@ Serverless hosts (Vercel and similar) work with `JOBS_INLINE=false` plus a sched
 - **Errors:** unexpected failures go through one helper that logs with a stable `[scope]` prefix and forwards to Sentry when configured. Notification retries are warnings; only a notification that exhausts its retries is an error.
 - **Moderation:** "Report this event" on public pages stores a row and emails `ABUSE_EMAIL`.
 - **Known follow-ups:** a sweep for registration files uploaded but never submitted, and Stripe Connect onboarding for the cloud edition.
-
-Internal identifiers keep the original working name: the repository, Docker image and database are `openticket`, packages are `@ot/*`, and cookies start with `ot_`. Everything a user or integrator sees says Evnelo.
 
 ## Contributing
 

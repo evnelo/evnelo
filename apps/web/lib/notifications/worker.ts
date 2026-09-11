@@ -1,12 +1,12 @@
 import { captureError } from "@/lib/observability";
 import { deliverWebhooks } from "./webhooks";
 import { and, asc, eq, gte, inArray, isNull, lt, lte, sql } from "drizzle-orm";
-import { attendees, events, notifications, tickets } from "@ot/db";
-import { NOTIFICATION_RETRY_LIMIT, STUCK_SENDING_MS, newId, reminderDedupeKey, reminderSlots, retryDelayMs } from "@ot/core";
+import { attendees, events, notifications, tickets } from "@evnelo/db";
+import { NOTIFICATION_RETRY_LIMIT, STUCK_SENDING_MS, newId, reminderDedupeKey, reminderSlots, retryDelayMs } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { deliver } from "./deliver";
 import { expireHolds, reconcileProcessingOrders } from "@/lib/orders";
-import { expireWaitlistOffers, purgeApiHousekeeping } from "@ot/core/services";
+import { expireWaitlistOffers, purgeApiHousekeeping } from "@evnelo/core/services";
 
 /**
  * The job runner. No Redis: everything is rows in `notifications`, claimed with a

@@ -1,5 +1,5 @@
 import { and, desc, eq, isNull, like, or, sql } from "drizzle-orm";
-import { attendees, checkIns, events, tickets, ticketTypes, type Database } from "@ot/db";
+import { attendees, checkIns, events, tickets, ticketTypes, type Database } from "@evnelo/db";
 import { emitWebhookEvent } from "./webhooks";
 import { newId } from "../ids";
 

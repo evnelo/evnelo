@@ -1,3 +1,3 @@
-import { createDb } from "@ot/db";
+import { createDb } from "@evnelo/db";
 
 export const db = createDb();

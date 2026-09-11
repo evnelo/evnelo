@@ -1,6 +1,6 @@
 import { Receipt } from "lucide-react";
-import { listOrders } from "@ot/core/services";
-import { can } from "@ot/core";
+import { listOrders } from "@evnelo/core/services";
+import { can } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { requireEvent, statusLabel, statusVariant } from "@/lib/dashboard";
 import { formatMoney } from "@/lib/utils";

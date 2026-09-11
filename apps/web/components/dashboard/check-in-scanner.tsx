@@ -41,8 +41,8 @@ const TONE: Record<"ok" | "warn" | "bad", { panel: string; band: string; button:
   bad: { panel: "bg-[#8E1E14] text-white", band: "bg-[#FF9C8A]", button: "border-white/40 bg-white/10 text-white hover:bg-white/20" },
 };
 
-const queueKey = (eventId: string) => `ot-checkin-queue-${eventId}`;
-const manifestKey = (eventId: string) => `ot-checkin-manifest-${eventId}`;
+const queueKey = (eventId: string) => `evnelo-checkin-queue-${eventId}`;
+const manifestKey = (eventId: string) => `evnelo-checkin-manifest-${eventId}`;
 const readJson = <T,>(key: string, fallback: T): T => { try { return JSON.parse(localStorage.getItem(key) ?? "") as T; } catch { return fallback; } };
 
 async function sha256Hex(text: string) {

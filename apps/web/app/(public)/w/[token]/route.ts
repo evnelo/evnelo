@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import { getWaitlistOffer, offerIsOpen } from "@ot/core/services";
-import { events, organizations } from "@ot/db";
+import { getWaitlistOffer, offerIsOpen } from "@evnelo/core/services";
+import { events, organizations } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { OFFER_COOKIE_MAX_AGE, offerCookieName } from "@/lib/waitlist-access";

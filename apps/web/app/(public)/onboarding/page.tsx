@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { createOrganization, listMemberships, organizationInput } from "@ot/core/services";
-import { slugify } from "@ot/core";
+import { createOrganization, listMemberships, organizationInput } from "@evnelo/core/services";
+import { slugify } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { ORG_COOKIE, requireUser } from "@/lib/auth/session";
 import { FormMessage } from "@/components/ui/form-field";

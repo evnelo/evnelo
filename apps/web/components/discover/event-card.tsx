@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MapPin, Video } from "lucide-react";
-import type { PublicEvent } from "@ot/core/services";
+import type { PublicEvent } from "@evnelo/core/services";
 import { publicEventPath } from "@/lib/urls";
 import { cn, formatMoney } from "@/lib/utils";
 

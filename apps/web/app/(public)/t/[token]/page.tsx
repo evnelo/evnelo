@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { and, eq, isNull } from "drizzle-orm";
 import { ArrowUpRight, CalendarPlus, Video } from "lucide-react";
-import { attendees, events, organizations, tickets } from "@ot/db";
+import { attendees, events, organizations, tickets } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { appleWalletConfigured, googleWalletConfigured } from "@/lib/env";
 import { cn, formatDateRange } from "@/lib/utils";

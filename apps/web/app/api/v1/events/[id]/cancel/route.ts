@@ -1,4 +1,4 @@
-import { cancelEvent } from "@ot/core/services";
+import { cancelEvent } from "@evnelo/core/services";
 import { apiRoute, mutate, requireOrgEvent } from "@/lib/api";
 
 export const runtime = "nodejs";

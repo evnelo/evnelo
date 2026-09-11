@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowUpRight, Flag, Lock, MapPin, Video } from "lucide-react";
-import { canView, robotsFor } from "@ot/core";
+import { canView, robotsFor } from "@evnelo/core";
 import { getPublicEvent, getPublicEventByLegacySlug } from "@/lib/queries/events";
 import { cn, formatDateRange } from "@/lib/utils";
 import { organizationPath, publicEventPath, serializeJsonLd } from "@/lib/urls";
@@ -10,7 +10,7 @@ import { RegisterCard } from "@/components/event/register-card";
 import { env } from "@/lib/env";
 import { eventAccess } from "@/lib/event-access";
 import { waitlistOffer } from "@/lib/waitlist-access";
-import { activeWaitlistHolds, liveAttendeeCount } from "@ot/core/services";
+import { activeWaitlistHolds, liveAttendeeCount } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 
 type Params = { params: Promise<{ organizationSlug: string; eventSlug: string }> };

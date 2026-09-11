@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { and, asc, eq, isNull } from "drizzle-orm";
 import { z } from "zod";
-import { organizationInvites, organizationMembers, organizations, users, type Database, type Organization } from "@ot/db";
+import { organizationInvites, organizationMembers, organizations, users, type Database, type Organization } from "@evnelo/db";
 import { newId } from "../ids";
 import type { Role } from "../permissions";
 import { slugify, slugSuffix } from "../slug";

@@ -1,4 +1,4 @@
-import type { SocialLink } from "@ot/db";
+import type { SocialLink } from "@evnelo/db";
 import { Globe, Link2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 

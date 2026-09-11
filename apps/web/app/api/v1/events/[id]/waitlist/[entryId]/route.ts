@@ -1,4 +1,4 @@
-import { removeWaitlistEntry } from "@ot/core/services";
+import { removeWaitlistEntry } from "@evnelo/core/services";
 import { apiRoute, notFound, ok, requireOrgEvent } from "@/lib/api";
 import { db } from "@/lib/db";
 

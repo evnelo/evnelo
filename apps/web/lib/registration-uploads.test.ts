@@ -28,7 +28,7 @@ describe("planning a registration upload", () => {
   });
 
   it("refuses an event id that is not a plain ULID", () => {
-    for (const eventId of ["../other", "01J0000000000000000000000", "01J00000000000000000000000x", "openticket/registrations"]) {
+    for (const eventId of ["../other", "01J0000000000000000000000", "01J00000000000000000000000x", "evnelo/registrations"]) {
       expect(plan("application/pdf", 10, eventId)).toMatchObject({ ok: false, status: 400 });
     }
   });

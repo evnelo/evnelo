@@ -61,7 +61,7 @@ function PaymentForm({ resumeToken, holdExpiresAt, onComplete }: Props) {
     setMessage(undefined);
     try {
       const returnUrl = new URL(window.location.pathname, window.location.origin);
-      returnUrl.searchParams.set("ot_resume", resumeToken);
+      returnUrl.searchParams.set("ev_resume", resumeToken);
       const result = await stripe.confirmPayment({
         elements,
         confirmParams: { return_url: returnUrl.toString() },

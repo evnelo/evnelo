@@ -1,11 +1,11 @@
 /**
  * Stripe-aware order operations: thin bindings of the core fulfilment services plus the few
- * places that must talk to Stripe (cancel, refund, retrieve). Business rules stay in @ot/core.
+ * places that must talk to Stripe (cancel, refund, retrieve). Business rules stay in @evnelo/core.
  */
 import { captureError } from "@/lib/observability";
 import type Stripe from "stripe";
-import type { Order } from "@ot/db";
-import * as svc from "@ot/core/services";
+import type { Order } from "@evnelo/db";
+import * as svc from "@evnelo/core/services";
 import { db } from "./db";
 import { env } from "./env";
 import { stripe } from "./stripe";

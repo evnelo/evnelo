@@ -1,9 +1,9 @@
 import { createHash } from "node:crypto";
 import { SignJWT, jwtVerify } from "jose";
 
-const issuer = "openticket";
+const issuer = "evnelo";
 const audience = "payment-resume";
-const key = (secret: string) => createHash("sha256").update("openticket:payment-resume\0").update(secret).digest();
+const key = (secret: string) => createHash("sha256").update("evnelo:payment-resume\0").update(secret).digest();
 
 export function paymentResumeMatches(
   token: { orderId: string; eventId: string },

@@ -6,7 +6,7 @@ describe("presigned S3 uploads", () => {
   beforeAll(() => {
     // the root .env may carry real S3_* values; this case exercises the AWS_* names and no ACL
     for (const k of ["S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY", "S3_REGION", "S3_UPLOAD_ACL", "S3_KEY_PREFIX", "S3_ENDPOINT"]) delete process.env[k];
-    Object.assign(process.env, { AWS_ACCESS_KEY_ID: "AKIATEST", AWS_SECRET_ACCESS_KEY: "secret", AWS_REGION: "us-east-1", S3_BUCKET: "ot-test", CLOUDFRONT_DOMAIN: "cdn.example.com" });
+    Object.assign(process.env, { AWS_ACCESS_KEY_ID: "AKIATEST", AWS_SECRET_ACCESS_KEY: "secret", AWS_REGION: "us-east-1", S3_BUCKET: "evnelo-test", CLOUDFRONT_DOMAIN: "cdn.example.com" });
     vi.resetModules();
   });
   afterAll(() => { process.env = { ...saved }; vi.resetModules(); });
@@ -15,14 +15,14 @@ describe("presigned S3 uploads", () => {
     const { presignImageUpload, storageConfigured, keyFromPublicUrl } = await import("./storage");
     expect(storageConfigured).toBe(true);
     const r = await presignImageUpload("01J00000000000000000000000", "image/png");
-    expect(r.url).toBe("https://ot-test.s3.us-east-1.amazonaws.com/");
-    expect(r.key).toMatch(/^openticket\/uploads\/01J00000000000000000000000\/[a-f0-9]{32}\.png$/);
+    expect(r.url).toBe("https://evnelo-test.s3.us-east-1.amazonaws.com/");
+    expect(r.key).toMatch(/^evnelo\/uploads\/01J00000000000000000000000\/[a-f0-9]{32}\.png$/);
     expect(r.fields.key).toBe(r.key);
     expect(r.fields["Content-Type"]).toBe("image/png");
     const policy = JSON.parse(Buffer.from(r.fields.Policy!, "base64").toString("utf8")) as { conditions: unknown[] };
     expect(policy.conditions).toContainEqual(["content-length-range", 1, 5 * 1024 * 1024]);
     expect(policy.conditions).toContainEqual(["eq", "$Content-Type", "image/png"]);
-    expect(policy.conditions).toContainEqual(["starts-with", "$key", "openticket/uploads/01J00000000000000000000000/"]);
+    expect(policy.conditions).toContainEqual(["starts-with", "$key", "evnelo/uploads/01J00000000000000000000000/"]);
     expect(r.fields.acl).toBeUndefined();
     expect(policy.conditions.some((c) => JSON.stringify(c).includes("acl"))).toBe(false);
     expect(r.publicUrl).toBe(`https://cdn.example.com/${r.key}`);
@@ -40,7 +40,7 @@ describe("presigned S3 uploads", () => {
       expect(storageConfigured).toBe(true);
       expect(uploadPrefix("org1")).toBe("shared/ot/uploads/org1/");
       const r = await presignImageUpload("org1", "image/jpeg");
-      expect(r.url).toBe("https://ot-test.s3.eu-west-1.amazonaws.com/");
+      expect(r.url).toBe("https://evnelo-test.s3.eu-west-1.amazonaws.com/");
       expect(r.key).toMatch(/^shared\/ot\/uploads\/org1\/[a-f0-9]{32}\.jpg$/);
       expect(r.fields["X-Amz-Credential"]).toMatch(/^AKIAS3\//);
       expect(r.fields.acl).toBe("public-read");
@@ -62,7 +62,7 @@ describe("presigned registration uploads", () => {
     // an upload ACL is configured for images; the registration policy must still refuse to use it
     Object.assign(process.env, {
       AWS_ACCESS_KEY_ID: "AKIATEST", AWS_SECRET_ACCESS_KEY: "secret", AWS_REGION: "us-east-1",
-      S3_BUCKET: "ot-test", CLOUDFRONT_DOMAIN: "cdn.example.com", S3_UPLOAD_ACL: "public-read", S3_KEY_PREFIX: "openticket",
+      S3_BUCKET: "evnelo-test", CLOUDFRONT_DOMAIN: "cdn.example.com", S3_UPLOAD_ACL: "public-read", S3_KEY_PREFIX: "evnelo",
     });
     vi.resetModules();
   });
@@ -70,10 +70,10 @@ describe("presigned registration uploads", () => {
 
   it("pins one key, the content type and a 10 MB ceiling, and never grants an ACL", async () => {
     const { presignRegistrationUpload, registrationUploadPrefix } = await import("./storage");
-    expect(registrationUploadPrefix(EVENT)).toBe(`openticket/registrations/${EVENT}/`);
+    expect(registrationUploadPrefix(EVENT)).toBe(`evnelo/registrations/${EVENT}/`);
     const r = await presignRegistrationUpload(EVENT, "application/pdf");
-    expect(r.url).toBe("https://ot-test.s3.us-east-1.amazonaws.com/");
-    expect(r.key).toMatch(new RegExp(`^openticket/registrations/${EVENT}/[a-f0-9]{32}\\.pdf$`));
+    expect(r.url).toBe("https://evnelo-test.s3.us-east-1.amazonaws.com/");
+    expect(r.key).toMatch(new RegExp(`^evnelo/registrations/${EVENT}/[a-f0-9]{32}\\.pdf$`));
     expect(r.fields.key).toBe(r.key);
     expect(r.fields["Content-Type"]).toBe("application/pdf");
     const policy = JSON.parse(Buffer.from(r.fields.Policy!, "base64").toString("utf8")) as { conditions: unknown[] };
@@ -112,10 +112,10 @@ describe("presigned registration uploads", () => {
   it("rejects a foreign event, prefix, folder or extension before any HEAD is attempted", async () => {
     const { verifyRegistrationFile } = await import("./storage");
     const name = "a".repeat(32);
-    expect(await verifyRegistrationFile(`openticket/registrations/01J00000000000000000000001/${name}.pdf`, EVENT)).toBeNull();
+    expect(await verifyRegistrationFile(`evnelo/registrations/01J00000000000000000000001/${name}.pdf`, EVENT)).toBeNull();
     expect(await verifyRegistrationFile(`someone-else/registrations/${EVENT}/${name}.pdf`, EVENT)).toBeNull();
-    expect(await verifyRegistrationFile(`openticket/uploads/${EVENT}/${name}.pdf`, EVENT)).toBeNull();
-    expect(await verifyRegistrationFile(`openticket/registrations/${EVENT}/${name}.exe`, EVENT)).toBeNull();
+    expect(await verifyRegistrationFile(`evnelo/uploads/${EVENT}/${name}.pdf`, EVENT)).toBeNull();
+    expect(await verifyRegistrationFile(`evnelo/registrations/${EVENT}/${name}.exe`, EVENT)).toBeNull();
     expect(await verifyRegistrationFile(null, EVENT)).toBeNull();
   });
 });

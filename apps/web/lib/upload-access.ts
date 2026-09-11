@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
-import { can } from "@ot/core";
-import { listMemberships } from "@ot/core/services";
+import { can } from "@evnelo/core";
+import { listMemberships } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { currentUser, ORG_COOKIE } from "@/lib/auth/session";
 

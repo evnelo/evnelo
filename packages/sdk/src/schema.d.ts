@@ -1,4 +1,4 @@
-// Generated from apps/web/lib/openapi.ts by `pnpm --filter @ot/sdk generate`. Do not edit by hand.
+// Generated from apps/web/lib/openapi.ts by `pnpm --filter @evnelo/sdk generate`. Do not edit by hand.
 
 export interface paths {
     "/public/events": {
@@ -1554,7 +1554,7 @@ export interface components {
          * @example {
          *       "id": "01J9Z6M5Y3K3F1Q2R8S9T0V1W8",
          *       "organizationId": "01J9Z6M5Y3K3F1Q2R8S9T0V1W3",
-         *       "url": "https://hooks.example.com/openticket",
+         *       "url": "https://hooks.example.com/evnelo",
          *       "events": [
          *         "order.paid",
          *         "attendee.checked_in"

@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, it } from "vitest";
 import { and, eq, isNull } from "drizzle-orm";
-import { attendees, checkIns, createDb, tickets } from "@ot/db";
+import { attendees, checkIns, createDb, tickets } from "@evnelo/db";
 import { newId } from "../ids";
 import { checkInStats, checkInTicket, newTicketToken, undoCheckIn } from "../services";
 
@@ -8,7 +8,7 @@ import { checkInStats, checkInTicket, newTicketToken, undoCheckIn } from "../ser
  * Against the local MySQL when reachable (and seeded); skipped otherwise. Proves the property
  * mocks cannot: N staff scanning the same ticket at once produce exactly one check-in.
  */
-const url = process.env.DATABASE_URL ?? "mysql://openticket:openticket@localhost:3306/openticket";
+const url = process.env.DATABASE_URL ?? "mysql://evnelo:evnelo@localhost:3306/evnelo";
 const db = createDb(url);
 const seed = await db.select().from(attendees).where(and(eq(attendees.status, "confirmed"), isNull(attendees.deletedAt))).limit(1).then((r) => r[0] ?? null, () => null);
 

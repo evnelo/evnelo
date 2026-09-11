@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { MailQuestion, UserPlus } from "lucide-react";
-import { acceptInvite, getInvite } from "@ot/core/services";
-import { ROLE_LABELS } from "@ot/core";
+import { acceptInvite, getInvite } from "@evnelo/core/services";
+import { ROLE_LABELS } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { ORG_COOKIE, currentUser } from "@/lib/auth/session";
 import { Button } from "@/components/ui/button";

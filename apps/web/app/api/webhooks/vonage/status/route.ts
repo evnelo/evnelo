@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import { notifications } from "@ot/db";
+import { notifications } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { verifyVonage } from "../_verify";
 

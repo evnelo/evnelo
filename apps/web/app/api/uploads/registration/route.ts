@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { events, registrationFields } from "@ot/db";
-import { MAX_REGISTRATION_FILE_BYTES, REGISTRATION_FILE_CONTENT_TYPES } from "@ot/core";
+import { events, registrationFields } from "@evnelo/db";
+import { MAX_REGISTRATION_FILE_BYTES, REGISTRATION_FILE_CONTENT_TYPES } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { clientAddress, readJsonBody } from "@/lib/api-http";
 import { captureError } from "@/lib/observability";

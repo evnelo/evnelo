@@ -1,5 +1,5 @@
-import { can } from "@ot/core";
-import { getEvent, listMemberships } from "@ot/core/services";
+import { can } from "@evnelo/core";
+import { getEvent, listMemberships } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth/session";
 

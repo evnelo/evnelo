@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { Database } from "@ot/db";
+import type { Database } from "@evnelo/db";
 import { authenticateApiKey, beginIdempotentRequest, consumeApiRateLimit, consumeRateLimit, executeIdempotentRequest, hashApiKey, hasApiScope, parseBearerToken } from "../services/api";
 
 function fakeDb(row: { id: string; organizationId: string; scopes: string[] } | null) {

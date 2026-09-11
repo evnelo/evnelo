@@ -1,8 +1,8 @@
-import { SOCIAL_PLATFORMS, WEBHOOK_EVENTS } from "@ot/core";
+import { SOCIAL_PLATFORMS, WEBHOOK_EVENTS } from "@evnelo/core";
 
 /**
  * The OpenAPI 3.1 contract for /api/v1. Served at /api/v1/openapi.json, rendered at /api/v1/docs,
- * and the source of the generated `@ot/sdk` types (`pnpm --filter @ot/sdk generate`). Every
+ * and the source of the generated `@evnelo/sdk` types (`pnpm --filter @evnelo/sdk generate`). Every
  * route under app/api/v1 must appear here (lib/openapi.test.ts enforces it), and every response
  * object is described so the SDK can type it.
  */
@@ -163,7 +163,7 @@ const exampleOrder = {
   stripePaymentIntentId: "pi_3Q0example", stripeAccountId: null, holdExpiresAt: null, paidAt: "2026-09-02T12:00:30.000Z", answers: { code_of_conduct: true },
   createdAt: "2026-09-02T12:00:00.000Z", updatedAt: "2026-09-02T12:00:30.000Z",
 };
-const exampleWebhook = { id: "01J9Z6M5Y3K3F1Q2R8S9T0V1W8", organizationId: exampleEvent.organizationId, url: "https://hooks.example.com/openticket", events: ["order.paid", "attendee.checked_in"], active: true, createdAt: "2026-09-01T09:00:00.000Z" };
+const exampleWebhook = { id: "01J9Z6M5Y3K3F1Q2R8S9T0V1W8", organizationId: exampleEvent.organizationId, url: "https://hooks.example.com/evnelo", events: ["order.paid", "attendee.checked_in"], active: true, createdAt: "2026-09-01T09:00:00.000Z" };
 
 export const openApiDocument = {
   openapi: "3.1.0",

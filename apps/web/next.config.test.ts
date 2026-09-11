@@ -15,16 +15,16 @@ afterEach(() => {
 describe("Next.js environment setup", () => {
   it("uses APP_URL as the Auth.js public origin when AUTH_URL is not explicit", async () => {
     delete process.env.AUTH_URL;
-    process.env.APP_URL = "https://openticket.example.test";
+    process.env.APP_URL = "https://evnelo.example.test";
     vi.resetModules();
 
     await import("./next.config");
 
-    expect(process.env.AUTH_URL).toBe("https://openticket.example.test");
+    expect(process.env.AUTH_URL).toBe("https://evnelo.example.test");
   });
 
   it("preserves an explicit AUTH_URL", async () => {
-    process.env.APP_URL = "https://openticket.example.test";
+    process.env.APP_URL = "https://evnelo.example.test";
     process.env.AUTH_URL = "https://auth.example.test";
     vi.resetModules();
 

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, Clock } from "lucide-react";
-import type { RegistrationField, TicketType } from "@ot/db";
+import type { RegistrationField, TicketType } from "@evnelo/db";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -55,7 +55,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
   const [resuming, setResuming] = useState(false);
   const [processing, setProcessing] = useState(false);
   const doneRef = useRef<HTMLParagraphElement>(null);
-  const storageKey = `ot_payment_resume:${eventId}`;
+  const storageKey = `ev_payment_resume:${eventId}`;
   const prices = ticketTypes.map((t) => t.priceMinor);
   const min = Math.min(...prices), max = Math.max(...prices);
   const priceLabel = !ticketTypes.length ? null : max === 0 ? "Free" : min === max ? formatMoney(min, ticketTypes[0]!.currency) : `${min === 0 ? "Free" : formatMoney(min, ticketTypes[0]!.currency)} to ${formatMoney(max, ticketTypes[0]!.currency)}`;
@@ -63,7 +63,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
 
   const clearPaymentQuery = useCallback(() => {
     const url = new URL(window.location.href);
-    for (const key of ["ot_resume", "payment_intent", "payment_intent_client_secret", "redirect_status"]) url.searchParams.delete(key);
+    for (const key of ["ev_resume", "payment_intent", "payment_intent_client_secret", "redirect_status"]) url.searchParams.delete(key);
     window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
   }, []);
   const persistResume = useCallback((credentials: ResumeCredentials) => {
@@ -125,8 +125,8 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const fromUrl = params.get("ot_resume") && params.get("payment_intent_client_secret")
-      ? { token: params.get("ot_resume")!, clientSecret: params.get("payment_intent_client_secret")! }
+    const fromUrl = params.get("ev_resume") && params.get("payment_intent_client_secret")
+      ? { token: params.get("ev_resume")!, clientSecret: params.get("payment_intent_client_secret")! }
       : undefined;
     let credentials = fromUrl;
     if (fromUrl) {

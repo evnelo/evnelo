@@ -1,7 +1,7 @@
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { and, asc, desc, eq, isNull, lte } from "drizzle-orm";
 import { z } from "zod";
-import { webhookDeliveries, webhooks, type Database } from "@ot/db";
+import { webhookDeliveries, webhooks, type Database } from "@evnelo/db";
 import { newId } from "../ids";
 import { WEBHOOK_EVENTS, WEBHOOK_RETRY_LIMIT, webhookRetryDelayMs, webhookSignedPayload, type WebhookEnvelope, type WebhookEvent } from "../webhooks";
 import type { DbOrTx } from "./db";

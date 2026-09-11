@@ -99,7 +99,7 @@ export default async function HomePage() {
             <ul className="mt-6 space-y-2 text-sm">
               {developer.map((t) => <li key={t} className="flex items-start gap-2"><Code2 className="mt-0.5 size-4 shrink-0 text-pulse" /> {t}</li>)}
             </ul>
-            <pre className="code-panel mt-8 overflow-x-auto p-5"><code>{`import { createEvneloClient } from "@ot/sdk";
+            <pre className="code-panel mt-8 overflow-x-auto p-5"><code>{`import { createEvneloClient } from "@evnelo/sdk";
 
 const evnelo = createEvneloClient({
   baseUrl: "https://evnelo.com",

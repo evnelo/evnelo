@@ -1,5 +1,5 @@
 {
-  "name": "openticket",
+  "name": "evnelo",
   "private": true,
   "license": "Apache-2.0",
   "version": "0.1.0",
@@ -9,9 +9,9 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "db:generate": "pnpm --filter @ot/db generate",
-    "db:migrate": "pnpm --filter @ot/db migrate",
-    "db:seed": "pnpm --filter @ot/db seed"
+    "db:generate": "pnpm --filter @evnelo/db generate",
+    "db:migrate": "pnpm --filter @evnelo/db migrate",
+    "db:seed": "pnpm --filter @evnelo/db seed"
   },
   "devDependencies": {
     "turbo": "^2.3.3",

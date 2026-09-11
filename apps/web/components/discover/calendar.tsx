@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { discoverHref, groupEventsByDay, type CalendarMonth, type DiscoverFilters } from "@ot/core";
-import type { PublicEvent } from "@ot/core/services";
+import { discoverHref, groupEventsByDay, type CalendarMonth, type DiscoverFilters } from "@evnelo/core";
+import type { PublicEvent } from "@evnelo/core/services";
 import { EventRow } from "@/components/discover/event-card";
 import { cn } from "@/lib/utils";
 

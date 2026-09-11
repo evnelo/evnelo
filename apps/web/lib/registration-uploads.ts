@@ -2,7 +2,7 @@
  * Request-side rules for registration `file` answers. Kept apart from lib/storage.ts so the
  * validation is pure and unit testable: no bucket, no credentials, no clock.
  */
-import { MAX_REGISTRATION_FILE_BYTES, REGISTRATION_FILE_TYPES, type RegistrationFileType } from "@ot/core";
+import { MAX_REGISTRATION_FILE_BYTES, REGISTRATION_FILE_TYPES, type RegistrationFileType } from "@evnelo/core";
 
 export const REGISTRATION_UPLOAD_EXPIRY_SECONDS = 300;
 export const REGISTRATION_DOWNLOAD_EXPIRY_SECONDS = 120;

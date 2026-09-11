@@ -5,11 +5,11 @@
  */
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { inArray } from "drizzle-orm";
-import { createDb, events, eventTags, organizations, tags, ticketTypes } from "@ot/db";
+import { createDb, events, eventTags, organizations, tags, ticketTypes } from "@evnelo/db";
 import { ulid } from "ulid";
 import { listIndexableEvents, listIndexableOrganizations, listPublicEvents, listPublicTags } from "../services/events";
 
-const url = process.env.DATABASE_URL ?? "mysql://openticket:openticket@localhost:3306/openticket";
+const url = process.env.DATABASE_URL ?? "mysql://evnelo:evnelo@localhost:3306/evnelo";
 const database = createDb(url);
 const reachable = await database.execute("select 1").then(() => true, () => false);
 

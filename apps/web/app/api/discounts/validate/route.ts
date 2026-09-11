@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { computeOrder, currentEdition } from "@ot/core";
-import { discountProblem, discountProblemMessage, findDiscountCode, toDiscount } from "@ot/core/services";
-import { events, ticketTypes } from "@ot/db";
+import { computeOrder, currentEdition } from "@evnelo/core";
+import { discountProblem, discountProblemMessage, findDiscountCode, toDiscount } from "@evnelo/core/services";
+import { events, ticketTypes } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { clientAddress, readJsonBody } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";

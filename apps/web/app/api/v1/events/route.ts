@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createEvent, eventInput, listOrgEvents, paginate } from "@ot/core/services";
+import { createEvent, eventInput, listOrgEvents, paginate } from "@evnelo/core/services";
 import { apiRoute, mutate, ok, pageQuery, parseBody, parseQuery } from "@/lib/api";
 import { db } from "@/lib/db";
 

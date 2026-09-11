@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { events, eventTags, tags, type Database, type Event } from "@ot/db";
+import { events, eventTags, tags, type Database, type Event } from "@evnelo/db";
 import { createEvent, eventInput, updateEvent, type EventInput } from "../services/events";
 
 const input: EventInput = {

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { and, eq, isNull } from "drizzle-orm";
-import { attendees, createDb } from "@ot/db";
+import { attendees, createDb } from "@evnelo/db";
 import { getAttendeeView, getOrderDetails, getOrganization, getTicketType, listAttendeesPage, listCheckInsPage, listOrdersPage } from "../services";
 
 /** Read-only against the seeded local MySQL when reachable; skipped otherwise. */
-const url = process.env.DATABASE_URL ?? "mysql://openticket:openticket@localhost:3306/openticket";
+const url = process.env.DATABASE_URL ?? "mysql://evnelo:evnelo@localhost:3306/evnelo";
 const db = createDb(url);
 const seed = await db.select().from(attendees).where(and(eq(attendees.status, "confirmed"), isNull(attendees.deletedAt))).limit(1).then((r) => r[0] ?? null, () => null);
 

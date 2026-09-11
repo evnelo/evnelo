@@ -1,4 +1,4 @@
-import type { Database } from "@ot/db";
+import type { Database } from "@evnelo/db";
 
 export type Tx = Parameters<Parameters<Database["transaction"]>[0]>[0];
 /** Services accept either the pool-backed db or an open transaction. */

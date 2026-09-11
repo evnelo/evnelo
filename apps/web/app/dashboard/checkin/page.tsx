@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronRight, ScanLine } from "lucide-react";
-import { listOrgEvents } from "@ot/core/services";
+import { listOrgEvents } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { requireOrg } from "@/lib/auth/session";
 import { formatDateRange } from "@/lib/utils";

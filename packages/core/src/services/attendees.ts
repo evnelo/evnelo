@@ -1,5 +1,5 @@
 import { and, asc, desc, eq, inArray, isNull, like, or, sql } from "drizzle-orm";
-import { attendees, orders, orderItems, registrationFields, ticketTypes, tickets, type Attendee, type Database } from "@ot/db";
+import { attendees, orders, orderItems, registrationFields, ticketTypes, tickets, type Attendee, type Database } from "@evnelo/db";
 import { registrationFileDownloadPath } from "../fields/files";
 import { issueTickets, queueEmailPerAddress } from "./fulfilment";
 

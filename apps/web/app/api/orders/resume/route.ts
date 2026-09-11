@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { and, count, eq, isNull } from "drizzle-orm";
 import { z } from "zod";
-import { attendees, orders } from "@ot/db";
+import { attendees, orders } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { paymentResumeMatches, verifyPaymentResume } from "@/lib/payment-resume";

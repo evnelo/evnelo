@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { eq } from "drizzle-orm";
-import { notifications } from "@ot/db";
+import { notifications } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 

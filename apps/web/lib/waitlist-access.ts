@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
-import { getWaitlistOffer, offerIsOpen, type WaitlistEntry } from "@ot/core/services";
+import { getWaitlistOffer, offerIsOpen, type WaitlistEntry } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 
 export const OFFER_COOKIE_MAX_AGE = 2 * 86_400;
-export const offerCookieName = (eventId: string) => `ot_wl_${eventId}`;
+export const offerCookieName = (eventId: string) => `ev_wl_${eventId}`;
 
 /** The open waitlist offer this visitor holds for the event (cookie set by /w/{token}), if any. */
 export async function waitlistOffer(eventId: string, now = new Date()): Promise<(WaitlistEntry & { ticketTypeId: string; holdExpiresAt: Date }) | null> {

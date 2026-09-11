@@ -6,8 +6,8 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { UserPlus, UserRound, X } from "lucide-react";
-import { buildAnswersSchema, visibleFieldKeys, type Answers } from "@ot/core";
-import type { RegistrationField, TicketType } from "@ot/db";
+import { buildAnswersSchema, visibleFieldKeys, type Answers } from "@evnelo/core";
+import type { RegistrationField, TicketType } from "@evnelo/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,7 +30,7 @@ type Props = {
 /**
  * One registrant, one ticket type, optional +1s. Each guest becomes their own attendee
  * with their own ticket, at the same price as the host's ticket. Field visibility is
- * evaluated live from @ot/core and the same schema runs on the server.
+ * evaluated live from @evnelo/core and the same schema runs on the server.
  */
 export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guestsEnabled, maxGuests, onSubmitted }: Props) {
   const [ticketTypeId, setTicketTypeId] = useState(ticketTypes[0]?.id ?? "");

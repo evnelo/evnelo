@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getOrganization, organizationInput, updateOrganization } from "@ot/core/services";
+import { getOrganization, organizationInput, updateOrganization } from "@evnelo/core/services";
 import { apiRoute, businessRule, mutate, notFound, ok, parseBody, parseWith } from "@/lib/api";
 import { serializeOrganization } from "@/lib/api-serializers";
 import { db } from "@/lib/db";

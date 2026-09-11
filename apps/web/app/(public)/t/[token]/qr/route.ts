@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { and, eq, isNull } from "drizzle-orm";
 import QRCode from "qrcode";
-import { tickets } from "@ot/db";
+import { tickets } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 

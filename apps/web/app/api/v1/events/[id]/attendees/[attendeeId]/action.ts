@@ -1,5 +1,5 @@
-import type { Database } from "@ot/db";
-import { getAttendeeView } from "@ot/core/services";
+import type { Database } from "@evnelo/db";
+import { getAttendeeView } from "@evnelo/core/services";
 import { apiRoute, conflict, mutate, notFound, requireOrgEvent } from "@/lib/api";
 import { serializeAttendee } from "@/lib/api-serializers";
 import { db } from "@/lib/db";

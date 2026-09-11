@@ -6,6 +6,7 @@
 # .env must contain, on top of the application settings, MYSQL_PASSWORD and MYSQL_ROOT_PASSWORD
 # (used here to create the database and to build DATABASE_URL) and optionally SITE_ADDRESS.
 # Only Caddy publishes ports; the app and the database stay on the compose network.
+name: evnelo
 services:
   caddy:
     image: caddy:2-alpine
@@ -28,7 +29,7 @@ services:
     restart: unless-stopped
     env_file: ../.env
     environment:
-      DATABASE_URL: mysql://openticket:${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}@db:3306/openticket
+      DATABASE_URL: mysql://evnelo:${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}@db:3306/evnelo
       # Caddy appends the client address to X-Forwarded-For; the app reads the last entry
       API_TRUSTED_PROXY_HEADER: x-forwarded-for
       MIGRATE_ON_START: "true"
@@ -42,8 +43,8 @@ services:
     restart: unless-stopped
     command: --innodb-buffer-pool-size=512M
     environment:
-      MYSQL_DATABASE: openticket
-      MYSQL_USER: openticket
+      MYSQL_DATABASE: evnelo
+      MYSQL_USER: evnelo
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
     volumes: ["mysql-data:/var/lib/mysql"]

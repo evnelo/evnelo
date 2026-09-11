@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { listWaitlist, promoteWaitlistEntry } from "@ot/core/services";
+import { listWaitlist, promoteWaitlistEntry } from "@evnelo/core/services";
 import { apiRoute, conflict, mutate, notFound, parseBody, requireOrgEvent } from "@/lib/api";
 import { serializeWaitlistEntry, waitlistOfferUrl } from "@/lib/api-serializers";
 

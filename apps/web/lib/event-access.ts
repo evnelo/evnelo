@@ -1,11 +1,11 @@
 import { cookies } from "next/headers";
-import { getEventInvite, inviteStatus, listMemberships, type EventInvite } from "@ot/core/services";
-import type { Event } from "@ot/db";
+import { getEventInvite, inviteStatus, listMemberships, type EventInvite } from "@evnelo/core/services";
+import type { Event } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth/session";
 
 export const INVITE_COOKIE_MAX_AGE = 30 * 86_400;
-export const inviteCookieName = (eventId: string) => `ot_inv_${eventId}`;
+export const inviteCookieName = (eventId: string) => `ev_inv_${eventId}`;
 
 /**
  * Who is looking at an event: a member of its organization (sees everything), someone holding a

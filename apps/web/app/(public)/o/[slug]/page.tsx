@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, asc, desc, eq, gte, isNull, lt } from "drizzle-orm";
 import { CalendarPlus, Globe } from "lucide-react";
-import { events, organizations } from "@ot/db";
+import { events, organizations } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { SocialLinks } from "@/components/event/social-links";
 import { EventCard, type CardEvent } from "@/components/discover/event-card";

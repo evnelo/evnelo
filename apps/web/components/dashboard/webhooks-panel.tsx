@@ -63,7 +63,7 @@ export function WebhooksPanel({ hooks, editable }: { hooks: WebhookRow[]; editab
         </div>
       )}
       <Table>
-        <THead><TR><TH>Endpoint</TH><TH>Events</TH><TH>Status</TH>{editable && <TH className="text-right"></TH>}</TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Endpoint</TH><TH>Events</TH><TH>Status</TH>{editable && <TH className="text-right"></TH>}</TR></THead>
         <TBody>
           {hooks.length === 0 && (
             <TR className="hover:bg-transparent">

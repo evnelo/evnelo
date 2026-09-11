@@ -34,7 +34,7 @@ export default async function OrdersPage({ params }: { params: Promise<{ id: str
       </Toolbar>
 
       <Table>
-        <THead><TR><TH>Order</TH><TH>Items</TH><TH>Status</TH><TH className="text-right">Total</TH><TH>Placed</TH>{refundable && <TH className="text-right">Actions</TH>}</TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Order</TH><TH>Items</TH><TH>Status</TH><TH className="text-right">Total</TH><TH>Placed</TH>{refundable && <TH className="text-right">Actions</TH>}</TR></THead>
         <TBody>
           {rows.length === 0 && (
             <TR className="hover:bg-transparent">

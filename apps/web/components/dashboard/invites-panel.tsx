@@ -41,17 +41,20 @@ export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }:
 
       {editable && (
         <form
-          className="grid gap-3 rounded-xl border border-border/80 bg-card p-4 shadow-card sm:grid-cols-[1fr_8rem_8rem_auto] sm:items-end"
+          className="rounded-xl border border-border/80 bg-card p-4 shadow-card"
           action={(fd) => start(async () => {
             const r = await createEventInviteAction(eventId, fd);
             if (!r.ok) return setMsg({ error: r.error });
             setMsg({ success: r.message }); setCreated(r.url); router.refresh();
           })}
         >
-          <Field label="Email" htmlFor="inv-email" help="Leave empty for a shareable link anyone can use."><Input id="inv-email" name="email" type="email" placeholder="guest@example.com" /></Field>
-          <Field label="Max uses" htmlFor="inv-max"><Input id="inv-max" name="maxUses" type="number" min={1} max={10000} defaultValue={1} /></Field>
-          <Field label="Expires in (days)" htmlFor="inv-exp"><Input id="inv-exp" name="expiresInDays" type="number" min={1} max={365} placeholder="never" /></Field>
-          <Button type="submit" disabled={pending}><Plus className="size-4" /> {pending ? "Creating…" : "Create invite"}</Button>
+          <div className="grid gap-3 sm:grid-cols-[1fr_8rem_8rem_auto] sm:items-end">
+            <Field label="Email" htmlFor="inv-email"><Input id="inv-email" name="email" type="email" placeholder="guest@example.com" /></Field>
+            <Field label="Max uses" htmlFor="inv-max"><Input id="inv-max" name="maxUses" type="number" min={1} max={10000} defaultValue={1} /></Field>
+            <Field label="Expires in (days)" htmlFor="inv-exp"><Input id="inv-exp" name="expiresInDays" type="number" min={1} max={365} placeholder="never" /></Field>
+            <Button type="submit" disabled={pending}><Plus className="size-4" /> {pending ? "Creating…" : "Create invite"}</Button>
+          </div>
+          <p className="mt-2.5 text-xs text-muted-foreground">Leave the email empty for a shareable link anyone can use.</p>
         </form>
       )}
       <FormMessage error={msg.error} success={msg.success} />
@@ -64,7 +67,7 @@ export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }:
       )}
 
       <Table>
-        <THead><TR><TH>Invite</TH><TH>Uses</TH><TH>Expires</TH><TH>Status</TH><TH className="text-right"></TH></TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Invite</TH><TH>Uses</TH><TH>Expires</TH><TH>Status</TH><TH className="text-right"></TH></TR></THead>
         <TBody>
           {invites.length === 0 && (
             <TR className="hover:bg-transparent">

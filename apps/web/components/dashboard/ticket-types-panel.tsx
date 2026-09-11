@@ -60,7 +60,7 @@ export function TicketTypesPanel({ eventId, types, editable, defaultCurrency, gu
       />
       <FormMessage error={msg.error} success={msg.success} />
       <Table>
-        <THead><TR><TH>Name</TH><TH className="text-right">Price</TH><TH className="text-right">Sold</TH><TH>Sales window</TH><TH></TH>{editable && <TH className="text-right"></TH>}</TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Name</TH><TH className="text-right">Price</TH><TH className="text-right">Sold</TH><TH>Sales window</TH><TH></TH>{editable && <TH className="text-right"></TH>}</TR></THead>
         <TBody>
           {types.length === 0 && (
             <TR className="hover:bg-transparent">

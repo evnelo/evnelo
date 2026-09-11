@@ -27,7 +27,7 @@ export function MembersPanel({ members, invites, canManage, currentUserId, roleL
   return (
     <div className="space-y-4">
       <Table>
-        <THead><TR><TH>Member</TH><TH>Role</TH><TH>Since</TH>{canManage && <TH className="text-right"></TH>}</TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Member</TH><TH>Role</TH><TH>Since</TH>{canManage && <TH className="text-right"></TH>}</TR></THead>
         <TBody>
           {members.map((m) => (
             <TR key={m.userId}>

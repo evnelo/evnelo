@@ -55,7 +55,7 @@ export function DiscountCodesPanel({ eventId, codes, editable, currency }: { eve
         </div>
       )}
       <Table>
-        <THead><TR><TH>Code</TH><TH>Discount</TH><TH className="text-right">Uses</TH><TH>Expires</TH><TH>Status</TH>{editable && <TH></TH>}</TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Code</TH><TH>Discount</TH><TH className="text-right">Uses</TH><TH>Expires</TH><TH>Status</TH>{editable && <TH></TH>}</TR></THead>
         <TBody>
           {codes.length === 0 && (
             <TR className="hover:bg-transparent">

@@ -107,7 +107,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Description" htmlFor="desc" optional help="Markdown is supported." className="sm:col-span-2"><Textarea id="desc" rows={6} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
           <Field label="Tags" htmlFor="tags" optional help="Comma separated. Used for discovery." className="sm:col-span-2"><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="design, meetup" /></Field>
-          <div className="sm:col-span-2 grid gap-5 md:grid-cols-[minmax(0,1fr)_10rem]">
+          <div className="sm:col-span-2 grid gap-5 lg:grid-cols-[minmax(0,1fr)_10rem]">
             <ImageUploadField label="Cover image" croppable value={v.coverImageUrl} onChange={(url) => set("coverImageUrl", url)} uploadsEnabled={uploadsEnabled} />
             <ImageUploadField label="Event logo" value={v.logoUrl} onChange={(url) => set("logoUrl", url)} aspect="square" uploadsEnabled={uploadsEnabled} />
           </div>
@@ -248,7 +248,7 @@ function CollapsibleSection({ title, description, children, defaultOpen = false 
   const [open, setOpen] = useState(defaultOpen);
   return (
     <details className="group rounded-xl border border-border/80 bg-card text-card-foreground shadow-card" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
-      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-5 sm:p-6 md:grid md:grid-cols-[13.5rem_minmax(0,1fr)] md:gap-x-10 [&::-webkit-details-marker]:hidden">
+      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-5 group-open:pb-2 sm:p-6 sm:group-open:pb-3 md:grid md:grid-cols-[13.5rem_minmax(0,1fr)] md:gap-x-10 [&::-webkit-details-marker]:hidden">
         <span className="block min-w-0 md:pt-px">
           <span className="block text-sm font-medium">{title}</span>
           {description && <span className="mt-1.5 block text-sm leading-relaxed text-muted-foreground">{description}</span>}

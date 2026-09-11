@@ -33,7 +33,7 @@ export function ApiKeysPanel({ keys, canManage, docsUrl }: { keys: Key[]; canMan
         </div>
       )}
       <Table>
-        <THead><TR><TH>Name</TH><TH>Key</TH><TH>Scopes</TH><TH>Last used</TH><TH>Created</TH>{canManage && <TH></TH>}</TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Name</TH><TH>Key</TH><TH>Scopes</TH><TH>Last used</TH><TH>Created</TH>{canManage && <TH></TH>}</TR></THead>
         <TBody>
           {keys.length === 0 && (
             <TR className="hover:bg-transparent">

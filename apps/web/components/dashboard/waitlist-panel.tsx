@@ -41,7 +41,7 @@ export function WaitlistPanel({ eventId, entries, editable, waitlistEnabled, tic
       </Note>
       <FormMessage error={msg.error} success={msg.success} />
       <Table>
-        <THead><TR><TH>Person</TH><TH>Joined</TH><TH>Status</TH>{editable && <TH className="text-right">Actions</TH>}</TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Person</TH><TH>Joined</TH><TH>Status</TH>{editable && <TH className="text-right">Actions</TH>}</TR></THead>
         <TBody>
           {entries.length === 0 && (
             <TR className="hover:bg-transparent">

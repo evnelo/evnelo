@@ -59,7 +59,7 @@ export default async function AttendeesPage({ params, searchParams }: { params: 
       ) : null}
 
       <Table>
-        <THead><TR><TH>Name</TH><TH>Email</TH><TH>Ticket</TH><TH>Status</TH><TH>Registered</TH>{showFiles && <TH>Files</TH>}{manage && <TH className="text-right">Actions</TH>}</TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Name</TH><TH>Email</TH><TH>Ticket</TH><TH>Status</TH><TH>Registered</TH>{showFiles && <TH>Files</TH>}{manage && <TH className="text-right">Actions</TH>}</TR></THead>
         <TBody>
           {rows.length === 0 && (
             <TR className="hover:bg-transparent">

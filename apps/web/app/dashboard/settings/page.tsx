@@ -4,21 +4,28 @@ import { can, ROLE_LABELS } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { requireOrg } from "@/lib/auth/session";
+import { paymentsConfigured } from "@/lib/payment-flow";
 import { storageConfigured } from "@/lib/storage";
 import { OrgForm } from "@/components/dashboard/org-form";
 import { MembersPanel } from "@/components/dashboard/members-panel";
 import { ApiKeysPanel } from "@/components/dashboard/api-keys-panel";
 import { WebhooksPanel } from "@/components/dashboard/webhooks-panel";
 import { DangerZone } from "@/components/dashboard/danger-zone";
+import { LinkTabs } from "@/components/dashboard/link-tabs";
 import { PageHeader, SectionCard, SectionTray } from "@/components/dashboard/page-chrome";
 
-export default async function SettingsPage() {
+const TABS = [
+  { key: "organization", label: "Organization" },
+  { key: "members", label: "Members" },
+  { key: "developer", label: "Developer" },
+  { key: "payments", label: "Payments" },
+] as const;
+type Tab = (typeof TABS)[number]["key"];
+
+export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
   const { org, role, user } = await requireOrg("view_events", "/dashboard/settings");
-  const [members, invites, apiKeys, hooks] = await Promise.all([listMembers(db, org.id), listPendingInvites(db, org.id), listApiKeys(db, org.id), listWebhooks(db, org.id)]);
-  const hookRows = await Promise.all(hooks.map(async (h) => ({
-    id: h.id, url: h.url, events: h.events, active: h.active, createdAt: h.createdAt.toISOString(),
-    recent: (await listWebhookDeliveries(db, org.id, h.id, 10)).map((d) => ({ id: d.id, event: d.event, state: webhookDeliveryState(d), attempts: d.attempts, responseStatus: d.responseStatus, createdAt: d.createdAt.toISOString() })),
-  })));
+  const { tab: requested } = await searchParams;
+  const tab: Tab = TABS.some((t) => t.key === requested) ? (requested as Tab) : "organization";
   const publicUrl = `${env.APP_URL.replace(/^https?:\/\//, "")}/o/${org.slug}`;
 
   return (
@@ -34,35 +41,63 @@ export default async function SettingsPage() {
         }
       />
 
-      <div className="mt-8 space-y-5">
-        <SectionCard title="Organization" description="Name, public URL, logo and the accent colour used in emails and on ticket pages.">
-          <OrgForm org={{ name: org.name, slug: org.slug, website: org.website ?? "", logoUrl: org.logoUrl ?? "", accentColor: org.accentColor ?? "", feePassThrough: org.feePassThrough, socialLinks: org.socialLinks }} readOnly={!can(role, "manage_org")} uploadsEnabled={storageConfigured} />
-        </SectionCard>
+      <LinkTabs className="mt-6" active={tab} tabs={TABS.map((t) => ({ key: t.key, label: t.label, href: t.key === "organization" ? "/dashboard/settings" : `/dashboard/settings?tab=${t.key}` }))} />
 
-        <SectionTray title="Members" description="Owners and admins manage the organization; members create and run events; check-in staff can only scan tickets.">
-          <MembersPanel members={members.map((m) => ({ ...m, since: m.since.toISOString() }))} invites={invites.map((i) => ({ id: i.id, email: i.email, role: i.role, expiresAt: i.expiresAt.toISOString() }))} canManage={can(role, "manage_members")} currentUserId={user.id} roleLabels={ROLE_LABELS} />
-        </SectionTray>
+      <div className="mt-6 space-y-5">
+        {tab === "organization" && (
+          <>
+            <SectionCard title="Organization" description="Name, public URL, logo and the accent colour used in emails and on ticket pages.">
+              <OrgForm org={{ name: org.name, slug: org.slug, website: org.website ?? "", logoUrl: org.logoUrl ?? "", accentColor: org.accentColor ?? "", feePassThrough: org.feePassThrough, socialLinks: org.socialLinks }} readOnly={!can(role, "manage_org")} uploadsEnabled={storageConfigured} />
+            </SectionCard>
+            {can(role, "manage_org") && (
+              <div className="hairline mt-12 pt-8">
+                <DangerZone slug={org.slug} isOwner={role === "owner"} />
+              </div>
+            )}
+          </>
+        )}
 
-        <SectionTray title="API keys" description="Server-to-server access to this organization's events, orders and attendees.">
-          <ApiKeysPanel canManage={can(role, "manage_org")} docsUrl="/api/v1/docs" keys={apiKeys.map((k) => ({ ...k, lastUsedAt: k.lastUsedAt?.toISOString() ?? null, revokedAt: k.revokedAt?.toISOString() ?? null, createdAt: k.createdAt.toISOString() }))} />
-        </SectionTray>
+        {tab === "members" && <MembersTab orgId={org.id} canManage={can(role, "manage_members")} currentUserId={user.id} />}
 
-        <SectionTray title="Webhooks" description="A signed JSON POST to your own endpoint whenever something happens here.">
-          <WebhooksPanel hooks={hookRows} editable={can(role, "manage_org")} />
-        </SectionTray>
+        {tab === "developer" && <DeveloperTab orgId={org.id} canManage={can(role, "manage_org")} />}
 
-        {env.EDITION === "cloud" && (
-          <SectionCard title="Payments" description="Paid tickets settle straight into your own Stripe account.">
-            <p className="text-sm text-muted-foreground">{org.stripeAccountId ? `Stripe account ${org.stripeAccountId} connected.` : "Connect your Stripe account to sell paid tickets. Coming with the Connect onboarding flow."}</p>
+        {tab === "payments" && (
+          <SectionCard title="Payments" description={env.EDITION === "cloud" ? "Paid tickets settle straight into your own Stripe account." : "This instance charges through the Stripe keys its operator configured."}>
+            {env.EDITION === "cloud" ? (
+              <p className="text-sm text-muted-foreground">{org.stripeAccountId ? `Stripe account ${org.stripeAccountId} connected.` : "Connect your Stripe account to sell paid tickets. Coming with the Connect onboarding flow."}</p>
+            ) : (
+              <p className="text-sm text-muted-foreground">{paymentsConfigured(env.STRIPE_SECRET_KEY, env.STRIPE_PUBLISHABLE_KEY) ? "Stripe is configured. Paid tickets are charged on the instance's Stripe account with no platform fee." : "Stripe is not configured on this instance, so only free tickets can be sold. Set STRIPE_SECRET_KEY and STRIPE_PUBLISHABLE_KEY to enable payments."}</p>
+            )}
           </SectionCard>
         )}
       </div>
-
-      {can(role, "manage_org") && (
-        <div className="hairline mt-12 pt-8">
-          <DangerZone slug={org.slug} isOwner={role === "owner"} />
-        </div>
-      )}
     </div>
+  );
+}
+
+async function MembersTab({ orgId, canManage, currentUserId }: { orgId: string; canManage: boolean; currentUserId: string }) {
+  const [members, invites] = await Promise.all([listMembers(db, orgId), listPendingInvites(db, orgId)]);
+  return (
+    <SectionTray title="Members" description="Owners and admins manage the organization; members create and run events; check-in staff can only scan tickets.">
+      <MembersPanel members={members.map((m) => ({ ...m, since: m.since.toISOString() }))} invites={invites.map((i) => ({ id: i.id, email: i.email, role: i.role, expiresAt: i.expiresAt.toISOString() }))} canManage={canManage} currentUserId={currentUserId} roleLabels={ROLE_LABELS} />
+    </SectionTray>
+  );
+}
+
+async function DeveloperTab({ orgId, canManage }: { orgId: string; canManage: boolean }) {
+  const [apiKeys, hooks] = await Promise.all([listApiKeys(db, orgId), listWebhooks(db, orgId)]);
+  const hookRows = await Promise.all(hooks.map(async (h) => ({
+    id: h.id, url: h.url, events: h.events, active: h.active, createdAt: h.createdAt.toISOString(),
+    recent: (await listWebhookDeliveries(db, orgId, h.id, 10)).map((d) => ({ id: d.id, event: d.event, state: webhookDeliveryState(d), attempts: d.attempts, responseStatus: d.responseStatus, createdAt: d.createdAt.toISOString() })),
+  })));
+  return (
+    <>
+      <SectionTray title="API keys" description="Server-to-server access to this organization's events, orders and attendees.">
+        <ApiKeysPanel canManage={canManage} docsUrl="/api/v1/docs" keys={apiKeys.map((k) => ({ ...k, lastUsedAt: k.lastUsedAt?.toISOString() ?? null, revokedAt: k.revokedAt?.toISOString() ?? null, createdAt: k.createdAt.toISOString() }))} />
+      </SectionTray>
+      <SectionTray title="Webhooks" description="A signed JSON POST to your own endpoint whenever something happens here.">
+        <WebhooksPanel hooks={hookRows} editable={canManage} />
+      </SectionTray>
+    </>
   );
 }

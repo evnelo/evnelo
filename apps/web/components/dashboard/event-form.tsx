@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronDown, Plus, X } from "lucide-react";
+import { ChevronDown, History, Plus, X } from "lucide-react";
 import { SOCIAL_PLATFORMS, slugify } from "@evnelo/core";
 import { TIMEZONES, utcToZonedLocal, zonedLocalToUtc } from "@/lib/tz";
 import { publicEventPath } from "@/lib/urls";
@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Field, FormMessage } from "@/components/ui/form-field";
-import { SectionCard } from "@/components/dashboard/page-chrome";
+import { Note, SectionCard } from "@/components/dashboard/page-chrome";
 import { saveEventAction } from "@/app/dashboard/actions";
 import { AddressAutocomplete } from "@/components/dashboard/address-autocomplete";
 import { ImageUploadField } from "@/components/dashboard/image-upload-field";
@@ -35,7 +35,8 @@ type Values = Required<Omit<EventDefaults, "startsAt" | "endsAt" | "capacity" | 
 function initial(d: EventDefaults, tz: string): Values {
   const timezone = d.timezone ?? tz;
   return {
-    name: d.name ?? "", slug: d.slug ?? "", slugTouched: !!d.slug, descriptionMd: d.descriptionMd ?? "", coverImageUrl: d.coverImageUrl ?? "", logoUrl: d.logoUrl ?? "", timezone,
+    // the derived slug is part of the baseline, so an untouched form is not "dirty"
+    name: d.name ?? "", slug: d.slug ?? slugify(d.name ?? ""), slugTouched: !!d.slug, descriptionMd: d.descriptionMd ?? "", coverImageUrl: d.coverImageUrl ?? "", logoUrl: d.logoUrl ?? "", timezone,
     startsLocal: d.startsAt ? utcToZonedLocal(new Date(d.startsAt), timezone) : "", endsLocal: d.endsAt ? utcToZonedLocal(new Date(d.endsAt), timezone) : "",
     locationType: d.locationType ?? "in_person", venueName: d.venueName ?? "", address: d.address ?? "", city: d.city ?? "", country: d.country ?? "", lat: d.lat ?? "", lng: d.lng ?? "", onlineUrl: d.onlineUrl ?? "",
     visibility: d.visibility ?? "public", requiresApproval: d.requiresApproval ?? false, capacity: d.capacity ? String(d.capacity) : "", waitlistEnabled: d.waitlistEnabled ?? false, collectPhone: d.collectPhone ?? false,
@@ -54,6 +55,34 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
   const set = <K extends keyof Values>(k: K, val: Values[K]) => setV((s) => ({ ...s, [k]: val }));
   useEffect(() => { if (!v.slugTouched && mode === "create") setV((s) => ({ ...s, slug: slugify(s.name) })); }, [v.name, v.slugTouched, mode]);
 
+  // Unsaved work survives leaving the page: every change is mirrored to localStorage, and a
+  // backup that differs from what the server has is offered back on return.
+  const draftKey = `evnelo-event-draft:${organizationSlug}:${eventId ?? "new"}`;
+  const baseline = useRef(JSON.stringify(initial(defaults, browserTz)));
+  const dirty = JSON.stringify(v) !== baseline.current;
+  const [backup, setBackup] = useState<{ savedAt: string; values: Values } | null>(null);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(draftKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as { savedAt: string; values: Values };
+      if (JSON.stringify(parsed.values) === baseline.current) localStorage.removeItem(draftKey);
+      else setBackup(parsed);
+    } catch { /* corrupt or unavailable storage: start clean */ }
+  }, [draftKey]);
+  useEffect(() => {
+    if (!dirty) return;
+    const timer = window.setTimeout(() => { try { localStorage.setItem(draftKey, JSON.stringify({ savedAt: new Date().toISOString(), values: v })); } catch {} }, 400);
+    return () => window.clearTimeout(timer);
+  }, [v, dirty, draftKey]);
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (e: BeforeUnloadEvent) => { e.preventDefault(); };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
+  const forgetBackup = () => { try { localStorage.removeItem(draftKey); } catch {} setBackup(null); };
+
   const submit = () => {
     setMsg({});
     if (!v.startsLocal || !v.endsLocal) return setMsg({ error: "Set a start and an end time." });
@@ -70,6 +99,8 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
     start(async () => {
       const r = await saveEventAction(payload, eventId);
       if (!r.ok) return setMsg({ error: r.error });
+      forgetBackup();
+      baseline.current = JSON.stringify(v);
       if (mode === "create" && r.id) return router.push(`/dashboard/events/${r.id}`);
       setMsg({ success: r.message ?? "Saved." });
       router.refresh();
@@ -92,19 +123,23 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
   return (
     <form
       onSubmit={(e) => { e.preventDefault(); submit(); }}
-      // `invalid` doesn't bubble, so catch it in the capture phase and open the collapsed section that holds the field
-      onInvalidCapture={(e) => { const details = (e.target as HTMLElement).closest("details"); if (details && !details.open) details.open = true; }}
       className="space-y-4 pb-28"
     >
-      <Section title="Basics" description="The minimum details people need to recognize your event.">
+      {backup && !dirty && (
+        <Note className="flex flex-wrap items-center gap-x-4 gap-y-2 text-foreground">
+          <History className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+          <span className="min-w-0 flex-1">You have unsaved changes from {relativeTime(backup.savedAt)}.</span>
+          <span className="flex gap-2">
+            <Button type="button" size="sm" onClick={() => { setV(backup.values); setBackup(null); }}>Restore</Button>
+            <Button type="button" size="sm" variant="ghost" onClick={forgetBackup}>Discard</Button>
+          </span>
+        </Note>
+      )}
+
+      <Section title="Basics" description="What people see first: the name, the address, the story, the artwork.">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Event name" htmlFor="name" className="sm:col-span-2"><Input id="name" value={v.name} onChange={(e) => set("name", e.target.value)} required maxLength={160} autoFocus={mode === "create"} /></Field>
           <Field label="Event URL" htmlFor="slug" help={publicEventPath(organizationSlug, v.slug || "…")} className="sm:col-span-2"><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9\-]{3,80}" /></Field>
-        </div>
-      </Section>
-
-      <CollapsibleSection title="Details & images" description="Description, discovery tags, cover art and logo." defaultOpen={Boolean(v.descriptionMd || v.tags || v.coverImageUrl || v.logoUrl)}>
-        <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Description" htmlFor="desc" optional help="Markdown is supported." className="sm:col-span-2"><Textarea id="desc" rows={6} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
           <Field label="Tags" htmlFor="tags" optional help="Comma separated. Used for discovery." className="sm:col-span-2"><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="design, meetup" /></Field>
           <div className="sm:col-span-2 grid gap-5 lg:grid-cols-[minmax(0,1fr)_10rem]">
@@ -112,7 +147,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
             <ImageUploadField label="Event logo" value={v.logoUrl} onChange={(url) => set("logoUrl", url)} aspect="square" uploadsEnabled={uploadsEnabled} />
           </div>
         </div>
-      </CollapsibleSection>
+      </Section>
 
       <Section title="When" description="Times are stored in UTC and shown to everyone in the event's own zone.">
         <div className="grid gap-5 sm:grid-cols-3">
@@ -145,8 +180,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
               </Field>
               <Field label="City" htmlFor="city"><Input id="city" value={v.city} onChange={(e) => set("city", e.target.value)} /></Field>
               <Field label="Country code" htmlFor="country" help="Two-letter code, e.g. BR"><Input id="country" maxLength={2} value={v.country} onChange={(e) => set("country", e.target.value.toUpperCase())} placeholder="US" /></Field>
-              <Field label="Latitude" htmlFor="lat" optional help="Powers the map link. Filled in when you pick an address suggestion."><Input id="lat" value={v.lat} onChange={(e) => set("lat", e.target.value)} placeholder="-23.5578" /></Field>
-              <Field label="Longitude" htmlFor="lng" optional><Input id="lng" value={v.lng} onChange={(e) => set("lng", e.target.value)} placeholder="-46.6606" /></Field>
+              {v.lat && v.lng && <p className="text-xs text-muted-foreground sm:col-span-2">Map pin set from the address ({Number(v.lat).toFixed(4)}, {Number(v.lng).toFixed(4)}). Pick another suggestion to move it.</p>}
             </>
           )}
           {v.locationType !== "in_person" && (
@@ -164,7 +198,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
         </div>
       </Section>
 
-      <CollapsibleSection title="Registration options" description="Approval, guests, reminders, fees and refund policy." defaultOpen={Boolean(v.requiresApproval || v.collectPhone || v.guestsEnabled || v.waitlistEnabled || v.feePassThrough || v.refundPolicy)}>
+      <CollapsibleSection title="Registration options" description="Approval, guests, reminders, fees and refund policy." hint={optionsHint(v)} defaultOpen={Boolean(v.requiresApproval || v.collectPhone || v.guestsEnabled || v.waitlistEnabled || v.feePassThrough || v.refundPolicy)}>
         <div className="grid gap-4 sm:grid-cols-2">
           <Toggle label="Approve each registration manually" help="People request to join; approve or reject them from Attendees." checked={v.requiresApproval} onChange={(c) => set("requiresApproval", c)} />
           <Toggle label="Ask for a phone number" help="Optional field with SMS opt-in for tickets and reminders." checked={v.collectPhone} onChange={(c) => set("collectPhone", c)} />
@@ -184,9 +218,9 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
         </div>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Links" description="Social links shown on the event page." defaultOpen={v.socialLinks.length > 0}>{links(v.socialLinks, (l) => set("socialLinks", l))}</CollapsibleSection>
+      <CollapsibleSection title="Links" description="Social links shown on the event page." hint={countHint(v.socialLinks.length, "link")} defaultOpen={v.socialLinks.length > 0}>{links(v.socialLinks, (l) => set("socialLinks", l))}</CollapsibleSection>
 
-      <CollapsibleSection title="Hosts" description="People shown on the event page." defaultOpen={v.hosts.length > 0}>
+      <CollapsibleSection title="Hosts" description="People shown on the event page." hint={countHint(v.hosts.length, "host")} defaultOpen={v.hosts.length > 0}>
         <div className="space-y-3">
           {v.hosts.map((h, i) => (
             <div key={i} className="space-y-3 rounded-lg border border-border/80 bg-muted/25 p-3">
@@ -202,7 +236,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
         </div>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Sponsors" description="Logos appear on the event page in this order." defaultOpen={v.sponsors.length > 0}>
+      <CollapsibleSection title="Sponsors" description="Logos appear on the event page in this order." hint={countHint(v.sponsors.length, "sponsor")} defaultOpen={v.sponsors.length > 0}>
         <div className="space-y-3">
           {v.sponsors.map((s, i) => (
             <div key={i} className="space-y-3 rounded-lg border border-border/80 bg-muted/25 p-3">
@@ -219,8 +253,8 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
         </div>
       </CollapsibleSection>
 
-      <div className="surface-glass fixed inset-x-0 bottom-0 z-10 border-t border-border/80 lg:left-64">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10">
+      <div className="surface-glass fixed inset-x-0 bottom-0 z-10 border-t border-border/80 px-4 sm:px-6 lg:left-64 lg:px-10">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 py-3">
           <div className="min-w-0 flex-1">
             {msg.error || msg.success
               ? <FormMessage error={msg.error} success={msg.success} />
@@ -240,30 +274,61 @@ function Section({ title, description, children }: { title: string; description?
 const SECTION_GRID = "grid gap-x-10 gap-y-5 md:grid-cols-[13.5rem_minmax(0,1fr)]";
 
 /**
- * Same card and same two-column rhythm as `Section`, but folded away until it is needed.
- * `details`/`summary` keeps it working before hydration and lets `onInvalidCapture` above
- * pop a section open when a hidden field fails validation.
+ * Same card and two-column rhythm as `Section`, folded away until needed. The header is one
+ * button: title, a short hint of what is inside while closed, and a ringed chevron that turns.
+ * The body animates open with a grid-row transition and is `inert` while closed, so hidden
+ * fields are neither tabbable nor validated; a field that fails validation opens its section.
  */
-function CollapsibleSection({ title, description, children, defaultOpen = false }: { title: string; description?: string; children: React.ReactNode; defaultOpen?: boolean }) {
+function CollapsibleSection({ title, description, hint, children, defaultOpen = false }: { title: string; description?: string; hint?: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
+  const id = useId();
   return (
-    <details className="group rounded-xl border border-border/80 bg-card text-card-foreground shadow-card" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
-      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-5 group-open:pb-2 sm:p-6 sm:group-open:pb-3 md:grid md:grid-cols-[13.5rem_minmax(0,1fr)] md:gap-x-10 [&::-webkit-details-marker]:hidden">
-        <span className="block min-w-0 md:pt-px">
+    <section className="rounded-xl border border-border/80 bg-card text-card-foreground shadow-card" onInvalidCapture={() => setOpen(true)}>
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={id}
+        onClick={() => setOpen((o) => !o)}
+        className="press flex w-full items-center justify-between gap-4 rounded-xl p-5 text-left transition-colors hover:bg-muted/40 sm:p-6"
+      >
+        <span className="min-w-0">
           <span className="block text-sm font-medium">{title}</span>
-          {description && <span className="mt-1.5 block text-sm leading-relaxed text-muted-foreground">{description}</span>}
+          <span className={`block text-sm leading-relaxed text-muted-foreground transition-opacity ${open ? "mt-1.5" : "mt-0.5"}`}>{open ? description : hint ?? description}</span>
         </span>
-        <span className="flex shrink-0 items-center justify-end gap-4 text-sm text-muted-foreground md:justify-between">
-          <span className="hidden md:inline">{open ? "Hide" : "Edit"}</span>
-          <ChevronDown className="size-4 shrink-0 transition-transform group-open:rotate-180" />
+        <span className={`flex size-8 shrink-0 items-center justify-center rounded-full border transition-[transform,background-color,border-color] duration-200 ${open ? "rotate-180 border-foreground bg-foreground text-background" : "border-border text-muted-foreground"}`} aria-hidden>
+          <ChevronDown className="size-4" />
         </span>
-      </summary>
-      <div className={`${SECTION_GRID} px-5 pb-5 sm:px-6 sm:pb-6`}>
-        <span aria-hidden className="hidden md:block" />
-        <div className="hairline min-w-0 pt-5 md:border-t-0 md:pt-0">{children}</div>
+      </button>
+      <div id={id} inert={!open} className={`grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+        <div className="min-h-0 overflow-hidden">
+          <div className={`${SECTION_GRID} px-5 pb-5 sm:px-6 sm:pb-6`}>
+            <span aria-hidden className="hidden md:block" />
+            <div className="hairline min-w-0 pt-5 md:border-t-0 md:pt-0">{children}</div>
+          </div>
+        </div>
       </div>
-    </details>
+    </section>
   );
+}
+
+function countHint(n: number, noun: string) {
+  return n === 0 ? `No ${noun}s yet` : `${n} ${noun}${n === 1 ? "" : "s"}`;
+}
+
+function optionsHint(v: Values) {
+  const on = [v.requiresApproval && "approval", v.collectPhone && "phone", v.guestsEnabled && "guests", v.waitlistEnabled && "waitlist", v.feePassThrough && "buyer pays fee"].filter(Boolean) as string[];
+  const reminders = [v.reminder24 && "24h", v.reminder1 && "1h", ...v.reminderCustom.split(/[,\s]+/).filter(Boolean).map((h) => `${h}h`)].filter(Boolean) as string[];
+  const parts = [on.length ? `On: ${on.join(", ")}` : "Defaults", reminders.length ? `reminders ${reminders.join(", ")}` : "no reminders"];
+  return parts.join(" · ");
+}
+
+function relativeTime(iso: string) {
+  const minutes = Math.round((Date.now() - new Date(iso).getTime()) / 60_000);
+  if (minutes < 1) return "a moment ago";
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  return new Date(iso).toLocaleString();
 }
 
 function Toggle({ label, help, checked, onChange }: { label: string; help?: string; checked: boolean; onChange: (c: boolean) => void }) {

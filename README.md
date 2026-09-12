@@ -16,6 +16,9 @@ Brought to you by [InEvent](https://inevent.com). Conventions for contributors a
 - Discovery at `/discover`: search, city, tag, date, price and format filters, a calendar view, near-me, and a sitemap for public events only.
 - Transactional email (React Email) and SMS: confirmation, approval, refund, reminders at 24h and 1h, event changes and cancellations, with STOP handling and an unsubscribe link.
 
+**For everyone**
+- The whole interface in 20 languages, including right-to-left Arabic and Urdu, with a language menu in the top bar. Attendees get their emails in the language they registered in.
+
 **For organizers**
 - An event form that keeps unsaved changes in your browser and puts them back if you leave and come back.
 - Dashboard with events, registrations, revenue and check-in counts; an editor for schedule, venue with address autocomplete, visibility, approval, guests, capacity, reminders, hosts, sponsors, tags and links.
@@ -106,6 +109,7 @@ Everything is read from the environment (the root `.env` in development). Empty 
 | `JOBS_INLINE` | no | `true` (default) runs the job loop inside the web process; `false` for serverless, then call `POST /api/jobs/run` with `Authorization: Bearer $AUTH_SECRET` every minute. |
 | `MIGRATE_ON_START` | no | Apply migrations at boot (the Docker image sets it). |
 | `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ENVIRONMENT` | no | Error reporting. The public DSN is inlined at build time. |
+| `GOOGLE_TRANSLATE_API_KEY` | maintainers only | Used by `pnpm --filter @evnelo/web translate` to regenerate the 19 non-English message files from `messages/en`. The running app never needs it. |
 | `ABUSE_EMAIL` | no | Where "Report this event" submissions are emailed. They are always stored. |
 | `CAPTCHA_PROVIDER`, `CAPTCHA_SITE_KEY`, `CAPTCHA_SECRET_KEY` | production | Bot check on sign-in links, registrations, waitlist joins and abuse reports. `turnstile` (Cloudflare, free, invisible for most people) or `recaptcha` (Google reCAPTCHA v3). Off until all three are set. |
 
@@ -138,6 +142,17 @@ Create keys under Dashboard → Settings → API keys (owners and admins). Keys 
 ### Outbound webhooks
 
 Add endpoints under Settings → Webhooks and pick events: `registration.created`, `order.paid`, `order.refunded`, `attendee.checked_in`, `event.published`, `event.updated`, `event.cancelled`. Each delivery is a JSON envelope (`id`, `type`, `createdAt`, `organizationId`, `data`) signed with HMAC-SHA256 over `{timestamp}.{body}`, sent as `evnelo-signature: v1=…` with `evnelo-timestamp` and `evnelo-delivery-id`. Verify with the SDK helper and reject timestamps older than five minutes. Deliveries retry with exponential backoff up to eight attempts; the Settings page shows recent deliveries and can send a test ping or rotate the secret.
+
+## Translations
+
+English source strings live in `apps/web/messages/en/*.json`, one file per area. Every other language is generated and committed:
+
+```bash
+pnpm --filter @evnelo/web translate          # fill in what is missing or changed (needs GOOGLE_TRANSLATE_API_KEY)
+pnpm --filter @evnelo/web translate:check    # CI: fail if any language is behind English
+```
+
+The script only sends strings that are new or whose English changed (tracked in `messages/.translated.json`), keeps ICU placeholders and rich-text tags intact, and drops keys removed from English. To hand-correct a machine translation, edit the target file; the correction survives until the English source changes. Languages are listed in `apps/web/i18n/locales.ts`; adding one is a line there plus a run of the script.
 
 ## Testing
 

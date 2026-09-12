@@ -17,6 +17,7 @@ import { clientAddress } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { CAPTCHA_FAILED_MESSAGE, verifyCaptcha } from "@/lib/captcha";
 import { verifyRegistrationFile } from "@/lib/storage";
+import { requestLocale } from "@/lib/locale";
 
 export const runtime = "nodejs";
 const HOLD_MINUTES = 10;
@@ -56,6 +57,7 @@ export async function POST(req: Request) {
   // Abuse limits: per client when a trusted proxy header identifies one, per email, and a per-event
   // ceiling that keeps a scripted flood from exhausting holds or the notification queue.
   const address = clientAddress(req);
+  const locale = requestLocale(req); // emails to this registration follow the language it was made in
   const allowed = await Promise.all([
     address ? consumeSharedRateLimit("register:client", address, 10, 10 * 60_000) : true,
     consumeSharedRateLimit("register:email", input.email, 5, 10 * 60_000),
@@ -177,11 +179,13 @@ export async function POST(req: Request) {
     await tx.insert(orderItems).values({ id: newId(), orderId, ticketTypeId: tt.id, quantity, unitPriceMinor: tt.priceMinor });
     const hostId = newId();
     await tx.insert(attendees).values({
+      locale,
       id: hostId, eventId: event.id, orderId, ticketTypeId: tt.id, name: input.name, email: input.email,
       phone: input.phone || null, smsOptIn: Boolean(input.smsOptIn && input.phone), status, answers: att.data,
     });
     if (guests.length) {
       await tx.insert(attendees).values(guests.map((g) => ({
+        locale,
         id: newId(), eventId: event.id, orderId, ticketTypeId: tt.id, guestOfAttendeeId: hostId,
         name: g.name, email: g.email || input.email, status, answers: g.parsed.success ? g.parsed.data : {},
       })));

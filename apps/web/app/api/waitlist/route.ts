@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import { emailConfigured, env } from "@/lib/env";
 import { clientAddress, readJsonBody } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
+import { requestLocale } from "@/lib/locale";
 import { CAPTCHA_FAILED_MESSAGE, verifyCaptcha } from "@/lib/captcha";
 import { captureError } from "@/lib/observability";
 import { renderEmail, sendEmail } from "@/lib/email";
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
   if (!row || row.event.status !== "published" || row.event.deletedAt) return NextResponse.json({ error: "This event isn't open." }, { status: 404 });
   if (!row.event.waitlistEnabled) return NextResponse.json({ error: "This event doesn't have a waitlist." }, { status: 400 });
 
-  const result = await joinWaitlist(db, eventId, form);
+  const result = await joinWaitlist(db, eventId, { ...form, locale: requestLocale(request) });
   if (result.outcome === "registered") return NextResponse.json({ error: "This email is already registered for this event." }, { status: 409 });
   if (result.outcome === "joined" && emailConfigured) {
     const { event, org } = row;

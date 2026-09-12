@@ -12,7 +12,7 @@ describe("waitlist status", () => {
     expect(waitlistStatus({ ...base, promotedAt: now, registeredAt: now }, now)).toBe("registered");
   });
   it("only open offers with a seat can be used", () => {
-    const entry = { id: "e", eventId: "ev", ticketTypeId: "tt", email: "a@b.c", name: "A", token: "t", createdAt: now, orderId: null, ...base, promotedAt: now, holdExpiresAt: new Date("2026-09-11T12:00:00Z") };
+    const entry = { id: "e", eventId: "ev", ticketTypeId: "tt", email: "a@b.c", locale: null, name: "A", token: "t", createdAt: now, orderId: null, ...base, promotedAt: now, holdExpiresAt: new Date("2026-09-11T12:00:00Z") };
     expect(offerIsOpen(entry, now)).toBe(true);
     expect(offerIsOpen({ ...entry, ticketTypeId: null }, now)).toBe(false);
     expect(offerIsOpen({ ...entry, registeredAt: now }, now)).toBe(false);

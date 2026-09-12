@@ -312,6 +312,7 @@ export const attendees = mysqlTable(
     eventId: ref("event_id").notNull(),
     orderId: ref("order_id").notNull(),
     ticketTypeId: ref("ticket_type_id").notNull(),
+    locale: varchar("locale", { length: 10 }), // language of the registration, used for this attendee's emails
     userId: ref("user_id"),
     guestOfAttendeeId: ref("guest_of_attendee_id"), // set on +1s; null on the host attendee
     name: varchar("name", { length: 120 }).notNull(),
@@ -370,6 +371,7 @@ export const waitlistEntries = mysqlTable(
     eventId: ref("event_id").notNull(),
     ticketTypeId: ref("ticket_type_id"), // set when promoted: the seat being held
     email: varchar("email", { length: 255 }).notNull(),
+    locale: varchar("locale", { length: 10 }),
     name: varchar("name", { length: 120 }),
     token: char("token", { length: 48 }), // offer link, minted on promotion
     promotedAt: datetime("promoted_at", { fsp: 3 }),

@@ -1,5 +1,6 @@
 import path from "node:path";
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 // Next only reads apps/web/.env*. Load the repo-root .env too so `pnpm dev` from the
 // monorepo root works with a single .env file. Already-set variables are never overridden.
@@ -27,4 +28,5 @@ const config: NextConfig = {
   // security headers are set per request in middleware.ts (a `headers()` entry here would be frozen at build time)
 };
 
-export default config;
+// locale + messages per request come from i18n/request.ts (cookie, then Accept-Language)
+export default createNextIntlPlugin("./i18n/request.ts")(config);

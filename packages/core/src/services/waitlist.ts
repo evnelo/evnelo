@@ -18,6 +18,7 @@ export const WAITLIST_OFFER_HOURS = 24;
 export const waitlistJoinInput = z.object({
   name: z.string().trim().min(1).max(120),
   email: z.string().trim().toLowerCase().email().max(255),
+  locale: z.string().max(10).optional(),
 });
 
 export function newWaitlistToken() {
@@ -66,7 +67,7 @@ export async function joinWaitlist(db: Database, eventId: string, input: z.infer
     const [existing] = await tx.select().from(waitlistEntries).where(and(eq(waitlistEntries.eventId, eventId), eq(waitlistEntries.email, input.email))).limit(1);
     if (existing) return { outcome: "already" as const, entry: existing };
     const id = newId();
-    await tx.insert(waitlistEntries).values({ id, eventId, email: input.email, name: input.name });
+    await tx.insert(waitlistEntries).values({ id, eventId, email: input.email, name: input.name, locale: input.locale ?? null });
     const [entry] = await tx.select().from(waitlistEntries).where(eq(waitlistEntries.id, id)).limit(1);
     const [pos] = await tx.select({ n: sql<number>`count(*)` }).from(waitlistEntries).where(and(eq(waitlistEntries.eventId, eventId), isNull(waitlistEntries.registeredAt), sql`${waitlistEntries.createdAt} <= ${entry!.createdAt}`));
     return { outcome: "joined" as const, entry: entry!, position: Number(pos?.n ?? 1) };

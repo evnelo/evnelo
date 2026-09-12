@@ -11,7 +11,7 @@ describe("REST serializers", () => {
   });
 
   it("hides the waitlist claim token but reports the derived status", () => {
-    const entry = { id: "e", eventId: "ev", ticketTypeId: "t", email: "a@x.test", name: "A", token: "secret-token", promotedAt: now, holdExpiresAt: new Date(Date.now() + 3_600_000), expiredAt: null, registeredAt: null, orderId: null, createdAt: now };
+    const entry = { id: "e", eventId: "ev", ticketTypeId: "t", email: "a@x.test", locale: null, name: "A", token: "secret-token", promotedAt: now, holdExpiresAt: new Date(Date.now() + 3_600_000), expiredAt: null, registeredAt: null, orderId: null, createdAt: now };
     const out = serializeWaitlistEntry({ entry, ticketTypeName: "GA" });
     expect(out).not.toHaveProperty("token");
     expect(out).toMatchObject({ status: "offered", ticketTypeName: "GA" });
@@ -24,7 +24,7 @@ describe("REST serializers", () => {
   });
 
   it("attaches the ticket link and check-in state to an attendee and drops internal org fields", () => {
-    const attendee = { id: "a", eventId: "ev", orderId: "o", ticketTypeId: "t", userId: null, guestOfAttendeeId: null, name: "A", email: "a@x.test", phone: null, smsOptIn: false, remindersOptOut: false, status: "confirmed" as const, answers: {}, deletedAt: null, createdAt: now, updatedAt: now };
+    const attendee = { id: "a", eventId: "ev", orderId: "o", ticketTypeId: "t", userId: null, guestOfAttendeeId: null, name: "A", email: "a@x.test", locale: null, phone: null, smsOptIn: false, remindersOptOut: false, status: "confirmed" as const, answers: {}, deletedAt: null, createdAt: now, updatedAt: now };
     const out = serializeAttendee({ attendee, ticketId: "tk", ticketToken: "tok", ticketRevokedAt: null, checkedInAt: now, ticketTypeName: "GA", hostName: null, orderStatus: "paid", orderTotalMinor: 2500, orderCurrency: "USD" });
     expect(out.ticket).toMatchObject({ id: "tk", token: "tok", checkedInAt: now });
     expect(out.ticket?.url).toMatch(/\/t\/tok$/);

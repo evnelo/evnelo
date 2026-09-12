@@ -1,0 +1,57 @@
+{
+  "language": "Language",
+  "brand": "Evnelo",
+  "tagline": "Events, in motion.",
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "delete": "Delete",
+    "remove": "Remove",
+    "edit": "Edit",
+    "add": "Add",
+    "back": "Back",
+    "continue": "Continue",
+    "confirm": "Confirm",
+    "copy": "Copy",
+    "copied": "Copied",
+    "search": "Search",
+    "retry": "Try again",
+    "ok": "OK",
+    "discard": "Discard",
+    "restore": "Restore",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "loading": "Loading…"
+  },
+  "labels": {
+    "optional": "optional",
+    "required": "Required",
+    "free": "Free",
+    "soldOut": "Sold out",
+    "cancelled": "Cancelled",
+    "draft": "Draft",
+    "published": "Published",
+    "yes": "Yes",
+    "no": "No",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "status": "Status",
+    "date": "Date",
+    "created": "Created",
+    "unknown": "Unknown"
+  },
+  "errors": {
+    "generic": "Something went wrong. Try again.",
+    "network": "Network error. Try again.",
+    "notFound": "Not found",
+    "rateLimited": "Too many attempts. Wait a few minutes and try again.",
+    "captcha": "We couldn't confirm you're not a bot. Reload the page and try again."
+  },
+  "time": {
+    "momentAgo": "a moment ago",
+    "minutesAgo": "{minutes} min ago",
+    "hoursAgo": "{hours, plural, one {# hour ago} other {# hours ago}}"
+  }
+}

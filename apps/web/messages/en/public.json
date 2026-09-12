@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "description": "Events, in motion. Open event infrastructure: publish events, register attendees, sell or give away tickets, message your community, check people in."
+  },
+  "nav": {
+    "discover": "Discover",
+    "pricing": "Pricing",
+    "dashboard": "Dashboard",
+    "signIn": "Sign in",
+    "host": "Host an event",
+    "hostShort": "Host",
+    "api": "API"
+  },
+  "footer": {
+    "tagline": "Events, in motion. Open event infrastructure: free events are free, paid events cost the host 0.99%.",
+    "credit": "Brought to you by <inevent>InEvent</inevent>."
+  }
+}

@@ -7,6 +7,7 @@ import { signOutAction, switchOrgAction } from "./actions";
 import { Brand } from "@/components/brand";
 import { Select } from "@/components/ui/select";
 import { SidebarNav, type SidebarItem } from "@/components/dashboard/sidebar-nav";
+import { LocaleSwitcher } from "@/components/locale-switcher";
 
 export const metadata = { title: "Dashboard", robots: "noindex" };
 
@@ -37,7 +38,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className="mt-auto hidden border-t border-border/70 px-5 py-4 text-xs text-muted-foreground lg:block">
           <p className="truncate text-foreground" title={user.email}>{user.name ?? user.email}</p>
           <p className="truncate">{user.name ? user.email : ""}</p>
-          <form action={signOutAction} className="mt-2"><SubmitButton variant="ghost" size="sm" className="-ml-2 h-7 gap-1.5 px-2 text-xs text-muted-foreground hover:text-foreground [&_svg]:size-3.5"><LogOut /> Sign out</SubmitButton></form>
+          <div className="mt-2 flex items-center gap-1"><LocaleSwitcher variant="plain" className="-ms-2 h-7 text-xs" /><form action={signOutAction}><SubmitButton variant="ghost" size="sm" className="-ml-2 h-7 gap-1.5 px-2 text-xs text-muted-foreground hover:text-foreground [&_svg]:size-3.5"><LogOut /> Sign out</SubmitButton></form></div>
         </div>
       </aside>
       <main className="min-w-0 px-4 py-6 sm:px-6 lg:px-10 lg:py-10">

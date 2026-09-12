@@ -17,7 +17,7 @@ Brought to you by [InEvent](https://inevent.com). Conventions for contributors a
 - Transactional email (React Email) and SMS: confirmation, approval, refund, reminders at 24h and 1h, event changes and cancellations, with STOP handling and an unsubscribe link.
 
 **For organizers**
-- An event form that keeps unsaved changes in your browser and offers to restore them if you leave and come back.
+- An event form that keeps unsaved changes in your browser and puts them back if you leave and come back.
 - Dashboard with events, registrations, revenue and check-in counts; an editor for schedule, venue with address autocomplete, visibility, approval, guests, capacity, reminders, hosts, sponsors, tags and links.
 - Ticket types with quantities, sales windows and tax; discount codes; a registration form builder with conditional questions and file uploads.
 - Attendees: search, approve or reject, cancel, export CSV, export or erase one person's data. Orders with full and partial Stripe refunds.

@@ -55,33 +55,40 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
   const set = <K extends keyof Values>(k: K, val: Values[K]) => setV((s) => ({ ...s, [k]: val }));
   useEffect(() => { if (!v.slugTouched && mode === "create") setV((s) => ({ ...s, slug: slugify(s.name) })); }, [v.name, v.slugTouched, mode]);
 
-  // Unsaved work survives leaving the page: every change is mirrored to localStorage, and a
-  // backup that differs from what the server has is offered back on return.
+  // Unsaved work survives leaving the page: every change is mirrored to localStorage (debounced,
+  // and flushed when the form unmounts), and on return a backup that differs from what the server
+  // has is put straight back into the fields with a note and a way to discard it.
   const draftKey = `evnelo-event-draft:${organizationSlug}:${eventId ?? "new"}`;
   const baseline = useRef(JSON.stringify(initial(defaults, browserTz)));
   const dirty = JSON.stringify(v) !== baseline.current;
-  const [backup, setBackup] = useState<{ savedAt: string; values: Values } | null>(null);
+  const latest = useRef({ v, dirty });
+  latest.current = { v, dirty };
+  const [restoredAt, setRestoredAt] = useState<string | null>(null);
+  const writeBackup = (values: Values) => { try { localStorage.setItem(draftKey, JSON.stringify({ savedAt: new Date().toISOString(), values })); } catch {} };
   useEffect(() => {
     try {
       const raw = localStorage.getItem(draftKey);
       if (!raw) return;
       const parsed = JSON.parse(raw) as { savedAt: string; values: Values };
-      if (JSON.stringify(parsed.values) === baseline.current) localStorage.removeItem(draftKey);
-      else setBackup(parsed);
+      if (JSON.stringify(parsed.values) === baseline.current) { localStorage.removeItem(draftKey); return; }
+      setV(parsed.values);
+      setRestoredAt(parsed.savedAt);
     } catch { /* corrupt or unavailable storage: start clean */ }
   }, [draftKey]);
   useEffect(() => {
     if (!dirty) return;
-    const timer = window.setTimeout(() => { try { localStorage.setItem(draftKey, JSON.stringify({ savedAt: new Date().toISOString(), values: v })); } catch {} }, 400);
+    const timer = window.setTimeout(() => writeBackup(v), 400);
     return () => window.clearTimeout(timer);
-  }, [v, dirty, draftKey]);
+  }, [v, dirty, draftKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => { if (latest.current.dirty) writeBackup(latest.current.v); }, [draftKey]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!dirty) return;
     const warn = (e: BeforeUnloadEvent) => { e.preventDefault(); };
     window.addEventListener("beforeunload", warn);
     return () => window.removeEventListener("beforeunload", warn);
   }, [dirty]);
-  const forgetBackup = () => { try { localStorage.removeItem(draftKey); } catch {} setBackup(null); };
+  const forgetBackup = () => { try { localStorage.removeItem(draftKey); } catch {} setRestoredAt(null); };
+  const discardRestored = () => { forgetBackup(); setV(initial(defaults, browserTz)); };
 
   const submit = () => {
     setMsg({});
@@ -125,13 +132,13 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
       onSubmit={(e) => { e.preventDefault(); submit(); }}
       className="space-y-4 pb-28"
     >
-      {backup && !dirty && (
+      {restoredAt && (
         <Note className="flex flex-wrap items-center gap-x-4 gap-y-2 text-foreground">
           <History className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-          <span className="min-w-0 flex-1">You have unsaved changes from {relativeTime(backup.savedAt)}.</span>
+          <span className="min-w-0 flex-1">Picked up where you left off: unsaved changes from {relativeTime(restoredAt)} are back in the form.</span>
           <span className="flex gap-2">
-            <Button type="button" size="sm" onClick={() => { setV(backup.values); setBackup(null); }}>Restore</Button>
-            <Button type="button" size="sm" variant="ghost" onClick={forgetBackup}>Discard</Button>
+            <Button type="button" size="sm" variant="outline" onClick={discardRestored}>Discard them</Button>
+            <Button type="button" size="sm" variant="ghost" onClick={() => setRestoredAt(null)}>OK</Button>
           </span>
         </Note>
       )}

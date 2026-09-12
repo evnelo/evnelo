@@ -71,7 +71,7 @@ export function ApiKeysPanel({ keys, canManage, docsUrl }: { keys: Key[]; canMan
           <div className="min-w-56 flex-1"><Input name="name" required placeholder="Key name, e.g. Zapier" aria-label="Key name" /></div>
           <label className="flex cursor-pointer items-center gap-2 text-sm"><input type="checkbox" name="scopes" value="read" defaultChecked className="size-4 accent-[var(--primary)]" /> read</label>
           <label className="flex cursor-pointer items-center gap-2 text-sm"><input type="checkbox" name="scopes" value="write" className="size-4 accent-[var(--primary)]" /> write</label>
-          <Button type="submit" disabled={pending}>Create key</Button>
+          <Button type="submit" pending={pending}>Create key</Button>
         </form>
       )}
       <FormMessage error={msg.error} success={msg.success} />

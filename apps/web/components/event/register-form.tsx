@@ -286,7 +286,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
           </div>
         )}
         <CaptchaField action="register" />
-        <Button type="submit" variant="event" size="lg" className="w-full" disabled={form.formState.isSubmitting || !selected}>
+        <Button type="submit" variant="event" size="lg" className="w-full" pending={form.formState.isSubmitting} disabled={!selected}>
           {totalMinor > 0
             ? `Continue to payment, ${formatMoney(totalMinor, selected!.currency)}${partySize > 1 ? ` for ${partySize}` : ""}`
             : discount && listMinor > 0 ? (partySize > 1 ? `Register ${partySize} people, free with code` : "Register, free with code")

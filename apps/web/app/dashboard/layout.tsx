@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { LogOut } from "lucide-react";
 import { can } from "@evnelo/core";
 import { requireOrg } from "@/lib/auth/session";
@@ -26,7 +27,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <Select name="org" defaultValue={org.id} className="h-9 text-xs" aria-label="Organization">
                 {memberships.map((m) => <option key={m.org.id} value={m.org.id}>{m.org.name}</option>)}
               </Select>
-              <button className="mt-1 hidden text-xs text-muted-foreground underline underline-offset-4 lg:block">Switch organization</button>
+              <SubmitButton variant="ghost" size="sm" className="mt-1 hidden h-7 px-2 text-xs text-muted-foreground lg:inline-flex">Switch organization</SubmitButton>
             </form>
           ) : (
             <p className="truncate text-sm text-muted-foreground lg:mt-3"><span className="eyebrow block lg:mb-0.5">Organization</span><span className="text-foreground">{org.name}</span></p>
@@ -36,7 +37,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className="mt-auto hidden border-t border-border/70 px-5 py-4 text-xs text-muted-foreground lg:block">
           <p className="truncate text-foreground" title={user.email}>{user.name ?? user.email}</p>
           <p className="truncate">{user.name ? user.email : ""}</p>
-          <form action={signOutAction} className="mt-2"><button className="press inline-flex items-center gap-1.5 rounded-md hover:text-foreground"><LogOut className="size-3.5" /> Sign out</button></form>
+          <form action={signOutAction} className="mt-2"><SubmitButton variant="ghost" size="sm" className="-ml-2 h-7 gap-1.5 px-2 text-xs text-muted-foreground hover:text-foreground [&_svg]:size-3.5"><LogOut /> Sign out</SubmitButton></form>
         </div>
       </aside>
       <main className="min-w-0 px-4 py-6 sm:px-6 lg:px-10 lg:py-10">

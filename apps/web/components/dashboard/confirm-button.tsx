@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 type Props = React.ComponentProps<typeof Button> & {
   action: (formData: FormData) => void | Promise<void>;
@@ -14,7 +15,7 @@ export function ConfirmButton({ action, confirm, fields, children, ...rest }: Pr
   return (
     <form action={action} onSubmit={(e) => { if (!window.confirm(confirm)) e.preventDefault(); }}>
       {fields && Object.entries(fields).map(([k, v]) => <input key={k} type="hidden" name={k} value={v} />)}
-      <Button type="submit" {...rest}>{children}</Button>
+      <SubmitButton {...rest}>{children}</SubmitButton>
     </form>
   );
 }

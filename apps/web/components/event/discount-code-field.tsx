@@ -39,7 +39,7 @@ export function DiscountCodeField({ eventId, ticketTypeId, quantity, applied, on
       <Label htmlFor="discount-code">Discount code</Label>
       <div className="mt-1.5 flex gap-2">
         <Input id="discount-code" value={code} onChange={(e) => { setCode(e.target.value.toUpperCase()); if (applied) onChange(null); }} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); void apply(); } }} placeholder="CODE" autoCapitalize="characters" spellCheck={false} className="h-11 font-mono uppercase tracking-wider" />
-        <Button type="button" variant="outline" className="h-11" disabled={busy || !code.trim()} onClick={() => void apply()}>{busy ? "Checking…" : applied ? <><Check className="size-4" aria-hidden /> Applied</> : "Apply"}</Button>
+        <Button type="button" variant="outline" className="h-11" pending={busy} disabled={!code.trim()} onClick={() => void apply()}>{applied ? <><Check className="size-4" aria-hidden /> Applied</> : "Apply"}</Button>
       </div>
       {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
       {applied && !error && <p className="mt-1 text-xs text-muted-foreground">{applied.code}: {formatMoney(applied.discountMinor, applied.currency)} off{applied.totalMinor === 0 ? ", your ticket is free" : ""}.</p>}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { normalizeWebsiteUrl } from "@evnelo/core";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/ui/form-field";
 import { organizationSlugPreview } from "@/lib/urls";
@@ -52,7 +52,7 @@ export function OnboardingForm({
           onBlur={() => setWebsite(normalizeWebsiteUrl(website))}
         />
       </Field>
-      <Button type="submit" className="w-full">Create organization</Button>
+      <SubmitButton className="w-full">Create organization</SubmitButton>
     </form>
   );
 }

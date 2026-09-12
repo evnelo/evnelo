@@ -15,6 +15,7 @@ import { captureError } from "@/lib/observability";
 import { renderEmail, sendEmail } from "@/lib/email";
 import { publicEventPath } from "@/lib/urls";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
@@ -73,7 +74,7 @@ export default async function ReportPage({ searchParams }: { searchParams: Promi
             <div><Label htmlFor="details">Details <span className="font-normal text-muted-foreground">(optional)</span></Label><Textarea id="details" name="details" rows={4} maxLength={2000} className="mt-1.5" /></div>
             <div><Label htmlFor="reporterEmail">Your email <span className="font-normal text-muted-foreground">(optional, if we may follow up)</span></Label><Input id="reporterEmail" name="reporterEmail" type="email" className="mt-1.5 h-11" /></div>
             <CaptchaField action="report" />
-            <Button type="submit" size="lg">Send report</Button>
+            <SubmitButton size="lg">Send report</SubmitButton>
           </form>
         </>
       )}

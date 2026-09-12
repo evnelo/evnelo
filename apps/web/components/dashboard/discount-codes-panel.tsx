@@ -51,7 +51,7 @@ export function DiscountCodesPanel({ eventId, codes, editable, currency }: { eve
           <Field label={draft.kind === "percent" ? "Percent" : `Amount (${currency})`} htmlFor="dc-value"><Input id="dc-value" type="number" min={draft.kind === "percent" ? 1 : 0.01} max={draft.kind === "percent" ? 100 : undefined} step={draft.kind === "percent" ? 1 : 0.01} value={draft.value} onChange={(e) => set("value", e.target.value)} /></Field>
           <Field label="Max uses" htmlFor="dc-max"><Input id="dc-max" type="number" min={1} value={draft.maxUses} onChange={(e) => set("maxUses", e.target.value)} placeholder="unlimited" /></Field>
           <Field label="Expires" htmlFor="dc-exp"><Input id="dc-exp" type="datetime-local" value={draft.expiresAt} onChange={(e) => set("expiresAt", e.target.value)} /></Field>
-          <Button onClick={save} disabled={pending || !draft.code}>{pending ? "Saving…" : "Create"}</Button>
+          <Button onClick={save} pending={pending} disabled={!draft.code}>Create</Button>
         </div>
       )}
       <Table>

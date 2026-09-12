@@ -298,7 +298,7 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
           </div>
           <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (manual.trim()) { void onToken(manual, "manual"); setManual(""); } }}>
             <Input value={manual} onChange={(e) => setManual(e.target.value)} placeholder="Or paste a ticket link / code" aria-label="Ticket link or code" className="h-12 text-base" />
-            <Button type="submit" variant="outline" className="h-12 shrink-0 px-5" disabled={busy}>Check in</Button>
+            <Button type="submit" variant="outline" className="h-12 shrink-0 px-5" pending={busy}>Check in</Button>
           </form>
         </div>
       ) : (
@@ -318,7 +318,7 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
                 {t.c ? (
                   <Button size="sm" variant="ghost" className="h-10 shrink-0 px-3 text-muted-foreground" disabled={busy || !online} onClick={() => undo(t.id)}><Undo2 className="size-4" /> Undo</Button>
                 ) : (
-                  <Button className="h-10 w-28 shrink-0" disabled={busy} onClick={() => checkIn({ ticketId: t.id }, "manual")}>Check in</Button>
+                  <Button className="h-10 w-28 shrink-0" pending={busy} onClick={() => checkIn({ ticketId: t.id }, "manual")}>Check in</Button>
                 )}
               </li>
             ))}

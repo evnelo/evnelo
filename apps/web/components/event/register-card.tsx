@@ -195,7 +195,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
         <div className="mt-4 space-y-2" aria-live="polite">
           <p className="text-sm">Payment processing. We’ll email your ticket when Stripe confirms it.</p>
           {resumeError && <p className="text-sm text-destructive">{resumeError}</p>}
-          {resumeCredentials && <Button type="button" size="sm" variant="outline" disabled={resuming} onClick={() => void restorePayment(resumeCredentials)}>{resuming ? "Checking…" : "Check payment"}</Button>}
+          {resumeCredentials && <Button type="button" size="sm" variant="outline" pending={resuming} onClick={() => void restorePayment(resumeCredentials)}>{"Check payment"}</Button>}
         </div>
       ) : resuming ? (
         <p className="mt-4 text-sm text-muted-foreground" aria-live="polite">Verifying your payment…</p>

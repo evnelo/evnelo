@@ -118,7 +118,7 @@ export function TicketTypesPanel({ eventId, types, editable, defaultCurrency, gu
               </div>
               <div className="hairline flex justify-end gap-2 pt-4">
                 <Button type="button" variant="ghost" onClick={() => setOpen(null)}>Cancel</Button>
-                <Button type="submit" disabled={pending}>{pending ? "Saving…" : "Save"}</Button>
+                <Button type="submit" pending={pending}>Save</Button>
               </div>
             </form>
           )}

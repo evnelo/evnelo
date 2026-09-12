@@ -58,7 +58,7 @@ export function MembersPanel({ members, invites, canManage, currentUserId, roleL
         >
           <div className="min-w-64 flex-1"><Input name="email" type="email" required placeholder="teammate@example.com" aria-label="Email" /></div>
           <div className="w-44"><Select name="role" defaultValue="member" aria-label="Role"><option value="admin">Admin</option><option value="member">Member</option><option value="checkin">Check-in staff</option></Select></div>
-          <Button type="submit" disabled={pending}>Send invite</Button>
+          <Button type="submit" pending={pending}>Send invite</Button>
         </form>
       )}
       <FormMessage error={msg.error} success={msg.success} />

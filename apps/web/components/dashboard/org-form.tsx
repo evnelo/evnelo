@@ -65,7 +65,7 @@ export function OrgForm({ org, readOnly, uploadsEnabled }: { org: Values; readOn
         </div>
       </fieldset>
       <FormMessage error={msg.error} success={msg.success} />
-      {!readOnly && <div className="hairline flex justify-end pt-5"><Button type="submit" disabled={pending}>{pending ? "Saving…" : "Save organization"}</Button></div>}
+      {!readOnly && <div className="hairline flex justify-end pt-5"><Button type="submit" pending={pending}>Save organization</Button></div>}
     </form>
   );
 }

@@ -55,11 +55,11 @@ export function WebhooksPanel({ hooks, editable }: { hooks: WebhookRow[]; editab
               ))}
             </div>
           </fieldset>
-          <Button disabled={pending || !url || events.length === 0} onClick={() => start(async () => {
+          <Button pending={pending} disabled={!url || events.length === 0} onClick={() => start(async () => {
             const r = await createWebhookAction({ url, events, active: true });
             if (!r.ok) return setMsg({ error: r.error });
             setMsg({ success: r.message }); setSecret(r.secret); setOpen(false); setUrl(""); router.refresh();
-          })}>{pending ? "Saving…" : "Create webhook"}</Button>
+          })}>Create webhook</Button>
         </div>
       )}
       <Table>

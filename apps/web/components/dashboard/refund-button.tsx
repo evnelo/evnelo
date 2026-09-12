@@ -12,7 +12,7 @@ export function RefundButton({ eventId, orderId, amount }: { eventId: string; or
   return (
     <div className="flex flex-col items-end gap-1">
       <Button
-        size="sm" variant="outline" disabled={pending}
+        size="sm" variant="outline" pending={pending}
         onClick={() => {
           if (!window.confirm(`Refund ${amount} in full? Tickets on this order stop working and the seats are released once Stripe confirms.`)) return;
           start(async () => {
@@ -22,7 +22,7 @@ export function RefundButton({ eventId, orderId, amount }: { eventId: string; or
           });
         }}
       >
-        {pending ? "Refunding…" : `Refund ${amount}`}
+        Refund {amount}
       </Button>
       {msg && <span className="max-w-56 text-right text-xs text-muted-foreground">{msg}</span>}
     </div>

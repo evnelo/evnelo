@@ -6,6 +6,7 @@ import { ROLE_LABELS } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { ORG_COOKIE, currentUser } from "@/lib/auth/session";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { FormMessage } from "@/components/ui/form-field";
 import { NarrowPage } from "@/components/narrow-page";
 
@@ -45,7 +46,7 @@ export default async function InvitePage({ params, searchParams }: { params: Pro
     >
       {error && <div className="mb-4"><FormMessage error={error} /></div>}
       {user ? (
-        <form action={accept}><Button type="submit" size="lg">Accept as {user.email}</Button></form>
+        <form action={accept}><SubmitButton size="lg">Accept as {user.email}</SubmitButton></form>
       ) : (
         <Button asChild size="lg"><a href={`/login?next=${encodeURIComponent(`/invite/${token}`)}&email=${encodeURIComponent(row.invite.email)}`}>Sign in to accept</a></Button>
       )}

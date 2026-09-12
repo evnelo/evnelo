@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /** Cover art is rendered at 16:7 everywhere, so that is the only ratio we offer. */
@@ -142,7 +141,7 @@ export function ImageCropDialog({ file, onCancel, onCropped }: { file: File; onC
         {error && <p className="text-xs text-destructive">{error}</p>}
         <div className="flex justify-end gap-2">
           <Button type="button" variant="ghost" onClick={onCancel} disabled={busy}>Cancel</Button>
-          <Button type="button" onClick={() => void apply()} disabled={!image || busy}>{busy ? <Loader2 className="animate-spin" /> : null} Use this crop</Button>
+          <Button type="button" onClick={() => void apply()} pending={busy} disabled={!image}>Use this crop</Button>
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import { formatDateRange, formatMoney } from "@/lib/utils";
 import { publicEventPath } from "@/lib/urls";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { ConfirmButton } from "@/components/dashboard/confirm-button";
 import { EmptyCell, StatCard } from "@/components/dashboard/page-chrome";
 import { RegistrationsChart } from "@/components/dashboard/registrations-chart";
@@ -95,12 +96,12 @@ export default async function OverviewPage({ params }: { params: Promise<{ id: s
               <div className="mt-3 flex flex-col gap-2">
                 {event.status === "draft" && (
                   <form action={publishEventAction.bind(null, id)}>
-                    <Button type="submit" className="w-full">Publish event</Button>
+                    <SubmitButton className="w-full">Publish event</SubmitButton>
                   </form>
                 )}
                 {event.status === "published" && (
                   <form action={unpublishEventAction.bind(null, id)}>
-                    <Button type="submit" variant="outline" className="w-full">Unpublish, back to draft</Button>
+                    <SubmitButton variant="outline" className="w-full">Unpublish, back to draft</SubmitButton>
                   </form>
                 )}
                 <p className="text-xs leading-relaxed text-muted-foreground">

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { MailCheck, Percent, QrCode, Ticket } from "lucide-react";
 import { auth, googleEnabled, signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FormMessage } from "@/components/ui/form-field";
@@ -114,12 +115,12 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
                   <Input id="email" name="email" type="email" required autoComplete="email" autoFocus defaultValue={email} className="mt-1.5 h-11" />
                 </div>
                 <CaptchaField action="login" />
-                <Button type="submit" size="lg" className="w-full">Email me a sign-in link</Button>
+                <SubmitButton size="lg" className="w-full">Email me a sign-in link</SubmitButton>
               </form>
               {googleEnabled && (
                 <>
                   <div className="flex items-center gap-3 text-xs text-muted-foreground"><span className="hairline flex-1" />or<span className="hairline flex-1" /></div>
-                  <form action={google}><Button type="submit" variant="outline" size="lg" className="w-full">Continue with Google</Button></form>
+                  <form action={google}><SubmitButton variant="outline" size="lg" className="w-full">Continue with Google</SubmitButton></form>
                 </>
               )}
             </div>

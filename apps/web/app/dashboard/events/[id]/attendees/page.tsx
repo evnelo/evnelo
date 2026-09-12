@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { requireEvent, statusLabel, statusVariant } from "@/lib/dashboard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
@@ -93,8 +94,8 @@ export default async function AttendeesPage({ params, searchParams }: { params: 
                   <div className="flex justify-end gap-1">
                     {a.status === "pending_approval" && (
                       <>
-                        <form action={approveAttendeesAction.bind(null, id)}><input type="hidden" name="id" value={a.id} /><Button size="sm" type="submit">Approve</Button></form>
-                        <form action={rejectAttendeesAction.bind(null, id)}><input type="hidden" name="id" value={a.id} /><Button size="sm" variant="outline" type="submit">Reject</Button></form>
+                        <form action={approveAttendeesAction.bind(null, id)}><input type="hidden" name="id" value={a.id} /><SubmitButton size="sm">Approve</SubmitButton></form>
+                        <form action={rejectAttendeesAction.bind(null, id)}><input type="hidden" name="id" value={a.id} /><SubmitButton size="sm" variant="outline">Reject</SubmitButton></form>
                       </>
                     )}
                     {a.status === "confirmed" && (

@@ -27,7 +27,7 @@ export function DangerZone({ slug, isOwner }: { slug: string; isOwner: boolean }
           <div className="min-w-56 flex-1">
             <Field label={`Type ${slug} to confirm`} htmlFor="del-confirm"><Input id="del-confirm" name="confirm" value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="off" placeholder={slug} /></Field>
           </div>
-          <Button type="submit" variant="destructive" disabled={pending || confirm !== slug}>{pending ? "Deleting…" : "Delete organization"}</Button>
+          <Button type="submit" variant="destructive" pending={pending} disabled={confirm !== slug}>Delete organization</Button>
         </form>
       ) : (
         <p className="text-sm text-muted-foreground">Only the owner can delete this organization.</p>

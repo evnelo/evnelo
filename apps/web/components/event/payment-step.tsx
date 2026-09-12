@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Clock, Loader2, Lock } from "lucide-react";
+import { Clock, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { paymentHold, paymentOutcome, type PaymentOutcome } from "@/lib/payment-flow";
@@ -99,8 +99,8 @@ function PaymentForm({ resumeToken, holdExpiresAt, onComplete }: Props) {
       </p>
       <div className="rounded-xl border border-border/80 bg-card p-4 shadow-card"><PaymentElement options={{ layout: "accordion" }} /></div>
       {message && <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">{message}</p>}
-      <Button type="submit" variant="event" size="lg" className="w-full" disabled={!stripe || !elements || submitting || hold.expired}>
-        {submitting ? <><Loader2 className="animate-spin" /> Processing payment…</> : hold.expired ? "Reservation expired" : "Pay and register"}
+      <Button type="submit" variant="event" size="lg" className="w-full" pending={submitting} disabled={!stripe || !elements || hold.expired}>
+        {submitting ? "Processing payment…" : hold.expired ? "Reservation expired" : "Pay and register"}
       </Button>
       <p className="flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <Lock className="size-3 shrink-0" aria-hidden />

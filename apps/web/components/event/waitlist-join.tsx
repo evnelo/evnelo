@@ -41,7 +41,7 @@ export function WaitlistJoin({ eventId, eventName }: { eventId: string; eventNam
           <div><Label htmlFor="wl-email">Email</Label><Input id="wl-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1.5 h-11" /></div>
           {error && <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">{error}</p>}
           <CaptchaField action="waitlist" />
-          <Button type="submit" variant="event" size="lg" className="w-full" disabled={busy}>{busy ? "Joining…" : "Join the waitlist"}</Button>
+          <Button type="submit" variant="event" size="lg" className="w-full" pending={busy}>Join the waitlist</Button>
         </form>
       </DialogContent>
     </Dialog>

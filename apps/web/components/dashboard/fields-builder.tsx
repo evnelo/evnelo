@@ -157,7 +157,7 @@ export function FieldsBuilder({ eventId, initial, ticketTypes, editable, guestsE
       {editable && (
         <div className="hairline flex items-center justify-between gap-4 pt-4">
           <p className="text-xs text-muted-foreground">A question may only depend on one positioned above it.</p>
-          <Button onClick={save} disabled={pending}>{pending ? "Saving…" : "Save form"}</Button>
+          <Button onClick={save} pending={pending}>Save form</Button>
         </div>
       )}
     </div>

@@ -91,10 +91,14 @@ export function CaptchaField({ action, className }: { action: CaptchaAction; cla
       e.preventDefault();
       e.stopImmediatePropagation();
       const submitter = e.submitter instanceof HTMLElement ? e.submitter : undefined;
+      // lock the buttons now; once re-submitted, the form's own pending state takes over
+      const buttons = [...form!.querySelectorAll<HTMLButtonElement>('button[type="submit"]')].filter((b) => !b.disabled);
+      for (const b of buttons) { b.disabled = true; b.setAttribute("aria-busy", "true"); }
       form!.setAttribute("aria-busy", "true");
       token().catch(() => null).then((t) => {
         if (input.current) input.current.value = t ?? "";
         form!.removeAttribute("aria-busy");
+        for (const b of buttons) { b.disabled = false; b.removeAttribute("aria-busy"); }
         armed.current = true;
         form!.requestSubmit(submitter);
         armed.current = false;

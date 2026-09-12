@@ -226,7 +226,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
               ? <FormMessage error={msg.error} success={msg.success} />
               : <p className="truncate text-xs text-muted-foreground">{mode === "create" ? "Nothing is public until you publish." : "Changes go live as soon as you save."}</p>}
           </div>
-          <Button type="submit" size="lg" className="h-10 rounded-lg px-5 text-sm" disabled={pending}>{pending ? "Saving…" : mode === "create" ? "Create draft" : "Save changes"}</Button>
+          <Button type="submit" size="lg" className="h-10 rounded-lg px-5 text-sm" pending={pending}>{mode === "create" ? "Create draft" : "Save changes"}</Button>
         </div>
       </div>
     </form>

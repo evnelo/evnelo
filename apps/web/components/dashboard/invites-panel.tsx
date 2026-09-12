@@ -52,7 +52,7 @@ export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }:
             <Field label="Email" htmlFor="inv-email"><Input id="inv-email" name="email" type="email" placeholder="guest@example.com" /></Field>
             <Field label="Max uses" htmlFor="inv-max"><Input id="inv-max" name="maxUses" type="number" min={1} max={10000} defaultValue={1} /></Field>
             <Field label="Expires in (days)" htmlFor="inv-exp"><Input id="inv-exp" name="expiresInDays" type="number" min={1} max={365} placeholder="never" /></Field>
-            <Button type="submit" disabled={pending}><Plus className="size-4" /> {pending ? "Creating…" : "Create invite"}</Button>
+            <Button type="submit" pending={pending}><Plus className="size-4" /> Create invite</Button>
           </div>
           <p className="mt-2.5 text-xs text-muted-foreground">Leave the email empty for a shareable link anyone can use.</p>
         </form>

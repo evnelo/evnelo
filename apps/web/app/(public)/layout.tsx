@@ -36,6 +36,7 @@ export default async function PublicLayout({ children }: { children: React.React
           <div className="space-y-1">
             <Brand size="sm" className="text-foreground" />
             <p>Events, in motion. Open event infrastructure: free events are free, paid events cost the host 0.99%.</p>
+            <p>Brought to you by <a href="https://inevent.com" target="_blank" rel="noopener noreferrer" className="font-medium text-foreground underline decoration-dotted underline-offset-4 hover:decoration-solid">InEvent</a>.</p>
           </div>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             <Link href="/discover" className="hover:text-foreground">Discover</Link>

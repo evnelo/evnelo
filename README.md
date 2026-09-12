@@ -4,7 +4,7 @@
 
 Built with TypeScript end to end: Next.js 15 (App Router, React 19), Tailwind v4, MySQL 8 via Drizzle, Stripe, Resend for email, Vonage for SMS, S3-compatible storage for images. One database, one container, three optional API keys.
 
-Conventions for contributors and coding agents are in `AGENTS.md`. Licensed under the Apache License 2.0.
+Brought to you by [InEvent](https://inevent.com). Conventions for contributors and coding agents are in `AGENTS.md`. Licensed under the Apache License 2.0.
 
 ## Features
 
@@ -205,3 +205,5 @@ Read `AGENTS.md` first; it holds the conventions that keep the codebase coherent
 ## License
 
 [Apache License 2.0](LICENSE). You can run, modify and redistribute Evnelo, including commercially, as long as you keep the license and notices; the license also grants a patent license from contributors.
+
+Brought to you by [InEvent](https://inevent.com).

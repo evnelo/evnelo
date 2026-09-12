@@ -6,7 +6,8 @@ export type LinkTab = { key: string; label: string; href: string };
 /** Underlined tabs that are plain links, so each tab has a URL and works before hydration. */
 export function LinkTabs({ tabs, active, className }: { tabs: LinkTab[]; active: string; className?: string }) {
   return (
-    <nav aria-label="Sections" className={cn("no-scrollbar -mx-1 flex gap-1 overflow-x-auto border-b border-border/70 px-1", className)}>
+    <nav aria-label="Sections" className={cn("no-scrollbar -mx-1 overflow-x-auto overflow-y-hidden px-1", className)}>
+      <div className="flex w-max min-w-full gap-1 border-b border-border/70">
       {tabs.map((t) => {
         const current = t.key === active;
         return (
@@ -24,6 +25,7 @@ export function LinkTabs({ tabs, active, className }: { tabs: LinkTab[]; active:
           </Link>
         );
       })}
+      </div>
     </nav>
   );
 }

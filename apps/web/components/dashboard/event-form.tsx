@@ -289,7 +289,7 @@ function CollapsibleSection({ title, description, hint, children, defaultOpen = 
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((o) => !o)}
-        className="press flex w-full items-center justify-between gap-4 rounded-xl p-5 text-left transition-colors hover:bg-muted/40 sm:p-6"
+        className="flex w-full items-center justify-between gap-4 rounded-xl p-5 text-left transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 sm:p-6"
       >
         <span className="min-w-0">
           <span className="block text-sm font-medium">{title}</span>

@@ -23,8 +23,9 @@ export function EventNav({ id, counts }: { id: string; counts?: { attendees?: nu
   ];
   return (
     // bleeds to the gutter on a phone so the scroll runs edge to edge, aligns with the page from sm up
-    <nav className="-mx-4 mt-6 overflow-x-auto border-b border-border/80 px-4 sm:mx-0 sm:px-0">
-      <div className="flex min-w-max gap-0.5">
+    <nav className="no-scrollbar -mx-4 mt-6 overflow-x-auto overflow-y-hidden px-4 sm:mx-0 sm:px-0">
+      {/* the rule lives on the scrolling row so the active tab's border overlaps it without overflowing the container */}
+      <div className="flex min-w-full w-max gap-0.5 border-b border-border/80">
         {tabs.map((t) => {
           const href = t.absolute ? t.absolute(id) : base + t.href;
           const active = t.href === "" ? path === base : path.startsWith(href);

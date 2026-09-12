@@ -1,7 +1,7 @@
 /**
- * HTTP security headers applied by next.config.ts. Plain CommonJS on purpose: Next compiles
- * next.config.ts in isolation and drops static imports of local modules, so the config `require`s
- * this file by absolute path. Pure: takes the relevant env values so it is unit testable.
+ * HTTP security headers, applied per request by middleware.ts from the runtime environment (a
+ * next.config `headers()` entry is evaluated at build time, which is wrong for a Docker image).
+ * Pure: takes the relevant env values so it is unit testable.
  *
  * The CSP allows Stripe (Payment Element scripts, iframes and API), the S3 origin the browser posts
  * uploads to, and any https image (event covers are arbitrary URLs). Scripts still need

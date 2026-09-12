@@ -30,8 +30,10 @@ services:
     env_file: ../.env
     environment:
       DATABASE_URL: mysql://evnelo:${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}@db:3306/evnelo
-      # Caddy appends the client address to X-Forwarded-For; the app reads the last entry
-      API_TRUSTED_PROXY_HEADER: x-forwarded-for
+      # Caddy appends the client address to X-Forwarded-For and the app reads the last entry. Behind
+      # Cloudflare's proxy that entry is a Cloudflare edge: set API_TRUSTED_PROXY_HEADER=cf-connecting-ip
+      # in .env instead (and restrict ports 80/443 to Cloudflare's IP ranges so it cannot be spoofed).
+      API_TRUSTED_PROXY_HEADER: ${API_TRUSTED_PROXY_HEADER:-x-forwarded-for}
       MIGRATE_ON_START: "true"
       JOBS_INLINE: "true"
     expose: ["3000"]

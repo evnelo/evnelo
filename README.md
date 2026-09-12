@@ -174,7 +174,7 @@ docker compose --env-file .env -f deploy/docker-compose.prod.yml up -d --build
 docker compose --env-file .env -f deploy/docker-compose.prod.yml logs -f app   # "ready" after migrations
 ```
 
-`SITE_ADDRESS` in `.env` overrides the domain (default `evnelo.com`). The stack sets `API_TRUSTED_PROXY_HEADER=x-forwarded-for` because Caddy appends the client address to that header. To ship a new version: pull or sync the sources, run the same `up -d --build`; migrations apply on boot. `deploy/backup-db.sh` dumps the database nightly from cron and optionally copies it to S3.
+`SITE_ADDRESS` in `.env` overrides the domain (default `evnelo.com`). Caddy obtains and renews the certificate from Let's Encrypt over port 80, so no certificate is installed by hand; with Cloudflare in front use SSL mode "Full (strict)" and leave "Always Use HTTPS" off (Caddy does that redirect). The stack defaults `API_TRUSTED_PROXY_HEADER` to `x-forwarded-for` because Caddy appends the client address to that header; behind Cloudflare's proxy set it to `cf-connecting-ip` in `.env` and restrict ports 80/443 to Cloudflare's IP ranges. To ship a new version: pull or sync the sources, run the same `up -d --build`; migrations apply on boot. `deploy/backup-db.sh` dumps the database nightly from cron and optionally copies it to S3.
 
 Production checklist:
 

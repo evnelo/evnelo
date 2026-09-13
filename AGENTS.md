@@ -12,7 +12,7 @@ Evnelo: open-source event ticketing (Luma/Eventbrite alternative). One codebase,
 apps/web          Next.js 15 App Router (React 19). Public pages, /api routes, Stripe webhook.
 packages/db       Drizzle schema (MySQL 8), migrations in packages/db/drizzle, migrate + seed scripts.
 packages/core     Pure business logic: fees, SMS gate, visibility, custom-field conditions + zod builder. Unit tested.
-packages/mcp      MCP server (stdio). Thin client over the REST API at /api/v1 (API not implemented yet).
+packages/mcp      MCP server (stdio). Thin client over the REST API at /api/v1.
 ```
 
 Dependency direction: `web -> core -> db`. `core` must stay free of Next/React/Stripe imports so it can be shared by the browser, route handlers, the REST API and the MCP server. `db` cannot import `core`.
@@ -119,8 +119,13 @@ The feel: excellent infrastructure that happens to be beautiful. Precise, welcom
 
 When you ship or change behaviour, update in the same commit: the README (features, configuration, operations, deploying) and this file's conventions, design rules and gaps sections.
 
-## Known gaps (as of 2026-09-10)
+## Known gaps (as of 2026-09-12)
 
-Everything planned for v1 has shipped; remaining work is post-launch, starting with Stripe Connect onboarding for Cloud and a sweep for registration files uploaded but never submitted. Test data: `pnpm db:seed` creates the demo org but no user; sign in with any email and create your own org.
+Everything planned for v1 has shipped and is live on evnelo.com. Remaining work, in order:
+
+- **Stripe Connect onboarding.** `connectOnboardingUrl()` in `lib/stripe.ts` builds the OAuth URL and checkout already charges on `orders.stripeAccountId` with an application fee when `EDITION=cloud`, but nothing calls it: there is no `/api/stripe/connect/callback` route, no button in Settings -> Payments, and no code that writes `organizations.stripeAccountId`. Cloud organizers therefore cannot connect an account, and every cloud charge lands on the platform account.
+- **Orphaned registration uploads.** Files uploaded to a registration form that is never submitted stay in storage forever; `runJobs` has no sweep for them.
+- **Authenticated production testing.** The unauthenticated surface has been exercised end to end on evnelo.com. Paid checkout, webhook fulfilment, ticket email, check-in, refunds, invites, waitlist, discount codes, API keys and export have only been tested locally and in unit tests.
+- **Translations are machine-generated.** English in `messages/en/` is the only hand-written catalogue; the other 19 come from `pnpm --filter @evnelo/web translate`. They parse and carry the right ICU arguments (`i18n/messages.test.ts`), and the home page has had one manual pass, but no native speaker has reviewed the rest. Corrections belong in the target catalogue (they survive until the English source changes) or in `messages/glossary.json` when a word is consistently wrong.
 
 Ticket QR codes are rendered locally at `/t/{token}/qr` (SVG). Calendar files come from `/api/calendar/{slug}.ics` for public and unlisted events only. Wallet passes: `/t/{token}/wallet/apple` and `/t/{token}/wallet/google`.

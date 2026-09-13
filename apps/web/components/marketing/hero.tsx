@@ -18,7 +18,7 @@ export async function Hero() {
           <h1 className="display mt-5 text-[clamp(2.75rem,5vw,4.25rem)]">{t("hero.title")}</h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground">{t("hero.lead")}</p>
           <p className="mt-4 text-lg">
-            {t.rich("hero.pricing", { b: (chunks) => <strong className="font-bold">{chunks}</strong>, br: () => <br /> })}
+            {t.rich("hero.pricingFee", { b: (chunks) => <strong className="font-bold">{chunks}</strong> })}<br />{t.rich("hero.pricingSelfHost", { b: (chunks) => <strong className="font-bold">{chunks}</strong> })}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg" className="rounded-full px-7"><Link href="/login">{t("nav.host")} <ArrowRight className="size-4 rtl:-scale-x-100" /></Link></Button>

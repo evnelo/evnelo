@@ -28,7 +28,8 @@
     "eyebrow": "开放活动基础设施",
     "title": "从点击鼠标到抵达大门。",
     "lead": "在一个开放平台上发布活动、售票、向与会者发送消息和进行签到，或者在您自己的技术栈上自行托管。",
-    "pricing": "<b>0.99%</b>付费门票。免费活动保持免费。__ <br></br> <b>0%</b>如果您自行主办。",
+    "pricingFee": "付费门票收取<b>0.99%的费用</b>。免费活动保持免费。",
+    "pricingSelfHost": "自托管则为<b>0%</b> 。",
     "explore": "探索活动",
     "scene": {
       "steps": {
@@ -76,20 +77,20 @@
         "meta": "出席人数"
       },
       "notes": {
-        "left": "更多活动。__ <br></br>一个更加开放的世界。",
-        "right": "事件<br></br>能感动人。"
+        "left": "更多活动。<br></br>一个更加开放的世界。",
+        "right": "活动<br></br>能感动人。"
       }
     }
   },
   "home": {
     "meta": {
-      "title": "Evnelo：动态事件",
+      "title": "Evnelo：动态活动",
       "description": "开放的活动基础设施。发布活动、注册参与者、出售或赠送门票、向社区发送消息并签到。付费门票收取 0.99% 的佣金，免费活动完全免费，或者您可以免费自行举办活动。"
     },
     "pricing": {
       "eyebrow": "定价",
       "title": "费用比任何其他平台都低。",
-      "body": "大多数平台会对每张票收取 3% 到 5% 的佣金，外加手续费。Evnelo 对付费票收取 0.99% 的佣金，免费票不收取任何费用。您可以关联自己的 Stripe 账户，这样票款就会直接进入您的账户，无需经过我们这里；Stripe 会收取手续费，您可以选择将费用转嫁给买家或自行承担。",
+      "body": "大多数平台会对每张票收取 3% 到 5% 的佣金，外加手续费。__ Evnelo对付费票收取 0.99% 的佣金，免费票不收取任何费用。您需要关联自己的Stripe账户，这样票款就会直接进入您的账户，不会停留在我们这里； Stripe的处理费按Stripe的费率收取，您可以选择将费用转嫁给买家或自行承担。",
       "plans": {
         "free": {
           "title": "免费活动",
@@ -132,7 +133,7 @@
     },
     "openSource": {
       "eyebrow": "开源",
-      "title": "你的事件。你的数据。你的技术栈。",
+      "title": "你的活动。你的数据。你的技术栈。",
       "body": "Evnelo 采用 Apache 2.0 许可证开源。您只需一个容器和一个 MySQL 数据库即可自行托管，集成您自己的 Stripe、Resend 和 Vonage 密钥，并将所有与会者记录保存在您自己的基础设施上。产品功能相同，无需平台费用。",
       "points": {
         "export": "内置与会者导出和删除功能",
@@ -145,7 +146,7 @@
     },
     "developers": {
       "eyebrow": "对于开发者",
-      "title": "专为后续建设而建。",
+      "title": "为在其之上构建而生。",
       "points": {
         "rest": "每个资源都提供 REST API，并支持幂等写入。",
         "sdk": "为代理程序生成 TypeScript SDK 和 MCP 服务器",
@@ -159,7 +160,7 @@
       "all": "所有活动"
     },
     "cta": {
-      "title": "建立聚集流程。",
+      "title": "让相聚顺畅起来。",
       "body": "几分钟即可创建您的第一个活动。免费活动无需任何操作；付费活动需要您的 Stripe 账户。",
       "explore": "看看有什么活动"
     }
@@ -170,8 +171,8 @@
     },
     "headline": {
       "query": {
-        "none": "匹配“ {q} ”的事件",
-        "city": "在{city}中匹配“ {q} ”的事件",
+        "none": "匹配“ {q} ”的活动",
+        "city": "在{city}中匹配“ {q} ”的活动",
         "near": "您附近的匹配“ {q} ”的活动",
         "online": "在线活动匹配“ {q} ”",
         "inPerson": "符合“ {q} ”条件的线下活动"
@@ -184,8 +185,8 @@
         "inPerson": "免费线下活动"
       },
       "tag": {
-        "none": "{tag}事件",
-        "city": "{city}中的{tag}事件",
+        "none": "{tag}活动",
+        "city": "{city}中的{tag}活动",
         "near": "您附近的{tag}活动",
         "online": "{tag}活动",
         "inPerson": "{tag}参加的活动"
@@ -199,7 +200,7 @@
       },
       "all": {
         "none": "有什么节目？",
-        "city": "{city}事件",
+        "city": "{city}活动",
         "near": "您附近的活动",
         "online": "线上活动",
         "inPerson": "线下活动"
@@ -208,10 +209,10 @@
     "lead": "Evnelo 上每位主持人都会举办讲座、研讨会、晚宴和聚会。",
     "jsonLdName": "即将举行的公共活动",
     "count": {
-      "exact": "{count, plural, one {#事件} other {#事件}}",
-      "more": "{count, plural, one {# + 事件} other {# + 事件}}",
-      "exactFrom": "{count, plural, one {#事件} other {#事件}} 从# {from}",
-      "moreFrom": "{count, plural, one {# + 事件} other {# + 事件}} 从# {from}"
+      "exact": "{count, plural, one {#活动} other {#活动}}",
+      "more": "{count, plural, one {# + 活动} other {# + 活动}}",
+      "exactFrom": "{count, plural, one {#活动} other {#活动}} 从# {from}",
+      "moreFrom": "{count, plural, one {# + 活动} other {# + 活动}} 从# {from}"
     },
     "format": {
       "online": "在线的",
@@ -237,7 +238,7 @@
       "clearAll": "全部清除"
     },
     "search": {
-      "events": "搜索事件",
+      "events": "搜索活动",
       "placeholder": "搜索活动、主持人及标签",
       "city": "城市",
       "cityOption": "{city} ， {country}",
@@ -272,7 +273,7 @@
         "action": "下个月"
       },
       "filtered": {
-        "title": "没有事件符合这些筛选条件。",
+        "title": "没有活动符合这些筛选条件。",
         "body": "尝试扩大日期范围或清除筛选条件。",
         "action": "清除过滤器"
       },
@@ -300,7 +301,7 @@
       "changeMonth": "月份变更",
       "goTo": "前往{month}",
       "today": "今天",
-      "dayCount": "{count, plural, one {#事件} other {#事件}}",
+      "dayCount": "{count, plural, one {#活动} other {#活动}}",
       "overflow": "+ {count}更多",
       "timezoneNote": "时间以各赛事所在时区显示。",
       "rowTitle": "{name} — {time}"
@@ -308,11 +309,11 @@
   },
   "org": {
     "meta": {
-      "description": "{name}事件"
+      "description": "{name}活动"
     },
     "eyebrow": "组织者",
     "upcoming": "即将推出",
-    "count": "{count, plural, one {#事件} other {#事件}}",
+    "count": "{count, plural, one {#活动} other {#活动}}",
     "empty": {
       "title": "目前暂无安排。",
       "body": "请稍后再来查看，或看看其他主机正在运行哪些程序。",
@@ -322,10 +323,10 @@
   },
   "report": {
     "meta": {
-      "title": "报告事件"
+      "title": "报告活动"
     },
     "eyebrow": "报告",
-    "title": "报告事件",
+    "title": "报告活动",
     "reasons": {
       "spam": "垃圾邮件或误导性信息",
       "scam": "诈骗或欺诈",
@@ -333,8 +334,8 @@
       "copyright": "版权或商标",
       "other": "其他"
     },
-    "notFound": "未找到该事件。",
-    "openFromEvent": "从事件页面打开此页面即可进行报告。",
+    "notFound": "未找到该活动。",
+    "openFromEvent": "从活动页面打开此页面即可进行报告。",
     "sent": "谢谢。您关于<b>{name}</b>的报告已记录。",
     "sentAndForwarded": "谢谢。您关于<b>{name}</b>的报告已记录并发送给该实例的操作员。",
     "reporting": "由{org}报告<b>{name}</b> 。报告将发送给运行此 Evnelo 实例的人员，而不是主机。",

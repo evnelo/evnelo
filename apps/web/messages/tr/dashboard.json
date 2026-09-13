@@ -284,21 +284,21 @@
         "title": "Web kancaları",
         "description": "Burada bir şey olduğunda, kendi uç noktanıza imzalı bir JSON POST isteği gönderilir.",
         "note": "Seçtiğiniz etkinlikler için, HMAC-SHA256 ( <code>{signature}</code> over <code>{template}</code> ) ile imzalanmış bir JSON zarfını URL'nize POST ediyoruz. Başarısız teslimatlar yaklaşık bir gün gecikmeyle yeniden denenir.",
-        "addWebhook": "Web kancası ekle",
+        "addWebhook": "webhook ekle",
         "count": "{count, plural, one {# uç noktası} other {# uç noktaları}}",
         "signingSecret": "İmza sırrı",
         "copyPrompt": "Bu sırrı kopyala",
         "endpointUrl": "Uç nokta URL'si",
         "endpointUrlHelp": "Yalnızca https (geliştirme amaçlı http://localhost kullanımına izin verilir).",
         "events": "Olaylar",
-        "create": "Web kancası oluştur",
+        "create": "Oluştur webhook",
         "columns": {
           "endpoint": "Uç nokta",
           "events": "Olaylar"
         },
         "empty": {
           "title": "Henüz web kancası yok.",
-          "description": "CRM, Slax kanalı veya elektronik tablo gibi uygulamaları düzenli tutmak için birinci noktayı kendi servis sağlayıcınıza yönlendirin."
+          "description": "Bir CRM'yi, bir Slack veya bir elektronik tabloyu senkronize halde tutmak için kendi hizmetinize bir nokta koyun."
         },
         "hideDeliveries": "Teslimatları gizle",
         "recentDeliveries": "Son teslimatlar ( {count} )",
@@ -312,7 +312,7 @@
         "resume": "Sürdürmek",
         "rotateConfirm": "İmzalama sırrını değiştirirseniz, eskisi hemen çalışmayı durdurur.",
         "rotateSecret": "Gizliyi döndür",
-        "deleteConfirm": "Bu web kancasını silmek ister misiniz?"
+        "deleteConfirm": "Bunu webhook silmek mi istiyorsunuz?"
       }
     },
     "payments": {

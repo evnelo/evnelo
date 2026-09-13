@@ -8,7 +8,7 @@ const roundTrip = (msg: string) => { const p = planMessage(msg); return p.rebuil
 describe("message planning", () => {
   it("keeps arguments and rich-text tags intact", () => {
     expect(roundTrip("Hi {name}, welcome to <b>{event}</b>!")).toBe("HI {name}, WELCOME TO <B>{event}</B>!");
-    expect(roundTrip("Brought to you by <inevent>InEvent</inevent>.")).toBe("BROUGHT TO YOU BY <INEVENT>INEVENT</INEVENT>.");
+    expect(roundTrip("Brought to you by <inevent>InEvent</inevent>.")).toBe("BROUGHT TO YOU BY <INEVENT>InEvent</INEVENT>."); // the name is protected
   });
 
   it("never sends the plural frame to the translator", () => {
@@ -64,5 +64,26 @@ describe("faithfulness", () => {
     expect(isFaithful("<b>0.99%</b> free.<br></br> done", "<b></b> 0.99%</br> مجاني. <br>تم")).toBe(false);
     expect(isFaithful("Hi {name}", "Olá")).toBe(false);
     expect(isFaithful("{count, plural, one {#} other {#}}", "{count, plural,}} #")).toBe(false);
+  });
+});
+
+describe("protected names", () => {
+  it("never sends a product name to the translator", () => {
+    const p = planMessage("Plug in your own Stripe, Resend and Vonage keys for Evnelo.");
+    expect(p.texts.join(" ")).not.toMatch(/Stripe|Resend|Vonage|Evnelo/);
+    expect(p.rebuild(p.texts)).toContain("Stripe, Resend and Vonage");
+  });
+
+  it("leaves words that merely contain a name alone", () => {
+    const p = planMessage("Resending is not Resend.");
+    expect(p.rebuild(p.texts)).toBe("Resending is not Resend.");
+    expect(p.texts.join(" ")).toContain("Resending");
+  });
+
+  it("rejects a result that renamed a product, leaked a placeholder or lost a tag", () => {
+    expect(isFaithful("Use Stripe keys.", "Utilisez les clés à rayures.")).toBe(false);
+    expect(isFaithful("Hello there", "Bonjour __0__")).toBe(false);
+    expect(isFaithful("<b>a</b> and <b>b</b>", "<b>a</b> et b")).toBe(false);
+    expect(isFaithful("<b>a</b> and <b>b</b>", "<b>a</b> et <b>b</b>")).toBe(true);
   });
 });

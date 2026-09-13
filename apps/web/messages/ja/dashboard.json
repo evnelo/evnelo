@@ -284,14 +284,14 @@
         "title": "ウェブフック",
         "description": "ここで何らかのイベントが発生するたびに、署名付きのJSON形式のPOSTリクエストがお客様自身のエンドポイントに送信されます。",
         "note": "お客様が選択されたイベントについて、HMAC-SHA256（ <code>{signature}</code> over <code>{template}</code> ）で署名されたJSONエンベロープをお客様のURLにPOSTします。配信に失敗した場合は、約1日間バックオフして再試行します。",
-        "addWebhook": "ウェブフックを追加する",
+        "addWebhook": "webhook追加",
         "count": "{count, plural, one {#エンドポイント} other {#エンドポイント}}",
         "signingSecret": "秘密の署名",
         "copyPrompt": "この秘密をコピーしてください",
         "endpointUrl": "エンドポイントURL",
         "endpointUrlHelp": "httpsのみ（開発環境ではhttp://localhostも許可されています）。",
         "events": "イベント",
-        "create": "ウェブフックを作成する",
+        "create": "作成webhook",
         "columns": {
           "endpoint": "終点",
           "events": "イベント"
@@ -312,7 +312,7 @@
         "resume": "再開する",
         "rotateConfirm": "署名秘密鍵をローテーションすると、古いものはすぐに機能しなくなります。",
         "rotateSecret": "秘密を回転させる",
-        "deleteConfirm": "このウェブフックを削除しますか？"
+        "deleteConfirm": "このwebhookを削除しますか？"
       }
     },
     "payments": {

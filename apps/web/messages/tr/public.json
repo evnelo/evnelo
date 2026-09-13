@@ -28,7 +28,8 @@
     "eyebrow": "Açık etkinlik altyapısı",
     "title": "İlk tıklamadan ön kapıya kadar.",
     "lead": "Etkinlikleri yayınlayın, bilet satın, katılımcılara mesaj gönderin ve giriş-çıkış işlemlerini tek bir açık platformda gerçekleştirin veya kendi altyapınızda barındırın.",
-    "pricing": "Ücretli biletlerde <b>%0,99 indirim</b>. Ücretsiz etkinlikler ücretsiz kalır.<br></br> Kendi sunucunuzda barındırırsanız <b>%0</b>.",
+    "pricingFee": "Ücretli biletlerde <b>%0,99</b>. Ücretsiz etkinlikler ücretsiz kalır.",
+    "pricingSelfHost": "Kendi sunucunuzda barındırırsanız <b>%0</b>.",
     "explore": "Etkinlikleri keşfedin",
     "scene": {
       "steps": {
@@ -145,7 +146,7 @@
     },
     "developers": {
       "eyebrow": "Geliştiriciler için",
-      "title": "Üzerine yeni yapılar inşa edilebilmesi için inşa edilmiştir.",
+      "title": "Üzerine geliştirmek için tasarlandı.",
       "points": {
         "rest": "Her kaynak için, tekrarlanabilir yazma işlemlerine sahip REST API.",
         "sdk": "Ajanlar için TypeScript SDK ve MCP sunucusu oluşturuldu.",

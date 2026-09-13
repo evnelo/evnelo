@@ -28,15 +28,31 @@
     "eyebrow": "Open event infrastructure",
     "title": "From first click to front gate.",
     "lead": "Publish events, sell tickets, message attendees, and run check-in in one open platform, or self-host it on your own stack.",
-    "pricing": "<b>0.99%</b> on paid tickets. Free events stay free.<br></br><b>0%</b> if you self-host.",
+    "pricingFee": "<b>0.99%</b> on paid tickets. Free events stay free.",
+    "pricingSelfHost": "<b>0%</b> if you self-host.",
     "explore": "Explore events",
     "scene": {
       "steps": {
-        "discover": { "label": "Discover", "sub": "Find what moves you" },
-        "register": { "label": "Register", "sub": "A few clicks away" },
-        "ticketing": { "label": "Ticketing", "sub": "Sell with no limits" },
-        "checkin": { "label": "Check-in", "sub": "Fast. Friendly. Flexible." },
-        "attendance": { "label": "Attendance", "sub": "Real people.\nLasting impact." }
+        "discover": {
+          "label": "Discover",
+          "sub": "Find what moves you"
+        },
+        "register": {
+          "label": "Register",
+          "sub": "A few clicks away"
+        },
+        "ticketing": {
+          "label": "Ticketing",
+          "sub": "Sell with no limits"
+        },
+        "checkin": {
+          "label": "Check-in",
+          "sub": "Fast. Friendly. Flexible."
+        },
+        "attendance": {
+          "label": "Attendance",
+          "sub": "Real people.\nLasting impact."
+        }
       },
       "event": {
         "category": "Music",
@@ -76,19 +92,43 @@
       "title": "Lower fees than any other platform.",
       "body": "Most platforms take 3 to 5 percent plus a fee on every ticket. Evnelo takes 0.99% on paid tickets and nothing on free ones. You connect your own Stripe account, so ticket money goes straight to you and never sits with us; Stripe’s processing fee applies at Stripe’s rate, and you can pass fees to buyers or absorb them.",
       "plans": {
-        "free": { "title": "Free events", "price": "$0", "note": "No platform fee, no per-ticket fee, unlimited attendees." },
-        "paid": { "title": "Paid events", "price": "0.99%", "note": "On the ticket price, charged through your connected Stripe account. A $25 ticket costs you 25 cents, plus Stripe." },
-        "selfHosted": { "title": "Self-hosted", "price": "$0", "note": "Open source. One container, your MySQL, your own Stripe keys. No platform fee, ever." }
+        "free": {
+          "title": "Free events",
+          "price": "$0",
+          "note": "No platform fee, no per-ticket fee, unlimited attendees."
+        },
+        "paid": {
+          "title": "Paid events",
+          "price": "0.99%",
+          "note": "On the ticket price, charged through your connected Stripe account. A $25 ticket costs you 25 cents, plus Stripe."
+        },
+        "selfHosted": {
+          "title": "Self-hosted",
+          "price": "$0",
+          "note": "Open source. One container, your MySQL, your own Stripe keys. No platform fee, ever."
+        }
       }
     },
     "flow": {
       "eyebrow": "How it flows",
       "title": "Everything between “I want to go” and “I’m here”.",
       "steps": {
-        "publish": { "title": "Publish", "text": "An event page with your cover, schedule, venue and hosts. Public, unlisted, or private by invitation." },
-        "register": { "title": "Register", "text": "Ticket tiers, your own questions, guests with their own tickets, discount codes, a waitlist when you sell out." },
-        "pay": { "title": "Pay and receive", "text": "Cards, Apple Pay, Google Pay, Pix. Tickets with a QR code, wallet passes, calendar files, confirmation by email and SMS." },
-        "checkin": { "title": "Check in", "text": "A scanner that runs in any phone browser, keeps working without signal, and shows the room filling up live." }
+        "publish": {
+          "title": "Publish",
+          "text": "An event page with your cover, schedule, venue and hosts. Public, unlisted, or private by invitation."
+        },
+        "register": {
+          "title": "Register",
+          "text": "Ticket tiers, your own questions, guests with their own tickets, discount codes, a waitlist when you sell out."
+        },
+        "pay": {
+          "title": "Pay and receive",
+          "text": "Cards, Apple Pay, Google Pay, Pix. Tickets with a QR code, wallet passes, calendar files, confirmation by email and SMS."
+        },
+        "checkin": {
+          "title": "Check in",
+          "text": "A scanner that runs in any phone browser, keeps working without signal, and shows the room filling up live."
+        }
       }
     },
     "openSource": {
@@ -227,10 +267,25 @@
       "upcoming": "Upcoming"
     },
     "empty": {
-      "month": { "title": "Nothing scheduled this month.", "body": "Try another month or clear a filter.", "action": "Next month" },
-      "filtered": { "title": "No events match these filters.", "body": "Try a wider date range or clear the filters.", "action": "Clear the filters" },
-      "end": { "title": "You reached the end.", "body": "That is every upcoming public event on this page.", "action": "Back to the start" },
-      "none": { "title": "No upcoming public events yet.", "body": "Be the first to host one." }
+      "month": {
+        "title": "Nothing scheduled this month.",
+        "body": "Try another month or clear a filter.",
+        "action": "Next month"
+      },
+      "filtered": {
+        "title": "No events match these filters.",
+        "body": "Try a wider date range or clear the filters.",
+        "action": "Clear the filters"
+      },
+      "end": {
+        "title": "You reached the end.",
+        "body": "That is every upcoming public event on this page.",
+        "action": "Back to the start"
+      },
+      "none": {
+        "title": "No upcoming public events yet.",
+        "body": "Be the first to host one."
+      }
     },
     "pagination": {
       "label": "Pagination",
@@ -253,7 +308,9 @@
     }
   },
   "org": {
-    "meta": { "description": "Events by {name}" },
+    "meta": {
+      "description": "Events by {name}"
+    },
     "eyebrow": "Organizer",
     "upcoming": "Upcoming",
     "count": "{count, plural, one {# event} other {# events}}",
@@ -265,7 +322,9 @@
     "past": "Past events"
   },
   "report": {
-    "meta": { "title": "Report an event" },
+    "meta": {
+      "title": "Report an event"
+    },
     "eyebrow": "Report",
     "title": "Report an event",
     "reasons": {
@@ -295,7 +354,9 @@
     "back": "Back to the event"
   },
   "notFound": {
-    "meta": { "title": "Page not found" },
+    "meta": {
+      "title": "Page not found"
+    },
     "eyebrow": "404",
     "title": "There's nothing here",
     "body": "The link may be old, the event may have been taken down, or the address has a typo.",

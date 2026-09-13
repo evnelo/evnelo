@@ -25,10 +25,11 @@
     "notice": "Diese Website ist durch reCAPTCHA und Google geschützt.<privacy>Datenschutzrichtlinie</privacy> Und<terms>Nutzungsbedingungen</terms> anwenden."
   },
   "hero": {
-    "eyebrow": "Infrastruktur für offene Veranstaltungen",
+    "eyebrow": "Offene Event-Infrastruktur",
     "title": "Vom ersten Klick bis zum Eingangstor.",
     "lead": "Veröffentlichen Sie Veranstaltungen, verkaufen Sie Tickets, kontaktieren Sie Teilnehmer und führen Sie den Check-in über eine offene Plattform durch oder hosten Sie diese selbst auf Ihrer eigenen Infrastruktur.",
-    "pricing": "<b>0,99 %</b> auf bezahlte Tickets. Kostenlose Veranstaltungen bleiben kostenlos. <br></br> <b>0 %</b> bei Selbstveranstalter.",
+    "pricingFee": "<b>0,99 %</b> auf bezahlte Tickets. Kostenlose Veranstaltungen bleiben kostenlos.",
+    "pricingSelfHost": "<b>0 %</b>, wenn Sie selbst hosten.",
     "explore": "Veranstaltungen entdecken",
     "scene": {
       "steps": {
@@ -89,7 +90,7 @@
     "pricing": {
       "eyebrow": "Preisgestaltung",
       "title": "Niedrigere Gebühren als bei jeder anderen Plattform.",
-      "body": "Die meisten Plattformen berechnen 3 bis 5 Prozent plus Gebühren pro Ticket. Evnelo hingegen erhebt nur 0,99 % auf kostenpflichtige Tickets und keine Gebühren auf kostenlose. Sie verbinden Ihr eigenes Stripe-Konto, sodass die Ticketeinnahmen direkt an Sie gehen und nicht bei uns verbleiben. Die Bearbeitungsgebühr von Stripe wird zu deren Tarifen berechnet, und Sie können diese entweder an die Käufer weitergeben oder selbst tragen.",
+      "body": "Die meisten Plattformen berechnen 3 bis 5 Prozent plus eine Gebühr pro Ticket. Evnelo berechnet 0,99 % auf kostenpflichtige Tickets und keine Gebühren auf kostenlose. Sie verbinden Ihr eigenes Stripe Konto, sodass die Ticketeinnahmen direkt an Sie gehen und nicht bei uns verbleiben. Die Bearbeitungsgebühr von Stripe wird zum Stripe __-Tarif berechnet, und Sie können die Gebühren an die Käufer weitergeben oder selbst tragen.",
       "plans": {
         "free": {
           "title": "Kostenlose Veranstaltungen",
@@ -159,7 +160,7 @@
       "all": "Alle Veranstaltungen"
     },
     "cta": {
-      "title": "Sorgen Sie für einen reibungslosen Ablauf beim Sammeln.",
+      "title": "Bringen Sie Zusammenkünfte in Fluss.",
       "body": "Erstellen Sie Ihre erste Veranstaltung in wenigen Minuten. Kostenlose Veranstaltungen benötigen nichts; kostenpflichtige Veranstaltungen benötigen Ihr Stripe-Konto.",
       "explore": "Schauen Sie, was läuft"
     }

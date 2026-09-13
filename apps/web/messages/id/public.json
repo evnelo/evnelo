@@ -28,7 +28,8 @@
     "eyebrow": "Infrastruktur acara terbuka",
     "title": "Dari klik pertama hingga gerbang depan.",
     "lead": "Publikasikan acara, jual tiket, kirim pesan kepada peserta, dan jalankan proses check-in dalam satu platform terbuka, atau kelola sendiri di platform Anda.",
-    "pricing": "<b>0,99%</b> untuk tiket berbayar. Acara gratis tetap gratis. <br></br> <b>0%</b> jika Anda menyelenggarakan acara sendiri.",
+    "pricingFee": "<b>0,99%</b> untuk tiket berbayar. Acara gratis tetap gratis.",
+    "pricingSelfHost": "<b>0%</b> jika Anda melakukan hosting sendiri.",
     "explore": "Jelajahi acara",
     "scene": {
       "steps": {
@@ -159,7 +160,7 @@
       "all": "Semua acara"
     },
     "cta": {
-      "title": "Buat proses pengumpulan berjalan lancar.",
+      "title": "Buat pertemuan mengalir lancar.",
       "body": "Buat acara pertama Anda dalam beberapa menit. Acara gratis tidak memerlukan apa pun; acara berbayar memerlukan akun Stripe Anda.",
       "explore": "Lihat acara apa saja yang sedang berlangsung"
     }

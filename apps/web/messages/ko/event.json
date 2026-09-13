@@ -50,8 +50,8 @@
     "joinOnline": "온라인으로 참여하세요",
     "addToCalendar": "캘린더에 추가",
     "eventPage": "이벤트 페이지",
-    "appleWallet": "애플 월렛에 추가",
-    "googleWallet": "구글 월렛에 추가",
+    "appleWallet": "Apple Wallet 에 더하기",
+    "googleWallet": "Google Wallet 에 더하기",
     "doorHint": "입구에서 휴대폰이나 종이에 있는 이 QR 코드를 보여주세요. 직원이 한 번 스캔하면 입장이 완료됩니다."
   },
   "inviteExpired": {

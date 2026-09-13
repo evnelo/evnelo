@@ -25,10 +25,11 @@
     "notice": "Este sitio está protegido por reCAPTCHA y se aplican la Política de privacidad de <privacy>y</privacy> <terms>de servicio</terms>"
   },
   "hero": {
-    "eyebrow": "Infraestructura para eventos abiertos",
+    "eyebrow": "Infraestructura abierta para eventos",
     "title": "Desde el primer clic hasta la puerta principal.",
     "lead": "Publica eventos, vende entradas, envía mensajes a los asistentes y gestiona el registro de entrada en una plataforma abierta, o bien, alójala tú mismo en tu propio entorno.",
-    "pricing": "<b>0,99%</b> en entradas pagadas. Los eventos gratuitos siguen siendo gratuitos. <br></br> <b>0%</b> si usted mismo organiza el evento.",
+    "pricingFee": "<b>0,99%</b> de recargo en las entradas de pago. Los eventos gratuitos siguen siendo gratuitos.",
+    "pricingSelfHost": "<b>0%</b> si lo alojas tú mismo.",
     "explore": "Explorar eventos",
     "scene": {
       "steps": {
@@ -89,7 +90,7 @@
     "pricing": {
       "eyebrow": "Precios",
       "title": "Comisiones más bajas que cualquier otra plataforma.",
-      "body": "La mayoría de las plataformas cobran entre un 3 y un 5 % más una comisión por cada entrada. Evnelo cobra un 0,99 % en las entradas de pago y no cobra nada en las gratuitas. Conectas tu propia cuenta de Stripe, así que el dinero de las entradas te llega directamente y nunca pasa por nuestras manos; la comisión de procesamiento de Stripe se aplica según su tarifa, y puedes repercutir las comisiones a los compradores o asumirlas.",
+      "body": "La mayoría de las plataformas cobran entre un 3 y un 5 por ciento más una comisión por cada boleto. Evnelo cobra un 0,99 % en los boletos de pago y nada en los gratuitos. Conectas tu propia cuenta Stripe, por lo que el dinero de los boletos va directamente a ti y nunca se queda con nosotros; la comisión de procesamiento de Stripe se aplica a la tarifa de Stripe, y puedes transferir las comisiones a los compradores o asumirlas.",
       "plans": {
         "free": {
           "title": "Eventos gratuitos",
@@ -145,7 +146,7 @@
     },
     "developers": {
       "eyebrow": "Para desarrolladores",
-      "title": "Construido para ser construido sobre él.",
+      "title": "Hecho para construir sobre ello.",
       "points": {
         "rest": "API REST para cada recurso, con escrituras idempotentes.",
         "sdk": "SDK de TypeScript generado y un servidor MCP para agentes",
@@ -159,7 +160,7 @@
       "all": "Todos los eventos"
     },
     "cta": {
-      "title": "Facilitar la reunión.",
+      "title": "Haz que los encuentros fluyan.",
       "body": "Crea tu primer evento en pocos minutos. Los eventos gratuitos no requieren nada; los eventos de pago necesitan tu cuenta de Stripe.",
       "explore": "Mira lo que hay"
     }

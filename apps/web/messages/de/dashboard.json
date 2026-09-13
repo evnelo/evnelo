@@ -284,14 +284,14 @@
         "title": "Webhooks",
         "description": "Immer wenn hier etwas passiert, wird ein signierter JSON-POST-Request an Ihren eigenen Endpunkt gesendet.",
         "note": "Wir senden einen JSON-Envelope an Ihre URL für die von Ihnen ausgewählten Ereignisse. Dieser Envelope ist mit HMAC-SHA256 ( <code>{signature}</code> über <code>{template}</code> ) signiert. Fehlgeschlagene Zustellungen werden mit einer Wartezeit von etwa einem Tag wiederholt.",
-        "addWebhook": "Webhook hinzufügen",
+        "addWebhook": "Füge webhook hinzu",
         "count": "{count, plural, one {# Endpunkt} other {# Endpunkte}}",
         "signingSecret": "Geheimschrift",
         "copyPrompt": "Kopiere dieses Geheimnis",
         "endpointUrl": "Endpunkt-URL",
         "endpointUrlHelp": "Nur HTTPS (http://localhost ist für Entwicklungszwecke zulässig).",
         "events": "Veranstaltungen",
-        "create": "Webhook erstellen",
+        "create": "Erstelle webhook",
         "columns": {
           "endpoint": "Endpunkt",
           "events": "Veranstaltungen"
@@ -312,7 +312,7 @@
         "resume": "Wieder aufnehmen",
         "rotateConfirm": "Das Signaturgeheimnis ändern? Das alte funktioniert sofort nicht mehr.",
         "rotateSecret": "Geheimnis drehen",
-        "deleteConfirm": "Diesen Webhook löschen?"
+        "deleteConfirm": "Dieses webhook löschen?"
       }
     },
     "payments": {

@@ -22,6 +22,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "..");
 const messagesDir = resolve(root, "messages");
 const snapshotPath = resolve(messagesDir, ".translated.json");
+const glossaryPath = resolve(messagesDir, "glossary.json");
 
 try { process.loadEnvFile(resolve(root, "../../.env")); } catch { /* environment only */ }
 
@@ -35,6 +36,18 @@ const onlyLocales = opt("locales")?.split(",").map((s) => s.trim()).filter(Boole
 const onlyNamespaces = opt("namespaces")?.split(",").map((s) => s.trim()).filter(Boolean);
 
 type Flat = Record<string, string>;
+type Glossary = Record<string, [string, string][]>;
+
+/** Where English means a webhook event, the computing word is the right one: leave it alone. */
+const TECHNICAL = /webhook/i;
+
+/** Applies the locale's word corrections to a translated message. */
+export function applyGlossary(glossary: Glossary, locale: string, source: string, translated: string): string {
+  if (TECHNICAL.test(source)) return translated;
+  let out = translated;
+  for (const [wrong, right] of glossary[locale] ?? []) out = out.split(wrong).join(right);
+  return out;
+}
 type Snapshot = Record<string, Flat>; // "{locale}/{namespace}" → key → English text when translated
 
 function readJson<T>(path: string, fallback: T): T {
@@ -58,6 +71,7 @@ async function translateBatch(texts: string[], target: string, key: string): Pro
 
 async function main() {
   const snapshot = readJson<Snapshot>(snapshotPath, {});
+  const glossary = readJson<Glossary>(glossaryPath, {});
   const targets = LOCALES.filter((l) => l.code !== DEFAULT_LOCALE && (!onlyLocales || onlyLocales.includes(l.code)));
   const namespaces = NAMESPACES.filter((ns) => !onlyNamespaces || onlyNamespaces.includes(ns));
   let pending = 0;
@@ -110,7 +124,8 @@ async function main() {
       const second = broken.length ? await translateKeys(broken, true) : {};
       for (const k of todo) {
         const candidate = broken.includes(k) ? second[k] ?? "" : first[k] ?? "";
-        if (isFaithful(source(k), candidate)) next[k] = candidate;
+        const corrected = applyGlossary(glossary, locale.code, source(k), candidate);
+        if (isFaithful(source(k), corrected)) next[k] = corrected;
         else { next[k] = source(k); kept.push(`${id} ${k}`); }
       }
       writeJson(targetPath, unflatten(next, en));

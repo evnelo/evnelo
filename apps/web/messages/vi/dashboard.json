@@ -398,7 +398,7 @@
     "discountCreated": "Mã {code} đã được tạo.",
     "webhook": {
       "created": "Webhook đã được tạo. Sao chép mã bí mật ký ngay bây giờ; mã này chỉ hiển thị một lần.",
-      "notFound": "Không tìm thấy webhook.",
+      "notFound": "Webhook không tìm thấy.",
       "rotated": "Mã bí mật ký mới. Hãy cập nhật thiết bị nhận tín hiệu của bạn; mã bí mật cũ hiện không còn hoạt động nữa.",
       "testQueued": "Đơn hàng thử nghiệm đang chờ xử lý; sẽ được gửi đi trong khoảng 10 giây. Vui lòng kiểm tra danh sách đơn hàng."
     },

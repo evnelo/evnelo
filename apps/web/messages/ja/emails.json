@@ -129,7 +129,7 @@
     "subject": "空きが出ました: {eventName}",
     "preview": "{deadline}までに席を確保してください。",
     "title": "空きが出た",
-    "reserved": "朗報です。__ <strong>{ticketType}</strong>の席が<strong>{eventName}</strong>用に確保されています。",
+    "reserved": "朗報です。__ <strong>{eventName}</strong>用の<strong>{ticketType}</strong>席が確保されています。",
     "claimBefore": "<strong>{deadline}</strong>までに申し込んでください。それ以降は、次の人に権利が移ります。",
     "cta": "私の場所を確保する",
     "registerWith": "このメールアドレスで登録してください。",

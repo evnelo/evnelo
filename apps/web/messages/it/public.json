@@ -28,7 +28,8 @@
     "eyebrow": "Infrastruttura aperta per eventi",
     "title": "Dal primo clic al cancello d'ingresso.",
     "lead": "Pubblica eventi, vendi biglietti, invia messaggi ai partecipanti e gestisci il check-in in un'unica piattaforma aperta, oppure ospitala autonomamente sulla tua infrastruttura.",
-    "pricing": "<b>0,99%</b> sui biglietti a pagamento. Gli eventi gratuiti restano gratuiti. <br></br> <b>0%</b> se organizzi l'evento autonomamente.",
+    "pricingFee": "<b>0,99%</b> sui biglietti a pagamento. Gli eventi gratuiti restano tali.",
+    "pricingSelfHost": "<b>0%</b> se gestisci il server autonomamente.",
     "explore": "Esplora gli eventi",
     "scene": {
       "steps": {
@@ -83,7 +84,7 @@
   },
   "home": {
     "meta": {
-      "title": "Evenlo: eventi in movimento",
+      "title": "Evnelo: eventi in movimento",
       "description": "Infrastruttura aperta per eventi. Pubblica eventi, registra i partecipanti, vendi o regala biglietti, comunica con la tua community e gestisci il check-in. 0,99% sui biglietti a pagamento, gli eventi gratuiti sono gratuiti oppure organizza il tuo evento in autonomia senza spendere nulla."
     },
     "pricing": {
@@ -159,7 +160,7 @@
       "all": "Tutti gli eventi"
     },
     "cta": {
-      "title": "Rendere la raccolta più fluida.",
+      "title": "Fai fluire gli incontri.",
       "body": "Crea il tuo primo evento in pochi minuti. Per gli eventi gratuiti non è necessario nulla; per gli eventi a pagamento è necessario un account Stripe.",
       "explore": "Scopri cosa c'è in programma"
     }

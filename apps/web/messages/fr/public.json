@@ -28,7 +28,8 @@
     "eyebrow": "Infrastructure événementielle ouverte",
     "title": "Du premier clic jusqu'au portail d'entrée.",
     "lead": "Publiez des événements, vendez des billets, envoyez des messages aux participants et gérez l'enregistrement sur une plateforme ouverte, ou hébergez-la vous-même sur votre propre infrastructure.",
-    "pricing": "<b>% sur <b>billets</b>. Les événements gratuits restent gratuits. 0 % si vous organisez vous-</b> <br></br>.",
+    "pricingFee": "<b>0,99 %</b> sur les billets payants. Les événements gratuits restent gratuits.",
+    "pricingSelfHost": "<b>0 %</b> si vous l’hébergez vous-même.",
     "explore": "Explorez les événements",
     "scene": {
       "steps": {
@@ -89,7 +90,7 @@
     "pricing": {
       "eyebrow": "Tarification",
       "title": "Des frais inférieurs à ceux de toute autre plateforme.",
-      "body": "La plupart des plateformes prélèvent entre 3 et 5 % plus des frais sur chaque billet. Evnelo prélève 0,99 % sur les billets payants et rien sur les billets gratuits. Vous connectez votre propre compte Stripe: le montant des ventes vous est directement versé et ne transite jamais par nous. Les frais de traitement de Stripe s'appliquent à leur taux, et vous pouvez les répercuter sur les acheteurs ou les prendre en charge.",
+      "body": "La plupart des plateformes prélèvent de 3 à 5 % plus des frais sur chaque billet. Evnelo prélève 0,99 % sur les billets payants et rien sur les billets gratuits. Vous connectez votre propre compte Stripe, ainsi l'argent des billets vous est directement versé et ne transite jamais par nous; les frais de traitement de Stripe s'appliquent au taux de Stripe, et vous pouvez répercuter les frais sur les acheteurs ou les prendre en charge.",
       "plans": {
         "free": {
           "title": "Événements gratuits",

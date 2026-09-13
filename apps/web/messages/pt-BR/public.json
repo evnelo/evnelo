@@ -28,7 +28,8 @@
     "eyebrow": "Infraestrutura aberta para eventos",
     "title": "Do primeiro clique até o portão da frente.",
     "lead": "Publique eventos, venda ingressos, envie mensagens aos participantes e gerencie o check-in em uma plataforma aberta ou hospede tudo em sua própria infraestrutura.",
-    "pricing": "<b>0,99%</b> em ingressos pagos. Eventos gratuitos continuam gratuitos. <br></br> <b>0%</b> se você for o anfitrião.",
+    "pricingFee": "<b>0,99%</b> em ingressos pagos. Eventos gratuitos continuam gratuitos.",
+    "pricingSelfHost": "<b>0%</b> se você hospedar por conta própria.",
     "explore": "Explore os eventos",
     "scene": {
       "steps": {
@@ -145,7 +146,7 @@
     },
     "developers": {
       "eyebrow": "Para desenvolvedores",
-      "title": "Construído para servir de base para outras construções.",
+      "title": "Feito para você construir em cima.",
       "points": {
         "rest": "API REST para cada recurso, com escritas idempotentes.",
         "sdk": "SDK TypeScript gerado e um servidor MCP para agentes.",
@@ -159,7 +160,7 @@
       "all": "Todos os eventos"
     },
     "cta": {
-      "title": "Faça com que a reunião flua.",
+      "title": "Faça os encontros fluírem.",
       "body": "Crie seu primeiro evento em poucos minutos. Eventos gratuitos não exigem nada; eventos pagos exigem sua conta Stripe.",
       "explore": "Veja o que está rolando"
     }

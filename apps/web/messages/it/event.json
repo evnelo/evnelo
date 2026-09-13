@@ -113,7 +113,7 @@
     "submitting": "Elaborazione del pagamento…",
     "expiredButton": "Prenotazione scaduta",
     "pay": "Paga e registrati",
-    "secure": "I pagamenti vengono elaborati in modo sicuro da Stripe. Evnello non memorizza i dati delle carte di credito."
+    "secure": "I pagamenti vengono elaborati in modo sicuro da Stripe. Evnelo non memorizza i dati della carta."
   },
   "form": {
     "validation": {

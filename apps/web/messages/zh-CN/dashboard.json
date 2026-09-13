@@ -84,7 +84,7 @@
     },
     "event": {
       "allCheckin": "所有入住",
-      "eventDashboard": "事件仪表板"
+      "eventDashboard": "活动仪表板"
     }
   },
   "event": {
@@ -148,7 +148,7 @@
       "irreversible": "不可逆的",
       "cancelEvent": "取消活动",
       "cancelConfirm": "取消本次活动？所有已注册的参与者都会收到一封取消邮件（如果选择接收短信，还会收到短信）。已付款的订单仍需在“订单”选项卡中申请退款。",
-      "deleteEvent": "删除事件",
+      "deleteEvent": "删除活动",
       "deleteConfirm": "删除此活动？它将从控制面板中消失。与会者记录将被保留。"
     },
     "attendees": {
@@ -282,8 +282,8 @@
       },
       "webhooks": {
         "title": "网络钩子",
-        "description": "每当此处发生任何事件时，都会向您自己的端点发送一个带有签名的 JSON POST 请求。",
-        "note": "我们会向您选择的事件的 URL 发送一个 JSON 信封，并使用 HMAC-SHA256 进行签名（ <code>{signature}</code> over <code>{template}</code> ）。如果发送失败，我们会进行大约一天的回退重试。",
+        "description": "每当此处发生任何活动时，都会向您自己的端点发送一个带有签名的 JSON POST 请求。",
+        "note": "我们会向您选择的活动的 URL 发送一个 JSON 信封，并使用 HMAC-SHA256 进行签名（ <code>{signature}</code> over <code>{template}</code> ）。如果发送失败，我们会进行大约一天的回退重试。",
         "addWebhook": "添加 webhook",
         "count": "{count, plural, one {#端点} other {#端点}}",
         "signingSecret": "签署秘密",

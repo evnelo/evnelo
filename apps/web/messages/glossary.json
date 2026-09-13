@@ -1,0 +1,6 @@
+{
+  "_comment": "Word-level corrections applied after machine translation, per locale. The engine keeps choosing the computing sense of 'event' (an incident, a signal) where this product means people gathering. Entries are plain find/replace on the translated text; use a stem when the language inflects. Skipped for messages whose English is about webhooks, where the computing sense is the right one. Edit here rather than fixing the same word in every file.",
+  "ru": [["событи", "мероприяти"]],
+  "zh-CN": [["事件", "活动"]],
+  "ur": [["واقعات", "ایونٹس"], ["واقعہ", "ایونٹ"]]
+}

@@ -24,7 +24,7 @@
     "showQr": "دروازے پر، اپنے فون پر یا پرنٹ شدہ کیو آر کوڈ دکھائیں۔",
     "addToCalendar": "کیلنڈر میں شامل کریں۔",
     "questions": "تقریب کے بارے میں سوالات؟ {orgName} تک پہنچنے کے لیے اس ای میل کا جواب دیں۔",
-    "cta": "واقعہ کی تفصیلات دیکھیں"
+    "cta": "ایونٹ کی تفصیلات دیکھیں"
   },
   "approvalPending": {
     "subject": "{eventName} کے لیے درخواست موصول ہوئی",
@@ -58,7 +58,7 @@
     "preview": "{eventName} ہے {when} {where}",
     "title": "{eventName} ہے {when}",
     "tickets": "{count, plural, one {آپ کا ٹکٹ، اسکین کرنے کے لیے تیار ہے:} other {آپ کے ٹکٹ، اسکین کرنے کے لیے تیار ہیں:}}",
-    "cta": "واقعہ کی تفصیلات اور ہدایات",
+    "cta": "ایونٹ کی تفصیلات اور ہدایات",
     "stopPrompt": "اس ایونٹ کے لیے یاددہانی نہیں چاہتے؟ <link>یاد دہانیوں کو روکیں</link>.",
     "stillGetThrough": "تصدیقات اور تبدیلیاں اب بھی ہوتی ہیں۔"
   },
@@ -123,7 +123,7 @@
     "full": "<strong>{eventName}</strong> ابھی بھرا ہوا ہے۔",
     "position": "آپ لائن میں نمبر <strong>{position}</strong> ہیں۔",
     "offer": "اگر کوئی جگہ کھل جاتی ہے، تو ہم آپ کو اس کا دعوی کرنے کے لیے ایک لنک ای میل کریں گے۔ لنک 24 گھنٹے تک درست رہتا ہے۔",
-    "cta": "واقعہ دیکھیں"
+    "cta": "ایونٹ دیکھیں"
   },
   "waitlistOffer": {
     "subject": "ایک جگہ کھل گئی: {eventName}",
@@ -138,7 +138,7 @@
   "abuseReport": {
     "subject": "[رپورٹ] {reason}: {eventName}",
     "preview": "کسی نے اطلاع دی {eventName}",
-    "title": "واقعہ کی اطلاع دی گئی۔",
+    "title": "ایونٹ کی اطلاع دی گئی۔",
     "intro": "<strong>{eventName}</strong> بذریعہ {orgName} اطلاع دی گئی <strong>{reason}</strong> کے لئے۔",
     "reporter": "رپورٹر: {email}",
     "noReporter": "رپورٹر نے کوئی ای میل نہیں چھوڑی۔",

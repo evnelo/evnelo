@@ -20,6 +20,19 @@ import { parse as parseIcu, type MessageFormatElement } from "@formatjs/icu-mess
 
 export type Token = { placeholder: string; original: string };
 
+/**
+ * Names that must come back exactly as they went in. Without this a translator will happily
+ * render "Resend" as "send again" (it did, in Urdu) or spell "Evnelo" in the local script.
+ * Longest first, so "Google Wallet" wins over "Google".
+ */
+export const DO_NOT_TRANSLATE = [
+  "Apple Wallet", "Google Wallet", "Google Calendar", "Stripe Connect", "Next.js", "Node.js",
+  "Evnelo", "InEvent", "Stripe", "Resend", "Vonage", "MySQL", "Apache", "Docker", "GitHub",
+  "Cloudflare", "Turnstile", "reCAPTCHA", "Sentry", "CloudFront", "Zapier", "OpenAPI", "Scalar",
+  "TypeScript", "JavaScript", "Drizzle", "Tailwind", "Photon", "Mapbox", "Telnyx", "Luma",
+  "Eventbrite", "PostHog", "Slack", "Webhook", "webhook",
+].sort((a, b) => b.length - a.length);
+
 export function flatten(obj: Record<string, unknown>, prefix = ""): Record<string, string> {
   const out: Record<string, string> = {};
   for (const [k, v] of Object.entries(obj)) {
@@ -139,7 +152,7 @@ function parse(message: string, splitTags = false): Node[] {
   return nodes;
 }
 
-/** Wraps `{arguments}` and `#` so the engine moves them without translating them. */
+/** Wraps `{arguments}`, `#` and every protected name so the engine moves but never rewrites them. */
 function protectRun(text: string): { text: string; tokens: Token[] } {
   const tokens: Token[] = [];
   const mark = (original: string) => {
@@ -160,8 +173,9 @@ function protectRun(text: string): { text: string; tokens: Token[] } {
       out += mark("#");
       i++;
     } else {
-      out += ch;
-      i++;
+      const name = DO_NOT_TRANSLATE.find((n) => text.startsWith(n, i) && !/\w/.test(text[i - 1] ?? "") && !/\w/.test(text[i + n.length] ?? ""));
+      if (name) { out += mark(name); i += name.length; }
+      else { out += ch; i++; }
     }
   }
   return { text: out, tokens };
@@ -240,6 +254,14 @@ export function isFaithful(source: string, translated: string): boolean {
     visit(parseIcu(message));
     return [...found].sort().join(",");
   };
+  const tags = (message: string): string =>
+    (message.match(/<\/?[a-zA-Z][\w-]*>/g) ?? []).slice().sort().join("");
+  if (/__\d+__|notranslate/.test(translated)) return false; // a protected piece leaked through
+  if (tags(source) !== tags(translated)) return false;       // a tag was dropped, added or unbalanced
+  for (const name of DO_NOT_TRANSLATE) {
+    const count = (m: string) => m.split(name).length - 1;
+    if (count(source) !== count(translated)) return false;   // a protected name was rewritten
+  }
   try {
     return names(source) === names(translated);
   } catch {

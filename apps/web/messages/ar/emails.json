@@ -98,7 +98,7 @@
     "registerWith": "سجل باستخدام عنوان البريد الإلكتروني هذا."
   },
   "orgInvite": {
-    "subject": "أنت مدعو إلى {orgName} على إيفنيلو",
+    "subject": "أنت مدعو إلى {orgName} في Evnelo",
     "preview": "انضم إلى {orgName} كـ {role}.",
     "title": "انضم {orgName}",
     "invitedBy": "{invitedBy} دعاك للمساعدة في تنظيم الفعاليات لـ <strong>{orgName}</strong> كـ <strong>{role}</strong>.",

@@ -11,8 +11,8 @@
     "basics": {
       "title": "基础知识",
       "description": "人们首先看到的是：名称、地址、故事、艺术作品。",
-      "name": "事件名称",
-      "url": "事件 URL",
+      "name": "活动名称",
+      "url": "活动 URL",
       "descriptionLabel": "描述",
       "descriptionHelp": "支持 Markdown 格式。",
       "tags": "标签",
@@ -240,7 +240,7 @@
     "held": "{count}举行",
     "window": "{start} → {end}",
     "windowNow": "现在",
-    "windowEvent": "事件",
+    "windowEvent": "活动",
     "always": "总是",
     "badges": {
       "hidden": "隐",

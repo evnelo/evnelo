@@ -12,7 +12,7 @@
       "title": "Основы",
       "description": "Первое, что видят люди: имя, адрес, история, произведение искусства.",
       "name": "Название мероприятия",
-      "url": "URL события",
+      "url": "URL мероприятия",
       "descriptionLabel": "Описание",
       "descriptionHelp": "Markdown поддерживается.",
       "tags": "Теги",
@@ -240,7 +240,7 @@
     "held": "{count} держали",
     "window": "{start} → {end}",
     "windowNow": "сейчас",
-    "windowEvent": "событие",
+    "windowEvent": "мероприятие",
     "always": "Всегда",
     "badges": {
       "hidden": "скрытый",

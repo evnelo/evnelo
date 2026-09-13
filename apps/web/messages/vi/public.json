@@ -28,7 +28,8 @@
     "eyebrow": "Cơ sở hạ tầng sự kiện mở",
     "title": "Từ cú nhấp chuột đầu tiên đến cổng chính.",
     "lead": "Đăng tải sự kiện, bán vé, gửi tin nhắn cho người tham dự và thực hiện thủ tục check-in trên một nền tảng mở duy nhất, hoặc tự lưu trữ trên hệ thống của riêng bạn.",
-    "pricing": "<b>0,99%</b> cho vé trả phí. Sự kiện miễn phí vẫn miễn phí. <br></br> <b>0%</b> nếu bạn tự tổ chức.",
+    "pricingFee": "<b>0,99%</b> cho vé trả phí. Các sự kiện miễn phí vẫn miễn phí.",
+    "pricingSelfHost": "<b>0%</b> nếu bạn tự lưu trữ.",
     "explore": "Khám phá các sự kiện",
     "scene": {
       "steps": {
@@ -145,7 +146,7 @@
     },
     "developers": {
       "eyebrow": "Dành cho các nhà phát triển",
-      "title": "Được xây dựng để làm nền móng cho các công trình khác.",
+      "title": "Được tạo ra để bạn xây dựng trên đó.",
       "points": {
         "rest": "API REST cho mọi tài nguyên, với khả năng ghi dữ liệu bất biến.",
         "sdk": "Đã tạo SDK TypeScript và máy chủ MCP cho các tác nhân.",
@@ -159,7 +160,7 @@
       "all": "Tất cả các sự kiện"
     },
     "cta": {
-      "title": "Hãy đảm bảo quá trình thu thập thông tin diễn ra suôn sẻ.",
+      "title": "Để những buổi gặp gỡ diễn ra suôn sẻ.",
       "body": "Tạo sự kiện đầu tiên của bạn chỉ trong vài phút. Sự kiện miễn phí không yêu cầu gì; sự kiện trả phí yêu cầu tài khoản Stripe của bạn.",
       "explore": "Xem có gì đang diễn ra"
     }

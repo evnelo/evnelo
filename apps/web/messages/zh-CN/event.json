@@ -16,7 +16,7 @@
     "openInMaps": "在地图中打开",
     "hosts": "主持人",
     "sponsors": "赞助商",
-    "report": "举报此事件"
+    "report": "举报此活动"
   },
   "og": {
     "free": "自由的",
@@ -50,8 +50,8 @@
     "joinOnline": "在线加入",
     "addToCalendar": "添加到日历",
     "eventPage": "活动页面",
-    "appleWallet": "添加到 Apple 钱包",
-    "googleWallet": "添加到 Google 钱包",
+    "appleWallet": "加到Apple Wallet",
+    "googleWallet": "加到Google Wallet",
     "doorHint": "进门时，请出示手机或纸上的二维码。工作人员扫描一次，您就可以进入了。"
   },
   "inviteExpired": {
@@ -219,8 +219,8 @@
     "chooseFile": "选择要上传的文件。",
     "uploadType": "上传PDF、JPEG、PNG或WebP文件。",
     "uploadTooLarge": "文件大小必须小于或等于 10 MB。",
-    "unknownEvent": "未知事件。",
-    "noFileField": "此事件不需要文件。",
+    "unknownEvent": "未知活动。",
+    "noFileField": "此活动不需要文件。",
     "tooManyUploads": "目前上传文件过多，请稍后再试。",
     "storageUnavailable": "文件存储目前不可用。"
   }

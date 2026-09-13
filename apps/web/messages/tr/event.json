@@ -50,8 +50,8 @@
     "joinOnline": "Çevrimiçi katılın",
     "addToCalendar": "Takvime ekle",
     "eventPage": "Etkinlik sayfası",
-    "appleWallet": "Apple Cüzdanına Ekle",
-    "googleWallet": "Google Cüzdan'a Ekle",
+    "appleWallet": "Apple Wallet a ekle",
+    "googleWallet": "Google Wallet a ekle",
     "doorHint": "Kapıda, telefonunuzdaki veya kağıttaki bu QR kodunu gösterin. Görevli kodu bir kez tarar ve içeri girersiniz."
   },
   "inviteExpired": {

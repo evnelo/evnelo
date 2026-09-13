@@ -50,8 +50,8 @@
     "joinOnline": "Tham gia trực tuyến",
     "addToCalendar": "Thêm vào lịch",
     "eventPage": "Trang sự kiện",
-    "appleWallet": "Thêm vào Ví Apple",
-    "googleWallet": "Thêm vào Ví Google",
+    "appleWallet": "Thêm vào Apple Wallet",
+    "googleWallet": "Thêm vào Google Wallet",
     "doorHint": "Tại cửa, hãy đưa mã QR này trên điện thoại hoặc trên giấy cho nhân viên. Nhân viên sẽ quét mã một lần và bạn được phép vào."
   },
   "inviteExpired": {

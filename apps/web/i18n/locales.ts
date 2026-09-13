@@ -12,7 +12,7 @@ export const LOCALES = [
   { code: "fr", name: "Français", dir: "ltr", google: "fr" },
   { code: "ar", name: "العربية", dir: "rtl", google: "ar" },
   { code: "bn", name: "বাংলা", dir: "ltr", google: "bn" },
-  { code: "pt-BR", name: "Português (Brasil)", dir: "ltr", google: "pt" },
+  { code: "pt-BR", name: "Português", dir: "ltr", google: "pt" },
   { code: "ru", name: "Русский", dir: "ltr", google: "ru" },
   { code: "ur", name: "اردو", dir: "rtl", google: "ur" },
   { code: "id", name: "Bahasa Indonesia", dir: "ltr", google: "id" },

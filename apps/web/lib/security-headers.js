@@ -64,8 +64,8 @@ function contentSecurityPolicy(env) {
     "media-src": ["'self'", "blob:"],
     "object-src": ["'none'"],
     "base-uri": ["'self'"],
-    // sign-in with Google is a form POST that redirects to accounts.google.com; Chrome applies form-action to that redirect
-    "form-action": ["'self'", "https://accounts.google.com"],
+    // Chrome applies form-action to redirects from Google sign-in and Stripe Connect server-action forms.
+    "form-action": ["'self'", "https://accounts.google.com", "https://connect.stripe.com", "https://dashboard.stripe.com"],
     "frame-ancestors": ["'none'"],
     ...(dev ? {} : { "upgrade-insecure-requests": [] }),
   };

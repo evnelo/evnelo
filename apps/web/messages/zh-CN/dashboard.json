@@ -320,9 +320,29 @@
       "descriptionCloud": "付费门票款项将直接结算到您的 Stripe 账户。",
       "descriptionSelfHosted": "此实例通过其运营商配置的 Stripe 密钥进行收费。",
       "connected": "Stripe账户{id}已连接。",
-      "connectPrompt": "连接您的 Stripe 账户即可销售付费门票。此功能包含在 Connect 注册流程中。",
+      "connectPrompt": "关联您的Stripe帐户即可出售付费门票。",
       "configured": "Stripe 已配置。付费票款将从实例的 Stripe 账户中扣除，不收取平台费用。",
-      "notConfigured": "此实例未配置 Stripe，因此只能出售免费门票。请设置 STRIPE_SECRET_KEY 和 STRIPE_PUBLISHABLE_KEY 以启用支付功能。"
+      "notConfigured": "此实例未配置 Stripe，因此只能出售免费门票。请设置 STRIPE_SECRET_KEY 和 STRIPE_PUBLISHABLE_KEY 以启用支付功能。",
+      "connect": "联系Stripe",
+      "reconnect": "与Stripe重新联系",
+      "openStripe": "打开Stripe仪表板",
+      "restrictedHelp": "完成Stripe控制面板中的待办事项即可接受付款。",
+      "unavailableHelp": "我们无法访问此Stripe帐户。请重试，或者如果访问权限已被移除，请重新连接该帐户。",
+      "fees": "Evnelo对付费门票收取 0.99% 的平台费。处理费由Stripe在您的账户中收取，您的付款由Stripe管理。",
+      "managerRequired": "组织所有者或管理员可以连接Stripe帐户。",
+      "status": {
+        "missing": "未连接",
+        "ready": "准备付款",
+        "restricted": "需要采取行动",
+        "unavailable": "连接不可用"
+      },
+      "results": {
+        "success": "您的Stripe账户已连接。售票前请查看下方账户状态。",
+        "cancelled": "Stripe已取消。您可以稍后重试。",
+        "invalid": "此连接链接已过期或无法验证。请从“付款设置”重新开始。",
+        "failed": "我们无法完成Stripe连接。如果该组织已连接，请使用相同的Stripe帐户重试。",
+        "unconfigured": "此平台未配置Stripe Connect 。请联系平台运营商以启用付费票务功能。"
+      }
     },
     "danger": {
       "title": "数据和删除",

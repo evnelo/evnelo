@@ -99,6 +99,7 @@ Everything is read from the environment (the root `.env` in development). Empty 
 | `EDITION` | no | `self_hosted` (default) or `cloud`. |
 | `RESEND_API_KEY`, `EMAIL_FROM`, `RESEND_WEBHOOK_SECRET` | for email | Sending domain must be verified at Resend. Point Resend webhooks at `/api/webhooks/resend`. |
 | `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` | for paid tickets | Register `/api/webhooks/stripe` in the Stripe dashboard. |
+| `STRIPE_CONNECT_CLIENT_ID`, `STRIPE_CONNECT_WEBHOOK_SECRET` | cloud paid tickets | Standard OAuth client ID and the connected-accounts webhook destination's signing secret. See setup below. |
 | `VONAGE_APPLICATION_ID` + `VONAGE_PRIVATE_KEY` (or `VONAGE_API_KEY` + `VONAGE_API_SECRET`), `VONAGE_FROM`, `VONAGE_SIGNATURE_SECRET` | for SMS | Status URL `/api/webhooks/vonage/status`, inbound URL `/api/webhooks/vonage/inbound`. |
 | `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_REGION`, `S3_BUCKET` | for uploads | `S3_ENDPOINT` for R2 or MinIO, `CLOUDFRONT_DOMAIN` to serve through a CDN, `S3_KEY_PREFIX` (default `evnelo`), `S3_UPLOAD_ACL=public-read` for ACL-style buckets. Without them the editor accepts image URLs. |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | no | Adds Google sign-in. |
@@ -114,6 +115,20 @@ Everything is read from the environment (the root `.env` in development). Empty 
 | `CAPTCHA_PROVIDER`, `CAPTCHA_SITE_KEY`, `CAPTCHA_SECRET_KEY` | production | Bot check on sign-in links, registrations, waitlist joins and abuse reports. `turnstile` (Cloudflare, free, invisible for most people) or `recaptcha` (Google reCAPTCHA v3). Off until all three are set. |
 
 Storage needs a CORS rule on the bucket allowing `POST` from `APP_URL`, and objects under `evnelo/uploads/` must be publicly readable (bucket policy, CloudFront origin access, or the ACL setting). Registration file uploads live under `evnelo/registrations/` and stay private; they are served through an authenticated route.
+
+### Cloud Stripe Connect
+
+Owners and admins connect an existing Stripe Standard account from **Settings → Payments → Connect with Stripe**. Stripe handles account authorization and payouts; Evnelo creates direct charges on that account and collects the 0.99% application fee. Cloud paid checkout refuses accounts that are missing, restricted or inaccessible before reserving seats. Free registrations, including fully discounted orders, still work. Self-hosted payments use the operator's own keys.
+
+For production on evnelo.com:
+
+1. Activate Connect on the **platform's** Stripe account. Set `EDITION=cloud`, `APP_URL=https://evnelo.com`, and that platform's matching live `STRIPE_SECRET_KEY` and `STRIPE_PUBLISHABLE_KEY` in the deployment environment.
+2. Enable OAuth in [Stripe's Connect OAuth settings](https://dashboard.stripe.com/settings/connect/onboarding-options/oauth). Set the live client ID (`ca_…`) as `STRIPE_CONNECT_CLIENT_ID`, and allow exactly `https://evnelo.com/api/stripe/connect/callback` as a redirect URI. OAuth supports linking existing Standard accounts; Stripe may require a separate account if the selected account is already controlled by another platform. See [Stripe's OAuth guide](https://docs.stripe.com/connect/oauth-standard-accounts).
+3. Register two snapshot webhook destinations at `https://evnelo.com/api/webhooks/stripe`, using the integration's API version `2025-02-24.acacia`: one for **your account** (secret in `STRIPE_WEBHOOK_SECRET`), and one for **connected accounts** (secret in `STRIPE_CONNECT_WEBHOOK_SECRET`). Subscribe both to `payment_intent.succeeded`, `payment_intent.processing`, `payment_intent.canceled`, `payment_intent.payment_failed`, and `charge.refunded`; also subscribe the connected destination to `account.updated` and `account.application.deauthorized`. See [Connect webhooks](https://docs.stripe.com/connect/webhooks). Events from the other payment mode are ignored.
+4. Deploy/restart the app. Sign in as the organizer, open Payments settings, and authorize the organizer's Stripe account. This is a separate role from the platform account whose API keys run Evnelo. The callback shows the organization that began authorization even if you switched organizations in another tab. Wait for **Ready for payments**; complete outstanding Stripe requirements in its dashboard if needed.
+5. Validate checkout in Stripe test mode first (matching test platform keys and OAuth client ID, plus `stripe listen --forward-to localhost:3000/api/webhooks/stripe --forward-connect-to localhost:3000/api/webhooks/stripe`). For a live transaction, use a real purchase and real payment details, not Stripe test card numbers. Confirm the charge appears on the organizer account, the 0.99% application fee on the platform, and the order becomes paid with tickets and a confirmation email. Exercise check-in and a refund, then confirm the refund webhook revokes tickets and returns inventory. The existing full-refund flow refunds the attendee payment; it does not automatically return the platform application fee.
+
+Settings reads account readiness directly from Stripe; account webhooks refresh the API's cached `stripeChargesEnabled` field. Revoking access stops new paid checkout, but preserves the account binding and each order's original account ID. Reconnect that same account to restore access to pending payments and refunds. Replacing an organization's payout account is intentionally unsupported. OAuth state lasts 10 minutes, is bound to the initiating user and organization, and can be consumed once; OAuth credentials are not stored.
 
 ## How it works
 
@@ -212,7 +227,7 @@ Serverless hosts (Vercel and similar) work with `JOBS_INLINE=false` plus a sched
 - **Security headers:** every response carries a CSP allowing Stripe, your upload origin and the configured bot-check widget, `frame-ancestors 'none'`, nosniff, referrer and permissions policies, and HSTS on https. Built per request from the runtime environment in `apps/web/middleware.ts` and `lib/security-headers.js`.
 - **Errors:** unexpected failures go through one helper that logs with a stable `[scope]` prefix and forwards to Sentry when configured. Notification retries are warnings; only a notification that exhausts its retries is an error.
 - **Moderation:** "Report this event" on public pages stores a row and emails `ABUSE_EMAIL`.
-- **Known follow-ups:** a sweep for registration files uploaded but never submitted, and Stripe Connect onboarding for the cloud edition.
+- **Known follow-ups:** a sweep for registration files uploaded but never submitted, and authenticated production validation of the payment and organizer flows.
 
 ## Contributing
 

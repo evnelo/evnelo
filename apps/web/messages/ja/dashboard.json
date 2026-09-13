@@ -320,9 +320,29 @@
       "descriptionCloud": "お支払いいただいたチケット代金は、お客様のStripeアカウントに直接入金されます。",
       "descriptionSelfHosted": "このインスタンスは、オペレーターが設定したStripeキーを通じて課金されます。",
       "connected": "Stripeアカウント{id}が接続されました。",
-      "connectPrompt": "Stripeアカウントを接続して、有料チケットを販売しましょう。Connectのオンボーディングフローに含まれています。",
+      "connectPrompt": "有料チケットを販売するには、 Stripeアカウントを接続してください。",
       "configured": "Stripeが設定されています。有料チケットの料金は、プラットフォーム手数料なしでインスタンスのStripeアカウントに請求されます。",
-      "notConfigured": "このインスタンスではStripeが設定されていないため、無料チケットのみ販売可能です。支払い機能を有効にするには、STRIPE_SECRET_KEYとSTRIPE_PUBLISHABLE_KEYを設定してください。"
+      "notConfigured": "このインスタンスではStripeが設定されていないため、無料チケットのみ販売可能です。支払い機能を有効にするには、STRIPE_SECRET_KEYとSTRIPE_PUBLISHABLE_KEYを設定してください。",
+      "connect": "Stripeと接続する",
+      "reconnect": "Stripeと再接続します",
+      "openStripe": "Stripeダッシュボードを開く",
+      "restrictedHelp": "支払いを受け付けるには、 Stripeダッシュボードで未完了の要件をすべて満たしてください。",
+      "unavailableHelp": "このStripeアカウントにアクセスできませんでした。もう一度お試しいただくか、アクセス権が削除されている場合は同じアカウントに再接続してください。",
+      "fees": "Evnelo 、有料チケットに対して 0.99% のプラットフォーム手数料を徴収します。処理手数料はStripeによってお客様のアカウントに請求され、支払いはStripeによって管理されます。",
+      "managerRequired": "組織の所有者または管理者は、 Stripeアカウントを接続できます。",
+      "status": {
+        "missing": "接続されていません",
+        "ready": "お支払い準備完了",
+        "restricted": "対応が必要",
+        "unavailable": "接続できません"
+      },
+      "results": {
+        "success": "あなたのStripeアカウントは接続されています。チケットを販売する前に、以下のアカウントステータスをご確認ください。",
+        "cancelled": "Stripeがキャンセルされました。準備ができたらもう一度お試しください。",
+        "invalid": "この接続リンクは期限切れか、検証できませんでした。支払い設定からやり直してください。",
+        "failed": "Stripeの接続を完了できませんでした。この組織が既に接続されている場合は、同じStripeアカウントで再度お試しください。",
+        "unconfigured": "Stripe Connectはこのプラットフォームでは設定されていません。有料チケットを有効にするには、プラットフォーム運営者にお問い合わせください。"
+      }
     },
     "danger": {
       "title": "データと削除",

@@ -123,7 +123,7 @@
         },
         "pay": {
           "title": "Pagar e receber",
-          "text": "Cartões, Apple Pay, Google Pay, Pix. Bilhetes com código QR, passes para carteira digital, arquivos de calendário, confirmação por e-mail e SMS."
+          "text": "Cartões, Apple Pay, Google Pay, Pix. Ingressos com código QR, passes para carteira digital, arquivos de calendário, confirmação por e-mail e SMS."
         },
         "checkin": {
           "title": "Check-in",

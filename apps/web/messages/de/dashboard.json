@@ -320,9 +320,29 @@
       "descriptionCloud": "Bezahlte Tickets werden direkt Ihrem Stripe-Konto gutgeschrieben.",
       "descriptionSelfHosted": "Diese Instanz wickelt die Transaktionen über die vom Betreiber konfigurierten Stripe-Schlüssel ab.",
       "connected": "Stripe-Konto {id} verbunden.",
-      "connectPrompt": "Verbinden Sie Ihr Stripe-Konto, um kostenpflichtige Tickets zu verkaufen. Dies ist im Rahmen des Connect-Onboarding-Prozesses enthalten.",
+      "connectPrompt": "Verbinde dein Stripe Konto, um kostenpflichtige Tickets zu verkaufen.",
       "configured": "Stripe ist konfiguriert. Bezahlte Tickets werden über das Stripe-Konto der Instanz ohne Plattformgebühr abgerechnet.",
-      "notConfigured": "Stripe ist auf dieser Instanz nicht konfiguriert, daher können nur kostenlose Tickets verkauft werden. Um Zahlungen zu aktivieren, müssen Sie die Schlüssel STRIPE_SECRET_KEY und STRIPE_PUBLISHABLE_KEY festlegen."
+      "notConfigured": "Stripe ist auf dieser Instanz nicht konfiguriert, daher können nur kostenlose Tickets verkauft werden. Um Zahlungen zu aktivieren, müssen Sie die Schlüssel STRIPE_SECRET_KEY und STRIPE_PUBLISHABLE_KEY festlegen.",
+      "connect": "Verbinde dich mit Stripe",
+      "reconnect": "Stelle die Verbindung mit Stripe wieder her",
+      "openStripe": "Öffnen Sie Stripe Dashboard",
+      "restrictedHelp": "Erfüllen Sie die noch ausstehenden Anforderungen in Ihrem Stripe Dashboard, um Zahlungen annehmen zu können.",
+      "unavailableHelp": "Wir konnten nicht auf dieses Konto Stripe zugreifen. Versuchen Sie es erneut oder stellen Sie die Verbindung zum Konto wieder her, falls der Zugriff entfernt wurde.",
+      "fees": "Evnelo erhebt eine Plattformgebühr von 0,99 % auf bezahlte Tickets. Bearbeitungsgebühren werden von Stripe auf Ihrem Konto berechnet, und Ihre Auszahlungen werden von Stripe verwaltet.",
+      "managerRequired": "Ein Organisationsinhaber oder Administrator kann das Konto Stripe verbinden.",
+      "status": {
+        "missing": "Nicht verbunden",
+        "ready": "Zahlungsbereit",
+        "restricted": "Handlungsbedarf erforderlich",
+        "unavailable": "Verbindung nicht verfügbar"
+      },
+      "results": {
+        "success": "Ihr Stripe Konto ist verbunden. Überprüfen Sie den Kontostatus unten, bevor Sie Tickets verkaufen.",
+        "cancelled": "Die Verbindung Stripe wurde abgebrochen. Sie können es erneut versuchen, sobald Sie bereit sind.",
+        "invalid": "Diese Verbindung ist abgelaufen oder konnte nicht verifiziert werden. Bitte versuchen Sie es erneut in den Zahlungseinstellungen.",
+        "failed": "Die Stripe konnte nicht hergestellt werden. Versuchen Sie es erneut mit Stripe Konto, falls diese Organisation bereits verbunden ist.",
+        "unconfigured": "Stripe Connect ist auf dieser Plattform nicht konfiguriert. Wenden Sie sich an den Plattformbetreiber, um kostenpflichtige Tickets zu aktivieren."
+      }
     },
     "danger": {
       "title": "Daten und Löschung",

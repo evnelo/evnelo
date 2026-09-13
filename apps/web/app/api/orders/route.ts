@@ -11,6 +11,7 @@ import { waitlistOffer } from "@/lib/waitlist-access";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { createOrderPaymentIntent } from "@/lib/stripe";
+import { connectedAccountStatus } from "@/lib/stripe-connect";
 import { fulfilFreeOrder, releaseOrder } from "@/lib/orders";
 import { checkoutStripeAccount, paymentsConfigured } from "@/lib/payment-flow";
 import { signPaymentResume } from "@/lib/payment-resume";
@@ -140,6 +141,11 @@ export async function POST(req: Request) {
   const fees = computeOrder([{ unitPriceMinor: tt.priceMinor, quantity, taxRateBps: tt.taxRateBps }], { edition, feePassThrough: event.feePassThrough, discount: discountCode ? toDiscount(discountCode) : null });
   const isFree = fees.totalMinor === 0;
   if (!isFree && !paymentsConfigured(env.STRIPE_SECRET_KEY, env.STRIPE_PUBLISHABLE_KEY)) return NextResponse.json({ error: t("errors.paymentsNotConfigured") }, { status: 503 });
+  if (!isFree && edition === "cloud") {
+    const account = await connectedAccountStatus(stripeAccountId);
+    // no account or an incomplete one is the host's to fix; only a Stripe read failure is worth retrying
+    if (account !== "ready") return NextResponse.json({ error: t(account === "unavailable" ? "errors.paymentsUnavailable" : "errors.paymentsNotConfigured") }, { status: 503 });
+  }
   const orderId = newId();
   const holdExpiresAt = isFree ? null : new Date(now.getTime() + HOLD_MINUTES * 60_000);
   const status = event.requiresApproval ? ("pending_approval" as const) : ("confirmed" as const);

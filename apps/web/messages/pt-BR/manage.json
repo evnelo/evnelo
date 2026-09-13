@@ -188,7 +188,7 @@
     "helpText": "Texto de ajuda",
     "placeholder": "Espaço reservado",
     "requiredOnlyWhenShown": "(somente quando exibido)",
-    "onlyForTicketTypes": "Apenas para estes tipos de bilhete",
+    "onlyForTicketTypes": "Apenas para estes tipos de ingresso",
     "noneSelectedIsAll": "(nenhum selecionado = todos)",
     "condition": "Mostrar somente quando uma resposta anterior corresponder.",
     "conditionNeedsEarlier": "(adicione uma pergunta acima primeiro)",
@@ -219,11 +219,11 @@
     "save": "Salvar formulário"
   },
   "ticketTypes": {
-    "title": "Tipos de bilhete",
+    "title": "Tipos de ingresso",
     "descriptionEmpty": "Publicar sem especificar um tipo de ingresso gera automaticamente um ingresso de entrada geral gratuito.",
     "descriptionGuests": "O que as pessoas podem comprar e em que quantidade de cada item. Os convidados pagam o mesmo preço do ingresso do participante inscrito.",
     "description": "O que as pessoas podem comprar e em que quantidade. O preço 0 significa grátis.",
-    "add": "Adicionar tipo de bilhete",
+    "add": "Adicionar tipo de ingresso",
     "saved": "Salvo.",
     "columns": {
       "price": "Preço",
@@ -247,8 +247,8 @@
     },
     "confirmDelete": "Apagar \" {name} \"?",
     "dialog": {
-      "editTitle": "Editar tipo de bilhete",
-      "newTitle": "Novo tipo de bilhete",
+      "editTitle": "Editar tipo de ingresso",
+      "newTitle": "Novo tipo de ingresso",
       "description": "Preço em {currency}. Quantidade definida para edição limitada."
     },
     "form": {
@@ -371,7 +371,7 @@
     },
     "heldUntil": "{ticketType} até {time}",
     "lapsed": "A oferta expirou; pode ser promovida novamente.",
-    "ticketType": "Tipo de bilhete",
+    "ticketType": "Tipo de ingresso",
     "option": "{name} · {price}",
     "optionWithRoom": "{name} · {price} · {room} esquerda",
     "offer": "Ofereça uma vaga",
@@ -395,10 +395,10 @@
       "offline_ok": "Check-in efetuado (offline, será sincronizado)",
       "already": "Já fiz o check-in.",
       "not_confirmed": "Registro não confirmado",
-      "revoked": "Bilhete cancelado ou reembolsado",
+      "revoked": "Ingresso cancelado ou reembolsado",
       "wrong_event": "O ingresso é para outro evento.",
-      "not_found": "Bilhete inválido",
-      "offline_unknown": "Bilhete desconhecido (offline)",
+      "not_found": "Ingresso inválido",
+      "offline_unknown": "Ingresso desconhecido (offline)",
       "error": "Não foi possível efetuar o check-in."
     },
     "checkedIn": "Check-in realizado",
@@ -415,7 +415,7 @@
       "denied": "O acesso à câmera foi bloqueado. Permita o acesso da câmera a este local ou use a Busca para registrar pessoas pelo nome.",
       "unsupported": "Este navegador não consegue acessar a câmera. Use a função de busca ou cole o link do ingresso abaixo.",
       "starting": "Iniciando a câmera…",
-      "point": "Aponte para o código QR no bilhete."
+      "point": "Aponte para o código QR no ingresso."
     },
     "manualPlaceholder": "Ou cole um link/código do ingresso.",
     "manualLabel": "Link ou código para o ingresso",

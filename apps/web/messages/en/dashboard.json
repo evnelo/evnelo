@@ -320,9 +320,29 @@
       "descriptionCloud": "Paid tickets settle straight into your own Stripe account.",
       "descriptionSelfHosted": "This instance charges through the Stripe keys its operator configured.",
       "connected": "Stripe account {id} connected.",
-      "connectPrompt": "Connect your Stripe account to sell paid tickets. Coming with the Connect onboarding flow.",
+      "connectPrompt": "Connect your Stripe account to sell paid tickets.",
       "configured": "Stripe is configured. Paid tickets are charged on the instance's Stripe account with no platform fee.",
-      "notConfigured": "Stripe is not configured on this instance, so only free tickets can be sold. Set STRIPE_SECRET_KEY and STRIPE_PUBLISHABLE_KEY to enable payments."
+      "notConfigured": "Stripe is not configured on this instance, so only free tickets can be sold. Set STRIPE_SECRET_KEY and STRIPE_PUBLISHABLE_KEY to enable payments.",
+      "connect": "Connect with Stripe",
+      "reconnect": "Reconnect with Stripe",
+      "openStripe": "Open Stripe dashboard",
+      "restrictedHelp": "Complete the outstanding requirements in your Stripe dashboard to accept payments.",
+      "unavailableHelp": "We could not access this Stripe account. Try again, or reconnect the same account if access was removed.",
+      "fees": "Evnelo collects a 0.99% platform fee on paid tickets. Processing fees are charged by Stripe on your account, and your payouts are managed by Stripe.",
+      "managerRequired": "An organization owner or admin can connect the Stripe account.",
+      "status": {
+        "missing": "Not connected",
+        "ready": "Ready for payments",
+        "restricted": "Action required",
+        "unavailable": "Connection unavailable"
+      },
+      "results": {
+        "success": "Your Stripe account is connected. Check the account status below before selling tickets.",
+        "cancelled": "The Stripe connection was cancelled. You can try again when you are ready.",
+        "invalid": "This connection link expired or could not be verified. Start again from Payments settings.",
+        "failed": "We could not complete the Stripe connection. Try again with the same Stripe account if this organization is already connected.",
+        "unconfigured": "Stripe Connect is not configured on this platform. Contact the platform operator to enable paid tickets."
+      }
     },
     "danger": {
       "title": "Data and deletion",

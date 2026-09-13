@@ -320,9 +320,29 @@
       "descriptionCloud": "Les billets payés sont directement crédités sur votre compte Stripe.",
       "descriptionSelfHosted": "Ce cas de facturation utilise les clés Stripe configurées par son opérateur.",
       "connected": "Compte Stripe {id} connecté.",
-      "connectPrompt": "Connectez votre compte Stripe pour vendre des billets payants. L'intégration se fait via le processus Connect.",
+      "connectPrompt": "Connectez votre compte Stripe pour vendre des billets payants.",
       "configured": "Stripe est configuré. Les billets payants sont débités du compte Stripe de l'instance sans frais de plateforme.",
-      "notConfigured": "Stripe n'est pas configuré sur cette instance; par conséquent, seuls les billets gratuits peuvent être vendus. Pour activer les paiements, veuillez définir les variables d'environnement STRIPE_SECRET_KEY et STRIPE_PUBLISHABLE_KEY."
+      "notConfigured": "Stripe n'est pas configuré sur cette instance; par conséquent, seuls les billets gratuits peuvent être vendus. Pour activer les paiements, veuillez définir les variables d'environnement STRIPE_SECRET_KEY et STRIPE_PUBLISHABLE_KEY.",
+      "connect": "Connecter un compte Stripe",
+      "reconnect": "Reconnecter le compte Stripe",
+      "openStripe": "Ouvrir le tableau de bord Stripe",
+      "restrictedHelp": "Complétez les conditions restantes dans votre tableau de bord Stripe pour accepter les paiements.",
+      "unavailableHelp": "Impossible d'accéder à ce compte Stripe. Veuillez réessayer ou reconnecter le même compte si l'accès a été supprimé.",
+      "fees": "Evnelo perçoit une commission de plateforme de 0,99 % sur les billets payants. Les frais de traitement sont facturés par Stripe sur votre compte, et vos virements sont gérés par Stripe.",
+      "managerRequired": "Un propriétaire ou un administrateur de l'organisation peut connecter le compte Stripe.",
+      "status": {
+        "missing": "Non connecté",
+        "ready": "Prêt pour les paiements",
+        "restricted": "Action requise",
+        "unavailable": "Connexion indisponible"
+      },
+      "results": {
+        "success": "Votre compte Stripe est connecté. Veuillez vérifier l'état de votre compte ci-dessous avant de vendre des billets.",
+        "cancelled": "La connexion Stripe a été annulée. Vous pouvez réessayer lorsque vous serez prêt.",
+        "invalid": "Ce lien de connexion a expiré ou n'a pas pu être vérifié. Veuillez recommencer depuis les paramètres de paiement.",
+        "failed": "La connexion Stripe n'a pas pu être établie. Veuillez réessayer avec le même compte Stripe si cette organisation est déjà connectée.",
+        "unconfigured": "Stripe Connect n'est pas configuré sur cette plateforme. Veuillez contacter l'opérateur de la plateforme pour activer les billets payants."
+      }
     },
     "danger": {
       "title": "Données et suppression",

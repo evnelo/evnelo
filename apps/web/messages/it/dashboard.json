@@ -320,9 +320,29 @@
       "descriptionCloud": "I biglietti pagati vengono accreditati direttamente sul tuo conto Stripe.",
       "descriptionSelfHosted": "In questo caso, l'addebito avviene tramite le chiavi Stripe configurate dall'operatore.",
       "connected": "Account Stripe {id} connesso.",
-      "connectPrompt": "Collega il tuo account Stripe per vendere biglietti a pagamento. Questa funzionalità è inclusa nel flusso di onboarding di Connect.",
+      "connectPrompt": "Collega il tuo account Stripe per vendere biglietti a pagamento.",
       "configured": "Stripe è configurato. I biglietti pagati vengono addebitati sull'account Stripe dell'istanza senza commissioni di piattaforma.",
-      "notConfigured": "Stripe non è configurato su questa istanza, pertanto è possibile vendere solo biglietti gratuiti. Impostare STRIPE_SECRET_KEY e STRIPE_PUBLISHABLE_KEY per abilitare i pagamenti."
+      "notConfigured": "Stripe non è configurato su questa istanza, pertanto è possibile vendere solo biglietti gratuiti. Impostare STRIPE_SECRET_KEY e STRIPE_PUBLISHABLE_KEY per abilitare i pagamenti.",
+      "connect": "Connettiti con Stripe",
+      "reconnect": "Riconnettiti con Stripe",
+      "openStripe": "Apri la dashboard Stripe",
+      "restrictedHelp": "Completa i requisiti mancanti nella tua dashboard Stripe per accettare i pagamenti.",
+      "unavailableHelp": "Non è stato possibile accedere a questo account Stripe. Riprova oppure ricollega lo stesso account se l'accesso è stato revocato.",
+      "fees": "Evnelo trattiene una commissione di piattaforma dello 0,99% sui biglietti a pagamento. Le commissioni di elaborazione vengono addebitate da Stripe sul tuo conto e i tuoi pagamenti sono gestiti da Stripe.",
+      "managerRequired": "Il proprietario o l'amministratore dell'organizzazione può collegare l'account Stripe.",
+      "status": {
+        "missing": "Non connesso",
+        "ready": "Pronto per i pagamenti",
+        "restricted": "Azione richiesta",
+        "unavailable": "Connessione non disponibile"
+      },
+      "results": {
+        "success": "Il tuo account Stripe è connesso. Verifica lo stato dell'account qui sotto prima di vendere i biglietti.",
+        "cancelled": "La connessione Stripe è stata interrotta. Puoi riprovare quando sei pronto.",
+        "invalid": "Il collegamento è scaduto o non è stato possibile verificarlo. Riavvia la procedura dalle impostazioni di pagamento.",
+        "failed": "Non è stato possibile completare la connessione Stripe. Riprova con lo stesso account Stripe se questa organizzazione è già connessa.",
+        "unconfigured": "Stripe Connect non è configurato su questa piattaforma. Contatta l'operatore della piattaforma per abilitare i biglietti a pagamento."
+      }
     },
     "danger": {
       "title": "Dati ed eliminazione",

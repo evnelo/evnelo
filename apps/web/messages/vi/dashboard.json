@@ -320,9 +320,29 @@
       "descriptionCloud": "Vé đã thanh toán sẽ được chuyển thẳng vào tài khoản Stripe của bạn.",
       "descriptionSelfHosted": "Phiên bản này tính phí thông qua các khóa Stripe do nhà điều hành cấu hình.",
       "connected": "Tài khoản Stripe {id} đã được kết nối.",
-      "connectPrompt": "Kết nối tài khoản Stripe của bạn để bán vé có trả phí. Tính năng này được tích hợp trong quy trình thiết lập ban đầu của Connect.",
+      "connectPrompt": "Kết nối tài khoản Stripe của bạn để bán vé có trả phí.",
       "configured": "Stripe đã được cấu hình. Vé đã thanh toán được tính vào tài khoản Stripe của máy chủ mà không mất phí nền tảng.",
-      "notConfigured": "Stripe chưa được cấu hình trên máy chủ này, vì vậy chỉ có thể bán vé miễn phí. Hãy thiết lập STRIPE_SECRET_KEY và STRIPE_PUBLISHABLE_KEY để kích hoạt thanh toán."
+      "notConfigured": "Stripe chưa được cấu hình trên máy chủ này, vì vậy chỉ có thể bán vé miễn phí. Hãy thiết lập STRIPE_SECRET_KEY và STRIPE_PUBLISHABLE_KEY để kích hoạt thanh toán.",
+      "connect": "Kết nối với Stripe",
+      "reconnect": "Kết nối lại với Stripe",
+      "openStripe": "Mở bảng điều khiển Stripe",
+      "restrictedHelp": "Hoàn thành các yêu cầu còn thiếu trong bảng điều khiển Stripe của bạn để chấp nhận thanh toán.",
+      "unavailableHelp": "Chúng tôi không thể truy cập tài khoản Stripe này. Hãy thử lại, hoặc kết nối lại với cùng tài khoản đó nếu quyền truy cập bị vô hiệu hóa.",
+      "fees": "Evnelo thu phí nền tảng 0,99% trên các vé đã thanh toán. Phí xử lý được tính bởi Stripe vào tài khoản của bạn, và việc thanh toán của bạn được quản lý bởi Stripe.",
+      "managerRequired": "Chủ sở hữu hoặc quản trị viên của tổ chức có thể kết nối với tài khoản Stripe.",
+      "status": {
+        "missing": "Không kết nối",
+        "ready": "Sẵn sàng thanh toán",
+        "restricted": "Cần hành động",
+        "unavailable": "Không thể kết nối"
+      },
+      "results": {
+        "success": "Tài khoản Stripe của bạn đã được kết nối. Vui lòng kiểm tra trạng thái tài khoản bên dưới trước khi bán vé.",
+        "cancelled": "Kết nối Stripe đã bị hủy. Bạn có thể thử lại khi sẵn sàng.",
+        "invalid": "Liên kết kết nối này đã hết hạn hoặc không thể xác minh. Vui lòng bắt đầu lại từ cài đặt Thanh toán.",
+        "failed": "Chúng tôi không thể hoàn tất kết nối Stripe. Hãy thử lại với cùng tài khoản Stripe nếu tổ chức này đã được kết nối.",
+        "unconfigured": "Stripe Connect chưa được cấu hình trên nền tảng này. Vui lòng liên hệ với nhà điều hành nền tảng để kích hoạt vé trả phí."
+      }
     },
     "danger": {
       "title": "Dữ liệu và xóa",

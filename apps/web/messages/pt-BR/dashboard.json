@@ -127,8 +127,8 @@
       "manage": "Gerenciar",
       "noTickets": {
         "title": "Ainda não existem tipos de ingressos disponíveis.",
-        "description": "Publicar sem um ingresso cria um bilhete de entrada geral gratuito para você.",
-        "action": "Adicionar um tipo de bilhete"
+        "description": "Publicar sem um ingresso cria um ingresso de entrada geral gratuito para você.",
+        "action": "Adicionar um tipo de ingresso"
       },
       "ticketSales": "{hasQuantity, select, true {{sold} / {quantity} vendido} other {{sold} vendido}}{held, plural, =0 {} other {, # realizado}}",
       "eventPage": "Página do evento",
@@ -160,7 +160,7 @@
       "pendingNote": "{count, plural, one {# inscrição} other {# inscrições}} Aguardando sua aprovação.",
       "review": "Análise",
       "columns": {
-        "ticket": "Bilhete",
+        "ticket": "Ingresso",
         "registered": "Registrado",
         "files": "Arquivos",
         "actions": "Ações"
@@ -180,7 +180,7 @@
       "paymentPending": "Pagamento pendente",
       "approve": "Aprovar",
       "reject": "Rejeitar",
-      "ticket": "Bilhete",
+      "ticket": "Ingresso",
       "cancelConfirm": "Cancelar o cadastro de {name}? O ingresso dele para de funcionar e o assento fica vago. Nenhum e-mail é enviado.",
       "export": "Exportar",
       "erase": "Apagar",
@@ -317,12 +317,32 @@
     },
     "payments": {
       "title": "Pagamentos",
-      "descriptionCloud": "Os bilhetes pagos são creditados diretamente na sua conta Stripe.",
+      "descriptionCloud": "Os ingressos pagos são creditados diretamente na sua conta Stripe.",
       "descriptionSelfHosted": "Esta instância cobra através das chaves Stripe configuradas pelo operador.",
       "connected": "Conta Stripe {id} conectada.",
-      "connectPrompt": "Conecte sua conta Stripe para vender ingressos pagos. Disponível no fluxo de integração do Connect.",
+      "connectPrompt": "Conecte sua conta Stripe para vender ingressos pagos.",
       "configured": "O Stripe está configurado. Os ingressos pagos são cobrados na conta Stripe da instância, sem taxa de plataforma.",
-      "notConfigured": "O Stripe não está configurado nesta instância, portanto, somente ingressos gratuitos podem ser vendidos. Defina STRIPE_SECRET_KEY e STRIPE_PUBLISHABLE_KEY para habilitar os pagamentos."
+      "notConfigured": "O Stripe não está configurado nesta instância, portanto, somente ingressos gratuitos podem ser vendidos. Defina STRIPE_SECRET_KEY e STRIPE_PUBLISHABLE_KEY para habilitar os pagamentos.",
+      "connect": "Conectar com Stripe",
+      "reconnect": "Reconectar com Stripe",
+      "openStripe": "Abrir painel do Stripe",
+      "restrictedHelp": "Conclua os requisitos pendentes no seu painel do Stripe para aceitar pagamentos.",
+      "unavailableHelp": "Não foi possível acessar esta conta Stripe. Tente novamente ou reconecte a mesma conta caso o acesso tenha sido removido.",
+      "fees": "A Evnelo cobra uma taxa de plataforma de 0,99% sobre ingressos pagos. As taxas de processamento são cobradas pelo Stripe na sua conta, e seus repasses são gerenciados pelo Stripe.",
+      "managerRequired": "O proprietário ou administrador da organização pode conectar a conta Stripe.",
+      "status": {
+        "missing": "Não conectado",
+        "ready": "Pronto para pagamentos",
+        "restricted": "Ação necessária",
+        "unavailable": "Conexão indisponível"
+      },
+      "results": {
+        "success": "Sua conta Stripe está conectada. Verifique o status da conta abaixo antes de vender ingressos.",
+        "cancelled": "A conexão Stripe foi cancelada. Você pode tentar novamente quando estiver pronto.",
+        "invalid": "Este link de conexão expirou ou não pôde ser verificado. Comece de novo nas configurações de Pagamentos.",
+        "failed": "Não foi possível concluir a conexão Stripe. Tente novamente com a mesma conta Stripe se esta organização já estiver conectada.",
+        "unconfigured": "Stripe Connect não está configurado nesta plataforma. Entre em contato com o operador da plataforma para habilitar ingressos pagos."
+      }
     },
     "danger": {
       "title": "Dados e exclusão",

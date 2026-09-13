@@ -6,6 +6,11 @@ import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { requireOrg } from "@/lib/auth/session";
 import { paymentsConfigured } from "@/lib/payment-flow";
+import { connectedAccountStatus, stripeConnectConfigured } from "@/lib/stripe-connect";
+import { connectStripeAction } from "@/app/dashboard/actions";
+import { SubmitButton } from "@/components/ui/submit-button";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { storageConfigured } from "@/lib/storage";
 import { OrgForm } from "@/components/dashboard/org-form";
 import { MembersPanel } from "@/components/dashboard/members-panel";
@@ -18,9 +23,9 @@ import { PageHeader, SectionCard, SectionTray } from "@/components/dashboard/pag
 const TABS = ["organization", "members", "developer", "payments"] as const;
 type Tab = (typeof TABS)[number];
 
-export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
+export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ tab?: string; connect?: string }> }) {
   const [{ org, role, user }, t] = await Promise.all([requireOrg("view_events", "/dashboard/settings"), getTranslations("dashboard")]);
-  const { tab: requested } = await searchParams;
+  const { tab: requested, connect } = await searchParams;
   const tab: Tab = TABS.some((k) => k === requested) ? (requested as Tab) : "organization";
   const publicUrl = `${env.APP_URL.replace(/^https?:\/\//, "")}/o/${org.slug}`;
 
@@ -60,13 +65,36 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
         {tab === "payments" && (
           <SectionCard title={t("settings.payments.title")} description={env.EDITION === "cloud" ? t("settings.payments.descriptionCloud") : t("settings.payments.descriptionSelfHosted")}>
             {env.EDITION === "cloud" ? (
-              <p className="text-sm text-muted-foreground">{org.stripeAccountId ? t("settings.payments.connected", { id: org.stripeAccountId }) : t("settings.payments.connectPrompt")}</p>
+              <CloudPayments accountId={org.stripeAccountId} canManage={can(role, "manage_org")} result={connect} />
             ) : (
               <p className="text-sm text-muted-foreground">{paymentsConfigured(env.STRIPE_SECRET_KEY, env.STRIPE_PUBLISHABLE_KEY) ? t("settings.payments.configured") : t("settings.payments.notConfigured")}</p>
             )}
           </SectionCard>
         )}
       </div>
+    </div>
+  );
+}
+
+async function CloudPayments({ accountId, canManage, result }: { accountId: string | null; canManage: boolean; result?: string }) {
+  const [t, status] = await Promise.all([getTranslations("dashboard"), connectedAccountStatus(accountId)]);
+  const results = ["success", "cancelled", "invalid", "failed", "unconfigured"] as const;
+  const knownResult = results.find((value) => value === result && (value !== "unconfigured" || stripeConnectConfigured));
+  return (
+    <div className="space-y-4">
+      {knownResult && <p role="status" className={`rounded-xl border p-3 text-sm ${knownResult === "success" ? "border-border bg-muted" : "border-warning/40 bg-warning/10"}`}>{t(`settings.payments.results.${knownResult}`)}</p>}
+      <Badge variant={status === "ready" ? "success" : status === "missing" ? "muted" : "warning"}>{t(`settings.payments.status.${status}`)}</Badge>
+      <p className="text-sm text-muted-foreground">{accountId ? t("settings.payments.connected", { id: accountId }) : t("settings.payments.connectPrompt")}</p>
+      {status === "restricted" && <p className="text-sm text-muted-foreground">{t("settings.payments.restrictedHelp")}</p>}
+      {status === "unavailable" && <p className="text-sm text-muted-foreground">{t("settings.payments.unavailableHelp")}</p>}
+      <p className="text-sm text-muted-foreground">{t("settings.payments.fees")}</p>
+      {!stripeConnectConfigured && <p className="text-sm text-muted-foreground">{t("settings.payments.results.unconfigured")}</p>}
+      {canManage ? (
+        <div className="flex flex-wrap items-center gap-3">
+          {stripeConnectConfigured && status !== "ready" && <form action={connectStripeAction}><SubmitButton>{t(accountId ? "settings.payments.reconnect" : "settings.payments.connect")}</SubmitButton></form>}
+          {accountId && <Button asChild variant="outline"><a href="https://dashboard.stripe.com/" target="_blank" rel="noopener noreferrer">{t("settings.payments.openStripe")}<ExternalLink className="size-4" aria-hidden /></a></Button>}
+        </div>
+      ) : <p className="text-sm text-muted-foreground">{t("settings.payments.managerRequired")}</p>}
     </div>
   );
 }

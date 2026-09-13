@@ -320,9 +320,29 @@
       "descriptionCloud": "Tiket yang sudah dibayar akan langsung masuk ke akun Stripe Anda.",
       "descriptionSelfHosted": "Instansi ini melakukan penagihan melalui kunci Stripe yang dikonfigurasi oleh operatornya.",
       "connected": "Akun Stripe {id} terhubung.",
-      "connectPrompt": "Hubungkan akun Stripe Anda untuk menjual tiket berbayar. Tersedia melalui alur pendaftaran Connect.",
+      "connectPrompt": "Hubungkan akun Stripe Anda untuk menjual tiket berbayar.",
       "configured": "Stripe telah dikonfigurasi. Tiket berbayar akan dibebankan ke akun Stripe instance tanpa biaya platform.",
-      "notConfigured": "Stripe belum dikonfigurasi pada instance ini, sehingga hanya tiket gratis yang dapat dijual. Atur STRIPE_SECRET_KEY dan STRIPE_PUBLISHABLE_KEY untuk mengaktifkan pembayaran."
+      "notConfigured": "Stripe belum dikonfigurasi pada instance ini, sehingga hanya tiket gratis yang dapat dijual. Atur STRIPE_SECRET_KEY dan STRIPE_PUBLISHABLE_KEY untuk mengaktifkan pembayaran.",
+      "connect": "Terhubung dengan Stripe",
+      "reconnect": "Sambungkan kembali dengan Stripe",
+      "openStripe": "Buka dasbor Stripe",
+      "restrictedHelp": "Lengkapi persyaratan yang belum terpenuhi di dasbor Stripe Anda untuk menerima pembayaran.",
+      "unavailableHelp": "Kami tidak dapat mengakses akun Stripe ini. Coba lagi, atau sambungkan kembali akun yang sama jika akses telah dihapus.",
+      "fees": "Evnelo memungut biaya platform sebesar 0,99% untuk tiket berbayar. Biaya pemrosesan dibebankan oleh Stripe ke akun Anda, dan pembayaran Anda dikelola oleh Stripe.",
+      "managerRequired": "Pemilik atau admin organisasi dapat menghubungkan akun Stripe.",
+      "status": {
+        "missing": "Tidak terhubung",
+        "ready": "Siap untuk pembayaran",
+        "restricted": "Tindakan yang diperlukan",
+        "unavailable": "Koneksi tidak tersedia"
+      },
+      "results": {
+        "success": "Akun Stripe Anda terhubung. Periksa status akun di bawah ini sebelum menjual tiket.",
+        "cancelled": "Koneksi Stripe dibatalkan. Anda dapat mencoba lagi saat Anda siap.",
+        "invalid": "Tautan koneksi ini telah kedaluwarsa atau tidak dapat diverifikasi. Mulai lagi dari pengaturan Pembayaran.",
+        "failed": "Kami tidak dapat menyelesaikan koneksi Stripe. Coba lagi dengan akun Stripe yang sama jika organisasi ini sudah terhubung.",
+        "unconfigured": "Stripe Connect tidak dikonfigurasi pada platform ini. Hubungi operator platform untuk mengaktifkan tiket berbayar."
+      }
     },
     "danger": {
       "title": "Data dan penghapusan",

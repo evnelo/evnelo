@@ -7,8 +7,8 @@
     "joinOnline": "Inscreva-se online →",
     "admitOne": "Admitir um",
     "ticketTypeGuestOf": "{ticketType}, convidado de {host}",
-    "openTicket": "Bilhete aberto",
-    "qrAlt": "Código QR do bilhete",
+    "openTicket": "Ingresso aberto",
+    "qrAlt": "Código QR do ingresso",
     "scanAtDoor": "Escaneie o código QR na porta."
   },
   "reminderWhen": {
@@ -18,7 +18,7 @@
   },
   "registrationConfirmation": {
     "subject": "{count, plural, one {Seu ingresso para {eventName}} other {Seus # ingressos para {eventName}}}",
-    "preview": "Você está dentro por {eventName}. {count, plural, one {Seu bilhete é} other {Seus ingressos são}} dentro.",
+    "preview": "Você está dentro por {eventName}. {count, plural, one {Seu ingresso é} other {Seus ingressos são}} dentro.",
     "title": "Você está dentro.",
     "intro": "{count, plural, one {Aqui está seu ingresso para<link>{eventName}</link>.} other {Aqui estão seus ingressos para #<link>{eventName}</link>.}}",
     "showQr": "Mostre o código QR na porta, no seu celular ou impresso.",
@@ -49,7 +49,7 @@
     "preview": "{amount} está a caminho de volta para o seu cartão.",
     "title": "Reembolso emitido",
     "intro": "Olá {name}, {orgName} reembolsou <strong>{amount}</strong> para o seu pedido para <link>{eventName}</link>.",
-    "cancelled": "{count, plural, one {Seu bilhete foi cancelado e não será mais lido pelo leitor.} other {Todos os # bilhetes do pedido foram cancelados e não serão mais lidos pelo leitor.}}",
+    "cancelled": "{count, plural, one {Seu ingresso foi cancelado e não será mais lido pelo leitor.} other {Todos os # ingressos do pedido foram cancelados e não serão mais lidos pelo leitor.}}",
     "timing": "Os reembolsos geralmente são creditados em seu cartão em 5 a 10 dias úteis, dependendo do seu banco.",
     "receipt": "Este e-mail é o seu recibo."
   },
@@ -82,7 +82,7 @@
     "preview": "{eventName} não vai prosseguir.",
     "title": "{eventName} foi cancelado",
     "intro": "Olá {name}, {orgName} cancelou <strong>{eventName}</strong>, que estava agendado para {when}.",
-    "noLongerValid": "Seu bilhete não é mais válido.",
+    "noLongerValid": "Seu ingresso não é mais válido.",
     "refund": "O reembolso será feito para o cartão utilizado; você receberá um e-mail confirmando a transação.",
     "noPayment": "Nenhum pagamento foi efetuado, portanto não há nada a reembolsar.",
     "questions": "Dúvidas? Responda a este e-mail para entrar em contato com o organizador."
@@ -146,7 +146,7 @@
   },
   "sms": {
     "confirmation": "Você está dentro para {event}. Seu ingresso: {ticketUrl}",
-    "reminder": "{event} é {when}. Bilhete: {ticketUrl}",
+    "reminder": "{event} é {when}. Ingresso: {ticketUrl}",
     "updated": "{event} teve seu horário ou local alterado. Detalhes: {url}",
     "cancelled": "{event} foi cancelado. Qualquer pagamento será reembolsado."
   }

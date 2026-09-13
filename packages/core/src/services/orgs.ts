@@ -3,7 +3,7 @@ import { and, asc, eq, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { organizationInvites, organizationMembers, organizations, users, type Database, type Organization } from "@evnelo/db";
 import { newId } from "../ids";
-import type { Role } from "../permissions";
+import { can, type Role } from "../permissions";
 import { slugify, slugSuffix } from "../slug";
 import { isHttpUrl, normalizeWebsiteUrl } from "../url";
 
@@ -76,6 +76,26 @@ export async function getMembership(db: Database, userId: string, orgId: string)
   const [m] = await db.select({ role: organizationMembers.role }).from(organizationMembers)
     .where(and(eq(organizationMembers.userId, userId), eq(organizationMembers.organizationId, orgId))).limit(1);
   return m?.role ?? null;
+}
+
+/** Bind only the OAuth initiating organization; never replace a different payout account. */
+export async function connectOrganizationStripe(db: Database, orgId: string, userId: string, accountId: string, chargesEnabled: boolean) {
+  if (!/^acct_[a-zA-Z0-9]+$/.test(accountId)) throw new Error("Invalid Stripe account.");
+  return db.transaction(async (tx) => {
+    const [org] = await tx.select().from(organizations)
+      .where(and(eq(organizations.id, orgId), isNull(organizations.deletedAt))).for("update");
+    const [member] = await tx.select().from(organizationMembers)
+      .where(and(eq(organizationMembers.organizationId, orgId), eq(organizationMembers.userId, userId))).for("update");
+    if (!org || !member || !can(member.role, "manage_org")) return false;
+    if (org.stripeAccountId && org.stripeAccountId !== accountId) return false;
+    await tx.update(organizations).set({ stripeAccountId: accountId, stripeAccountType: "standard", stripeChargesEnabled: chargesEnabled }).where(eq(organizations.id, orgId));
+    return true;
+  });
+}
+
+/** Cached API status only; checkout verifies the current account directly with Stripe. */
+export async function updateStripeAccountStatus(db: Database, accountId: string, chargesEnabled: boolean) {
+  await db.update(organizations).set({ stripeChargesEnabled: chargesEnabled }).where(eq(organizations.stripeAccountId, accountId));
 }
 
 export async function listMembers(db: Database, orgId: string) {

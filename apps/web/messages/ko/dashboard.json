@@ -320,9 +320,29 @@
       "descriptionCloud": "유료 티켓 결제 금액은 고객님의 Stripe 계정으로 바로 입금됩니다.",
       "descriptionSelfHosted": "이 인스턴스는 운영자가 구성한 Stripe 키를 통해 요금이 청구됩니다.",
       "connected": "Stripe 계정 {id} 이 연결되었습니다.",
-      "connectPrompt": "Stripe 계정을 연결하여 유료 티켓을 판매하세요. Connect 온보딩 과정에 포함되어 있습니다.",
+      "connectPrompt": "Stripe 계정을 연결하여 유료 티켓을 판매하세요.",
       "configured": "Stripe가 설정되었습니다. 유료 티켓은 플랫폼 수수료 없이 인스턴스의 Stripe 계정으로 청구됩니다.",
-      "notConfigured": "이 인스턴스에는 Stripe가 설정되어 있지 않으므로 무료 티켓만 판매할 수 있습니다. 결제를 활성화하려면 STRIPE_SECRET_KEY 및 STRIPE_PUBLISHABLE_KEY를 설정하십시오."
+      "notConfigured": "이 인스턴스에는 Stripe가 설정되어 있지 않으므로 무료 티켓만 판매할 수 있습니다. 결제를 활성화하려면 STRIPE_SECRET_KEY 및 STRIPE_PUBLISHABLE_KEY를 설정하십시오.",
+      "connect": "Stripe 과 연결하세요",
+      "reconnect": "Stripe 과 다시 연결하세요",
+      "openStripe": "Stripe 대시보드 열기",
+      "restrictedHelp": "결제를 받으려면 Stripe 보드에서 남은 요구 사항을 모두 완료하세요.",
+      "unavailableHelp": "이 Stripe 계정에 액세스할 수 없습니다. 다시 시도하거나, 액세스 권한이 제거된 경우 동일한 계정을 다시 연결하세요.",
+      "fees": "Evnelo 유료 티켓에 대해 0.99%의 플랫폼 수수료를 징수합니다. 처리 수수료는 Stripe 에서 귀하의 계정에 부과하며, 지급은 Stripe 에서 관리합니다.",
+      "managerRequired": "조직 소유자 또는 관리자는 Stripe 계정을 연결할 수 있습니다.",
+      "status": {
+        "missing": "연결되지 않음",
+        "ready": "결제 준비 완료",
+        "restricted": "조치 필요",
+        "unavailable": "연결할 수 없음"
+      },
+      "results": {
+        "success": "Stripe 계정이 연결되었습니다. 티켓 판매 전에 아래에서 계정 상태를 확인하세요.",
+        "cancelled": "Stripe 연결이 취소되었습니다. 준비가 되면 다시 시도해 주세요.",
+        "invalid": "이 연결 링크가 만료되었거나 확인할 수 없습니다. 결제 설정에서 다시 시작하세요.",
+        "failed": "Stripe 연결을 완료할 수 없습니다. 이 조직이 이미 연결되어 있는 경우 동일한 Stripe 계정으로 다시 시도하십시오.",
+        "unconfigured": "이 플랫폼에는 Stripe Connect 설정되어 있지 않습니다. 유료 티켓을 활성화하려면 플랫폼 운영자에게 문의하십시오."
+      }
     },
     "danger": {
       "title": "데이터 및 삭제",

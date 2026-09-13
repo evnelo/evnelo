@@ -7,6 +7,7 @@ describe("security headers", () => {
     expect(csp).toContain("script-src 'self' 'unsafe-inline' https://js.stripe.com https://*.js.stripe.com");
     expect(csp).toContain("frame-src https://js.stripe.com https://*.js.stripe.com https://hooks.stripe.com");
     expect(csp).toContain("connect-src 'self' https://api.stripe.com");
+    expect(csp).toContain("form-action 'self' https://accounts.google.com https://connect.stripe.com https://dashboard.stripe.com");
     expect(csp).toContain("frame-ancestors 'none'");
     expect(csp).toContain("upgrade-insecure-requests");
     expect(csp).not.toContain("unsafe-eval");

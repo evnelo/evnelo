@@ -16,7 +16,9 @@ import { requireEvent } from "@/lib/dashboard";
 import { emailLocale, emailTranslator, renderEmail, sendEmail } from "@/lib/email";
 import { searchAddresses, type AddressSuggestion } from "@/lib/geocoding";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
-import { stripe } from "@/lib/stripe";
+import { stripe, connectOnboardingUrl } from "@/lib/stripe";
+import { stripeConnectConfigured } from "@/lib/stripe-connect";
+import { CONNECT_COOKIE, CONNECT_MAX_AGE, signConnectState } from "@/lib/stripe-connect-state";
 import OrgInvite, { orgInviteSubject } from "@/emails/org-invite";
 import EventInvite, { eventInviteSubject } from "@/emails/event-invite";
 import WaitlistOffer, { waitlistOfferSubject } from "@/emails/waitlist-offer";
@@ -53,6 +55,19 @@ export async function switchOrgAction(orgId: string) {
 }
 
 /* ---------- events ---------- */
+
+export async function connectStripeAction() {
+  const { org, user } = await requireOrg("manage_org");
+  if (!stripeConnectConfigured) redirect("/dashboard/settings?tab=payments&connect=unconfigured");
+  if (!(await consumeSharedRateLimit("stripe:connect:start", user.id, 10, 10 * 60_000))) {
+    redirect("/dashboard/settings?tab=payments&connect=failed");
+  }
+  const { state, cookie } = await signConnectState(org.id, user.id, env.AUTH_SECRET);
+  (await cookies()).set(CONNECT_COOKIE, cookie, {
+    httpOnly: true, secure: new URL(env.APP_URL).protocol === "https:", sameSite: "lax", path: "/api/stripe/connect/callback", maxAge: CONNECT_MAX_AGE,
+  });
+  redirect(connectOnboardingUrl(state));
+}
 
 export async function saveEventAction(input: unknown, eventId?: string): Promise<ActionResult> {
   const parsed = svc.eventInput.safeParse(input);

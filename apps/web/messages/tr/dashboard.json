@@ -320,9 +320,29 @@
       "descriptionCloud": "Ödenmiş biletlerin ücreti doğrudan Stripe hesabınıza yatırılır.",
       "descriptionSelfHosted": "Bu işlem, operatörünün yapılandırdığı Stripe anahtarları üzerinden ücretlendirme yapar.",
       "connected": "Stripe hesabı {id} bağlandı.",
-      "connectPrompt": "Ücretli bilet satmak için Stripe hesabınızı bağlayın. Connect kurulum süreciyle birlikte gelir.",
+      "connectPrompt": "Ücretli bilet satmak için Stripe hesabınızı bağlayın.",
       "configured": "Stripe yapılandırıldı. Ödenen biletler, platform ücreti alınmadan, ilgili sistemin Stripe hesabından tahsil ediliyor.",
-      "notConfigured": "Bu örnekte Stripe yapılandırılmamıştır, bu nedenle yalnızca ücretsiz biletler satılabilir. Ödemeleri etkinleştirmek için STRIPE_SECRET_KEY ve STRIPE_PUBLISHABLE_KEY ayarlarını yapın."
+      "notConfigured": "Bu örnekte Stripe yapılandırılmamıştır, bu nedenle yalnızca ücretsiz biletler satılabilir. Ödemeleri etkinleştirmek için STRIPE_SECRET_KEY ve STRIPE_PUBLISHABLE_KEY ayarlarını yapın.",
+      "connect": "Stripe ile bağlantı kurun",
+      "reconnect": "Stripe ile yeniden bağlantı kurun",
+      "openStripe": "Stripe kontrol panelini aç",
+      "restrictedHelp": "Ödemeleri kabul etmek için Stripe kontrol panelinizdeki eksik gereksinimleri tamamlayın.",
+      "unavailableHelp": "Bu Stripe hesaba erişemedik. Tekrar deneyin veya erişim kaldırıldıysa aynı hesabı yeniden bağlayın.",
+      "fees": "Evnelo ücretli biletler üzerinden %0,99 oranında platform ücreti tahsil eder. İşlem ücretleri Stripe tarafından hesabınızdan alınır ve ödemeleriniz Stripe tarafından yönetilir.",
+      "managerRequired": "Bir kuruluş sahibi veya yöneticisi Stripe hesabını bağlayabilir.",
+      "status": {
+        "missing": "Bağlı değil",
+        "ready": "Ödemeler için hazır",
+        "restricted": "Gerekli işlem",
+        "unavailable": "Bağlantı kullanılamıyor."
+      },
+      "results": {
+        "success": "Hesabınız bağlı. Bilet satmadan önce Stripe aşağıdaki hesap durumunu kontrol edin.",
+        "cancelled": "Stripe kesildi. Hazır olduğunuzda tekrar deneyebilirsiniz.",
+        "invalid": "Bu bağlantı süresi doldu veya doğrulanamadı. Ödeme ayarlarından tekrar deneyin.",
+        "failed": "Stripe bağlantısı tamamlanamadı. Bu kuruluş zaten bağlıysa, aynı Stripe hesapla tekrar deneyin.",
+        "unconfigured": "Stripe Connect bu platformda yapılandırılmamıştır. Ücretli biletleri etkinleştirmek için platform operatörüyle iletişime geçin."
+      }
     },
     "danger": {
       "title": "Veri ve silme",

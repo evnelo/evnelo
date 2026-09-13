@@ -7,7 +7,7 @@ export const stripe = new Stripe(env.STRIPE_SECRET_KEY ?? "sk_missing", { apiVer
  * Create the PaymentIntent for an order.
  * - Cloud + organizer connected via Stripe Connect Standard: charge on the organizer's
  *   account (stripeAccount header) and take 0.99% as application_fee_amount.
- * - Cloud + platform account: charge on our account; organizer paid out later via Express transfer.
+ * - Cloud without a connected account: refuse payment (never charge on the platform).
  * - Self-hosted: charge on the organizer's own keys, no application fee.
  */
 export async function createOrderPaymentIntent(args: {
@@ -18,6 +18,7 @@ export async function createOrderPaymentIntent(args: {
   stripeAccountId?: string | null;
   receiptEmail: string;
 }) {
+  if (env.EDITION === "cloud" && !args.stripeAccountId) throw new Error("A connected Stripe account is required.");
   const onConnectedAccount = env.EDITION === "cloud" && !!args.stripeAccountId;
   return stripe.paymentIntents.create(
     {
@@ -36,13 +37,14 @@ export async function createOrderPaymentIntent(args: {
 }
 
 /** OAuth URL for "Connect your Stripe account" (Connect Standard). Cloud only. */
-export function connectOnboardingUrl(orgId: string) {
+export function connectOnboardingUrl(state: string) {
+  if (env.EDITION !== "cloud" || !env.STRIPE_CONNECT_CLIENT_ID) throw new Error("Stripe Connect is not configured.");
   const params = new URLSearchParams({
     response_type: "code",
     client_id: env.STRIPE_CONNECT_CLIENT_ID ?? "",
     scope: "read_write",
-    state: orgId,
-    redirect_uri: `${env.APP_URL}/api/stripe/connect/callback`,
+    state,
+    redirect_uri: new URL("/api/stripe/connect/callback", env.APP_URL).href,
   });
   return `https://connect.stripe.com/oauth/authorize?${params}`;
 }

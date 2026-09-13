@@ -320,9 +320,29 @@
       "descriptionCloud": "Las entradas pagadas se abonan directamente en tu cuenta de Stripe.",
       "descriptionSelfHosted": "Esta instancia cobra a través de las claves Stripe que configuró su operador.",
       "connected": "Cuenta Stripe {id} conectada.",
-      "connectPrompt": "Conecta tu cuenta de Stripe para vender entradas de pago. Incluido en el proceso de incorporación de Connect.",
+      "connectPrompt": "Conecta tu cuenta Stripe para vender entradas de pago.",
       "configured": "Stripe está configurado. Los boletos pagados se cargan a la cuenta Stripe de la instancia sin ninguna comisión de plataforma.",
-      "notConfigured": "Stripe no está configurado en esta instancia, por lo que solo se pueden vender entradas gratuitas. Configure STRIPE_SECRET_KEY y STRIPE_PUBLISHABLE_KEY para habilitar los pagos."
+      "notConfigured": "Stripe no está configurado en esta instancia, por lo que solo se pueden vender entradas gratuitas. Configura STRIPE_SECRET_KEY y STRIPE_PUBLISHABLE_KEY para habilitar los pagos.",
+      "connect": "Conectar con Stripe",
+      "reconnect": "Reconectar con Stripe",
+      "openStripe": "Abrir el panel de Stripe",
+      "restrictedHelp": "Completa los requisitos pendientes en tu panel de Stripe para aceptar pagos.",
+      "unavailableHelp": "No pudimos acceder a esta cuenta Stripe. Inténtalo de nuevo o vuelve a conectar la misma cuenta si se eliminó el acceso.",
+      "fees": "Evnelo cobra una comisión de plataforma del 0,99 % sobre las entradas de pago. Stripe cobra las comisiones de procesamiento en tu cuenta y gestiona tus transferencias.",
+      "managerRequired": "El propietario o administrador de la organización puede conectar la cuenta Stripe.",
+      "status": {
+        "missing": "No conectado",
+        "ready": "Listo para pagos",
+        "restricted": "Se requiere acción",
+        "unavailable": "Conexión no disponible"
+      },
+      "results": {
+        "success": "Tu cuenta Stripe está conectada. Verifica el estado de tu cuenta a continuación antes de vender entradas.",
+        "cancelled": "La conexión Stripe se canceló. Puedes intentarlo de nuevo cuando estés listo.",
+        "invalid": "Este enlace de conexión ha caducado o no se ha podido verificar. Vuelve a intentarlo desde la configuración de Pagos.",
+        "failed": "No pudimos completar la conexión con Stripe. Inténtalo de nuevo con la misma cuenta de Stripe si esta organización ya está conectada.",
+        "unconfigured": "Stripe Connect no está configurado en esta plataforma. Ponte en contacto con el operador de la plataforma para habilitar las entradas de pago."
+      }
     },
     "danger": {
       "title": "Datos y eliminación",

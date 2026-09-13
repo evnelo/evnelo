@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "description": "Acara, terus berjalan. Infrastruktur acara terbuka: publikasikan acara, daftarkan peserta, jual atau berikan tiket gratis, kirim pesan ke komunitas Anda, lakukan check-in peserta."
+  },
+  "nav": {
+    "discover": "Menemukan",
+    "pricing": "Harga",
+    "dashboard": "Dasbor",
+    "signIn": "Masuk",
+    "host": "Menyelenggarakan acara",
+    "hostShort": "Tuan rumah",
+    "api": "API"
+  },
+  "footer": {
+    "tagline": "Berbagai acara terus berlangsung. Infrastruktur acara terbuka: acara gratis tetap gratis, acara berbayar dikenakan biaya 0,99% kepada penyelenggara.",
+    "credit": "Dipersembahkan oleh <inevent>InEvent</inevent>."
+  },
+  "og": {
+    "subtitle": "Infrastruktur acara terbuka. Publikasikan, daftar, hadiri."
+  },
+  "github": {
+    "label": "evnelo/evnelo di GitHub"
+  },
+  "captcha": {
+    "notice": "Situs ini dilindungi oleh reCAPTCHA dan Kebijakan Privasi Google <privacy></privacy> dan Persyaratan Layanan <terms></terms> berlaku."
+  },
+  "hero": {
+    "eyebrow": "Infrastruktur acara terbuka",
+    "title": "Dari klik pertama hingga gerbang depan.",
+    "lead": "Publikasikan acara, jual tiket, kirim pesan kepada peserta, dan jalankan proses check-in dalam satu platform terbuka, atau kelola sendiri di platform Anda.",
+    "pricing": "<b>0,99%</b> untuk tiket berbayar. Acara gratis tetap gratis. <br></br> <b>0%</b> jika Anda menyelenggarakan acara sendiri.",
+    "explore": "Jelajahi acara",
+    "scene": {
+      "steps": {
+        "discover": {
+          "label": "Menemukan",
+          "sub": "Temukan apa yang menggerakkanmu"
+        },
+        "register": {
+          "label": "Daftar",
+          "sub": "Hanya dengan beberapa klik saja"
+        },
+        "ticketing": {
+          "label": "Tiket",
+          "sub": "Jual tanpa batasan"
+        },
+        "checkin": {
+          "label": "Check-in",
+          "sub": "Cepat. Ramah. Fleksibel."
+        },
+        "attendance": {
+          "label": "Kehadiran",
+          "sub": "Orang-orang nyata. Dampak yang abadi."
+        }
+      },
+      "event": {
+        "category": "Musik",
+        "title": "Sesi Matahari Terbenam",
+        "date": "Sabtu, 24 Agustus 2024",
+        "place": "Taman Tepi Sungai"
+      },
+      "create": {
+        "title": "Buat acara Anda",
+        "publish": "Publikasikan acara"
+      },
+      "ticket": {
+        "title": "Tiket Masuk Umum",
+        "meta": "Sabtu, 24 Agustus 2024 <br></br> Taman Riverside"
+      },
+      "checkin": {
+        "title": "Peserta telah melakukan pendaftaran.",
+        "welcome": "Selamat datang!"
+      },
+      "attendance": {
+        "more": "+ {count}",
+        "meta": "orang-orang hadir"
+      },
+      "notes": {
+        "left": "Lebih banyak acara. <br></br> Dunia yang lebih terbuka.",
+        "right": "Peristiwa <br></br> menggerakkan orang."
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Evnelo: peristiwa, dalam gerakan",
+      "description": "Buka infrastruktur acara. Publikasikan acara, daftarkan peserta, jual atau berikan tiket gratis, kirim pesan ke komunitas Anda, dan lakukan check-in. 0,99% untuk tiket berbayar, acara gratis tetap gratis, atau selenggarakan sendiri tanpa biaya."
+    },
+    "pricing": {
+      "eyebrow": "Harga",
+      "title": "Biaya lebih rendah daripada platform lainnya.",
+      "body": "Sebagian besar platform mengambil 3 hingga 5 persen ditambah biaya untuk setiap tiket. Evnelo mengambil 0,99% untuk tiket berbayar dan tidak mengambil biaya apa pun untuk tiket gratis. Anda menghubungkan akun Stripe Anda sendiri, sehingga uang tiket langsung masuk ke Anda dan tidak pernah tersimpan di tempat kami; biaya pemrosesan Stripe berlaku sesuai tarif Stripe, dan Anda dapat membebankan biaya tersebut kepada pembeli atau menanggungnya sendiri.",
+      "plans": {
+        "free": {
+          "title": "Acara gratis",
+          "price": "$0",
+          "note": "Tidak ada biaya platform, tidak ada biaya per tiket, jumlah peserta tidak terbatas."
+        },
+        "paid": {
+          "title": "Acara berbayar",
+          "price": "0,99%",
+          "note": "Harga tiket akan dibebankan melalui akun Stripe Anda yang terhubung. Tiket seharga $25 akan dikenakan biaya 25 sen, ditambah biaya Stripe."
+        },
+        "selfHosted": {
+          "title": "Dihosting sendiri",
+          "price": "$0",
+          "note": "Sumber terbuka. Satu kontainer, MySQL Anda, kunci Stripe Anda sendiri. Tidak ada biaya platform, selamanya."
+        }
+      }
+    },
+    "flow": {
+      "eyebrow": "Bagaimana alurnya",
+      "title": "Segala sesuatu di antara “Saya ingin pergi” dan “Saya di sini”.",
+      "steps": {
+        "publish": {
+          "title": "Menerbitkan",
+          "text": "Halaman acara yang berisi sampul, jadwal, tempat, dan penyelenggara. Publik, tidak terdaftar, atau privat berdasarkan undangan."
+        },
+        "register": {
+          "title": "Daftar",
+          "text": "Tingkatan tiket, pertanyaan Anda sendiri, tamu dengan tiket mereka sendiri, kode diskon, daftar tunggu jika tiket habis terjual."
+        },
+        "pay": {
+          "title": "Bayar dan terima",
+          "text": "Kartu, Apple Pay, Google Pay, Pix. Tiket dengan kode QR, kartu akses digital, file kalender, konfirmasi melalui email dan SMS."
+        },
+        "checkin": {
+          "title": "Check-in",
+          "text": "Pemindai yang berjalan di browser ponsel apa pun, tetap berfungsi tanpa sinyal, dan menunjukkan ruangan yang terisi secara langsung."
+        }
+      }
+    },
+    "openSource": {
+      "eyebrow": "Sumber terbuka",
+      "title": "Acara Anda. Data Anda. Tumpukan Anda.",
+      "body": "Evnelo adalah perangkat lunak sumber terbuka di bawah lisensi Apache 2.0. Anda dapat menghostingnya sendiri dengan satu kontainer dan satu basis data MySQL, memasukkan kunci Stripe, Resend, dan Vonage Anda sendiri, dan menyimpan setiap catatan peserta di infrastruktur Anda sendiri. Produk yang sama, tanpa biaya platform.",
+      "points": {
+        "export": "Fitur ekspor dan penghapusan data peserta sudah terintegrasi.",
+        "providers": "Gunakan penyedia pembayaran, email, dan SMS Anda sendiri.",
+        "ops": "Migrasi, pemeriksaan kesehatan, dan pencadangan didokumentasikan.",
+        "migrate": "Migrasi ke atau dari edisi yang dihosting adalah migrasi basis data, bukan penulisan ulang."
+      },
+      "source": "Lihat sumbernya",
+      "apiReference": "Referensi API"
+    },
+    "developers": {
+      "eyebrow": "Untuk pengembang",
+      "title": "Dibangun untuk dibangun di atasnya.",
+      "points": {
+        "rest": "API REST untuk setiap sumber daya, dengan penulisan yang idempoten.",
+        "sdk": "SDK TypeScript yang dihasilkan dan server MCP untuk agen.",
+        "webhooks": "Webhook yang ditandatangani untuk pendaftaran, pembayaran, dan check-in.",
+        "openapi": "Dokumen OpenAPI dan dokumentasi interaktif di /api/v1/docs"
+      }
+    },
+    "upcoming": {
+      "eyebrow": "Segera terjadi",
+      "title": "Acara publik di Evnelo",
+      "all": "Semua acara"
+    },
+    "cta": {
+      "title": "Buat proses pengumpulan berjalan lancar.",
+      "body": "Buat acara pertama Anda dalam beberapa menit. Acara gratis tidak memerlukan apa pun; acara berbayar memerlukan akun Stripe Anda.",
+      "explore": "Lihat acara apa saja yang sedang berlangsung"
+    }
+  },
+  "discover": {
+    "meta": {
+      "description": "Acara publik dari setiap penyelenggara di Evnelo. Cari berdasarkan kota, topik, tanggal, harga, dan jarak."
+    },
+    "headline": {
+      "query": {
+        "none": "Peristiwa yang cocok dengan “ {q} ”",
+        "city": "Kejadian yang cocok dengan “ {q} ” di {city}",
+        "near": "Acara yang sesuai dengan “ {q} ” di dekat Anda",
+        "online": "Acara yang cocok dengan “ {q} ” secara online",
+        "inPerson": "Acara yang sesuai dengan “ {q} ” secara langsung"
+      },
+      "free": {
+        "none": "Acara gratis",
+        "city": "Acara gratis di {city}",
+        "near": "Acara gratis di dekat Anda",
+        "online": "Acara gratis daring",
+        "inPerson": "Acara gratis secara langsung"
+      },
+      "tag": {
+        "none": "{tag} peristiwa",
+        "city": "{tag} peristiwa dalam {city}",
+        "near": "{tag} acara di dekat Anda",
+        "online": "{tag} acara online",
+        "inPerson": "{tag} acara tatap muka"
+      },
+      "paid": {
+        "none": "Acara yang memerlukan tiket",
+        "city": "Acara berbayar di {city}",
+        "near": "Acara berbayar di dekat Anda",
+        "online": "Acara berbayar daring",
+        "inPerson": "Acara berbayar yang diadakan secara langsung"
+      },
+      "all": {
+        "none": "Acara apa saja yang sedang berlangsung",
+        "city": "Peristiwa di {city}",
+        "near": "Acara di dekat Anda",
+        "online": "Acara daring",
+        "inPerson": "Acara tatap muka"
+      }
+    },
+    "lead": "Diskusi, lokakarya, makan malam, dan pertemuan dari setiap penyelenggara di Evnelo.",
+    "jsonLdName": "Acara publik mendatang",
+    "count": {
+      "exact": "{count, plural, one {acara #} other {# peristiwa}}",
+      "more": "{count, plural, one {# + acara} other {# + peristiwa}}",
+      "exactFrom": "{count, plural, one {acara #} other {# peristiwa}} dari # {from}",
+      "moreFrom": "{count, plural, one {# + acara} other {# + peristiwa}} dari # {from}"
+    },
+    "format": {
+      "online": "On line",
+      "in_person": "Secara langsung",
+      "hybrid": "Hibrida"
+    },
+    "price": {
+      "paid": "Dibayar"
+    },
+    "date": {
+      "today": "Hari ini",
+      "week": "Minggu ini",
+      "month": "Bulan ini",
+      "custom": "Pilih tanggal"
+    },
+    "active": {
+      "showing": "Menampilkan",
+      "query": "“ {q} ”",
+      "customRange": "{from} sampai {to}",
+      "customDates": "Tanggal khusus",
+      "within": "Dalam radius {km} km",
+      "remove": "Hapus filter",
+      "clearAll": "Hapus semua"
+    },
+    "search": {
+      "events": "Cari acara",
+      "placeholder": "Cari acara, penyelenggara, dan tag.",
+      "city": "Kota",
+      "cityOption": "{city}, {country}",
+      "nearMe": "Di dekat saya",
+      "nearYou": "Di dekat Anda",
+      "unsupported": "Browser ini tidak dapat membagikan lokasi Anda. Coba gunakan nama kota sebagai gantinya.",
+      "blocked": "Lokasi diblokir. Gunakan filter berdasarkan kota sebagai gantinya."
+    },
+    "toolbar": {
+      "label": "Filter",
+      "km": "{km} km",
+      "anywhere": "Di mana saja",
+      "view": "Melihat",
+      "list": "Daftar",
+      "calendar": "Kalender"
+    },
+    "customDates": {
+      "from": "Dari",
+      "to": "Ke",
+      "apply": "Tanggal lamaran",
+      "clear": "Tanggal yang jelas"
+    },
+    "topics": "Topik",
+    "sections": {
+      "featured": "Unggulan",
+      "upcoming": "Mendatang"
+    },
+    "empty": {
+      "month": {
+        "title": "Tidak ada jadwal yang direncanakan bulan ini.",
+        "body": "Coba lagi bulan berikutnya atau bersihkan filter.",
+        "action": "Bulan depan"
+      },
+      "filtered": {
+        "title": "Tidak ada acara yang sesuai dengan filter ini.",
+        "body": "Coba rentang tanggal yang lebih luas atau hapus filter.",
+        "action": "Hapus filter"
+      },
+      "end": {
+        "title": "Anda telah sampai di akhir.",
+        "body": "Itulah semua acara publik mendatang yang tercantum di halaman ini.",
+        "action": "Kembali ke awal"
+      },
+      "none": {
+        "title": "Belum ada acara publik yang akan datang.",
+        "body": "Jadilah yang pertama menyelenggarakannya."
+      }
+    },
+    "pagination": {
+      "label": "Penomoran halaman",
+      "more": "Muat lebih banyak"
+    },
+    "card": {
+      "from": "dari {price}",
+      "underOneKm": "Kurang dari 1 km jauhnya",
+      "kmAway": "{km} km jauhnya"
+    },
+    "calendar": {
+      "eyebrow": "Kalender",
+      "changeMonth": "Bulan perubahan",
+      "goTo": "Pergi ke {month}",
+      "today": "Hari ini",
+      "dayCount": "{count, plural, one {acara #} other {# peristiwa}}",
+      "overflow": "+ {count} lainnya",
+      "timezoneNote": "Waktu ditampilkan dalam zona waktu masing-masing acara.",
+      "rowTitle": "{name} — {time}"
+    }
+  },
+  "org": {
+    "meta": {
+      "description": "Acara oleh {name}"
+    },
+    "eyebrow": "Penyelenggara",
+    "upcoming": "Mendatang",
+    "count": "{count, plural, one {acara #} other {# peristiwa}}",
+    "empty": {
+      "title": "Tidak ada jadwal yang direncanakan saat ini.",
+      "body": "Silakan periksa kembali dalam waktu singkat, atau lihat penyedia hosting lain yang sedang beroperasi.",
+      "action": "Lihat semua acara"
+    },
+    "past": "Peristiwa masa lalu"
+  },
+  "report": {
+    "meta": {
+      "title": "Laporkan suatu kejadian"
+    },
+    "eyebrow": "Laporan",
+    "title": "Laporkan suatu kejadian",
+    "reasons": {
+      "spam": "Spam atau menyesatkan",
+      "scam": "Penipuan atau kecurangan",
+      "inappropriate": "Konten yang tidak pantas",
+      "copyright": "Hak cipta atau merek dagang",
+      "other": "Sesuatu yang lain"
+    },
+    "notFound": "Acara tersebut tidak dapat ditemukan.",
+    "openFromEvent": "Buka halaman ini dari suatu acara untuk melaporkannya.",
+    "sent": "Terima kasih. Laporan Anda tentang <b>{name}</b> telah dicatat.",
+    "sentAndForwarded": "Terima kasih. Laporan Anda tentang <b>{name}</b> telah dicatat dan dikirim ke operator instansi ini.",
+    "reporting": "Melaporkan <b>{name}</b> oleh {org}. Laporan dikirim ke orang yang menjalankan instance Evnelo ini, bukan ke host.",
+    "errors": {
+      "limited": "Terlalu banyak laporan dari koneksi Anda. Coba lagi nanti.",
+      "invalid": "Periksa formulir dan coba lagi."
+    },
+    "form": {
+      "reason": "Alasan",
+      "details": "Detail",
+      "optional": "(opsional)",
+      "email": "Email Anda",
+      "optionalFollowUp": "(opsional, jika kami boleh menindaklanjuti)",
+      "submit": "Kirim laporan"
+    },
+    "back": "Kembali ke acara tersebut"
+  },
+  "notFound": {
+    "meta": {
+      "title": "Halaman tidak ditemukan"
+    },
+    "eyebrow": "404",
+    "title": "Tidak ada apa-apa di sini",
+    "body": "Tautan tersebut mungkin sudah lama, acara tersebut mungkin sudah dihapus, atau alamatnya mengandung kesalahan ketik.",
+    "action": "Telusuri acara publik"
+  },
+  "error": {
+    "title": "Terjadi kesalahan.",
+    "body": "Halaman mengalami kesalahan. Mencoba lagi biasanya berhasil; jika terus terjadi, penyedia hosting telah diberi tahu.",
+    "reference": "Referensi {digest}",
+    "home": "Pulang"
+  }
+}

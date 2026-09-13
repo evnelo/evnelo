@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Camera, CameraOff, Search, Undo2, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,16 +23,17 @@ type Outcome = "ok" | "already" | "not_found" | "revoked" | "not_confirmed" | "w
 type Result = { outcome: Outcome; name?: string; ticketType?: string; hostName?: string | null; checkedInAt?: string | null; ticketId?: string; at: number };
 type Queued = { ticketId: string; at: string };
 
-const OUTCOME: Record<Outcome, { title: string; tone: "ok" | "warn" | "bad" }> = {
-  ok: { title: "Checked in", tone: "ok" },
-  offline_ok: { title: "Checked in (offline, will sync)", tone: "ok" },
-  already: { title: "Already checked in", tone: "warn" },
-  not_confirmed: { title: "Registration not confirmed", tone: "bad" },
-  revoked: { title: "Ticket cancelled or refunded", tone: "bad" },
-  wrong_event: { title: "Ticket is for another event", tone: "bad" },
-  not_found: { title: "Not a valid ticket", tone: "bad" },
-  offline_unknown: { title: "Unknown ticket (offline)", tone: "bad" },
-  error: { title: "Could not check in", tone: "bad" },
+/** Titles live in messages under `scanner.outcome.{outcome}`; only the tone is fixed here. */
+const OUTCOME_TONE: Record<Outcome, "ok" | "warn" | "bad"> = {
+  ok: "ok",
+  offline_ok: "ok",
+  already: "warn",
+  not_confirmed: "bad",
+  revoked: "bad",
+  wrong_event: "bad",
+  not_found: "bad",
+  offline_unknown: "bad",
+  error: "bad",
 };
 
 /** Sunlight legibility: a filled banner, not a tint. The band repeats the verdict as pure colour. */
@@ -50,9 +52,12 @@ async function sha256Hex(text: string) {
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-const time = (iso: string | null | undefined) => (iso ? new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(new Date(iso)) : "");
+const time = (iso: string | null | undefined, locale: string) => (iso ? new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit" }).format(new Date(iso)) : "");
 
 export function CheckInScanner({ eventId, initial }: { eventId: string; initial: Manifest }) {
+  const t = useTranslations("manage");
+  const tc = useTranslations("common");
+  const locale = useLocale();
   const [manifest, setManifest] = useState<Manifest>(initial);
   const [online, setOnline] = useState(true);
   const [queue, setQueue] = useState<Queued[]>([]);
@@ -97,9 +102,9 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
   const applyServer = (data: { stats?: Stats; recent?: Recent[] }) => setManifest((m) => ({ ...m, stats: data.stats ?? m.stats, recent: data.recent ?? m.recent }));
   // online: the server response carries authoritative stats; offline: adjust the counter locally
   const markLocal = (ticketId: string, checkedInAt: string | null, adjustStats = false) => setManifest((m) => {
-    const wasIn = m.tickets.find((t) => t.id === ticketId)?.c;
+    const wasIn = m.tickets.find((tk) => tk.id === ticketId)?.c;
     const delta = adjustStats ? (checkedInAt ? 1 : 0) - (wasIn ? 1 : 0) : 0;
-    return { ...m, stats: { ...m.stats, checkedIn: m.stats.checkedIn + delta }, tickets: m.tickets.map((t) => (t.id === ticketId ? { ...t, c: checkedInAt } : t)) };
+    return { ...m, stats: { ...m.stats, checkedIn: m.stats.checkedIn + delta }, tickets: m.tickets.map((tk) => (tk.id === ticketId ? { ...tk, c: checkedInAt } : tk)) };
   });
 
   // replay queued offline check-ins
@@ -121,7 +126,7 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
   useEffect(() => { if (online) void sync().then(refresh); }, [online, sync, refresh]);
 
   const feedback = (tone: "ok" | "warn" | "bad") => { try { navigator.vibrate?.(tone === "ok" ? 80 : tone === "warn" ? [60, 60, 60] : [200, 80, 200]); } catch { /* unsupported */ } };
-  const show = (r: Omit<Result, "at">) => { setResult({ ...r, at: Date.now() }); feedback(OUTCOME[r.outcome].tone); };
+  const show = (r: Omit<Result, "at">) => { setResult({ ...r, at: Date.now() }); feedback(OUTCOME_TONE[r.outcome]); };
 
   const checkIn = useCallback(async (ref: { token?: string; ticketId?: string }, method: "scan" | "manual") => {
     setBusy(true);
@@ -136,7 +141,7 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
     } catch {
       // no network: validate against the manifest and queue the check-in
       setOnline(false);
-      const found = ref.ticketId ? manifest.tickets.find((t) => t.id === ref.ticketId) : manifest.tickets.find((t) => t.h === lastScan.current.hash);
+      const found = ref.ticketId ? manifest.tickets.find((tk) => tk.id === ref.ticketId) : manifest.tickets.find((tk) => tk.h === lastScan.current.hash);
       if (!found) { show({ outcome: "offline_unknown" }); return; }
       if (found.c) { show({ outcome: "already", name: found.n, ticketType: found.t, hostName: found.g, checkedInAt: found.c, ticketId: found.id }); return; }
       const at = new Date().toISOString();
@@ -193,24 +198,25 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
       try {
         jsQR = (await import("jsqr")).default;
         stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
-        if (stopped) { stream.getTracks().forEach((t) => t.stop()); return; }
+        if (stopped) { stream.getTracks().forEach((tr) => tr.stop()); return; }
         video.srcObject = stream;
         await video.play();
         setCamera("on");
         raf = requestAnimationFrame(tick);
       } catch { setCamera("denied"); }
     })();
-    return () => { stopped = true; cancelAnimationFrame(raf); stream?.getTracks().forEach((t) => t.stop()); if (video) video.srcObject = null; };
+    return () => { stopped = true; cancelAnimationFrame(raf); stream?.getTracks().forEach((tr) => tr.stop()); if (video) video.srcObject = null; };
   }, [mode, onToken]);
 
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return manifest.tickets.slice(0, 50);
-    return manifest.tickets.filter((t) => t.n.toLowerCase().includes(q) || t.e.toLowerCase().includes(q)).slice(0, 50);
+    return manifest.tickets.filter((tk) => tk.n.toLowerCase().includes(q) || tk.e.toLowerCase().includes(q)).slice(0, 50);
   }, [manifest.tickets, query]);
 
   const pct = manifest.stats.confirmed ? Math.round((manifest.stats.checkedIn / manifest.stats.confirmed) * 100) : 0;
-  const tone = result ? OUTCOME[result.outcome].tone : null;
+  const tone = result ? OUTCOME_TONE[result.outcome] : null;
+  const updatedAt = time(manifest.generatedAt, locale);
 
   return (
     <div className="space-y-4">
@@ -218,20 +224,20 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
       <div className="rounded-xl border border-border/80 bg-card p-4 shadow-card sm:p-5">
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
           <div className="min-w-0">
-            <p className="eyebrow">Checked in</p>
+            <p className="eyebrow">{t("scanner.checkedIn")}</p>
             <p className="mt-1 flex items-baseline gap-2 font-display leading-none">
               <span className="text-5xl tabular-nums">{manifest.stats.checkedIn}</span>
-              <span className="text-xl tabular-nums text-muted-foreground">/ {manifest.stats.confirmed}</span>
+              <span className="text-xl tabular-nums text-muted-foreground">{t("scanner.ofConfirmed", { confirmed: manifest.stats.confirmed })}</span>
             </p>
           </div>
-          <div className="flex shrink-0 rounded-full border border-border/80 bg-muted/50 p-1" role="group" aria-label="Check-in mode">
+          <div className="flex shrink-0 rounded-full border border-border/80 bg-muted/50 p-1" role="group" aria-label={t("scanner.mode")}>
             <button
               type="button"
               onClick={() => setMode("scan")}
               aria-pressed={mode === "scan"}
               className={cn("press inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm", mode === "scan" ? "bg-card font-medium text-foreground shadow-card" : "text-muted-foreground")}
             >
-              <Camera className="size-4" /> Scan
+              <Camera className="size-4" /> {t("scanner.scan")}
             </button>
             <button
               type="button"
@@ -239,7 +245,7 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
               aria-pressed={mode === "search"}
               className={cn("press inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm", mode === "search" ? "bg-card font-medium text-foreground shadow-card" : "text-muted-foreground")}
             >
-              <Search className="size-4" /> Search
+              <Search className="size-4" /> {tc("actions.search")}
             </button>
           </div>
         </div>
@@ -247,8 +253,8 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
           <div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: `${pct}%` }} />
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs text-muted-foreground">
-          <span className="tabular-nums">{pct}% of confirmed tickets · updated {time(manifest.generatedAt)}{queue.length ? ` · ${queue.length} waiting to sync` : ""}</span>
-          {!online && <span className="inline-flex items-center gap-1 rounded-full bg-warning px-2 py-1 font-medium text-warning-foreground"><WifiOff className="size-3.5" /> Offline: scans are saved and synced later</span>}
+          <span className="tabular-nums">{queue.length ? t("scanner.progressQueued", { pct, time: updatedAt, count: queue.length }) : t("scanner.progress", { pct, time: updatedAt })}</span>
+          {!online && <span className="inline-flex items-center gap-1 rounded-full bg-warning px-2 py-1 font-medium text-warning-foreground"><WifiOff className="size-3.5" /> {t("scanner.offline")}</span>}
         </div>
       </div>
 
@@ -257,18 +263,18 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
           <div className={cn("h-2 w-full", TONE[tone ?? "bad"].band)} aria-hidden />
           <div className="flex items-start justify-between gap-3 p-4 sm:p-5">
             <div className="min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] opacity-80">{OUTCOME[result.outcome].title}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] opacity-80">{t(`scanner.outcome.${result.outcome}`)}</p>
               {result.name && result.outcome !== "error" && (
                 <p className="mt-1 font-display text-3xl leading-tight">
                   {result.name}
                 </p>
               )}
-              {result.hostName && <p className="text-sm opacity-80">Guest of {result.hostName}</p>}
-              {result.ticketType && <p className="mt-1 text-base opacity-90">{result.ticketType}{result.outcome === "already" && result.checkedInAt ? ` · in at ${time(result.checkedInAt)}` : ""}</p>}
+              {result.hostName && <p className="text-sm opacity-80">{t("scanner.guestOf", { name: result.hostName })}</p>}
+              {result.ticketType && <p className="mt-1 text-base opacity-90">{result.outcome === "already" && result.checkedInAt ? t("scanner.ticketTypeInAt", { ticketType: result.ticketType, time: time(result.checkedInAt, locale) }) : result.ticketType}</p>}
               {result.outcome === "error" && result.name && <p className="mt-1 text-sm opacity-80">{result.name}</p>}
             </div>
             {(result.outcome === "ok" || result.outcome === "already") && result.ticketId && (
-              <Button variant="outline" className={cn("shrink-0", TONE[tone ?? "bad"].button)} disabled={busy || !online} onClick={() => undo(result.ticketId!)}><Undo2 className="size-4" /> Undo</Button>
+              <Button variant="outline" className={cn("shrink-0", TONE[tone ?? "bad"].button)} disabled={busy || !online} onClick={() => undo(result.ticketId!)}><Undo2 className="size-4 rtl:-scale-x-100" /> {t("scanner.undo")}</Button>
             )}
           </div>
         </div>
@@ -281,44 +287,44 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
             {camera !== "on" && (
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center text-sm text-white/90">
                 <CameraOff className="size-7" strokeWidth={1.5} />
-                {camera === "denied" ? "Camera access was blocked. Allow the camera for this site, or use Search to check people in by name." : camera === "unsupported" ? "This browser can't use the camera. Use Search, or paste a ticket link below." : "Starting camera…"}
+                {camera === "denied" ? t("scanner.camera.denied") : camera === "unsupported" ? t("scanner.camera.unsupported") : t("scanner.camera.starting")}
               </div>
             )}
             {camera === "on" && (
               <>
-                {/* dim everything outside the target square and mark its corners */}
+                {/* dim everything outside the target square and mark its corners; physical geometry on purpose, the camera frame has no reading direction */}
                 <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-[0_0_0_100vmax_rgb(0_0_0/0.45)]">
                   {["left-0 top-0 border-l-4 border-t-4 rounded-tl-2xl", "right-0 top-0 border-r-4 border-t-4 rounded-tr-2xl", "left-0 bottom-0 border-l-4 border-b-4 rounded-bl-2xl", "right-0 bottom-0 border-r-4 border-b-4 rounded-br-2xl"].map((c) => (
                     <span key={c} className={cn("absolute size-9 border-white", c)} />
                   ))}
                 </div>
-                <p className="pointer-events-none absolute inset-x-0 bottom-4 text-center text-sm font-medium text-white drop-shadow">Point at the QR code on the ticket</p>
+                <p className="pointer-events-none absolute inset-x-0 bottom-4 text-center text-sm font-medium text-white drop-shadow">{t("scanner.camera.point")}</p>
               </>
             )}
           </div>
           <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (manual.trim()) { void onToken(manual, "manual"); setManual(""); } }}>
-            <Input value={manual} onChange={(e) => setManual(e.target.value)} placeholder="Or paste a ticket link / code" aria-label="Ticket link or code" className="h-12 text-base" />
-            <Button type="submit" variant="outline" className="h-12 shrink-0 px-5" pending={busy}>Check in</Button>
+            <Input value={manual} onChange={(e) => setManual(e.target.value)} placeholder={t("scanner.manualPlaceholder")} aria-label={t("scanner.manualLabel")} className="h-12 text-base" />
+            <Button type="submit" variant="outline" className="h-12 shrink-0 px-5" pending={busy}>{t("scanner.checkIn")}</Button>
           </form>
         </div>
       ) : (
         <div className="space-y-3">
           <div className="relative">
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" aria-hidden />
-            <Input autoFocus value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by name or email" aria-label="Search attendees" className="h-12 pl-11 text-base" />
+            <Search className="pointer-events-none absolute start-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" aria-hidden />
+            <Input autoFocus value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t("scanner.searchPlaceholder")} aria-label={t("scanner.searchLabel")} className="h-12 ps-11 text-base" />
           </div>
           <ul className="overflow-hidden rounded-xl border border-border/80 bg-card shadow-card">
-            {matches.length === 0 && <li className="p-6 text-center text-sm text-muted-foreground">No confirmed attendees match.</li>}
-            {matches.map((t, i) => (
-              <li key={t.id} className={cn("flex min-h-14 items-center justify-between gap-3 px-3 py-2", i > 0 && "hairline")}>
+            {matches.length === 0 && <li className="p-6 text-center text-sm text-muted-foreground">{t("scanner.noMatches")}</li>}
+            {matches.map((tk, i) => (
+              <li key={tk.id} className={cn("flex min-h-14 items-center justify-between gap-3 px-3 py-2", i > 0 && "hairline")}>
                 <div className="min-w-0">
-                  <p className="truncate font-medium">{t.n}{t.g ? <span className="text-xs text-muted-foreground"> · guest of {t.g}</span> : null}</p>
-                  <p className="truncate text-xs text-muted-foreground">{t.t} · {t.e}{t.c ? ` · in at ${time(t.c)}` : ""}</p>
+                  <p className="truncate font-medium">{tk.n}{tk.g ? <span className="text-xs text-muted-foreground"> {t("scanner.listGuestOf", { name: tk.g })}</span> : null}</p>
+                  <p className="truncate text-xs text-muted-foreground">{tk.c ? t("scanner.listDetailInAt", { ticketType: tk.t, email: tk.e, time: time(tk.c, locale) }) : t("scanner.listDetail", { ticketType: tk.t, email: tk.e })}</p>
                 </div>
-                {t.c ? (
-                  <Button size="sm" variant="ghost" className="h-10 shrink-0 px-3 text-muted-foreground" disabled={busy || !online} onClick={() => undo(t.id)}><Undo2 className="size-4" /> Undo</Button>
+                {tk.c ? (
+                  <Button size="sm" variant="ghost" className="h-10 shrink-0 px-3 text-muted-foreground" disabled={busy || !online} onClick={() => undo(tk.id)}><Undo2 className="size-4 rtl:-scale-x-100" /> {t("scanner.undo")}</Button>
                 ) : (
-                  <Button className="h-10 w-28 shrink-0" pending={busy} onClick={() => checkIn({ ticketId: t.id }, "manual")}>Check in</Button>
+                  <Button className="h-10 w-28 shrink-0" pending={busy} onClick={() => checkIn({ ticketId: tk.id }, "manual")}>{t("scanner.checkIn")}</Button>
                 )}
               </li>
             ))}
@@ -328,12 +334,12 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
 
       {manifest.recent.length > 0 && (
         <div>
-          <h2 className="eyebrow">Recent</h2>
+          <h2 className="eyebrow">{t("scanner.recent")}</h2>
           <ul className="mt-2 overflow-hidden rounded-xl border border-border/80 bg-card text-sm shadow-card">
             {manifest.recent.slice(0, 10).map((r, i) => (
               <li key={`${r.ticketId}-${r.at}`} className={cn("flex min-h-12 items-center justify-between gap-3 px-3 py-2", i > 0 && "hairline")}>
-                <span className="min-w-0 truncate">{r.name} <span className="text-muted-foreground">· {r.ticketTypeName} · {time(r.at)}{r.method === "manual" ? " · manual" : ""}</span></span>
-                <button type="button" className="press shrink-0 rounded-md px-2 py-1 text-xs text-muted-foreground underline decoration-dotted underline-offset-4 disabled:opacity-50" disabled={busy || !online} onClick={() => undo(r.ticketId)}>Undo</button>
+                <span className="min-w-0 truncate">{r.name} <span className="text-muted-foreground">{r.method === "manual" ? t("scanner.recentDetailManual", { ticketType: r.ticketTypeName, time: time(r.at, locale) }) : t("scanner.recentDetail", { ticketType: r.ticketTypeName, time: time(r.at, locale) })}</span></span>
+                <button type="button" className="press shrink-0 rounded-md px-2 py-1 text-xs text-muted-foreground underline decoration-dotted underline-offset-4 disabled:opacity-50" disabled={busy || !online} onClick={() => undo(r.ticketId)}>{t("scanner.undo")}</button>
               </li>
             ))}
           </ul>

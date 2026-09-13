@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { ClipboardList, Clock3, Gauge, Mail, Receipt, ScanLine, SlidersHorizontal, Ticket, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -9,30 +10,32 @@ type Tab = { href: string; label: string; icon: typeof Gauge; count?: number; ab
 
 export function EventNav({ id, counts }: { id: string; counts?: { attendees?: number; waitlist?: number } }) {
   const path = usePathname();
+  const t = useTranslations("dashboard");
+  const tc = useTranslations("common");
   const base = `/dashboard/events/${id}`;
   const tabs: Tab[] = [
-    { href: "", label: "Overview", icon: Gauge },
-    { href: "/edit", label: "Edit", icon: SlidersHorizontal },
-    { href: "/tickets", label: "Tickets", icon: Ticket },
-    { href: "/form", label: "Form", icon: ClipboardList },
-    { href: "/invites", label: "Invites", icon: Mail },
-    { href: "/attendees", label: "Attendees", icon: Users, count: counts?.attendees },
-    { href: "/waitlist", label: "Waitlist", icon: Clock3, count: counts?.waitlist },
-    { href: "/orders", label: "Orders", icon: Receipt },
-    { href: "/checkin", label: "Check-in", icon: ScanLine, absolute: (eventId) => `/dashboard/checkin/${eventId}` },
+    { href: "", label: t("event.nav.overview"), icon: Gauge },
+    { href: "/edit", label: tc("actions.edit"), icon: SlidersHorizontal },
+    { href: "/tickets", label: t("event.nav.tickets"), icon: Ticket },
+    { href: "/form", label: t("event.nav.form"), icon: ClipboardList },
+    { href: "/invites", label: t("event.nav.invites"), icon: Mail },
+    { href: "/attendees", label: t("event.nav.attendees"), icon: Users, count: counts?.attendees },
+    { href: "/waitlist", label: t("event.nav.waitlist"), icon: Clock3, count: counts?.waitlist },
+    { href: "/orders", label: t("event.nav.orders"), icon: Receipt },
+    { href: "/checkin", label: t("event.nav.checkin"), icon: ScanLine, absolute: (eventId) => `/dashboard/checkin/${eventId}` },
   ];
   return (
     // bleeds to the gutter on a phone so the scroll runs edge to edge, aligns with the page from sm up
     <nav className="no-scrollbar -mx-4 mt-6 overflow-x-auto overflow-y-hidden px-4 sm:mx-0 sm:px-0">
       {/* the rule lives on the scrolling row so the active tab's border overlaps it without overflowing the container */}
       <div className="flex min-w-full w-max gap-0.5 border-b border-border/80">
-        {tabs.map((t) => {
-          const href = t.absolute ? t.absolute(id) : base + t.href;
-          const active = t.href === "" ? path === base : path.startsWith(href);
-          const Icon = t.icon;
+        {tabs.map((tab) => {
+          const href = tab.absolute ? tab.absolute(id) : base + tab.href;
+          const active = tab.href === "" ? path === base : path.startsWith(href);
+          const Icon = tab.icon;
           return (
             <Link
-              key={t.href}
+              key={tab.href}
               href={href}
               aria-current={active ? "page" : undefined}
               className={cn(
@@ -41,9 +44,9 @@ export function EventNav({ id, counts }: { id: string; counts?: { attendees?: nu
               )}
             >
               <Icon className={cn("size-4", active ? "text-primary" : "text-muted-foreground")} aria-hidden />
-              {t.label}
-              {t.count != null && t.count > 0 && (
-                <span className={cn("rounded-full px-1.5 py-0.5 text-[11px] tabular-nums leading-none", active ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground")}>{t.count}</span>
+              {tab.label}
+              {tab.count != null && tab.count > 0 && (
+                <span className={cn("rounded-full px-1.5 py-0.5 text-[11px] tabular-nums leading-none", active ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground")}>{tab.count}</span>
               )}
             </Link>
           );

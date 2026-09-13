@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "Отправлено {orgName} через <link>Evnelo</link>. Это транзакционное сообщение о мероприятии, на которое вы зарегистрировались.",
+    "when": "Когда",
+    "where": "Где",
+    "online": "Онлайн",
+    "joinOnline": "Присоединиться онлайн →",
+    "admitOne": "Пригласить одного",
+    "ticketTypeGuestOf": "{ticketType}, гость {host}",
+    "openTicket": "Открыть тикет",
+    "qrAlt": "QR-код билета",
+    "scanAtDoor": "Просканируйте на входе"
+  },
+  "reminderWhen": {
+    "tomorrow": "завтра",
+    "days": "в {count, plural, one {# день} other {# дней}}",
+    "hours": "в {count, plural, one {# часов} other {# часов}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {Ваш билет на {eventName}} other {Ваши # билетов на {eventName}}}",
+    "preview": "Вас ждет {eventName}. {count, plural, one {Ваш билет} other {Ваши билеты}} внутри.",
+    "title": "Вы приняты.",
+    "intro": "{count, plural, one {Вот ваш билет на<link>{eventName}</link>.} other {Вот ваши # билеты на<link>{eventName}</link>.}}",
+    "showQr": "Покажите QR-код на входе, на телефоне или в распечатанном виде.",
+    "addToCalendar": "Добавить в календарь",
+    "questions": "Есть вопросы о мероприятии? Ответьте на это письмо, чтобы связаться с {orgName}.",
+    "cta": "Подробности мероприятия смотрите здесь."
+  },
+  "approvalPending": {
+    "subject": "Получен запрос на {eventName}",
+    "preview": "{orgName} рассматривает вашу заявку на вступление в {eventName}.",
+    "title": "Запрос получен",
+    "intro": "Привет {name}, {orgName} проверяет каждую регистрацию для <link>{eventName}</link>.",
+    "partySize": "Ваш запрос охватывает {count} человек.",
+    "approved": "{count, plural, one {Вы получите билет по электронной почте, как только он будет одобрен.} other {Билеты вы получите по электронной почте, как только заявка будет одобрена.}}",
+    "nothingToDo": "Пока ничего не нужно делать. Если ваши планы изменятся, просто проигнорируйте это письмо."
+  },
+  "registrationRejected": {
+    "subject": "Обновление информации по вашему запросу на {eventName}",
+    "preview": "{orgName} не удалось одобрить вашу регистрацию для {eventName}.",
+    "title": "Мы не смогли вас принять.",
+    "intro": "Привет {name}, {orgName} не удалось одобрить вашу регистрацию на <link>{eventName}</link>.",
+    "refund": "Любая произведенная оплата будет возвращена на вашу карту.",
+    "noPayment": "Оплата не была произведена.",
+    "questions": "Есть вопросы? Ответьте на это письмо, чтобы связаться с организатором."
+  },
+  "refundIssued": {
+    "subject": "Возврат {amount} за {eventName}",
+    "preview": "{amount} возвращается на вашу карту.",
+    "title": "Возврат средств произведен.",
+    "intro": "Привет {name}, {orgName} вернул <strong>{amount}</strong> за ваш заказ на <link>{eventName}</link>.",
+    "cancelled": "{count, plural, one {Ваш билет аннулирован и больше не будет сканироваться.} other {Все # билетов в заказе аннулированы и больше не будут сканироваться.}}",
+    "timing": "Возврат средств обычно поступает на вашу карту в течение 5-10 рабочих дней, в зависимости от вашего банка.",
+    "receipt": "Это письмо является подтверждением получения."
+  },
+  "eventReminder": {
+    "subject": "{eventName} равно {when}",
+    "preview": "{eventName} равно {when}. {where}.",
+    "title": "{eventName} равно {when}",
+    "tickets": "{count, plural, one {Ваш билет готов к сканированию:} other {Ваши билеты готовы к сканированию:}}",
+    "cta": "Подробная информация о мероприятии и как добраться.",
+    "stopPrompt": "Не хотите получать напоминания об этом событии? <link>Отключить напоминания</link>.",
+    "stillGetThrough": "Подтверждения и изменения по-прежнему проходят."
+  },
+  "eventUpdated": {
+    "subjectBoth": "Новое время и место для {eventName}",
+    "subjectSchedule": "Новое время для {eventName}",
+    "subjectVenue": "Новое местоположение для {eventName}",
+    "previewBoth": "{eventName} изменил время и место.",
+    "previewSchedule": "{eventName} изменил время.",
+    "previewVenue": "{eventName} изменил это место.",
+    "title": "{eventName} изменился",
+    "introBoth": "Привет {name}, {orgName} обновил время и место для <link>{eventName}</link>.",
+    "introSchedule": "Привет {name}, {orgName} обновил время для <link>{eventName}</link>.",
+    "introVenue": "Привет {name}, {orgName} обновил информацию о месте для <link>{eventName}</link>.",
+    "newDetails": "Вот новые подробности.",
+    "staysValid": "Ваш билет остается действительным.",
+    "cta": "Обновить мой календарь"
+  },
+  "eventCancelled": {
+    "subject": "{eventName} отменен",
+    "preview": "{eventName} не состоится.",
+    "title": "{eventName} отменен",
+    "intro": "Привет {name}, {orgName} отменил <strong>{eventName}</strong>, который был запланирован на {when}.",
+    "noLongerValid": "Ваш билет больше недействителен.",
+    "refund": "Ваш платеж будет возвращен на карту, которую вы использовали; ожидайте отдельное электронное письмо, когда операция будет завершена.",
+    "noPayment": "Оплата не была произведена, поэтому возврат средств не предусмотрен.",
+    "questions": "Есть вопросы? Ответьте на это письмо, чтобы связаться с организатором."
+  },
+  "eventInvite": {
+    "subject": "Вы приглашены: {eventName}",
+    "preview": "{orgName} пригласил вас в {eventName}.",
+    "title": "Вы приглашены",
+    "intro": "<strong>{orgName}</strong> приглашает вас на частное мероприятие.",
+    "cta": "Посмотреть мероприятие и зарегистрироваться",
+    "personal": "Эта ссылка является персональной для вас.",
+    "personalExpires": "Эта ссылка является персональной и действительна до {expires}.",
+    "registerWith": "Зарегистрируйтесь, используя этот адрес электронной почты."
+  },
+  "orgInvite": {
+    "subject": "Вас приглашают на {orgName} на Evnelo",
+    "preview": "Присоединить {orgName} как {role}.",
+    "title": "Присоединиться {orgName}",
+    "invitedBy": "{invitedBy} пригласил вас помочь в организации мероприятий для <strong>{orgName}</strong> в качестве <strong>{role}</strong>.",
+    "invited": "Вас пригласили помочь в организации мероприятий для <strong>{orgName}</strong> в качестве <strong>{role}</strong>.",
+    "cta": "Принять приглашение",
+    "validity": "Ссылка действительна в течение 14 дней и работает только с тем адресом электронной почты, на который она была отправлена."
+  },
+  "magicLink": {
+    "subject": "Войдите в {host}",
+    "preview": "Ваша ссылка для входа в систему для {host}",
+    "title": "Войти",
+    "intro": "Нажмите кнопку, чтобы войти в {host}.",
+    "expiry": "Ссылка срабатывает один раз и истекает через 15 минут.",
+    "cta": "Войдите в {host}",
+    "ignore": "Если вы не запрашивали это, можете проигнорировать это письмо.",
+    "nobody": "Без ссылки войти в систему невозможно."
+  },
+  "waitlistJoined": {
+    "subject": "Вы в списке ожидания на {eventName}",
+    "preview": "Вы под номером {position} в списке ожидания.",
+    "title": "Вы в списке ожидания.",
+    "full": "<strong>{eventName}</strong> сейчас полностью занято.",
+    "position": "Вы стоите под номером <strong>{position}</strong> в очереди.",
+    "offer": "Если появится свободное место, мы вышлем вам ссылку по электронной почте, чтобы вы могли его забронировать; ссылка будет действительна в течение 24 часов.",
+    "cta": "Просмотреть событие"
+  },
+  "waitlistOffer": {
+    "subject": "Освободилось место: {eventName}",
+    "preview": "Займите свое место до {deadline}.",
+    "title": "Освободилось место",
+    "reserved": "Хорошие новости: для вас зарезервировано место <strong>{ticketType}</strong> для <strong>{eventName}</strong>.",
+    "claimBefore": "Заберите его до <strong>{deadline}</strong>, после этого он перейдет к следующему человеку в очереди.",
+    "cta": "Займите моё место",
+    "registerWith": "Зарегистрируйтесь, используя этот адрес электронной почты.",
+    "personal": "Эта ссылка является персональной для вас."
+  },
+  "abuseReport": {
+    "subject": "[Отчет] {reason}: {eventName}",
+    "preview": "Кто-то сообщил {eventName}.",
+    "title": "Сообщенное событие",
+    "intro": "<strong>{eventName}</strong> по {orgName} было сообщено для <strong>{reason}</strong>.",
+    "reporter": "Репортер: {email}",
+    "noReporter": "Журналист не оставил электронного письма.",
+    "cta": "Открыть мероприятие"
+  },
+  "sms": {
+    "confirmation": "Вы зарегистрировались на {event}. Ваш билет: {ticketUrl}",
+    "reminder": "{event} равно {when}. Билет: {ticketUrl}",
+    "updated": "{event} изменил время или место проведения. Подробности: {url}",
+    "cancelled": "{event} отменено. Все внесенные платежи будут возвращены."
+  }
+}

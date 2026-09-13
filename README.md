@@ -152,7 +152,7 @@ pnpm --filter @evnelo/web translate          # fill in what is missing or change
 pnpm --filter @evnelo/web translate:check    # CI: fail if any language is behind English
 ```
 
-The script only sends strings that are new or whose English changed (tracked in `messages/.translated.json`), keeps ICU placeholders and rich-text tags intact, and drops keys removed from English. To hand-correct a machine translation, edit the target file; the correction survives until the English source changes. Languages are listed in `apps/web/i18n/locales.ts`; adding one is a line there plus a run of the script.
+The script only sends strings that are new or whose English changed (tracked in `messages/.translated.json`). Plural frames and rich-text tags are rebuilt in code rather than sent to the engine, every result is checked against its English source with a real ICU parser, anything that comes back malformed is retried and then left in English rather than shipped broken. `apps/web/i18n/messages.test.ts` enforces the same check on every file in the repository. To hand-correct a machine translation, edit the target file; the correction survives until the English source changes. Languages are listed in `apps/web/i18n/locales.ts`; adding one is a line there plus a run of the script.
 
 ## Testing
 

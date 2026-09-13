@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "{orgName}から<link>Evnelo</link>経由で送信されました。これは、あなたが登録したイベントに関するトランザクションメッセージです。",
+    "when": "いつ",
+    "where": "どこ",
+    "online": "オンライン",
+    "joinOnline": "オンラインで参加する →",
+    "admitOne": "1人入場可",
+    "ticketTypeGuestOf": "{ticketType} 、 {host}のゲスト",
+    "openTicket": "オープンチケット",
+    "qrAlt": "チケットのQRコード",
+    "scanAtDoor": "ドアでスキャンしてください"
+  },
+  "reminderWhen": {
+    "tomorrow": "明日",
+    "days": "で {count, plural, one {#日} other {#日}}",
+    "hours": "で {count, plural, one {#時間} other {#時間}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {{eventName}のチケット} other {{eventName}の#のチケット}}",
+    "preview": "あなたは{eventName}報酬を受け取ります。 {count, plural, one {あなたのチケットは} other {あなたのチケットは}} 内部。",
+    "title": "合格です。",
+    "intro": "{count, plural, one {こちらがチケットです<link>{eventName}</link> 。} other {こちらがあなたの#チケットです<link>{eventName}</link> 。}}",
+    "showQr": "スマートフォンの画面、または印刷したQRコードをドアで提示してください。",
+    "addToCalendar": "カレンダーに追加",
+    "questions": "イベントに関するご質問は、このメールに返信して{orgName}までご連絡ください。",
+    "cta": "イベントの詳細をご覧ください"
+  },
+  "approvalPending": {
+    "subject": "{eventName}のリクエストを受信しました",
+    "preview": "{orgName}は、 {eventName}への参加申請を審査中です。",
+    "title": "リクエストを受信しました",
+    "intro": "こんにちは{name} 、 {orgName} <link>{eventName}</link>のすべての登録を審査します。",
+    "partySize": "ご依頼の対象人数は{count} 。",
+    "approved": "{count, plural, one {承認され次第、チケットはメールで送付されます。} other {承認され次第、チケットはメールで送付されます。}}",
+    "nothingToDo": "今のところ特に何もする必要はありません。予定が変わった場合は、このメールは無視してください。"
+  },
+  "registrationRejected": {
+    "subject": "{eventName}のリクエストに関する最新情報",
+    "preview": "{orgName} {eventName}の登録を承認できませんでした。",
+    "title": "お客様のご予約をお受けすることができませんでした",
+    "intro": "こんにちは{name} 、 {orgName} <link>{eventName}</link>の登録を承認できませんでした。",
+    "refund": "お支払いいただいた金額はすべてカードに返金されます。",
+    "noPayment": "支払いは行われませんでした。",
+    "questions": "ご質問はありますか？主催者へ連絡するには、このメールに返信してください。"
+  },
+  "refundIssued": {
+    "subject": "{eventName}に対する{amount}の返金",
+    "preview": "{amount}はお客様のカードへ返送中です。",
+    "title": "返金処理済み",
+    "intro": "こんにちは{name} 、 {orgName} <strong>{amount}</strong>を<link>{eventName}</link>に返金しました。",
+    "cancelled": "{count, plural, one {お客様のチケットはキャンセルされましたので、スキャンできません。} other {注文に含まれるすべての#チケットはキャンセルされ、スキャンできなくなります。}}",
+    "timing": "返金は通常、ご利用の銀行によって異なりますが、5～10営業日以内にカードに反映されます。",
+    "receipt": "このメールは領収書です。"
+  },
+  "eventReminder": {
+    "subject": "{eventName}は{when}です",
+    "preview": "{eventName}は{when}です。 {where} 。",
+    "title": "{eventName}は{when}です",
+    "tickets": "{count, plural, one {スキャン準備完了のチケット：} other {スキャン準備完了のチケット：}}",
+    "cta": "イベントの詳細とアクセス方法",
+    "stopPrompt": "このイベントのリマインダーは不要ですか？ <link>リマインダーを停止</link> 。",
+    "stillGetThrough": "確認や変更は引き続き処理されます。"
+  },
+  "eventUpdated": {
+    "subjectBoth": "{eventName}の新しい時間と場所",
+    "subjectSchedule": "{eventName}の新しい時間",
+    "subjectVenue": "{eventName}の新しい場所",
+    "previewBoth": "{eventName}は時間と場所を変えた。",
+    "previewSchedule": "{eventName}が時刻を変更しました。",
+    "previewVenue": "{eventName}は場所を変えました。",
+    "title": "{eventName}が変更されました",
+    "introBoth": "こんにちは{name} 、 {orgName}が<link>{eventName}</link>の時間と場所を更新しました。",
+    "introSchedule": "こんにちは{name} 、 {orgName} <link>{eventName}</link>の時間を更新しました。",
+    "introVenue": "こんにちは{name} 、 {orgName} <link>{eventName}</link>の場所を更新しました。",
+    "newDetails": "新しい詳細情報は以下のとおりです。",
+    "staysValid": "チケットは引き続き有効です。",
+    "cta": "カレンダーを更新する"
+  },
+  "eventCancelled": {
+    "subject": "{eventName}はキャンセルされました",
+    "preview": "{eventName}は実施されません。",
+    "title": "{eventName}はキャンセルされました",
+    "intro": "こんにちは{name} 、 {orgName}は{when}に予定されていた<strong>{eventName}</strong>をキャンセルしました。",
+    "noLongerValid": "お持ちのチケットは無効です。",
+    "refund": "お支払いいただいた金額は、ご利用いただいたカードに返金されます。返金処理が完了次第、別途メールにてご連絡いたします。",
+    "noPayment": "支払いは行われていないので、返金するものはありません。",
+    "questions": "ご質問はありますか？主催者へ連絡するには、このメールに返信してください。"
+  },
+  "eventInvite": {
+    "subject": "招待されています: {eventName}",
+    "preview": "{orgName} {eventName}にあなたを招待しました。",
+    "title": "ご招待いたします",
+    "intro": "<strong>{orgName}</strong>がプライベートイベントにご招待します。",
+    "cta": "イベントの詳細と登録",
+    "personal": "このリンクはあなた専用のものです。",
+    "personalExpires": "このリンクはあなた専用のもので、 {expires}で期限切れになります。",
+    "registerWith": "このメールアドレスで登録してください。"
+  },
+  "orgInvite": {
+    "subject": "Evneloの{orgName}にご招待します",
+    "preview": "{orgName} {role}として参加します。",
+    "title": "{orgName}に参加する",
+    "invitedBy": "{invitedBy} 、 <strong>{orgName}</strong>のイベント運営を<strong>{role}</strong>として手伝ってほしいとあなたを招待しました。",
+    "invited": "あなたは<strong>{orgName}</strong>のイベント運営を<strong>{role}</strong>として手伝うよう招待されました。",
+    "cta": "招待を受け入れる",
+    "validity": "このリンクは14日間有効で、送信先のメールアドレスでのみ使用できます。"
+  },
+  "magicLink": {
+    "subject": "{host}にサインイン",
+    "preview": "{host}のサインインリンク",
+    "title": "サインイン",
+    "intro": "ボタンをクリックして{host}にサインインしてください。",
+    "expiry": "このリンクは一度だけ有効で、15分後に期限切れになります。",
+    "cta": "{host}にサインインしてください",
+    "ignore": "もしこのメールを依頼していないのであれば、無視していただいて構いません。",
+    "nobody": "リンクがないと誰もログインできません。"
+  },
+  "waitlistJoined": {
+    "subject": "あなたは{eventName}のウェイティングリストに登録されています",
+    "preview": "あなたは待機リストの{position}番です。",
+    "title": "あなたは順番待ちリストに載っています",
+    "full": "<strong>{eventName}</strong>は現在満席です。",
+    "position": "あなたは列の<strong>{position}</strong>番です。",
+    "offer": "空きが出た場合は、予約用のリンクをメールでお送りします。リンクの有効期限は24時間です。",
+    "cta": "イベントを見る"
+  },
+  "waitlistOffer": {
+    "subject": "空きが出ました: {eventName}",
+    "preview": "{deadline}までに席を確保してください。",
+    "title": "空きが出た",
+    "reserved": "朗報です。__ <strong>{ticketType}</strong>の席が<strong>{eventName}</strong>用に確保されています。",
+    "claimBefore": "<strong>{deadline}</strong>までに申し込んでください。それ以降は、次の人に権利が移ります。",
+    "cta": "私の場所を確保する",
+    "registerWith": "このメールアドレスで登録してください。",
+    "personal": "このリンクはあなた専用のものです。"
+  },
+  "abuseReport": {
+    "subject": "[レポート] {reason}: {eventName}",
+    "preview": "誰かが{eventName}を報告しました。",
+    "title": "報告されたイベント",
+    "intro": "<strong>{eventName}</strong> {orgName}によって<strong>{reason}</strong>について報告されました。",
+    "reporter": "記者: {email}",
+    "noReporter": "記者はメールを残さなかった。",
+    "cta": "イベントを開く"
+  },
+  "sms": {
+    "confirmation": "入場料は{event}です。チケット番号： {ticketUrl}",
+    "reminder": "{event}は{when}です。チケット: {ticketUrl}",
+    "updated": "{event}は日時または場所を変更しました。詳細: {url}",
+    "cancelled": "{event}はキャンセルされました。お支払いいただいた金額は返金されます。"
+  }
+}

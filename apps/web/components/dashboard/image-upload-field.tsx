@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 import { Crop, ImagePlus, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,8 @@ type Props = {
  * confirm with the server, which returns the URL to store. Without S3: a plain URL field.
  */
 export function ImageUploadField({ label, value, onChange, aspect = "video", uploadsEnabled, croppable = false, id }: Props) {
+  const t = useTranslations("dashboard");
+  const tc = useTranslations("common");
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string>();
@@ -41,18 +44,18 @@ export function ImageUploadField({ label, value, onChange, aspect = "video", upl
     try {
       const presign = await fetch("/api/uploads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ contentType: file.type, size: file.size }) });
       const target = (await presign.json()) as { url?: string; fields?: Record<string, string>; publicUrl?: string; error?: string };
-      if (!presign.ok || !target.url || !target.fields || !target.publicUrl) return setError(target.error ?? "Upload failed.");
+      if (!presign.ok || !target.url || !target.fields || !target.publicUrl) return setError(target.error ?? t("imageUpload.uploadFailed"));
       const body = new FormData();
       for (const [k, v] of Object.entries(target.fields)) body.set(k, v);
       body.set("file", file); // must be last for S3 POST policies
       const put = await fetch(target.url, { method: "POST", body });
-      if (!put.ok) return setError("The storage bucket rejected the upload. Check its CORS and policy settings.");
+      if (!put.ok) return setError(t("imageUpload.bucketRejected"));
       const confirm = await fetch("/api/uploads", { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify({ url: target.publicUrl }) });
       const result = (await confirm.json()) as { url?: string; error?: string };
-      if (!confirm.ok || !result.url) return setError(result.error ?? "Upload failed.");
+      if (!confirm.ok || !result.url) return setError(result.error ?? t("imageUpload.uploadFailed"));
       onChange(result.url);
     } catch {
-      setError("Upload failed. Check your connection and try again.");
+      setError(t("imageUpload.connectionFailed"));
     } finally {
       setUploading(false);
     }
@@ -70,7 +73,7 @@ export function ImageUploadField({ label, value, onChange, aspect = "video", upl
     : (
       <div className="flex size-full flex-col items-center justify-center gap-2 p-2 text-center text-muted-foreground">
         <ImagePlus className={compact ? "size-4" : "size-6"} />
-        {!compact && <span className="text-sm">No image yet</span>}
+        {!compact && <span className="text-sm">{t("imageUpload.noImage")}</span>}
       </div>
     );
 
@@ -80,13 +83,13 @@ export function ImageUploadField({ label, value, onChange, aspect = "video", upl
       <div className="flex flex-wrap gap-2">
         <Button type="button" variant="outline" size="sm" disabled={uploading} onClick={() => inputRef.current?.click()}>
           {uploading ? <Loader2 className="animate-spin" /> : croppable ? <Crop /> : <ImagePlus />}
-          {uploading ? "Uploading…" : value ? (compact ? "Replace" : "Replace image") : compact ? "Upload" : "Upload image"}
+          {uploading ? t("imageUpload.uploading") : value ? (compact ? t("imageUpload.replace") : t("imageUpload.replaceImage")) : compact ? t("imageUpload.upload") : t("imageUpload.uploadImage")}
         </Button>
-        {value && <Button type="button" variant="ghost" size="sm" disabled={uploading} onClick={() => onChange("")}><Trash2 /> Remove</Button>}
+        {value && <Button type="button" variant="ghost" size="sm" disabled={uploading} onClick={() => onChange("")}><Trash2 /> {tc("actions.remove")}</Button>}
       </div>
     </>
   ) : (
-    <Input id={fieldId} type="url" value={value} onChange={(e) => onChange(e.target.value)} placeholder="https://… (image uploads need S3 configured)" aria-label={`${label} URL`} />
+    <Input id={fieldId} type="url" value={value} onChange={(e) => onChange(e.target.value)} placeholder={t("imageUpload.urlPlaceholder")} aria-label={t("imageUpload.urlLabel", { label })} />
   );
 
   const dialog = pendingCrop && (
@@ -115,7 +118,7 @@ export function ImageUploadField({ label, value, onChange, aspect = "video", upl
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-medium">{label}</span>
-        {uploadsEnabled && <span className="text-xs text-muted-foreground">JPEG, PNG or WebP · max 5 MB</span>}
+        {uploadsEnabled && <span className="text-xs text-muted-foreground">{t("imageUpload.formats")}</span>}
       </div>
       <div className={`relative overflow-hidden rounded-lg border border-dashed bg-muted/30 ${aspect === "video" ? "aspect-[16/7]" : "aspect-square max-w-40"}`}>
         {preview}

@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "title": "Panel",
+    "checkin": "Registrarse"
+  },
+  "shell": {
+    "organization": "Organización",
+    "switchOrganization": "Organización de cambio"
+  },
+  "nav": {
+    "events": "Eventos",
+    "checkin": "Registrarse",
+    "settings": "Ajustes"
+  },
+  "status": {
+    "event": {
+      "draft": "borrador",
+      "published": "publicado",
+      "cancelled": "cancelado",
+      "ended": "terminó"
+    },
+    "attendee": {
+      "confirmed": "confirmado",
+      "pending_approval": "pendiente de aprobación",
+      "waitlisted": "lista de espera",
+      "rejected": "rechazado",
+      "cancelled": "cancelado"
+    },
+    "order": {
+      "pending": "pendiente",
+      "processing": "tratamiento",
+      "paid": "pagado",
+      "free": "gratis",
+      "refunded": "reintegrado",
+      "partially_refunded": "reembolso parcial",
+      "failed": "fallido",
+      "expired": "venció"
+    },
+    "delivery": {
+      "delivered": "entregado",
+      "retrying": "reintentando",
+      "pending": "pendiente",
+      "failed": "fallido"
+    }
+  },
+  "noAccess": {
+    "title": "Sin acceso",
+    "description": "Los roles determinan qué puede abrir cada persona en una organización.",
+    "empty": {
+      "title": "Esta zona no es tuya para abrir.",
+      "description": "Tu rol en esta organización no lo permite. Pídele a un propietario o administrador que lo cambie."
+    }
+  },
+  "events": {
+    "title": "Eventos",
+    "description": "{org} está funcionando, con inscripciones, ingresos y números de puertas a la vista.",
+    "newEvent": "Nuevo evento",
+    "groups": {
+      "upcoming": "Próximamente",
+      "drafts": "Damas",
+      "past": "Pasado"
+    },
+    "empty": {
+      "title": "Aún no hay eventos.",
+      "description": "Tu primer evento se queda como borrador hasta que lo publiques, así que no hay prisa por que todo salga perfecto.",
+      "action": "Crea tu primer evento"
+    },
+    "row": {
+      "online": "En línea",
+      "inPerson": "En persona",
+      "registered": "Registrado",
+      "pending": "{count} pendiente",
+      "revenue": "Ganancia",
+      "checkedIn": "Me registré"
+    }
+  },
+  "checkin": {
+    "title": "Registrarse",
+    "description": "{org}. Abra un evento en el teléfono en la puerta; el escaneo necesita acceso a la cámara.",
+    "in": "En",
+    "empty": {
+      "title": "Hoy no hay nada que escanear.",
+      "description": "Los eventos publicados aparecen aquí desde el momento en que se emiten en directo hasta un día después de su finalización."
+    },
+    "event": {
+      "allCheckin": "Todos los registros de entrada",
+      "eventDashboard": "Panel de eventos"
+    }
+  },
+  "event": {
+    "allEvents": "Todos los eventos",
+    "viewPage": "Ver página",
+    "nav": {
+      "overview": "Descripción general",
+      "tickets": "Entradas",
+      "form": "Forma",
+      "invites": "Invitaciones",
+      "attendees": "Asistentes",
+      "waitlist": "Lista de espera",
+      "orders": "Órdenes",
+      "checkin": "Registrarse"
+    },
+    "new": {
+      "title": "Nuevo evento",
+      "description": "Guardado como borrador. Añade tickets y preguntas, y publícalo cuando esté listo."
+    },
+    "overview": {
+      "stats": {
+        "registered": "Registrado",
+        "awaitingApproval": "{count} pendiente de aprobación",
+        "confirmedAndApproved": "Confirmado y aprobado",
+        "revenue": "Ganancia",
+        "afterRefunds": "después de los reembolsos",
+        "checkedIn": "Me registré",
+        "percentOfRegistrations": "{percent} % de inscripciones",
+        "nobodyYet": "Todavía no hay nadie en la puerta.",
+        "capacity": "Capacidad",
+        "seatsLeft": "Quedan {count} asientos",
+        "unlimitedSeats": "asientos ilimitados"
+      },
+      "registrationsByDay": "Inscripciones por día",
+      "noRegistrations": {
+        "title": "Aún no hay inscripciones.",
+        "description": "La curva comienza en el momento en que se registra la primera persona."
+      },
+      "tickets": "Entradas",
+      "manage": "Administrar",
+      "noTickets": {
+        "title": "Aún no hay tipos de boletos",
+        "description": "Publicar sin uno te proporciona una entrada general gratuita.",
+        "action": "Agregar un tipo de boleto"
+      },
+      "ticketSales": "{hasQuantity, select, true {{sold} / {quantity} vendido} other {{sold} vendido}}{held, plural, =0 {} other {, # sostenido}}",
+      "eventPage": "Página del evento",
+      "visibility": {
+        "public": "Público: aparece en Discover y está indexado.",
+        "unlisted": "No listado: cualquier persona que tenga el enlace.",
+        "private": "Privado: solo por invitación."
+      },
+      "actions": "Comportamiento",
+      "publish": "Publicar evento",
+      "unpublish": "Despublicar, volver al borrador",
+      "statusNote": {
+        "draft": "Solo tú podrás ver este evento hasta que se publique.",
+        "published": "En directo. Al despublicar la página, esta se oculta; los registros ya realizados se conservan.",
+        "cancelled": "Este evento ha sido cancelado."
+      },
+      "irreversible": "Irreversible",
+      "cancelEvent": "Cancelar evento",
+      "cancelConfirm": "¿Cancelar este evento? Todos los asistentes registrados recibirán un correo electrónico de cancelación (y un SMS si lo han solicitado). Los pedidos pagados aún deben reembolsarse desde la pestaña \"Pedidos\".",
+      "deleteEvent": "Eliminar evento",
+      "deleteConfirm": "¿Eliminar este evento? Desaparecerá del panel de control. Los registros de asistentes se conservarán."
+    },
+    "attendees": {
+      "exportCsv": "Exportar CSV",
+      "searchPlaceholder": "Buscar por nombre, correo electrónico o teléfono",
+      "filter": "Filtrar",
+      "allOption": "Todos ( {count} )",
+      "statusOption": "{label} ( {count} )",
+      "pendingNote": "{count, plural, one {Registro #} other {# registros}} esperando su aprobación.",
+      "review": "Revisar",
+      "columns": {
+        "ticket": "Boleto",
+        "registered": "Registrado",
+        "files": "Archivos",
+        "actions": "Comportamiento"
+      },
+      "empty": {
+        "noMatch": {
+          "title": "No hay coincidencias de asistentes",
+          "description": "Pruebe con una búsqueda diferente o borre el filtro de estado."
+        },
+        "none": {
+          "title": "Nadie se ha registrado todavía",
+          "description": "Las inscripciones llegan aquí en el momento en que alguien se registra."
+        }
+      },
+      "guestOf": "Invitado de {name}",
+      "sms": "SMS",
+      "paymentPending": "pago pendiente",
+      "approve": "Aprobar",
+      "reject": "Rechazar",
+      "ticket": "Boleto",
+      "cancelConfirm": "¿Cancelar la inscripción de {name}? Su boleto deja de funcionar y el asiento queda libre. No se envía ningún correo electrónico.",
+      "export": "Exportar",
+      "erase": "Borrar",
+      "eraseConfirm": "¿Eliminar los datos personales de {name}? El nombre, el correo electrónico, el teléfono y las respuestas se reemplazan con marcadores de posición, su ticket se revoca y los correos electrónicos en cola se descartan. Esta acción es irreversible."
+    },
+    "orders": {
+      "collected": "<strong>{amount}</strong> recaudado, neto de reembolsos",
+      "count": "{count, plural, one {# orden} other {# pedidos}}",
+      "columns": {
+        "order": "Orden",
+        "items": "Elementos",
+        "total": "Total",
+        "placed": "Metido",
+        "actions": "Comportamiento"
+      },
+      "empty": {
+        "title": "Aún no hay pedidos.",
+        "description": "Aquí aparece cada registro, ya sea gratuito o de pago, junto con la información recopilada."
+      },
+      "people": "{count, plural, one {# persona} other {# personas}}",
+      "refunded": "{amount} reembolsado"
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "description": "Cómo se presenta su organización al público, quién puede trabajar en ella y cómo se comunica con otros sistemas.",
+    "tabs": {
+      "organization": "Organización",
+      "members": "Miembros",
+      "developer": "Revelador",
+      "payments": "Pagos"
+    },
+    "organization": {
+      "title": "Organización",
+      "description": "Nombre, URL pública, logotipo y color de acento utilizado en los correos electrónicos y en las páginas de venta de entradas.",
+      "publicUrl": "URL pública",
+      "publicUrlHelp": "/o/… Letras minúsculas, números, guiones.",
+      "website": "Sitio web",
+      "websiteHelp": "Introduce example.com y añadiremos https:// automáticamente.",
+      "logo": "Logo",
+      "logoHelp": "Se muestra en las páginas de eventos y en los correos electrónicos.",
+      "accentColour": "Color de acento",
+      "accentColourHelp": "Botones en correos electrónicos y en páginas de venta de entradas.",
+      "pickColour": "Elige un color",
+      "serviceFee": "Tarifa de servicio",
+      "serviceFeeHelp": "Opción predeterminada para nuevos eventos: transferir la comisión de la plataforma al comprador como un concepto aparte, o asumirla.",
+      "buyerPaysFee": "El comprador paga la tarifa de servicio.",
+      "socialLinks": "Enlaces sociales",
+      "platform": "Plataforma",
+      "url": "URL",
+      "addLink": "Agregar enlace",
+      "save": "Organización de ahorro"
+    },
+    "members": {
+      "title": "Miembros",
+      "description": "Los propietarios y administradores gestionan la organización; los miembros crean y organizan eventos; el personal de recepción solo puede escanear las entradas.",
+      "roles": {
+        "owner": "Dueño",
+        "admin": "Administración",
+        "member": "Miembro",
+        "checkin": "Personal de recepción"
+      },
+      "columns": {
+        "member": "Miembro",
+        "role": "Role",
+        "since": "Desde"
+      },
+      "removeConfirm": "¿Eliminar {email} de la organización?",
+      "invited": "Invitado · expira {date}",
+      "revoke": "Revocar",
+      "emailPlaceholder": "compañero de equipo@ejemplo.com",
+      "sendInvite": "Enviar invitación"
+    },
+    "developer": {
+      "apiKeys": {
+        "title": "claves API",
+        "description": "Acceso de servidor a servidor a los eventos, pedidos y asistentes de esta organización.",
+        "note": "Las claves llaman a la API REST <docs></docs> como esta organización. Envíalas como <code>{header}</code>. Lee la lista de claves y obténlas; escribe claves y también crea.",
+        "newKey": "Copia tu nueva clave ahora. No volverá a aparecer.",
+        "saved": "Lo he guardado",
+        "columns": {
+          "key": "Llave",
+          "scopes": "Alcances",
+          "lastUsed": "Último uso"
+        },
+        "never": "nunca",
+        "empty": {
+          "title": "Aún no hay claves API",
+          "description": "Crea una por cada integración para que puedas revocar una sola herramienta sin afectar al resto."
+        },
+        "revoked": "revocado",
+        "revokeConfirm": "¿Revocar \" {name} \"? Las solicitudes con esto dejan de funcionar inmediatamente.",
+        "revoke": "Revocar",
+        "namePlaceholder": "Nombre de la clave, por ejemplo Zapier",
+        "nameLabel": "Nombre de la clave",
+        "scopeRead": "leer",
+        "scopeWrite": "escribir",
+        "create": "Crear clave"
+      },
+      "webhooks": {
+        "title": "Webhooks",
+        "description": "Se enviará una solicitud POST en formato JSON firmada a su propio punto final cada vez que ocurra algo aquí.",
+        "note": "Enviamos un sobre JSON a tu URL para los eventos que selecciones, firmado con HMAC-SHA256 ( <code>{signature}</code> sobre <code>{template}</code> ). Los intentos de entrega fallidos se reintentan con un tiempo de espera de aproximadamente un día.",
+        "addWebhook": "Agregar webhook",
+        "count": "{count, plural, one {punto final #} other {# puntos finales}}",
+        "signingSecret": "Firma secreta",
+        "copyPrompt": "Copia este secreto",
+        "endpointUrl": "URL del punto final",
+        "endpointUrlHelp": "Solo HTTPS (http://localhost está permitido para desarrollo).",
+        "events": "Eventos",
+        "create": "Crear webhook",
+        "columns": {
+          "endpoint": "Punto final",
+          "events": "Eventos"
+        },
+        "empty": {
+          "title": "Aún no hay webhooks",
+          "description": "Un punto importante es tu propio servicio para mantener sincronizado un CRM, un canal de Slack o una hoja de cálculo."
+        },
+        "hideDeliveries": "Ocultar entregas",
+        "recentDeliveries": "Entregas recientes ( {count} )",
+        "nothingDelivered": "Todavía no se ha entregado nada.",
+        "attempts": "{count, plural, one {# intento} other {# intentos}}{hasStatus, select, true {, último {status}} other {}}",
+        "allEvents": "Todos los eventos",
+        "active": "activo",
+        "paused": "pausado",
+        "sendTest": "Enviar prueba",
+        "pause": "Pausa",
+        "resume": "Reanudar",
+        "rotateConfirm": "¿Cambiar la clave de firma? La anterior deja de funcionar inmediatamente.",
+        "rotateSecret": "Rotar secreto",
+        "deleteConfirm": "¿Eliminar este webhook?"
+      }
+    },
+    "payments": {
+      "title": "Pagos",
+      "descriptionCloud": "Las entradas pagadas se abonan directamente en tu cuenta de Stripe.",
+      "descriptionSelfHosted": "Esta instancia cobra a través de las claves Stripe que configuró su operador.",
+      "connected": "Cuenta Stripe {id} conectada.",
+      "connectPrompt": "Conecta tu cuenta de Stripe para vender entradas de pago. Incluido en el proceso de incorporación de Connect.",
+      "configured": "Stripe está configurado. Los boletos pagados se cargan a la cuenta Stripe de la instancia sin ninguna comisión de plataforma.",
+      "notConfigured": "Stripe no está configurado en esta instancia, por lo que solo se pueden vender entradas gratuitas. Configure STRIPE_SECRET_KEY y STRIPE_PUBLISHABLE_KEY para habilitar los pagos."
+    },
+    "danger": {
+      "title": "Datos y eliminación",
+      "description": "Descarga toda la información de esta organización en formato JSON: eventos, pedidos, asistentes, registros de asistencia, configuración, sin secretos. Al eliminar la organización, se cancelan sus eventos, se revocan todas las entradas, se borran los datos personales de los asistentes y se desactivan las claves API y los webhooks. Esta acción es irreversible.",
+      "download": "Descargar todos los datos",
+      "confirmLabel": "Escribe {slug} para confirmar",
+      "delete": "Eliminar organización",
+      "ownerOnly": "Solo el propietario puede eliminar esta organización."
+    }
+  },
+  "imageUpload": {
+    "uploadFailed": "Error al subir el archivo.",
+    "bucketRejected": "El depósito de almacenamiento rechazó la carga. Compruebe su configuración de CORS y de políticas.",
+    "connectionFailed": "Error al subir el archivo. Comprueba tu conexión e inténtalo de nuevo.",
+    "noImage": "Aún no hay imagen",
+    "uploading": "Subiendo…",
+    "replace": "Reemplazar",
+    "replaceImage": "Reemplazar imagen",
+    "upload": "Subir",
+    "uploadImage": "Subir imagen",
+    "urlPlaceholder": "https://… (para subir imágenes se necesita tener S3 configurado)",
+    "urlLabel": "URL {label}",
+    "formats": "JPEG, PNG o WebP · máximo 5 MB"
+  },
+  "imageCrop": {
+    "openFailed": "No se pudo abrir esa imagen.",
+    "renderFailed": "Este navegador no pudo mostrar la imagen recortada. Suba la imagen tal cual.",
+    "dialogLabel": "Enmarcar la imagen de portada",
+    "title": "Enmarcar la portada",
+    "description": "Arrastra para colocar en la posición deseada y haz zoom para ajustar la imagen. Guardado en formato 16:7, la relación de aspecto que utilizan las páginas de eventos.",
+    "zoom": "Zoom",
+    "use": "Utilice este cultivo"
+  },
+  "address": {
+    "unavailable": "La búsqueda de direcciones no está disponible temporalmente.",
+    "placeholder": "Empiece a escribir una dirección"
+  },
+  "linkTabs": {
+    "label": "Secciones"
+  },
+  "actions": {
+    "genericError": "Algo salió mal.",
+    "formIssue": "{path}: {message}",
+    "formPath": "forma",
+    "checkForm": "Revisa el formulario.",
+    "saved": "Guardado.",
+    "savedNotified": "Guardado. Se informará a los asistentes sobre la nueva hora o lugar.",
+    "deletePublished": "Anula o cancela el evento antes de eliminarlo.",
+    "addressRateLimited": "Se han realizado demasiadas búsquedas de direcciones. Espere un minuto e inténtelo de nuevo.",
+    "addressUnavailable": "La búsqueda de direcciones no está disponible temporalmente.",
+    "formSaved": "Formulario guardado.",
+    "refund": {
+      "noPayment": "Este pedido no tiene ningún pago que reembolsar.",
+      "nothingToRefund": "El pedido es {status}; no hay nada que reembolsar.",
+      "requested": "Se ha solicitado el reembolso. El pedido se actualizará en cuanto Stripe lo confirme."
+    },
+    "invitationSent": "Invitación enviada a {email}.",
+    "apiKeyCreated": "Clave creada. Cópiela ahora; no volverá a aparecer.",
+    "unknownError": "error desconocido",
+    "eventInvite": {
+      "emailFailed": "Se creó la invitación, pero no se pudo enviar el correo electrónico ( {reason} ). Comparte el enlace tú mismo.",
+      "emailed": "Invitación enviada por correo electrónico a {email}.",
+      "linkCreated": "Enlace de invitación creado."
+    },
+    "waitlist": {
+      "notFound": "Esa entrada ya no existe.",
+      "alreadyOffered": "Esta persona ya tiene una oferta abierta.",
+      "registered": "Esta persona ya se registró.",
+      "noRoom": "No hay asientos libres con ese tipo de entrada (o el evento está completo). Primero, uno gratis.",
+      "emailFailed": "Plaza reservada hasta {deadline}, pero no se pudo enviar el correo electrónico ( {reason} ). Envíeles este enlace: {url}",
+      "offered": "Oferta enviada por correo electrónico a {email}; el lugar se reserva hasta {deadline}."
+    },
+    "discountCreated": "Código {code} creado.",
+    "webhook": {
+      "created": "Webhook creado. Copie ahora la clave secreta de firma; se mostrará una sola vez.",
+      "notFound": "Webhook no encontrado.",
+      "rotated": "Nueva clave de inicio de sesión. Actualice su receptor; la clave anterior ya no funciona.",
+      "testQueued": "Se ha puesto en cola un envío de prueba; se enviará en unos 10 segundos. Consulta la lista de envíos."
+    },
+    "deleteOrg": {
+      "ownerOnly": "Solo el propietario puede eliminar la organización.",
+      "confirmSlug": "Escriba la URL de la organización ( {slug} ) para confirmar."
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "language": "Langue",
+  "brand": "Évnélo",
+  "tagline": "Événements en mouvement.",
+  "actions": {
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "delete": "Supprimer",
+    "remove": "Retirer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "back": "Dos",
+    "continue": "Continuer",
+    "confirm": "Confirmer",
+    "copy": "Copie",
+    "copied": "Copié",
+    "search": "Recherche",
+    "retry": "Essayer à nouveau",
+    "ok": "D'ACCORD",
+    "discard": "Jeter",
+    "restore": "Restaurer",
+    "signIn": "Se connecter",
+    "signOut": "se déconnecter",
+    "loading": "Chargement…"
+  },
+  "labels": {
+    "optional": "facultatif",
+    "required": "Requis",
+    "free": "Gratuit",
+    "soldOut": "Épuisé",
+    "cancelled": "Annulé",
+    "draft": "Brouillon",
+    "published": "Publié",
+    "yes": "Oui",
+    "no": "Non",
+    "name": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "status": "Statut",
+    "date": "Date",
+    "created": "Créé",
+    "unknown": "Inconnu"
+  },
+  "errors": {
+    "generic": "Une erreur s'est produite. Veuillez réessayer.",
+    "network": "Erreur réseau. Veuillez réessayer.",
+    "notFound": "Introuvable",
+    "rateLimited": "Trop de tentatives. Veuillez patienter quelques minutes et réessayer.",
+    "captcha": "Nous n'avons pas pu confirmer que vous n'êtes pas un robot. Veuillez recharger la page et réessayer."
+  },
+  "time": {
+    "momentAgo": "il y a un instant",
+    "minutesAgo": "{minutes} y a 0 minute",
+    "hoursAgo": "{hours, plural, one {il y a # heure} other {il y a # heures}}"
+  }
+}

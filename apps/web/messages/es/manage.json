@@ -1,0 +1,434 @@
+{
+  "eventForm": {
+    "validation": {
+      "times": "Establece una hora de inicio y una hora de finalización."
+    },
+    "saved": "Guardado.",
+    "restore": {
+      "notice": "Retomamos donde lo dejaste: los cambios no guardados desde {when} han vuelto al formulario.",
+      "discard": "Deséchalos"
+    },
+    "basics": {
+      "title": "Lo esencial",
+      "description": "Lo primero que la gente ve: el nombre, la dirección, la historia, la obra de arte.",
+      "name": "Nombre del evento",
+      "url": "URL del evento",
+      "descriptionLabel": "Descripción",
+      "descriptionHelp": "Se admite Markdown.",
+      "tags": "Etiquetas",
+      "tagsHelp": "Separado por comas. Se utiliza para descubrimiento.",
+      "tagsPlaceholder": "diseño, encuentro",
+      "cover": "Imagen de portada",
+      "logo": "Logotipo del evento"
+    },
+    "when": {
+      "title": "Cuando",
+      "description": "Los horarios se almacenan en UTC y se muestran a todos los participantes en la zona horaria del evento.",
+      "starts": "Comienza",
+      "ends": "Fin",
+      "timezone": "Huso horario",
+      "publishedNote": "Al cambiar la hora de un evento publicado, se envía un correo electrónico a todos los asistentes."
+    },
+    "where": {
+      "title": "Dónde",
+      "description": "Dónde aparece la gente o a qué enlace se conecta.",
+      "locationType": {
+        "in_person": "En persona",
+        "online": "En línea",
+        "hybrid": "Híbrido"
+      },
+      "venue": "Evento",
+      "venuePlaceholder": "Nombre del lugar",
+      "address": "DIRECCIÓN",
+      "addressHelp": "Seleccione una sugerencia para completar las coordenadas de la ciudad, el país y el mapa.",
+      "city": "Ciudad",
+      "country": "Código del país",
+      "countryHelp": "Código de dos letras, por ejemplo BR",
+      "countryPlaceholder": "A NOSOTROS",
+      "mapPin": "Marcador del mapa establecido desde la dirección ( {lat}, {lng} ). Elija otra sugerencia para moverlo.",
+      "joinLink": "Enlace para unirse",
+      "joinLinkHelp": "Solo se muestra a los asistentes confirmados, en su confirmación y recordatorios.",
+      "joinLinkPlaceholder": "https://meet…"
+    },
+    "registration": {
+      "title": "Registro",
+      "description": "¿Quién puede encontrar el evento y cuántas personas pueden asistir?",
+      "visibility": "Visibilidad",
+      "visibilityOptions": {
+        "public": "Público",
+        "unlisted": "No estante en la lista",
+        "private": "Privado"
+      },
+      "visibilityHelp": {
+        "public": "Aparece en Discover y está indexada por los motores de búsqueda.",
+        "unlisted": "Cualquier persona con el enlace; no aparece en la lista ni en el índice.",
+        "private": "Solo personas con un enlace de invitación."
+      },
+      "capacity": "Capacidad",
+      "capacityHelp": "Déjelo vacío para un número ilimitado."
+    },
+    "options": {
+      "title": "Opciones de registro",
+      "description": "Aprobación, invitados, recordatorios, tarifas y política de reembolsos.",
+      "approval": "Aprobar cada registro manualmente",
+      "approvalHelp": "Las personas solicitan unirse; apruebe o rechace sus solicitudes de entre los asistentes.",
+      "phone": "Pide un número de teléfono",
+      "phoneHelp": "Campo opcional para la opción de suscripción por SMS para recibir tickets y recordatorios.",
+      "guests": "Permitir invitados (+1)",
+      "guestsHelp": "Cada invitado recibe una entrada individual.",
+      "maxGuests": "Número máximo de invitados por registro",
+      "waitlist": "Lista de espera cuando se agoten las existencias",
+      "waitlistHelp": "Los visitantes pueden hacer cola; usted ofrece plazas desde la pestaña \"Lista de espera\" a medida que se liberan asientos.",
+      "feePassThrough": "El comprador paga la tarifa de servicio.",
+      "feePassThroughHelp": "Edición en la nube: muestra el 0,99 % como una línea de detalle.",
+      "refundPolicy": "Política de reembolso",
+      "refundPolicyHelp": "Se muestra al finalizar la compra de entradas pagadas.",
+      "reminders": "Recordatorios",
+      "reminder24": "24 horas antes",
+      "reminder1": "1 hora antes",
+      "reminderCustom": "También <input></input> horas antes",
+      "reminderCustomLabel": "Horarios de recordatorio personalizados",
+      "reminderCustomPlaceholder": "48, 3",
+      "hint": {
+        "joined": "{first} · {second}",
+        "on": "Encendido: {items}",
+        "defaults": "Valores predeterminados",
+        "reminders": "recordatorios {items}",
+        "noReminders": "Sin recordatorios",
+        "hours": "{hours} h",
+        "flags": {
+          "approval": "aprobación",
+          "phone": "teléfono",
+          "guests": "huéspedes",
+          "waitlist": "lista de espera",
+          "feePassThrough": "El comprador paga la tarifa."
+        }
+      }
+    },
+    "links": {
+      "title": "Campo de golf",
+      "description": "Enlaces a redes sociales que se muestran en la página del evento.",
+      "hint": "{count, plural, =0 {Aún no hay enlaces} one {# enlace} other {# enlaces}}",
+      "platform": "Plataforma",
+      "url": "URL",
+      "remove": "Eliminar enlace",
+      "add": "Agregar enlace"
+    },
+    "hosts": {
+      "title": "Anfitriones",
+      "description": "Personas que aparecen en la página del evento.",
+      "hint": "{count, plural, =0 {Aún no hay anfitriones} one {# anfitrión} other {# anfitriones}}",
+      "name": "Nombre del host",
+      "titleField": "Título",
+      "remove": "Eliminar host",
+      "avatar": "Avatar",
+      "add": "Agregar host"
+    },
+    "sponsors": {
+      "title": "Patrocinadores",
+      "description": "Los logotipos aparecen en la página del evento en este orden.",
+      "hint": "{count, plural, =0 {Aún no hay patrocinadores.} one {# patrocinador} other {# patrocinadores}}",
+      "name": "Nombre del patrocinador",
+      "tier": "Nivel",
+      "website": "Sitio web",
+      "remove": "Eliminar patrocinador",
+      "logo": "Logo",
+      "add": "Agregar patrocinador"
+    },
+    "bar": {
+      "createNote": "Nada es público hasta que lo publiques.",
+      "editNote": "Los cambios se aplican en cuanto guardas.",
+      "createDraft": "Crear borrador",
+      "saveChanges": "Guardar cambios"
+    }
+  },
+  "fields": {
+    "title": "Formulario de inscripción",
+    "description": "Siempre se solicitan el nombre y el correo electrónico. Sus preguntas pueden aplicarse al titular de la cuenta, a todo el pedido o a cada invitado, y solo aparecerán si una respuesta anterior coincide.",
+    "add": "Agregar pregunta",
+    "empty": {
+      "title": "Solo nombre y correo electrónico",
+      "description": "Añade una pregunta cuando necesites algo más: una nota sobre la dieta, la empresa, la talla de la camiseta.",
+      "action": "Añade tu primera pregunta"
+    },
+    "untitled": "Pregunta sin título",
+    "types": {
+      "short_text": "Texto breve",
+      "long_text": "Texto largo",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "number": "Número",
+      "select": "Opción única",
+      "multi_select": "Opción múltiple",
+      "checkbox": "Caja",
+      "date": "Fecha",
+      "url": "Enlace",
+      "file": "Carga de archivos",
+      "consent": "Consentimiento (debe marcar la casilla)"
+    },
+    "scopes": {
+      "attendee": "Cada inscrito",
+      "order": "Una vez por pedido",
+      "guest": "Cada huésped"
+    },
+    "badges": {
+      "required": "requerido",
+      "conditional": "condicional"
+    },
+    "moveUp": "Subir",
+    "moveDown": "Baja",
+    "question": "Pregunta",
+    "key": "Llave",
+    "keyHelp": "Nombre de la columna en las exportaciones y la API. En minúsculas, con guiones bajos.",
+    "type": "Tipo",
+    "fileNeedsS3": "Para subir archivos, es necesario tener configurado el almacenamiento S3 en esta instancia.",
+    "fileUnavailable": "El almacenamiento S3 no está configurado, por lo que los usuarios registrados no pueden subir este archivo. El formulario lo muestra como no disponible.",
+    "asked": "Preguntó",
+    "options": "Opciones",
+    "optionsHelp": "Uno por línea. Utilice “valor | Etiqueta” para almacenar un valor diferente.",
+    "helpText": "Texto de ayuda",
+    "placeholder": "Marcador de posición",
+    "requiredOnlyWhenShown": "(solo cuando se muestra)",
+    "onlyForTicketTypes": "Solo para estos tipos de boletos",
+    "noneSelectedIsAll": "(ninguno seleccionado = todos)",
+    "condition": "Mostrar solo cuando exista una respuesta anterior que coincida.",
+    "conditionNeedsEarlier": "(Añade primero una pregunta encima)",
+    "showWhen": "Mostrar cuándo <select></select> de estos coinciden:",
+    "allOrAny": "Todos o alguno",
+    "match": {
+      "and": "todo",
+      "or": "cualquier"
+    },
+    "ops": {
+      "eq": "es",
+      "neq": "no lo es",
+      "contains": "contiene",
+      "empty": "está vacío",
+      "not_empty": "no está vacío"
+    },
+    "rule": {
+      "field": "Campo",
+      "operator": "Operador",
+      "value": "Valor",
+      "choose": "Elegir…",
+      "checked": "comprobado",
+      "unchecked": "desenfrenado",
+      "remove": "Eliminar regla",
+      "add": "Agregar regla"
+    },
+    "dependNote": "Una pregunta puede depender únicamente de otra que se encuentre situada encima de ella.",
+    "save": "Guardar formulario"
+  },
+  "ticketTypes": {
+    "title": "Tipos de boletos",
+    "descriptionEmpty": "Al publicar sin especificar un tipo de entrada, se genera automáticamente una entrada general gratuita.",
+    "descriptionGuests": "Qué pueden comprar las personas y cuántas unidades de cada artículo. Los invitados pagan el mismo precio que la entrada del participante registrado.",
+    "description": "Qué pueden comprar las personas y cuántos artículos de cada tipo. Un precio de 0 significa que es gratis.",
+    "add": "Agregar tipo de boleto",
+    "saved": "Guardado.",
+    "columns": {
+      "price": "Precio",
+      "sold": "Vendido",
+      "salesWindow": "Ventana de ventas"
+    },
+    "empty": {
+      "title": "Aún no hay tipos de boletos",
+      "description": "Añade uno por cada cosa que la gente puede comprar: precio anticipado, precio estándar, estudiantes."
+    },
+    "tax": "+ {rate} % de impuestos",
+    "soldOfQuantity": "{sold} / {quantity}",
+    "held": "{count} sostenido",
+    "window": "{start} → {end}",
+    "windowNow": "ahora",
+    "windowEvent": "evento",
+    "always": "Siempre",
+    "badges": {
+      "hidden": "oculto",
+      "code": "código"
+    },
+    "confirmDelete": "¿Eliminar \" {name} \"?",
+    "dialog": {
+      "editTitle": "Editar tipo de ticket",
+      "newTitle": "Nuevo tipo de billete",
+      "description": "Precio en {currency}. Cantidad establecida para una tirada limitada."
+    },
+    "form": {
+      "description": "Descripción",
+      "price": "Precio",
+      "currency": "Divisa",
+      "tax": "Porcentaje de impuestos",
+      "quantity": "Cantidad",
+      "quantityHelp": "Vacío = ilimitado",
+      "minPerOrder": "Cantidad mínima por pedido",
+      "maxPerOrder": "Máximo por pedido",
+      "salesStart": "Comienzan las ventas",
+      "salesEnd": "Fin de ventas",
+      "hidden": "Oculto en la página del evento.",
+      "accessCode": "Código de acceso"
+    }
+  },
+  "discounts": {
+    "title": "Códigos de descuento",
+    "description": "Descuento porcentual o fijo en el pedido. Los compradores introducen el código al finalizar la compra; se aplica a todas las entradas del pedido.",
+    "add": "Agregar código",
+    "form": {
+      "code": "Código",
+      "codePlaceholder": "PRECIO DE MAÑANA",
+      "type": "Tipo",
+      "kind": {
+        "percent": "% apagado",
+        "fixed": "{currency} apagado"
+      },
+      "percent": "Por ciento",
+      "amount": "Cantidad ( {currency} )",
+      "maxUses": "Max utiliza",
+      "unlimited": "ilimitado",
+      "expires": "Caduca",
+      "create": "Crear"
+    },
+    "columns": {
+      "code": "Código",
+      "discount": "Descuento",
+      "uses": "Usos",
+      "expires": "Caduca"
+    },
+    "empty": {
+      "title": "No se aceptan códigos de descuento.",
+      "description": "Los códigos son la forma más sencilla de ofrecer descuentos por reserva anticipada, tarifas para socios o precios especiales para amigos y familiares."
+    },
+    "percentOff": "{value} % de descuento",
+    "amountOff": "{amount} apagado",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Nunca",
+    "status": {
+      "expired": "venció",
+      "usedUp": "agotado",
+      "active": "activo"
+    },
+    "confirmDelete": "¿Eliminar el código {code}? Los pedidos que ya lo usaron conservan su descuento."
+  },
+  "invites": {
+    "title": "Invitaciones",
+    "description": "Un enlace por invitado, o un enlace para todos. Cada invitación registra cuántas veces se ha utilizado.",
+    "privateNote": "Este evento es privado: solo quienes abran el enlace de invitación (o los miembros de su organización) podrán verlo y registrarse. Las invitaciones por correo electrónico solo funcionan con la dirección a la que fueron enviadas.",
+    "publicNote": "Las invitaciones solo restringen el acceso a eventos <b>privados</b>. Este evento es {visibility}, por lo que cualquiera con el enlace puede registrarse; aún puedes enviar invitaciones como cortesía.",
+    "visibility": {
+      "public": "público",
+      "unlisted": "no estante en la lista",
+      "private": "privado"
+    },
+    "form": {
+      "emailPlaceholder": "invitado@ejemplo.com",
+      "maxUses": "Max utiliza",
+      "expiresInDays": "Caduca en (días)",
+      "never": "nunca",
+      "create": "Crear invitación",
+      "help": "Deja el correo electrónico en blanco para que quepa un enlace que cualquiera pueda compartir."
+    },
+    "copyPrompt": "Copia este enlace",
+    "newLink": "Nuevo enlace",
+    "copyLink": "Copiar enlace",
+    "columns": {
+      "invite": "Invitar",
+      "uses": "Usos",
+      "expires": "Caduca"
+    },
+    "empty": {
+      "title": "Aún no hay invitaciones",
+      "description": "Crea uno arriba para compartir un enlace o envíalo a un solo correo electrónico."
+    },
+    "shareableLink": "Enlace para compartir",
+    "created": "Creado {date}",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Nunca",
+    "status": {
+      "expired": "venció",
+      "usedUp": "agotado",
+      "active": "activo"
+    },
+    "revoke": "Revocar",
+    "confirmRevoke": "¿Deseas revocar esta invitación? El enlace deja de funcionar inmediatamente."
+  },
+  "waitlist": {
+    "title": "Lista de espera",
+    "summary": "{waiting} esperando, {offered} ofrecido, {registered} registrado.",
+    "description": "La cola que se forma una vez que se agotan las entradas para el evento.",
+    "enabledNote": "Cuando se agotan las entradas para el evento, los visitantes pueden unirse a esta lista. Al recomendar a alguien, se le reserva un asiento durante 24 horas y se le envía un enlace para reclamarlo por correo electrónico; los asientos no reclamados vuelven a estar disponibles.",
+    "disabledNote": "La lista de espera para este evento ya no está disponible (Editar → Opciones de registro). Las personas que se inscribieron anteriormente siguen apareciendo en la lista.",
+    "columns": {
+      "person": "Persona",
+      "joined": "Unido",
+      "actions": "Comportamiento"
+    },
+    "empty": {
+      "title": "Nadie en la lista de espera",
+      "description": "La gente hace cola aquí una vez que se agotan todas las entradas. Tú decides quién se queda con el siguiente asiento libre."
+    },
+    "status": {
+      "waiting": "espera",
+      "offered": "ofrecido",
+      "registered": "registrado",
+      "expired": "venció"
+    },
+    "heldUntil": "{ticketType} hasta {time}",
+    "lapsed": "La oferta ha caducado; puede volver a promocionarse.",
+    "ticketType": "Tipo de boleto",
+    "option": "{name} · {price}",
+    "optionWithRoom": "{name} · {price} · {room} izquierda",
+    "offer": "Ofrecer un lugar",
+    "confirmRemove": "¿Eliminar {email} de la lista de espera?",
+    "confirmRemoveOffered": "¿Eliminar {email} de la lista de espera? Su asiento reservado queda libre."
+  },
+  "refund": {
+    "confirm": "¿Reembolso completo de {amount}? Las entradas de este pedido dejan de funcionar y los asientos se liberan una vez que Stripe lo confirma.",
+    "requested": "Se solicita el reembolso.",
+    "button": "Reembolso {amount}"
+  },
+  "chart": {
+    "peak": "Pico {max} /día",
+    "summary": "{total, plural, one {Registro #} other {# registros}} encima {days, plural, one {# día} other {# días}}",
+    "aria": "Registros por día. Pico {max} en un solo día, {total} en total.",
+    "tooltip": "{date}: {count}"
+  },
+  "scanner": {
+    "outcome": {
+      "ok": "Me registré",
+      "offline_ok": "Registrado (sin conexión, se sincronizará)",
+      "already": "Ya me registré",
+      "not_confirmed": "Registro no confirmado",
+      "revoked": "Boleto cancelado o reembolsado",
+      "wrong_event": "La entrada es para otro evento.",
+      "not_found": "No es un billete válido",
+      "offline_unknown": "Ticket desconocido (sin conexión)",
+      "error": "No se pudo registrar la entrada."
+    },
+    "checkedIn": "Me registré",
+    "ofConfirmed": "/ {confirmed}",
+    "mode": "Modo de registro",
+    "scan": "Escanear",
+    "progress": "{pct} % de entradas confirmadas · actualizado {time}",
+    "progressQueued": "{pct} % de entradas confirmadas · actualizado {time} · {count} esperando a sincronizarse",
+    "offline": "Sin conexión: los escaneos se guardan y se sincronizan posteriormente.",
+    "guestOf": "Invitado de {name}",
+    "ticketTypeInAt": "{ticketType} · en {time}",
+    "undo": "Deshacer",
+    "camera": {
+      "denied": "El acceso a la cámara está bloqueado. Permita el acceso a la cámara para este sitio o utilice la función de búsqueda para registrar a las personas por nombre.",
+      "unsupported": "Este navegador no puede usar la cámara. Utilice la función de búsqueda o pegue el enlace del ticket a continuación.",
+      "starting": "Iniciando la cámara…",
+      "point": "Señale el código QR del boleto."
+    },
+    "manualPlaceholder": "O bien, pegue un enlace/código del ticket.",
+    "manualLabel": "Enlace o código del ticket",
+    "checkIn": "Registrarse",
+    "searchPlaceholder": "Buscar por nombre o correo electrónico",
+    "searchLabel": "Buscar asistentes",
+    "noMatches": "No hay asistentes confirmados que coincidan.",
+    "listGuestOf": "· invitado de {name}",
+    "listDetail": "{ticketType} · {email}",
+    "listDetailInAt": "{ticketType} · {email} · en {time}",
+    "recent": "Reciente",
+    "recentDetail": "· {ticketType} · {time}",
+    "recentDetailManual": "· {ticketType} · {time} · manual"
+  }
+}

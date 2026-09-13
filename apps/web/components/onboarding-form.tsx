@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { normalizeWebsiteUrl } from "@evnelo/core";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
@@ -14,19 +15,20 @@ export function OnboardingForm({
   action: (formData: FormData) => Promise<void>;
   suggestedSlug: string;
 }) {
+  const t = useTranslations("auth.onboarding.form");
   const [slug, setSlug] = useState("");
   const [website, setWebsite] = useState("");
   const preview = organizationSlugPreview(slug, suggestedSlug);
 
   return (
     <form action={action} className="space-y-5">
-      <Field label="Organization name" htmlFor="name">
+      <Field label={t("name")} htmlFor="name">
         <Input id="name" name="name" required minLength={2} maxLength={120} autoFocus />
       </Field>
       <Field
-        label="Public URL"
+        label={t("slug")}
         htmlFor="slug"
-        help={`Your public page will live at ${preview}. Event pages will use /${slug || suggestedSlug}/event-slug. Lowercase letters, numbers and hyphens.`}
+        help={t("slugHelp", { preview, slug: slug || suggestedSlug })}
         optional
       >
         <Input
@@ -38,7 +40,7 @@ export function OnboardingForm({
           placeholder={suggestedSlug}
         />
       </Field>
-      <Field label="Website" htmlFor="website" help="You can enter adobe.com — we'll add https:// automatically." optional>
+      <Field label={t("website")} htmlFor="website" help={t("websiteHelp")} optional>
         <Input
           id="website"
           name="website"
@@ -52,7 +54,7 @@ export function OnboardingForm({
           onBlur={() => setWebsite(normalizeWebsiteUrl(website))}
         />
       </Field>
-      <SubmitButton className="w-full">Create organization</SubmitButton>
+      <SubmitButton className="w-full">{t("submit")}</SubmitButton>
     </form>
   );
 }

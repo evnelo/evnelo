@@ -1,14 +1,16 @@
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Label } from "./label";
 import { cn } from "@/lib/utils";
 
 /** Label + control + help/error, the unit every dashboard form is built from. */
 export function Field({ label, htmlFor, help, error, optional, className, children }: { label: React.ReactNode; htmlFor?: string; help?: React.ReactNode; error?: string | null; optional?: boolean; className?: string; children: React.ReactNode }) {
+  const t = useTranslations("common");
   return (
     <div className={cn("space-y-1.5", className)}>
       <Label htmlFor={htmlFor}>
         {label}
-        {optional && <span className="ml-1 font-normal text-muted-foreground">(optional)</span>}
+        {optional && <span className="ms-1 font-normal text-muted-foreground">({t("labels.optional")})</span>}
       </Label>
       {children}
       {error ? <p className="text-xs text-destructive">{error}</p> : help ? <p className="text-xs text-muted-foreground">{help}</p> : null}

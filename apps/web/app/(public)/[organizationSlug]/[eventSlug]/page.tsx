@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowUpRight, Flag, Lock, MapPin, Video } from "lucide-react";
 import { canView, robotsFor } from "@evnelo/core";
 import { getPublicEvent, getPublicEventByLegacySlug } from "@/lib/queries/events";
@@ -62,9 +63,10 @@ export default async function EventPage({ params }: Params) {
   const { event, org, hosts, sponsors, ticketTypes, fields, tags } = data;
   const access = await eventAccess(event);
   if (!canView(event, { isMember: access.isMember, hasInvite: Boolean(access.invite) })) notFound();
+  const [t, locale] = await Promise.all([getTranslations("event"), getLocale()]);
 
-  const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: event.timezone }).format(event.startsAt);
-  const day = new Intl.DateTimeFormat("en-US", { day: "numeric", timeZone: event.timezone }).format(event.startsAt);
+  const month = new Intl.DateTimeFormat(locale, { month: "short", timeZone: event.timezone }).format(event.startsAt);
+  const day = new Intl.DateTimeFormat(locale, { day: "numeric", timeZone: event.timezone }).format(event.startsAt);
   const offer = event.waitlistEnabled ? await waitlistOffer(event.id) : null;
   const atCapacity = event.capacity != null && (await liveAttendeeCount(db, event.id)) + (await activeWaitlistHolds(db, event.id)) >= event.capacity;
   const soldOut = !offer && (atCapacity || (ticketTypes.length > 0 && ticketTypes.every((t) => t.quantity != null && t.sold + t.held >= t.quantity)));
@@ -81,8 +83,8 @@ export default async function EventPage({ params }: Params) {
   };
 
   const online = event.locationType === "online";
-  const format = online ? "Online" : event.locationType === "hybrid" ? "Hybrid" : "In person";
-  const placeLine = online ? "Online, link shared after you register" : [event.venueName, event.city].filter(Boolean).join(", ");
+  const format = t(`page.format.${event.locationType}`);
+  const placeLine = online ? t("page.placeOnline") : [event.venueName, event.city].filter(Boolean).join(", ");
   const hasCover = Boolean(event.coverImageUrl);
   const mapHref = event.lat && event.lng ? `https://www.google.com/maps?q=${event.lat},${event.lng}` : null;
   const orgLogo = event.logoUrl ?? org.logoUrl ?? null;
@@ -102,26 +104,26 @@ export default async function EventPage({ params }: Params) {
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className={cn("relative z-10 grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-y-0", hasCover ? "lg:-mt-28" : "pt-10 sm:pt-14")}>
-            <header className={cn("animate-rise min-w-0 lg:col-start-1", hasCover && "pt-8 lg:-ml-8 lg:rounded-t-2xl lg:bg-background lg:px-8 lg:pt-8")}>
+            <header className={cn("animate-rise min-w-0 lg:col-start-1", hasCover && "pt-8 lg:-ms-8 lg:rounded-t-2xl lg:bg-background lg:px-8 lg:pt-8")}>
               <div className="flex items-start gap-5">
                 <div className="date-leaf min-w-[4.25rem] shrink-0 [&>span:first-child]:text-sm [&>span:last-child]:py-2 [&>span:last-child]:text-4xl"><span>{month}</span><span>{day}</span></div>
                 <div className="min-w-0">
                   <p className="eyebrow flex items-center gap-1.5">
                     {online ? <Video className="size-3.5" aria-hidden /> : <MapPin className="size-3.5" aria-hidden />}
-                    {format}{event.city && !online ? ` · ${event.city}` : ""}
+                    {event.city && !online ? t("page.formatWithCity", { format, city: event.city }) : format}
                   </p>
                   <h1 className="display mt-2 text-4xl sm:text-5xl lg:text-6xl">{event.name}</h1>
                 </div>
               </div>
               <div className="mt-6 space-y-1">
-                <p className="text-base sm:text-lg">{formatDateRange(event.startsAt, event.endsAt, event.timezone)}</p>
+                <p className="text-base sm:text-lg">{formatDateRange(event.startsAt, event.endsAt, event.timezone, locale)}</p>
                 <p className="text-sm text-muted-foreground">{placeLine}</p>
               </div>
 
               <div className="mt-6 flex items-center gap-3">
                 {orgLogo ? <img src={orgLogo} alt="" className="size-10 rounded-full border border-border/80 bg-card object-contain" /> : <Avatar src={null} name={org.name} className="size-10 text-base" />}
                 <div className="text-sm">
-                  <div>Hosted by <a href={organizationPath(org.slug)} className="font-medium underline-offset-4 hover:underline">{org.name}</a></div>
+                  <div>{t.rich("page.hostedBy", { name: org.name, a: (chunks) => <a href={organizationPath(org.slug)} className="font-medium underline-offset-4 hover:underline">{chunks}</a> })}</div>
                   {hosts.length > 0 && <div className="text-muted-foreground">{hosts.map((h) => h.name).join(", ")}</div>}
                 </div>
               </div>
@@ -131,7 +133,7 @@ export default async function EventPage({ params }: Params) {
             {event.visibility === "private" && (
               <p className="mb-3 flex items-start gap-2 text-xs text-muted-foreground">
                 <Lock className="mt-0.5 size-3.5 shrink-0" aria-hidden />
-                <span>{access.invite ? `Private event. Your invitation${access.invite.email ? ` for ${access.invite.email}` : ""} is active.` : "Private event. You can see it because you help run it."}</span>
+                <span>{access.invite ? (access.invite.email ? t("page.privateInviteFor", { email: access.invite.email }) : t("page.privateInvite")) : t("page.privateMember")}</span>
               </p>
             )}
             <RegisterCard eventId={event.id} eventName={event.name} ticketTypes={offeredTypes} fields={fields}
@@ -143,14 +145,14 @@ export default async function EventPage({ params }: Params) {
           <div className="min-w-0 lg:col-start-1">
             {event.descriptionMd && (
               <section className="hairline mt-10 pt-8">
-                <SectionTitle>About</SectionTitle>
+                <SectionTitle>{t("page.about")}</SectionTitle>
                 <div className="mt-4 max-w-prose whitespace-pre-line text-[15px] leading-7">{event.descriptionMd}</div>
               </section>
             )}
 
             {!online && event.address && (
               <section className="hairline mt-10 pt-8">
-                <SectionTitle>Where</SectionTitle>
+                <SectionTitle>{t("page.where")}</SectionTitle>
                 {(() => {
                   const body = (
                     <>
@@ -159,7 +161,7 @@ export default async function EventPage({ params }: Params) {
                         {event.venueName && <span className="block font-medium">{event.venueName}</span>}
                         <span className="block text-sm text-muted-foreground">{event.address}</span>
                       </span>
-                      {mapHref && <span className="inline-flex shrink-0 items-center gap-1 text-sm font-medium">Open in maps <ArrowUpRight className="size-4" aria-hidden /></span>}
+                      {mapHref && <span className="inline-flex shrink-0 items-center gap-1 text-sm font-medium">{t("page.openInMaps")} <ArrowUpRight className="size-4 rtl:-scale-x-100" aria-hidden /></span>}
                     </>
                   );
                   const classes = "mt-4 flex items-center gap-4 rounded-xl border border-border/80 bg-card p-4 shadow-card";
@@ -172,7 +174,7 @@ export default async function EventPage({ params }: Params) {
 
             {hosts.length > 0 && (
               <section className="hairline mt-10 pt-8">
-                <SectionTitle>Hosts</SectionTitle>
+                <SectionTitle>{t("page.hosts")}</SectionTitle>
                 <ul className="mt-5 grid gap-4 sm:grid-cols-2">
                   {hosts.map((h) => (
                     <li key={h.id} className="flex items-center gap-4">
@@ -190,7 +192,7 @@ export default async function EventPage({ params }: Params) {
 
             {sponsors.length > 0 && (
               <section className="hairline mt-10 pt-8">
-                <SectionTitle>Sponsors</SectionTitle>
+                <SectionTitle>{t("page.sponsors")}</SectionTitle>
                 <ul className="mt-5 flex flex-wrap items-stretch gap-3">
                   {sponsors.map((s) => (
                     <li key={s.id} className="flex min-w-40 flex-col justify-between gap-2 rounded-xl border border-border/80 bg-card px-4 py-3 shadow-card">
@@ -223,7 +225,7 @@ export default async function EventPage({ params }: Params) {
             )}
 
             <p className="mt-12 text-xs text-muted-foreground">
-              <a href={`/report?event=${event.id}`} className="inline-flex items-center gap-1.5 underline underline-offset-4 hover:text-foreground"><Flag className="size-3" aria-hidden />Report this event</a>
+              <a href={`/report?event=${event.id}`} className="inline-flex items-center gap-1.5 underline underline-offset-4 hover:text-foreground"><Flag className="size-3" aria-hidden />{t("page.report")}</a>
             </p>
           </div>
         </div>

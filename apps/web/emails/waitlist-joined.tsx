@@ -1,15 +1,18 @@
 import * as React from "react";
-import { ButtonLink, EmailLayout, Para, Title, type EmailBrand } from "./layout";
+import { ButtonLink, EmailLayout, Para, Title, emailI18n, strong, type EmailBrand, type EmailI18n } from "./layout";
 
-export type WaitlistJoinedProps = { brand: EmailBrand; eventName: string; eventUrl: string; position: number };
-export const waitlistJoinedSubject = (p: WaitlistJoinedProps) => `You're on the waitlist for ${p.eventName}`;
+/** `locale`/`t`: the language the person joined in (waitlist_entries.locale); the sender in app/api/waitlist/route.ts passes them. */
+export type WaitlistJoinedProps = EmailI18n & { brand: EmailBrand; eventName: string; eventUrl: string; position: number };
+export const waitlistJoinedSubject = (p: WaitlistJoinedProps) => emailI18n(p).t("waitlistJoined.subject", { eventName: p.eventName });
 
-export default function WaitlistJoined({ brand, eventName, eventUrl, position }: WaitlistJoinedProps) {
+export default function WaitlistJoined(props: WaitlistJoinedProps) {
+  const { brand, eventName, eventUrl, position } = props;
+  const { locale, t } = emailI18n(props);
   return (
-    <EmailLayout brand={brand} preview={`You're number ${position} on the waitlist.`}>
-      <Title>You&rsquo;re on the waitlist</Title>
-      <Para><strong>{eventName}</strong> is full right now. You are number <strong>{position}</strong> in line. If a spot opens up, we&rsquo;ll email you a link to claim it; the link stays valid for 24 hours.</Para>
-      <ButtonLink href={eventUrl} accent={brand.accent}>View event</ButtonLink>
+    <EmailLayout brand={brand} locale={locale} t={t} preview={t("waitlistJoined.preview", { position })}>
+      <Title>{t("waitlistJoined.title")}</Title>
+      <Para>{t.rich("waitlistJoined.full", { eventName, strong })} {t.rich("waitlistJoined.position", { position, strong })} {t("waitlistJoined.offer")}</Para>
+      <ButtonLink href={eventUrl} accent={brand.accent}>{t("waitlistJoined.cta")}</ButtonLink>
     </EmailLayout>
   );
 }

@@ -1,0 +1,434 @@
+{
+  "eventForm": {
+    "validation": {
+      "times": "Đặt thời gian bắt đầu và thời gian kết thúc."
+    },
+    "saved": "Đã lưu.",
+    "restore": {
+      "notice": "Tiếp tục từ chỗ bạn đã dừng lại: các thay đổi chưa được lưu từ {when} đã được khôi phục lại trong biểu mẫu.",
+      "discard": "Hãy vứt bỏ chúng đi."
+    },
+    "basics": {
+      "title": "Những điều cơ bản",
+      "description": "Điều mọi người nhìn thấy đầu tiên: tên, địa chỉ, câu chuyện, tác phẩm nghệ thuật.",
+      "name": "Tên sự kiện",
+      "url": "URL sự kiện",
+      "descriptionLabel": "Sự miêu tả",
+      "descriptionHelp": "Markdown được hỗ trợ.",
+      "tags": "Thẻ",
+      "tagsHelp": "Phân tách bằng dấu phẩy. Được sử dụng để tìm kiếm.",
+      "tagsPlaceholder": "thiết kế, gặp gỡ",
+      "cover": "Ảnh bìa",
+      "logo": "Logo sự kiện"
+    },
+    "when": {
+      "title": "Khi",
+      "description": "Thời gian được lưu trữ theo múi giờ UTC và hiển thị cho tất cả mọi người trong khu vực diễn ra sự kiện.",
+      "starts": "Bắt đầu",
+      "ends": "Kết thúc",
+      "timezone": "Múi giờ",
+      "publishedNote": "Việc thay đổi thời gian của một sự kiện đã được đăng tải sẽ gửi email cho tất cả người tham dự."
+    },
+    "where": {
+      "title": "Ở đâu",
+      "description": "Nơi mọi người xuất hiện, hoặc mối liên kết mà họ tham gia.",
+      "locationType": {
+        "in_person": "Trực tiếp",
+        "online": "Trực tuyến",
+        "hybrid": "Lai"
+      },
+      "venue": "Địa điểm",
+      "venuePlaceholder": "Tên địa điểm",
+      "address": "Địa chỉ",
+      "addressHelp": "Hãy chọn một gợi ý để điền thông tin thành phố, quốc gia và tọa độ trên bản đồ.",
+      "city": "Thành phố",
+      "country": "Mã quốc gia",
+      "countryHelp": "Mã gồm hai chữ cái, ví dụ: BR",
+      "countryPlaceholder": "CHÚNG TA",
+      "mapPin": "Ghim vị trí trên bản đồ được đặt từ địa chỉ ( {lat}, {lng} ). Chọn một gợi ý khác để di chuyển nó.",
+      "joinLink": "Liên kết tham gia",
+      "joinLinkHelp": "Chỉ hiển thị cho những người tham dự đã được xác nhận, trong thư xác nhận và thư nhắc nhở của họ.",
+      "joinLinkPlaceholder": "https://gặp gỡ…"
+    },
+    "registration": {
+      "title": "Sự đăng ký",
+      "description": "Ai có thể tìm thấy thông tin về sự kiện này, và có bao nhiêu người có thể tham dự?",
+      "visibility": "Khả năng hiển thị",
+      "visibilityOptions": {
+        "public": "Công cộng",
+        "unlisted": "Chưa được liệt kê",
+        "private": "Riêng tư"
+      },
+      "visibilityHelp": {
+        "public": "Được liệt kê trên Discover và được các công cụ tìm kiếm lập chỉ mục.",
+        "unlisted": "Bất kỳ ai có liên kết; không được liệt kê hoặc lập chỉ mục.",
+        "private": "Chỉ những người có liên kết mời mới được tham gia."
+      },
+      "capacity": "Dung tích",
+      "capacityHelp": "Để trống nếu muốn sử dụng không giới hạn."
+    },
+    "options": {
+      "title": "Các tùy chọn đăng ký",
+      "description": "Phê duyệt, khách mời, nhắc nhở, phí và chính sách hoàn tiền.",
+      "approval": "Phê duyệt từng đăng ký thủ công.",
+      "approvalHelp": "Mọi người yêu cầu tham gia; hãy chấp thuận hoặc từ chối yêu cầu của họ từ danh sách người tham dự.",
+      "phone": "Hãy hỏi số điện thoại.",
+      "phoneHelp": "Tùy chọn thêm mục đăng ký nhận tin nhắn SMS về vé và lời nhắc.",
+      "guests": "Cho phép khách (+1)",
+      "guestsHelp": "Mỗi khách sẽ nhận được một vé riêng.",
+      "maxGuests": "Số lượng khách tối đa cho mỗi lượt đăng ký",
+      "waitlist": "Đăng ký vào danh sách chờ khi hết hàng.",
+      "waitlistHelp": "Khách tham quan có thể xếp hàng; bạn có thể cung cấp chỗ trống từ tab Danh sách chờ khi có chỗ trống.",
+      "feePassThrough": "Người mua thanh toán phí dịch vụ",
+      "feePassThroughHelp": "Phiên bản đám mây: hiển thị 0,99% dưới dạng một mục riêng.",
+      "refundPolicy": "Chính sách hoàn tiền",
+      "refundPolicyHelp": "Hiển thị tại trang thanh toán đối với vé đã mua.",
+      "reminders": "Lời nhắc nhở",
+      "reminder24": "24 giờ trước",
+      "reminder1": "1 giờ trước",
+      "reminderCustom": "Cũng <input></input> giờ trước đó",
+      "reminderCustomLabel": "Giờ nhắc nhở tùy chỉnh",
+      "reminderCustomPlaceholder": "48, 3",
+      "hint": {
+        "joined": "{first} · {second}",
+        "on": "Vào lúc: {items}",
+        "defaults": "Mặc định",
+        "reminders": "lời nhắc {items}",
+        "noReminders": "không có lời nhắc nhở",
+        "hours": "{hours} h",
+        "flags": {
+          "approval": "sự chấp thuận",
+          "phone": "điện thoại",
+          "guests": "khách",
+          "waitlist": "danh sách chờ",
+          "feePassThrough": "người mua trả phí"
+        }
+      }
+    },
+    "links": {
+      "title": "Liên kết",
+      "description": "Các liên kết mạng xã hội được hiển thị trên trang sự kiện.",
+      "hint": "{count, plural, =0 {Chưa có liên kết nào} one {# liên kết} other {# liên kết}}",
+      "platform": "Nền tảng",
+      "url": "URL",
+      "remove": "Xóa liên kết",
+      "add": "Thêm liên kết"
+    },
+    "hosts": {
+      "title": "Người dẫn chương trình",
+      "description": "Những người được hiển thị trên trang sự kiện.",
+      "hint": "{count, plural, =0 {Chưa có máy chủ nào} one {# máy chủ} other {# máy chủ}}",
+      "name": "Tên máy chủ",
+      "titleField": "Tiêu đề",
+      "remove": "Xóa máy chủ",
+      "avatar": "Avatar",
+      "add": "Thêm máy chủ"
+    },
+    "sponsors": {
+      "title": "Nhà tài trợ",
+      "description": "Các logo xuất hiện trên trang sự kiện theo thứ tự này.",
+      "hint": "{count, plural, =0 {Chưa có nhà tài trợ nào.} one {# nhà tài trợ} other {# nhà tài trợ}}",
+      "name": "Tên nhà tài trợ",
+      "tier": "Cấp độ",
+      "website": "Trang web",
+      "remove": "Xóa nhà tài trợ",
+      "logo": "Logo",
+      "add": "Thêm nhà tài trợ"
+    },
+    "bar": {
+      "createNote": "Chưa có gì được công khai cho đến khi bạn xuất bản.",
+      "editNote": "Các thay đổi sẽ có hiệu lực ngay sau khi bạn lưu lại.",
+      "createDraft": "Tạo bản nháp",
+      "saveChanges": "Lưu thay đổi"
+    }
+  },
+  "fields": {
+    "title": "Mẫu đăng ký",
+    "description": "Tên và email luôn được yêu cầu. Câu hỏi của riêng bạn có thể áp dụng cho người đăng ký, toàn bộ đơn hàng hoặc từng khách mời, và chỉ xuất hiện khi câu trả lời trước đó trùng khớp.",
+    "add": "Thêm câu hỏi",
+    "empty": {
+      "title": "Chỉ cần tên và email",
+      "description": "Hãy thêm câu hỏi khi bạn cần thêm thông tin — chẳng hạn như ghi chú về chế độ ăn uống, tên công ty, hoặc cỡ áo.",
+      "action": "Thêm câu hỏi đầu tiên của bạn"
+    },
+    "untitled": "Câu hỏi không có tiêu đề",
+    "types": {
+      "short_text": "Văn bản ngắn",
+      "long_text": "Văn bản dài",
+      "email": "E-mail",
+      "phone": "Điện thoại",
+      "number": "Con số",
+      "select": "Lựa chọn duy nhất",
+      "multi_select": "Trắc nghiệm",
+      "checkbox": "Hộp kiểm",
+      "date": "Ngày",
+      "url": "Liên kết",
+      "file": "Tải lên tệp",
+      "consent": "Đồng ý (phải được đánh dấu)"
+    },
+    "scopes": {
+      "attendee": "Mỗi người đăng ký",
+      "order": "Một lần cho mỗi đơn hàng",
+      "guest": "Mỗi khách"
+    },
+    "badges": {
+      "required": "yêu cầu",
+      "conditional": "có điều kiện"
+    },
+    "moveUp": "Tiến lên",
+    "moveDown": "Di chuyển xuống",
+    "question": "Câu hỏi",
+    "key": "Chìa khóa",
+    "keyHelp": "Tên cột trong dữ liệu xuất và API. Viết thường, có dấu gạch dưới.",
+    "type": "Kiểu",
+    "fileNeedsS3": "Chức năng tải tệp yêu cầu cấu hình lưu trữ S3 trên máy chủ này.",
+    "fileUnavailable": "Bộ nhớ S3 chưa được cấu hình, vì vậy người đăng ký không thể tải lên tệp này. Biểu mẫu hiển thị trạng thái không khả dụng.",
+    "asked": "Yêu cầu",
+    "options": "Tùy chọn",
+    "optionsHelp": "Mỗi dòng một giá trị. Sử dụng “value | Label” để lưu trữ một giá trị khác.",
+    "helpText": "Văn bản trợ giúp",
+    "placeholder": "chỗ giữ chỗ",
+    "requiredOnlyWhenShown": "(chỉ khi được hiển thị)",
+    "onlyForTicketTypes": "Chỉ áp dụng cho các loại vé này",
+    "noneSelectedIsAll": "(không có mục nào được chọn = tất cả)",
+    "condition": "Chỉ hiển thị khi câu trả lời trước đó trùng khớp.",
+    "conditionNeedsEarlier": "(Thêm một câu hỏi phía trên trước)",
+    "showWhen": "Hiển thị khi nào <select></select> trong số này khớp:",
+    "allOrAny": "Tất cả hoặc bất kỳ",
+    "match": {
+      "and": "tất cả",
+      "or": "bất kì"
+    },
+    "ops": {
+      "eq": "là",
+      "neq": "không phải là",
+      "contains": "chứa",
+      "empty": "trống",
+      "not_empty": "không trống"
+    },
+    "rule": {
+      "field": "Cánh đồng",
+      "operator": "Người vận hành",
+      "value": "Giá trị",
+      "choose": "Chọn…",
+      "checked": "đã kiểm tra",
+      "unchecked": "chưa được kiểm tra",
+      "remove": "Xóa quy tắc",
+      "add": "Thêm quy tắc"
+    },
+    "dependNote": "Một câu hỏi chỉ có thể phụ thuộc vào câu hỏi nằm phía trên nó.",
+    "save": "Lưu biểu mẫu"
+  },
+  "ticketTypes": {
+    "title": "Các loại vé",
+    "descriptionEmpty": "Việc đăng tải thông tin mà không chỉ định loại vé sẽ tự động tạo ra một vé vào cửa miễn phí.",
+    "descriptionGuests": "Những mặt hàng mà mọi người có thể mua và số lượng mỗi loại. Khách mời trả cùng giá vé với người đăng ký.",
+    "description": "Những gì mọi người có thể mua và số lượng mỗi loại. Giá 0 có nghĩa là miễn phí.",
+    "add": "Thêm loại vé",
+    "saved": "Đã lưu.",
+    "columns": {
+      "price": "Giá",
+      "sold": "Đã bán",
+      "salesWindow": "Cửa sổ bán hàng"
+    },
+    "empty": {
+      "title": "Chưa có loại vé nào.",
+      "description": "Thêm một tùy chọn cho mỗi loại sản phẩm mà khách hàng có thể mua — giá ưu đãi sớm, giá thông thường, sinh viên."
+    },
+    "tax": "+ {rate} %",
+    "soldOfQuantity": "{sold} / {quantity}",
+    "held": "{count} đã giữ",
+    "window": "{start} → {end}",
+    "windowNow": "Hiện nay",
+    "windowEvent": "sự kiện",
+    "always": "Luôn luôn",
+    "badges": {
+      "hidden": "ẩn giấu",
+      "code": "mã số"
+    },
+    "confirmDelete": "Xóa \" {name} \"?",
+    "dialog": {
+      "editTitle": "Chỉnh sửa loại vé",
+      "newTitle": "Loại vé mới",
+      "description": "Giá tính bằng {currency}. Đặt số lượng cho đợt sản xuất có hạn."
+    },
+    "form": {
+      "description": "Sự miêu tả",
+      "price": "Giá",
+      "currency": "Tiền tệ",
+      "tax": "Thuế phần trăm",
+      "quantity": "Số lượng",
+      "quantityHelp": "Trống = không giới hạn",
+      "minPerOrder": "Số lượng tối thiểu mỗi đơn hàng",
+      "maxPerOrder": "Số lượng tối đa mỗi đơn hàng",
+      "salesStart": "Bắt đầu bán hàng",
+      "salesEnd": "Kết thúc bán hàng",
+      "hidden": "Ẩn khỏi trang sự kiện",
+      "accessCode": "Mã truy cập"
+    }
+  },
+  "discounts": {
+    "title": "Mã giảm giá",
+    "description": "Giảm giá theo phần trăm hoặc số tiền cố định cho toàn bộ đơn hàng. Người mua nhập mã giảm giá khi thanh toán; mã này áp dụng cho mọi sản phẩm trong đơn hàng.",
+    "add": "Thêm mã",
+    "form": {
+      "code": "Mã số",
+      "codePlaceholder": "NGƯỜI ĐẾN SỚM",
+      "type": "Kiểu",
+      "kind": {
+        "percent": "% tắt",
+        "fixed": "{currency} tắt"
+      },
+      "percent": "Phần trăm",
+      "amount": "Số tiền ( {currency} )",
+      "maxUses": "Max sử dụng",
+      "unlimited": "không giới hạn",
+      "expires": "Hết hạn",
+      "create": "Tạo nên"
+    },
+    "columns": {
+      "code": "Mã số",
+      "discount": "Giảm giá",
+      "uses": "Công dụng",
+      "expires": "Hết hạn"
+    },
+    "empty": {
+      "title": "Không có mã giảm giá",
+      "description": "Mã giảm giá là cách dễ nhất để áp dụng giá ưu đãi sớm, giá dành cho đối tác hoặc giá dành cho bạn bè và gia đình."
+    },
+    "percentOff": "Giảm giá {value} %",
+    "amountOff": "{amount} tắt",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Không bao giờ",
+    "status": {
+      "expired": "hết hạn",
+      "usedUp": "đã dùng hết",
+      "active": "tích cực"
+    },
+    "confirmDelete": "Xóa mã {code}? Các đơn hàng đã sử dụng mã này vẫn được giữ nguyên mức giảm giá."
+  },
+  "invites": {
+    "title": "Thư mời",
+    "description": "Một liên kết cho mỗi khách mời, hoặc một liên kết cho tất cả mọi người. Mỗi lời mời sẽ theo dõi số lần đã được sử dụng.",
+    "privateNote": "Sự kiện này là riêng tư: chỉ những người mở liên kết mời (hoặc thành viên trong tổ chức của bạn) mới có thể xem và đăng ký. Thư mời qua email chỉ hoạt động với địa chỉ email được gửi đến.",
+    "publicNote": "Thư mời chỉ giới hạn quyền truy cập vào các sự kiện <b>riêng tư</b>. Sự kiện này là {visibility}, vì vậy bất kỳ ai có liên kết đều có thể đăng ký; bạn vẫn có thể gửi thư mời như một phép lịch sự.",
+    "visibility": {
+      "public": "công cộng",
+      "unlisted": "không được liệt kê",
+      "private": "riêng tư"
+    },
+    "form": {
+      "emailPlaceholder": "guest@example.com",
+      "maxUses": "Max sử dụng",
+      "expiresInDays": "Hết hạn sau (ngày)",
+      "never": "không bao giờ",
+      "create": "Tạo lời mời",
+      "help": "Để trống phần địa chỉ email để tạo liên kết chia sẻ mà bất kỳ ai cũng có thể sử dụng."
+    },
+    "copyPrompt": "Sao chép liên kết này",
+    "newLink": "Liên kết mới",
+    "copyLink": "Sao chép liên kết",
+    "columns": {
+      "invite": "Mời",
+      "uses": "Công dụng",
+      "expires": "Hết hạn"
+    },
+    "empty": {
+      "title": "Chưa có thư mời nào cả.",
+      "description": "Tạo một mẫu như trên để chia sẻ liên kết, hoặc gửi đến một địa chỉ email cụ thể."
+    },
+    "shareableLink": "Liên kết có thể chia sẻ",
+    "created": "Được tạo vào {date}",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Không bao giờ",
+    "status": {
+      "expired": "hết hạn",
+      "usedUp": "đã dùng hết",
+      "active": "tích cực"
+    },
+    "revoke": "Thu hồi",
+    "confirmRevoke": "Bạn muốn hủy lời mời này? Liên kết sẽ ngừng hoạt động ngay lập tức."
+  },
+  "waitlist": {
+    "title": "Danh sách chờ",
+    "summary": "{waiting} đang chờ, {offered} đã đề nghị, {registered} đã đăng ký.",
+    "description": "Hàng người xếp hàng chờ mua vé khi sự kiện đã bán hết vé.",
+    "enabledNote": "Khi sự kiện bán hết vé, khách tham dự có thể tham gia danh sách này. Việc giới thiệu ai đó sẽ giữ chỗ cho họ trong 24 giờ và gửi email đường dẫn xác nhận; những chỗ ngồi không được xác nhận sẽ được đưa trở lại danh sách chung.",
+    "disabledNote": "Danh sách chờ đã bị tắt cho sự kiện này (Chỉnh sửa → Tùy chọn đăng ký). Những người đã đăng ký trước đó vẫn được liệt kê ở đây.",
+    "columns": {
+      "person": "Người",
+      "joined": "Đã tham gia",
+      "actions": "Hành động"
+    },
+    "empty": {
+      "title": "Không có ai trong danh sách chờ.",
+      "description": "Mọi người sẽ xếp hàng ở đây khi tất cả vé đã được bán hết. Bạn sẽ quyết định ai được ngồi vào chỗ trống tiếp theo."
+    },
+    "status": {
+      "waiting": "chờ",
+      "offered": "ngỏ ý",
+      "registered": "đăng ký",
+      "expired": "hết hạn"
+    },
+    "heldUntil": "{ticketType} cho đến {time}",
+    "lapsed": "Ưu đãi đã hết hạn; có thể được khuyến mãi lại.",
+    "ticketType": "Loại vé",
+    "option": "{name} · {price}",
+    "optionWithRoom": "{name} · {price} · {room} còn lại",
+    "offer": "Đề xuất một vị trí",
+    "confirmRemove": "Xóa {email} khỏi danh sách chờ?",
+    "confirmRemoveOffered": "Xóa {email} khỏi danh sách chờ? Chỗ ngồi của họ sẽ được giải phóng."
+  },
+  "refund": {
+    "confirm": "Hoàn tiền {amount} đầy đủ? Vé trong đơn đặt hàng này sẽ ngừng hoạt động và chỗ ngồi sẽ được giải phóng sau khi Stripe xác nhận.",
+    "requested": "Yêu cầu hoàn tiền.",
+    "button": "Hoàn tiền {amount}"
+  },
+  "chart": {
+    "peak": "Đỉnh điểm {max} /ngày",
+    "summary": "{total, plural, one {# đăng ký} other {# đăng ký}} qua {days, plural, one {# ngày} other {# ngày}}",
+    "aria": "Số lượt đăng ký mỗi ngày. Cao điểm {max} trong một ngày, {total} tổng cộng.",
+    "tooltip": "{date}: {count}"
+  },
+  "scanner": {
+    "outcome": {
+      "ok": "Đã nhận phòng",
+      "offline_ok": "Đã đăng ký (ngoại tuyến, sẽ đồng bộ sau)",
+      "already": "Đã nhận phòng",
+      "not_confirmed": "Đăng ký chưa được xác nhận",
+      "revoked": "Vé bị hủy hoặc hoàn tiền",
+      "wrong_event": "Vé này dành cho một sự kiện khác.",
+      "not_found": "Vé không hợp lệ",
+      "offline_unknown": "Vé không xác định (ngoại tuyến)",
+      "error": "Không thể đăng ký nhận phòng."
+    },
+    "checkedIn": "Đã nhận phòng",
+    "ofConfirmed": "/ {confirmed}",
+    "mode": "Chế độ nhận phòng",
+    "scan": "Quét",
+    "progress": "{pct} % số vé đã được xác nhận · cập nhật {time}",
+    "progressQueued": "{pct} % số vé đã được xác nhận · đã cập nhật {time} · {count} đang chờ đồng bộ hóa",
+    "offline": "Chế độ ngoại tuyến: các bản quét được lưu và đồng bộ hóa sau đó.",
+    "guestOf": "Khách của {name}",
+    "ticketTypeInAt": "{ticketType} · vào lúc {time}",
+    "undo": "Hoàn tác",
+    "camera": {
+      "denied": "Quyền truy cập camera đã bị chặn. Vui lòng cho phép truy cập camera tại địa điểm này, hoặc sử dụng chức năng Tìm kiếm để điểm danh người dùng theo tên.",
+      "unsupported": "Trình duyệt này không thể sử dụng camera. Vui lòng sử dụng chức năng Tìm kiếm hoặc dán đường dẫn yêu cầu hỗ trợ bên dưới.",
+      "starting": "Khởi động máy quay…",
+      "point": "Chỉ vào mã QR trên vé."
+    },
+    "manualPlaceholder": "Hoặc dán liên kết/mã vé.",
+    "manualLabel": "Liên kết hoặc mã vé",
+    "checkIn": "Đăng ký vào",
+    "searchPlaceholder": "Tìm kiếm theo tên hoặc email",
+    "searchLabel": "Tìm kiếm người tham dự",
+    "noMatches": "Không có người tham dự nào được xác nhận phù hợp.",
+    "listGuestOf": "· khách của {name}",
+    "listDetail": "{ticketType} · {email}",
+    "listDetailInAt": "{ticketType} · {email} · vào lúc {time}",
+    "recent": "Gần đây",
+    "recentDetail": "· {ticketType} · {time}",
+    "recentDetailManual": "· {ticketType} · {time} · hướng dẫn sử dụng"
+  }
+}

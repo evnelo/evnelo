@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "description": "Veranstaltungen in Bewegung. Offene Veranstaltungsinfrastruktur: Veranstaltungen veröffentlichen, Teilnehmer registrieren, Tickets verkaufen oder verschenken, Ihre Community informieren, Teilnehmer einchecken."
+  },
+  "nav": {
+    "discover": "Entdecken",
+    "pricing": "Preisgestaltung",
+    "dashboard": "Armaturenbrett",
+    "signIn": "anmelden",
+    "host": "Veranstalten Sie ein Event",
+    "hostShort": "Gastgeber",
+    "api": "API"
+  },
+  "footer": {
+    "tagline": "Veranstaltungen in Bewegung. Offene Veranstaltungsinfrastruktur: Kostenlose Veranstaltungen sind kostenlos, kostenpflichtige Veranstaltungen kosten den Veranstalter 0,99 %.",
+    "credit": "Präsentiert von <inevent>InEvent</inevent>."
+  },
+  "og": {
+    "subtitle": "Offene Veranstaltungsinfrastruktur. Veröffentlichen, registrieren, teilnehmen."
+  },
+  "github": {
+    "label": "evnelo/evnelo auf GitHub"
+  },
+  "captcha": {
+    "notice": "Diese Website ist durch reCAPTCHA und Google geschützt.<privacy>Datenschutzrichtlinie</privacy> Und<terms>Nutzungsbedingungen</terms> anwenden."
+  },
+  "hero": {
+    "eyebrow": "Infrastruktur für offene Veranstaltungen",
+    "title": "Vom ersten Klick bis zum Eingangstor.",
+    "lead": "Veröffentlichen Sie Veranstaltungen, verkaufen Sie Tickets, kontaktieren Sie Teilnehmer und führen Sie den Check-in über eine offene Plattform durch oder hosten Sie diese selbst auf Ihrer eigenen Infrastruktur.",
+    "pricing": "<b>0,99 %</b> auf bezahlte Tickets. Kostenlose Veranstaltungen bleiben kostenlos. <br></br> <b>0 %</b> bei Selbstveranstalter.",
+    "explore": "Veranstaltungen entdecken",
+    "scene": {
+      "steps": {
+        "discover": {
+          "label": "Entdecken",
+          "sub": "Finde heraus, was dich bewegt."
+        },
+        "register": {
+          "label": "Registrieren",
+          "sub": "Nur wenige Klicks entfernt"
+        },
+        "ticketing": {
+          "label": "Buchung",
+          "sub": "Verkaufen Sie ohne Limit"
+        },
+        "checkin": {
+          "label": "Einchecken",
+          "sub": "Schnell. Freundlich. Flexibel."
+        },
+        "attendance": {
+          "label": "Teilnahme",
+          "sub": "Echte Menschen. Nachhaltige Wirkung."
+        }
+      },
+      "event": {
+        "category": "Musik",
+        "title": "Sonnenuntergangssitzungen",
+        "date": "Sa., 24. Aug. 2024",
+        "place": "Riverside Park"
+      },
+      "create": {
+        "title": "Erstelle deine Veranstaltung",
+        "publish": "Veranstaltung veröffentlichen"
+      },
+      "ticket": {
+        "title": "Allgemeiner Eintritt",
+        "meta": "Sa., 24. Aug. 2024 <br></br> Riverside Park"
+      },
+      "checkin": {
+        "title": "Teilnehmer hat eingecheckt",
+        "welcome": "Willkommen!"
+      },
+      "attendance": {
+        "more": "+ {count}",
+        "meta": "Menschen nahmen teil"
+      },
+      "notes": {
+        "left": "Mehr Ereignisse. <br></br> Eine offenere Welt.",
+        "right": "Ereignisse <br></br> bewegen Menschen."
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Evnelo: Ereignisse in Bewegung",
+      "description": "Offene Event-Infrastruktur. Veranstaltungen veröffentlichen, Teilnehmer registrieren, Tickets verkaufen oder verschenken, die Community informieren und den Einlass verwalten. 0,99 % Provision auf kostenpflichtige Tickets, kostenlose Veranstaltungen sind kostenlos, oder Sie veranstalten Ihr Event selbst – völlig kostenlos."
+    },
+    "pricing": {
+      "eyebrow": "Preisgestaltung",
+      "title": "Niedrigere Gebühren als bei jeder anderen Plattform.",
+      "body": "Die meisten Plattformen berechnen 3 bis 5 Prozent plus Gebühren pro Ticket. Evnelo hingegen erhebt nur 0,99 % auf kostenpflichtige Tickets und keine Gebühren auf kostenlose. Sie verbinden Ihr eigenes Stripe-Konto, sodass die Ticketeinnahmen direkt an Sie gehen und nicht bei uns verbleiben. Die Bearbeitungsgebühr von Stripe wird zu deren Tarifen berechnet, und Sie können diese entweder an die Käufer weitergeben oder selbst tragen.",
+      "plans": {
+        "free": {
+          "title": "Kostenlose Veranstaltungen",
+          "price": "0 €",
+          "note": "Keine Plattformgebühr, keine Gebühr pro Ticket, unbegrenzte Teilnehmerzahl."
+        },
+        "paid": {
+          "title": "Bezahlte Veranstaltungen",
+          "price": "0,99 %",
+          "note": "Der Ticketpreis wird über Ihr verknüpftes Stripe-Konto abgerechnet. Ein Ticket für 25 $ kostet Sie 25 Cent zuzüglich der Stripe-Gebühr."
+        },
+        "selfHosted": {
+          "title": "Selbstgehostet",
+          "price": "0 €",
+          "note": "Open Source. Ein Container, Ihr MySQL, Ihre eigenen Stripe-Schlüssel. Niemals Plattformgebühren."
+        }
+      }
+    },
+    "flow": {
+      "eyebrow": "Wie es fließt",
+      "title": "Alles zwischen „Ich will gehen“ und „Ich bin hier“.",
+      "steps": {
+        "publish": {
+          "title": "Veröffentlichen",
+          "text": "Eine Veranstaltungsseite mit Titelbild, Zeitplan, Veranstaltungsort und Gastgebern. Öffentlich, nicht gelistet oder privat (nur auf Einladung)."
+        },
+        "register": {
+          "title": "Registrieren",
+          "text": "Ticketkategorien, eigene Fragen, Gäste mit eigenen Tickets, Rabattcodes, eine Warteliste, wenn Sie ausverkauft sind."
+        },
+        "pay": {
+          "title": "Bezahlen und erhalten",
+          "text": "Karten, Apple Pay, Google Pay, Pix. Tickets mit QR-Code, Wallet-Pässe, Kalenderdateien, Bestätigung per E-Mail und SMS."
+        },
+        "checkin": {
+          "title": "Einchecken",
+          "text": "Ein Scanner, der in jedem Handybrowser läuft, auch ohne Mobilfunkempfang funktioniert und die Raumfüllung live anzeigt."
+        }
+      }
+    },
+    "openSource": {
+      "eyebrow": "Open Source",
+      "title": "Ihre Ereignisse. Ihre Daten. Ihr Technologie-Stack.",
+      "body": "Evnelo ist Open Source und unter der Apache-2.0-Lizenz verfügbar. Sie können es selbst hosten – mit einem Container und einer MySQL-Datenbank. Integrieren Sie Ihre eigenen Stripe-, Resend- und Vonage-Schlüssel und speichern Sie alle Teilnehmerdatensätze auf Ihrer eigenen Infrastruktur. Gleiches Produkt, keine Plattformgebühr.",
+      "points": {
+        "export": "Teilnehmerexport und -löschung integriert",
+        "providers": "Bringen Sie Ihre eigenen Zahlungs-, E-Mail- und SMS-Anbieter mit.",
+        "ops": "Migrationen, Systemprüfungen und Datensicherungen dokumentiert",
+        "migrate": "Der Wechsel zur oder von der gehosteten Edition ist eine Datenbankänderung, keine Neuschreibung."
+      },
+      "source": "Quelltext anzeigen",
+      "apiReference": "API-Referenz"
+    },
+    "developers": {
+      "eyebrow": "Für Entwickler",
+      "title": "Gebaut, um darauf weitergebaut zu werden.",
+      "points": {
+        "rest": "REST-API für jede Ressource, mit idempotenten Schreibvorgängen",
+        "sdk": "Generiertes TypeScript SDK und ein MCP-Server für Agenten",
+        "webhooks": "Signierte Webhooks für Registrierungen, Zahlungen und Check-ins",
+        "openapi": "OpenAPI-Dokumentation und interaktive Dokumentation unter /api/v1/docs"
+      }
+    },
+    "upcoming": {
+      "eyebrow": "Demnächst",
+      "title": "Öffentliche Veranstaltungen auf Evnelo",
+      "all": "Alle Veranstaltungen"
+    },
+    "cta": {
+      "title": "Sorgen Sie für einen reibungslosen Ablauf beim Sammeln.",
+      "body": "Erstellen Sie Ihre erste Veranstaltung in wenigen Minuten. Kostenlose Veranstaltungen benötigen nichts; kostenpflichtige Veranstaltungen benötigen Ihr Stripe-Konto.",
+      "explore": "Schauen Sie, was läuft"
+    }
+  },
+  "discover": {
+    "meta": {
+      "description": "Öffentliche Veranstaltungen aller Gastgeber auf Evnelo. Suche nach Stadt, Thema, Datum, Preis und Entfernung."
+    },
+    "headline": {
+      "query": {
+        "none": "Ereignisse, die dem Wert „ {q} “ entsprechen",
+        "city": "Ereignisse, die mit „ {q} “ in {city} übereinstimmen",
+        "near": "Veranstaltungen, die dem Begriff „ {q} “ entsprechen, in Ihrer Nähe",
+        "online": "Online-Ereignisse, die dem Wert „ {q} “ entsprechen",
+        "inPerson": "Veranstaltungen, die der Bezeichnung „ {q} “ entsprechen, persönlich"
+      },
+      "free": {
+        "none": "Kostenlose Veranstaltungen",
+        "city": "Kostenlose Veranstaltungen in {city}",
+        "near": "Kostenlose Veranstaltungen in Ihrer Nähe",
+        "online": "Kostenlose Online-Veranstaltungen",
+        "inPerson": "Kostenlose Veranstaltungen vor Ort"
+      },
+      "tag": {
+        "none": "{tag} Ereignisse",
+        "city": "{tag} Ereignisse in {city}",
+        "near": "{tag} Veranstaltungen in Ihrer Nähe",
+        "online": "{tag} Veranstaltungen online",
+        "inPerson": "{tag} Veranstaltungen in Präsenz"
+      },
+      "paid": {
+        "none": "Veranstaltungen mit Eintrittskarten",
+        "city": "Veranstaltungen mit Eintrittskarten in {city}",
+        "near": "Veranstaltungen mit Eintrittskarten in Ihrer Nähe",
+        "online": "Online-Veranstaltungen mit Eintrittskarten",
+        "inPerson": "Veranstaltungen mit Eintrittskarten vor Ort"
+      },
+      "all": {
+        "none": "Was läuft?",
+        "city": "Ereignisse in {city}",
+        "near": "Veranstaltungen in Ihrer Nähe",
+        "online": "Online-Veranstaltungen",
+        "inPerson": "Veranstaltungen in Präsenz"
+      }
+    },
+    "lead": "Vorträge, Workshops, Abendessen und Treffen von jedem Gastgeber auf Evnelo.",
+    "jsonLdName": "Bevorstehende öffentliche Veranstaltungen",
+    "count": {
+      "exact": "{count, plural, one {# Ereignis} other {# Ereignisse}}",
+      "more": "{count, plural, one {# + Ereignis} other {# + Ereignisse}}",
+      "exactFrom": "{count, plural, one {# Ereignis} other {# Ereignisse}} von # {from}",
+      "moreFrom": "{count, plural, one {# + Ereignis} other {# + Ereignisse}} von # {from}"
+    },
+    "format": {
+      "online": "Online",
+      "in_person": "Persönlich",
+      "hybrid": "Hybrid"
+    },
+    "price": {
+      "paid": "Bezahlt"
+    },
+    "date": {
+      "today": "Heute",
+      "week": "Diese Woche",
+      "month": "Diesen Monat",
+      "custom": "Wählen Sie Termine"
+    },
+    "active": {
+      "showing": "Anzeige",
+      "query": "“ {q} ”",
+      "customRange": "{from} bis {to}",
+      "customDates": "Benutzerdefinierte Daten",
+      "within": "Innerhalb von {km} km",
+      "remove": "Filter entfernen",
+      "clearAll": "Alles löschen"
+    },
+    "search": {
+      "events": "Suchereignisse",
+      "placeholder": "Veranstaltungen, Veranstalter und Schlagwörter suchen",
+      "city": "Stadt",
+      "cityOption": "{city}, {country}",
+      "nearMe": "In meiner Nähe",
+      "nearYou": "In Ihrer Nähe",
+      "unsupported": "Dieser Browser kann Ihren Standort nicht freigeben. Versuchen Sie es stattdessen mit einer Stadt.",
+      "blocked": "Standortinformationen sind gesperrt. Filtern Sie stattdessen nach Stadt."
+    },
+    "toolbar": {
+      "label": "Filter",
+      "km": "{km} km",
+      "anywhere": "Überall",
+      "view": "Sicht",
+      "list": "Liste",
+      "calendar": "Kalender"
+    },
+    "customDates": {
+      "from": "Aus",
+      "to": "Zu",
+      "apply": "Gültigkeitsdaten",
+      "clear": "Klare Daten"
+    },
+    "topics": "Themen",
+    "sections": {
+      "featured": "Empfohlen",
+      "upcoming": "Demnächst"
+    },
+    "empty": {
+      "month": {
+        "title": "Für diesen Monat ist nichts geplant.",
+        "body": "Versuchen Sie es einen weiteren Monat oder leeren Sie einen Filter.",
+        "action": "Nächsten Monat"
+      },
+      "filtered": {
+        "title": "Es wurden keine Ereignisse gefunden, die diesen Filtern entsprechen.",
+        "body": "Versuchen Sie einen größeren Datumsbereich oder löschen Sie die Filter.",
+        "action": "Filter löschen"
+      },
+      "end": {
+        "title": "Du hast das Ende erreicht.",
+        "body": "Das sind alle anstehenden öffentlichen Veranstaltungen auf dieser Seite.",
+        "action": "Zurück zum Anfang"
+      },
+      "none": {
+        "title": "Derzeit sind keine öffentlichen Veranstaltungen geplant.",
+        "body": "Seien Sie der Erste, der ein solches Event veranstaltet."
+      }
+    },
+    "pagination": {
+      "label": "Pagination",
+      "more": "Mehr laden"
+    },
+    "card": {
+      "from": "von {price}",
+      "underOneKm": "Weniger als 1 km entfernt",
+      "kmAway": "{km} km entfernt"
+    },
+    "calendar": {
+      "eyebrow": "Kalender",
+      "changeMonth": "Monat ändern",
+      "goTo": "Gehe zu {month}",
+      "today": "Heute",
+      "dayCount": "{count, plural, one {# Ereignis} other {# Ereignisse}}",
+      "overflow": "+ {count} mehr",
+      "timezoneNote": "Die Zeiten werden in der jeweiligen Zeitzone der Veranstaltung angezeigt.",
+      "rowTitle": "{name} — {time}"
+    }
+  },
+  "org": {
+    "meta": {
+      "description": "Veranstaltungen von {name}"
+    },
+    "eyebrow": "Veranstalter",
+    "upcoming": "Demnächst",
+    "count": "{count, plural, one {# Ereignis} other {# Ereignisse}}",
+    "empty": {
+      "title": "Im Moment ist nichts geplant.",
+      "body": "Schauen Sie bald wieder vorbei oder sehen Sie, welche anderen Hosts aktiv sind.",
+      "action": "Alle Veranstaltungen anzeigen"
+    },
+    "past": "Vergangene Ereignisse"
+  },
+  "report": {
+    "meta": {
+      "title": "Ein Ereignis melden"
+    },
+    "eyebrow": "Bericht",
+    "title": "Ein Ereignis melden",
+    "reasons": {
+      "spam": "Spam oder irreführende Informationen",
+      "scam": "Betrug oder Täuschung",
+      "inappropriate": "Unangemessener Inhalt",
+      "copyright": "Urheberrecht oder Marke",
+      "other": "Etwas anderes"
+    },
+    "notFound": "Diese Veranstaltung konnte nicht gefunden werden.",
+    "openFromEvent": "Öffnen Sie diese Seite im Rahmen einer Veranstaltung, um diese zu melden.",
+    "sent": "Danke. Ihr Bericht über <b>{name}</b> wurde protokolliert.",
+    "sentAndForwarded": "Danke. Ihr Bericht über <b>{name}</b> wurde erfasst und an die Bediener dieser Instanz weitergeleitet.",
+    "reporting": "Berichterstattung <b>{name}</b> durch {org}. Berichte gehen an die Personen, die diese Evnelo-Instanz betreiben, nicht an den Host.",
+    "errors": {
+      "limited": "Es liegen zu viele Meldungen zu Ihrer Verbindung vor. Bitte versuchen Sie es später erneut.",
+      "invalid": "Überprüfen Sie das Formular und versuchen Sie es erneut."
+    },
+    "form": {
+      "reason": "Grund",
+      "details": "Details",
+      "optional": "(optional)",
+      "email": "Ihre E-Mail",
+      "optionalFollowUp": "(optional, falls wir uns danach melden dürfen)",
+      "submit": "Bericht senden"
+    },
+    "back": "Zurück zur Veranstaltung"
+  },
+  "notFound": {
+    "meta": {
+      "title": "Seite nicht gefunden"
+    },
+    "eyebrow": "404",
+    "title": "Hier ist nichts.",
+    "body": "Der Link ist möglicherweise veraltet, die Veranstaltung wurde möglicherweise entfernt oder die Adresse enthält einen Tippfehler.",
+    "action": "Öffentliche Veranstaltungen durchsuchen"
+  },
+  "error": {
+    "title": "Etwas ist schiefgelaufen.",
+    "body": "Auf der Seite ist ein Fehler aufgetreten. Ein erneuter Versuch behebt das Problem in der Regel; sollte der Fehler weiterhin auftreten, wurde der Host benachrichtigt.",
+    "reference": "Referenz {digest}",
+    "home": "Nach Hause gehen"
+  }
+}

@@ -1,0 +1,434 @@
+{
+  "eventForm": {
+    "validation": {
+      "times": "Başlangıç ve bitiş saatini belirleyin."
+    },
+    "saved": "Kaydedildi.",
+    "restore": {
+      "notice": "Kaldığınız yerden devam ediyoruz: {when} tarihinden itibaren kaydedilmemiş değişiklikler forma geri döndü.",
+      "discard": "Onları atın."
+    },
+    "basics": {
+      "title": "Temel Bilgiler",
+      "description": "İnsanların ilk gördüğü şeyler: isim, adres, hikaye, sanat eseri.",
+      "name": "Etkinlik adı",
+      "url": "Etkinlik URL'si",
+      "descriptionLabel": "Tanım",
+      "descriptionHelp": "Markdown desteklenmektedir.",
+      "tags": "Etiketler",
+      "tagsHelp": "Virgülle ayrılmış. Keşif amacıyla kullanılır.",
+      "tagsPlaceholder": "tasarım, buluşma",
+      "cover": "Kapak resmi",
+      "logo": "Etkinlik logosu"
+    },
+    "when": {
+      "title": "Ne zaman",
+      "description": "Zamanlar UTC formatında kaydedilir ve etkinliğin gerçekleştiği bölgedeki herkese gösterilir.",
+      "starts": "Başlıyor",
+      "ends": "Son",
+      "timezone": "Saat dilimi",
+      "publishedNote": "Yayınlanan bir etkinliğin saatini değiştirmek, tüm katılımcılara e-posta yoluyla bildirilir."
+    },
+    "where": {
+      "title": "Nerede",
+      "description": "İnsanların ortaya çıktığı yer veya katıldıkları bağlantı.",
+      "locationType": {
+        "in_person": "Şahsen",
+        "online": "Çevrimiçi",
+        "hybrid": "Hibrit"
+      },
+      "venue": "Mekan",
+      "venuePlaceholder": "Mekan adı",
+      "address": "Adres",
+      "addressHelp": "Şehir, ülke ve harita koordinatlarını doldurmak için bir öneri seçin.",
+      "city": "Şehir",
+      "country": "Ülke kodu",
+      "countryHelp": "İki harfli kod, örneğin BR",
+      "countryPlaceholder": "BİZ",
+      "mapPin": "Harita iğnesi ( {lat}, {lng} ) adresinden ayarlandı. Taşımak için başka bir öneri seçin.",
+      "joinLink": "Bağlantıya katıl",
+      "joinLinkHelp": "Bu içerik yalnızca katılımı onaylanmış katılımcılara, onay ve hatırlatma mesajlarında gösterilir.",
+      "joinLinkPlaceholder": "https://meet…"
+    },
+    "registration": {
+      "title": "Kayıt",
+      "description": "Etkinliği kim bulabilir ve kaç kişi katılabilir?",
+      "visibility": "Görünürlük",
+      "visibilityOptions": {
+        "public": "Halk",
+        "unlisted": "Listelenmemiş",
+        "private": "Özel"
+      },
+      "visibilityHelp": {
+        "public": "Discover'da listelenmiş ve arama motorları tarafından indekslenmiştir.",
+        "unlisted": "Bağlantıya sahip olan herkes; listede veya dizinde yer almayanlar.",
+        "private": "Sadece davet bağlantısına sahip olanlar."
+      },
+      "capacity": "Kapasite",
+      "capacityHelp": "Sınırsız kullanım için boş bırakın."
+    },
+    "options": {
+      "title": "Kayıt seçenekleri",
+      "description": "Onay, misafirler, hatırlatmalar, ücretler ve iade politikası.",
+      "approval": "Her kaydı manuel olarak onaylayın.",
+      "approvalHelp": "Kişiler katılma talebinde bulunur; Katılımcılardan gelen talepleri onaylar veya reddeder.",
+      "phone": "Telefon numarası isteyin.",
+      "phoneHelp": "Biletler ve hatırlatıcılar için SMS aboneliği seçeneği bulunan isteğe bağlı alan.",
+      "guests": "Misafir kabul edin (+1)",
+      "guestsHelp": "Her misafire ayrı bir bilet verilir.",
+      "maxGuests": "Kayıt başına maksimum misafir sayısı",
+      "waitlist": "Tükendiğinde bekleme listesine alın.",
+      "waitlistHelp": "Ziyaretçiler sıraya girebilir; boşalan yerlere Bekleme Listesi sekmesinden yer teklif edebilirsiniz.",
+      "feePassThrough": "Hizmet bedelini alıcı öder.",
+      "feePassThroughHelp": "Bulut sürümü: %0,99'u ayrı bir satır öğesi olarak gösterin.",
+      "refundPolicy": "Geri ödeme politikası",
+      "refundPolicyHelp": "Ücretli biletler için ödeme sayfasında gösterilir.",
+      "reminders": "Hatırlatmalar",
+      "reminder24": "24 saat önce",
+      "reminder1": "1 saat önce",
+      "reminderCustom": "Ayrıca <input></input> saat önce",
+      "reminderCustomLabel": "Özel hatırlatma saatleri",
+      "reminderCustomPlaceholder": "48, 3",
+      "hint": {
+        "joined": "{first} · {second}",
+        "on": "Üzerinde: {items}",
+        "defaults": "Varsayılanlar",
+        "reminders": "hatırlatıcılar {items}",
+        "noReminders": "hatırlatma yok",
+        "hours": "{hours} h",
+        "flags": {
+          "approval": "onay",
+          "phone": "telefon",
+          "guests": "misafirler",
+          "waitlist": "bekleme listesi",
+          "feePassThrough": "Alıcı ücreti öder"
+        }
+      }
+    },
+    "links": {
+      "title": "Bağlantılar",
+      "description": "Etkinlik sayfasında sosyal medya bağlantıları gösterilmektedir.",
+      "hint": "{count, plural, =0 {Henüz bağlantı yok.} one {# bağlantı} other {# bağlantı}}",
+      "platform": "Platform",
+      "url": "URL",
+      "remove": "Bağlantıyı kaldır",
+      "add": "Bağlantı ekle"
+    },
+    "hosts": {
+      "title": "Ev sahipleri",
+      "description": "Etkinlik sayfasında gösterilen kişiler.",
+      "hint": "{count, plural, =0 {Henüz ev sahibi yok.} one {# ev sahibi} other {# sunucu}}",
+      "name": "Sunucu adı",
+      "titleField": "Başlık",
+      "remove": "Sunucuyu kaldır",
+      "avatar": "Avatar",
+      "add": "Sunucu ekle"
+    },
+    "sponsors": {
+      "title": "Sponsorlar",
+      "description": "Logolar etkinlik sayfasında bu sırayla görünür.",
+      "hint": "{count, plural, =0 {Henüz sponsor yok.} one {# sponsor} other {# sponsor}}",
+      "name": "Sponsor adı",
+      "tier": "Aşama",
+      "website": "Web sitesi",
+      "remove": "Sponsoru kaldır",
+      "logo": "Logo",
+      "add": "Sponsor ekle"
+    },
+    "bar": {
+      "createNote": "Yayınlayana kadar hiçbir şey kamuya açık değildir.",
+      "editNote": "Kaydettiğiniz anda değişiklikler geçerli olur.",
+      "createDraft": "Taslak oluştur",
+      "saveChanges": "Değişiklikleri kaydet"
+    }
+  },
+  "fields": {
+    "title": "Kayıt formu",
+    "description": "İsim ve e-posta her zaman sorulur. Kendi sorularınız kayıt yaptıran kişiye, tüm siparişe veya her bir misafire uygulanabilir ve yalnızca önceki bir yanıtla eşleştiğinde görünebilir.",
+    "add": "Soru ekle",
+    "empty": {
+      "title": "Sadece adınızı ve e-postanızı yazın.",
+      "description": "Daha fazla bilgiye ihtiyaç duyduğunuzda bir soru ekleyin — beslenme bilgisi, şirket adı, tişört bedeni gibi.",
+      "action": "İlk sorunuzu ekleyin"
+    },
+    "untitled": "Başlıksız soru",
+    "types": {
+      "short_text": "Kısa metin",
+      "long_text": "Uzun metin",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "number": "Sayı",
+      "select": "Tek seçenek",
+      "multi_select": "Çoktan seçmeli",
+      "checkbox": "Onay kutusu",
+      "date": "Tarih",
+      "url": "Bağlantı",
+      "file": "Dosya yükleme",
+      "consent": "Onay (işaretlenmelidir)"
+    },
+    "scopes": {
+      "attendee": "Her kayıt yaptıran",
+      "order": "Sipariş başına bir kez",
+      "guest": "Her misafir"
+    },
+    "badges": {
+      "required": "gerekli",
+      "conditional": "koşullu"
+    },
+    "moveUp": "Yukarı çık",
+    "moveDown": "Aşağıya doğru hareket edin",
+    "question": "Soru",
+    "key": "Anahtar",
+    "keyHelp": "Dışa aktarmalarda ve API'de sütun adı. Küçük harf, alt çizgi.",
+    "type": "Tip",
+    "fileNeedsS3": "Dosya yükleme işlemi için bu örnek üzerinde S3 depolama alanının yapılandırılması gerekmektedir.",
+    "fileUnavailable": "S3 depolama alanı yapılandırılmadığı için kayıt yaptıranlar bu dosyayı yükleyemez. Formda kullanılamaz olarak gösteriliyor.",
+    "asked": "Soruldu",
+    "options": "Seçenekler",
+    "optionsHelp": "Her satırda bir tane. Farklı bir değer saklamak için “değer | Etiket” ifadesini kullanın.",
+    "helpText": "Yardım metni",
+    "placeholder": "Yer tutucu",
+    "requiredOnlyWhenShown": "(yalnızca gösterildiğinde)",
+    "onlyForTicketTypes": "Sadece bu bilet türleri için geçerlidir.",
+    "noneSelectedIsAll": "(hiçbiri seçilmedi = tümü)",
+    "condition": "Yalnızca önceki bir yanıtla eşleştiğinde göster.",
+    "conditionNeedsEarlier": "(Önce üstüne bir soru ekleyin)",
+    "showWhen": "Bunlardan <select></select> tanesi eşleştiğinde göster:",
+    "allOrAny": "Hepsi veya herhangi biri",
+    "match": {
+      "and": "Tümü",
+      "or": "herhangi"
+    },
+    "ops": {
+      "eq": "dır",
+      "neq": "değil",
+      "contains": "içerir",
+      "empty": "boş",
+      "not_empty": "boş değil"
+    },
+    "rule": {
+      "field": "Alan",
+      "operator": "Operatör",
+      "value": "Değer",
+      "choose": "Seçmek…",
+      "checked": "kontrol edildi",
+      "unchecked": "kontrol edilmemiş",
+      "remove": "Kuralı kaldır",
+      "add": "Kural ekle"
+    },
+    "dependNote": "Bir soru, ancak kendisinden üstte yer alan bir soruya bağlı olabilir.",
+    "save": "Formu kaydet"
+  },
+  "ticketTypes": {
+    "title": "Bilet türleri",
+    "descriptionEmpty": "Bilet türü belirtilmeden yayın yapmak, otomatik olarak ücretsiz bir genel giriş bileti oluşturur.",
+    "descriptionGuests": "İnsanların neler satın alabileceği ve her birinden kaç tane alabilecekleri. Misafirler, kayıt yaptıran kişinin biletiyle aynı fiyatı öderler.",
+    "description": "İnsanların neler satın alabileceği ve her birinden kaç tane alabileceği. Fiyatı 0 olan ürünler ücretsizdir.",
+    "add": "Bilet türü ekle",
+    "saved": "Kaydedildi.",
+    "columns": {
+      "price": "Fiyat",
+      "sold": "Satılmış",
+      "salesWindow": "Satış penceresi"
+    },
+    "empty": {
+      "title": "Henüz bilet türü yok.",
+      "description": "İnsanların satın alabileceği her şey için bir tane ekleyin: erken rezervasyon, standart, öğrenci."
+    },
+    "tax": "+ {rate} 0 vergi",
+    "soldOfQuantity": "{sold} / {quantity}",
+    "held": "{count} tutuldu",
+    "window": "{start} → {end}",
+    "windowNow": "Şimdi",
+    "windowEvent": "etkinlik",
+    "always": "Her zaman",
+    "badges": {
+      "hidden": "gizlenmiş",
+      "code": "kod"
+    },
+    "confirmDelete": "\" {name} \" silinsin mi?",
+    "dialog": {
+      "editTitle": "Bilet türünü düzenle",
+      "newTitle": "Yeni bilet türü",
+      "description": "Fiyatı {currency} cinsinden. Sınırlı sayıda üretilecek miktar belirlenmiştir."
+    },
+    "form": {
+      "description": "Tanım",
+      "price": "Fiyat",
+      "currency": "Para birimi",
+      "tax": "Vergi %",
+      "quantity": "Miktar",
+      "quantityHelp": "Boş = sınırsız",
+      "minPerOrder": "Sipariş başına minimum tutar",
+      "maxPerOrder": "Sipariş başına maksimum tutar",
+      "salesStart": "Satışlar başlıyor",
+      "salesEnd": "Satış sonu",
+      "hidden": "Etkinlik sayfasından gizlenmiştir.",
+      "accessCode": "Erişim kodu"
+    }
+  },
+  "discounts": {
+    "title": "İndirim kodları",
+    "description": "Siparişten belirli bir yüzde veya sabit tutarda indirim. Alıcılar ödeme sırasında kodu girer; kod siparişteki her ürüne uygulanır.",
+    "add": "Kod ekle",
+    "form": {
+      "code": "Kod",
+      "codePlaceholder": "ERKEN KUŞ",
+      "type": "Tip",
+      "kind": {
+        "percent": "% kapalı",
+        "fixed": "{currency} indirimli"
+      },
+      "percent": "Yüzde",
+      "amount": "Miktar ( {currency} )",
+      "maxUses": "Max kullanıyor",
+      "unlimited": "sınırsız",
+      "expires": "Süresi doluyor",
+      "create": "Yaratmak"
+    },
+    "columns": {
+      "code": "Kod",
+      "discount": "İndirim",
+      "uses": "Kullanım Alanları",
+      "expires": "Süresi doluyor"
+    },
+    "empty": {
+      "title": "İndirim kodu yok.",
+      "description": "Kodlar, erken rezervasyon indirimi, ortak indirimi veya arkadaş-aile indirimi gibi fırsatları kullanmanın en kolay yoludur."
+    },
+    "percentOff": "{value} % indirim",
+    "amountOff": "{amount} indirimli",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Asla",
+    "status": {
+      "expired": "günü geçmiş",
+      "usedUp": "tükendi",
+      "active": "aktif"
+    },
+    "confirmDelete": "{code} kodunu silmek mi istiyorsunuz? Bu kodu daha önce kullanan siparişler indirimlerini koruyacak."
+  },
+  "invites": {
+    "title": "Davetiyeler",
+    "description": "Her misafir için bir bağlantı veya herkes için tek bir bağlantı. Her davetiyenin kaç kez kullanıldığı kaydedilir.",
+    "privateNote": "Bu etkinlik özeldir: yalnızca davet bağlantısını açan kişiler (veya kuruluşunuzun üyeleri) etkinliği görebilir ve kayıt olabilir. E-posta davetleri yalnızca gönderildikleri adresle çalışır.",
+    "publicNote": "Davetiyeler yalnızca <b>özel</b> etkinliğe erişimi kısıtlar. Bu etkinlik {visibility} olduğundan, bağlantıya sahip herkes kayıt olabilir; yine de nezaket gereği davetiye gönderebilirsiniz.",
+    "visibility": {
+      "public": "halk",
+      "unlisted": "listelenmemiş",
+      "private": "özel"
+    },
+    "form": {
+      "emailPlaceholder": "guest@example.com",
+      "maxUses": "Max kullanıyor",
+      "expiresInDays": "Son geçerlilik tarihi (gün)",
+      "never": "Asla",
+      "create": "Davetiye oluştur",
+      "help": "Herkesin kullanabileceği paylaşılabilir bir bağlantı için e-posta adresini boş bırakın."
+    },
+    "copyPrompt": "Bu bağlantıyı kopyala",
+    "newLink": "Yeni bağlantı",
+    "copyLink": "Bağlantıyı kopyala",
+    "columns": {
+      "invite": "Davet etmek",
+      "uses": "Kullanım Alanları",
+      "expires": "Süresi doluyor"
+    },
+    "empty": {
+      "title": "Henüz davetiye yok.",
+      "description": "Yukarıdakilerden birini oluşturarak bağlantıyı paylaşabilir veya tek bir e-posta adresine gönderebilirsiniz."
+    },
+    "shareableLink": "Paylaşılabilir bağlantı",
+    "created": "Oluşturuldu {date}",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Asla",
+    "status": {
+      "expired": "günü geçmiş",
+      "usedUp": "tükendi",
+      "active": "aktif"
+    },
+    "revoke": "Geri çekmek",
+    "confirmRevoke": "Bu daveti iptal etmek mi istiyorsunuz? Bağlantı hemen çalışmayı durdurur."
+  },
+  "waitlist": {
+    "title": "Bekleme listesi",
+    "summary": "{waiting} beklemede, {offered} teklif edildi, {registered} kayıt oldu.",
+    "description": "Etkinliğin biletleri tükendiğinde oluşan kuyruk.",
+    "enabledNote": "Etkinlik biletleri tükendiğinde, ziyaretçiler bu listeye katılabilirler. Birini tanıtmak, o kişi için 24 saat boyunca bir koltuk ayırır ve talep bağlantısı içeren bir e-posta gönderir; talep edilmeyen koltuklar havuza geri döner.",
+    "disabledNote": "Bu etkinlik için bekleme listesi kaldırıldı (Düzenle → Kayıt seçenekleri). Daha önce katılan kişilerin listesi hala burada yer almaktadır.",
+    "columns": {
+      "person": "Kişi",
+      "joined": "Katıldı",
+      "actions": "Eylemler"
+    },
+    "empty": {
+      "title": "Bekleme listesinde kimse yok.",
+      "description": "Tüm biletler tükendiğinde insanlar burada kuyruk oluşturuyor. Bir sonraki boş koltuğu kimin alacağına siz karar veriyorsunuz."
+    },
+    "status": {
+      "waiting": "beklemek",
+      "offered": "teklif edildi",
+      "registered": "kayıtlı",
+      "expired": "günü geçmiş"
+    },
+    "heldUntil": "{ticketType} ile {time} arası",
+    "lapsed": "Teklif geçerliliğini yitirdi; tekrar sunulabilir.",
+    "ticketType": "Bilet türü",
+    "option": "{name} · {price}",
+    "optionWithRoom": "{name} · {price} · {room} kaldı",
+    "offer": "Bir yer teklif edin",
+    "confirmRemove": "Bekleme listesinden {email} kaldır?",
+    "confirmRemoveOffered": "Bekleme listesinden {email} çıkarın mı? Tutulan yer serbest bırakıldı."
+  },
+  "refund": {
+    "confirm": "{amount} tutarında tam iade mi istiyorsunuz? Stripe onayladıktan sonra bu siparişteki biletler geçerliliğini yitirecek ve koltuklar serbest bırakılacaktır.",
+    "requested": "Para iadesi talep edildi.",
+    "button": "Geri ödeme {amount}"
+  },
+  "chart": {
+    "peak": "Zirve {max} /gün",
+    "summary": "{total, plural, one {# kayıt} other {# kayıt}} üzerinde {days, plural, one {# gün} other {# gün}}",
+    "aria": "Günlük kayıt sayısı. Tek bir günde en yüksek sayı {max}, toplamda {total}.",
+    "tooltip": "{date}: {count}"
+  },
+  "scanner": {
+    "outcome": {
+      "ok": "Giriş yapıldı.",
+      "offline_ok": "Giriş yapıldı (çevrimdışı, senkronize edilecek)",
+      "already": "Zaten giriş yaptım.",
+      "not_confirmed": "Kayıt onaylanmadı.",
+      "revoked": "Bilet iptal edildi veya iade edildi",
+      "wrong_event": "Bilet başka bir etkinlik için.",
+      "not_found": "Geçerli bir bilet değil.",
+      "offline_unknown": "Bilinmeyen bilet (çevrimdışı)",
+      "error": "Giriş işlemi başarısız oldu."
+    },
+    "checkedIn": "Giriş yapıldı.",
+    "ofConfirmed": "/ {confirmed}",
+    "mode": "Giriş yapma modu",
+    "scan": "Tarama",
+    "progress": "Onaylanmış biletlerin % {pct} · güncellendi {time}",
+    "progressQueued": "Onaylanmış biletlerin % {pct} · güncellendi {time} · senkronize edilmeyi bekleyen {count}",
+    "offline": "Çevrimdışı: Taramalar kaydedilir ve daha sonra senkronize edilir.",
+    "guestOf": "{name} 'ın misafiri",
+    "ticketTypeInAt": "{ticketType} · {time} de",
+    "undo": "Geri al",
+    "camera": {
+      "denied": "Kamera erişimi engellendi. Bu site için kameraya izin verin veya kişileri isimleriyle kontrol etmek için Arama özelliğini kullanın.",
+      "unsupported": "Bu tarayıcı kamerayı kullanamaz. Lütfen Arama özelliğini kullanın veya aşağıdaki alana bilet bağlantısını yapıştırın.",
+      "starting": "Kamera başlatılıyor…",
+      "point": "Bilet üzerindeki QR kodunu gösterin."
+    },
+    "manualPlaceholder": "Veya bilet bağlantısını/kodunu yapıştırın.",
+    "manualLabel": "Bilet bağlantısı veya kodu",
+    "checkIn": "Giriş",
+    "searchPlaceholder": "İsim veya e-posta ile arama yapın",
+    "searchLabel": "Katılımcıları ara",
+    "noMatches": "Onaylanmış katılımcı eşleşmesi yok.",
+    "listGuestOf": "· {name} 'ın misafiri",
+    "listDetail": "{ticketType} · {email}",
+    "listDetailInAt": "{ticketType} · {email} · {time} de",
+    "recent": "Son",
+    "recentDetail": "· {ticketType} · {time}",
+    "recentDetailManual": "· {ticketType} · {time} · manuel"
+  }
+}

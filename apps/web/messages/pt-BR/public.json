@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "description": "Eventos em movimento. Infraestrutura aberta para eventos: publique eventos, registre participantes, venda ou distribua ingressos, envie mensagens para sua comunidade, faça o check-in das pessoas."
+  },
+  "nav": {
+    "discover": "Descobrir",
+    "pricing": "Preços",
+    "dashboard": "Painel",
+    "signIn": "Entrar",
+    "host": "Organize um evento",
+    "hostShort": "Hospedar",
+    "api": "API"
+  },
+  "footer": {
+    "tagline": "Eventos em movimento. Infraestrutura aberta para eventos: eventos gratuitos são gratuitos, eventos pagos custam ao organizador 0,99%.",
+    "credit": "Apresentado por <inevent>InEvent</inevent>."
+  },
+  "og": {
+    "subtitle": "Infraestrutura aberta para eventos. Publique, inscreva-se, participe."
+  },
+  "github": {
+    "label": "evnelo/evnelo no GitHub"
+  },
+  "captcha": {
+    "notice": "Este site está protegido pelo reCAPTCHA e pelo Google.<privacy>política de Privacidade</privacy> e<terms>Termos de Serviço</terms> aplicar."
+  },
+  "hero": {
+    "eyebrow": "Infraestrutura aberta para eventos",
+    "title": "Do primeiro clique até o portão da frente.",
+    "lead": "Publique eventos, venda ingressos, envie mensagens aos participantes e gerencie o check-in em uma plataforma aberta ou hospede tudo em sua própria infraestrutura.",
+    "pricing": "<b>0,99%</b> em ingressos pagos. Eventos gratuitos continuam gratuitos. <br></br> <b>0%</b> se você for o anfitrião.",
+    "explore": "Explore os eventos",
+    "scene": {
+      "steps": {
+        "discover": {
+          "label": "Descobrir",
+          "sub": "Descubra o que te motiva."
+        },
+        "register": {
+          "label": "Cadastre-se",
+          "sub": "A poucos cliques de distância"
+        },
+        "ticketing": {
+          "label": "Ticketing",
+          "sub": "Venda sem limites"
+        },
+        "checkin": {
+          "label": "Check-in",
+          "sub": "Rápido. Amigável. Flexível."
+        },
+        "attendance": {
+          "label": "Presença",
+          "sub": "Pessoas reais. Impacto duradouro."
+        }
+      },
+      "event": {
+        "category": "Música",
+        "title": "Sessões ao pôr do sol",
+        "date": "Sábado, 24 de agosto de 2024",
+        "place": "Parque Riverside"
+      },
+      "create": {
+        "title": "Crie seu evento",
+        "publish": "Publicar evento"
+      },
+      "ticket": {
+        "title": "Entrada Geral",
+        "meta": "Sábado, 24 de agosto de 2024 <br></br> Parque Riverside"
+      },
+      "checkin": {
+        "title": "Participante fez check-in",
+        "welcome": "Bem-vindo!"
+      },
+      "attendance": {
+        "more": "+ {count}",
+        "meta": "compareceram pessoas"
+      },
+      "notes": {
+        "left": "Mais eventos. <br></br> Um mundo mais aberto.",
+        "right": "Eventos <br></br> movem pessoas."
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Evnelo: eventos, em movimento",
+      "description": "Infraestrutura aberta para eventos. Publique eventos, registre participantes, venda ou distribua ingressos, envie mensagens para sua comunidade e faça o check-in das pessoas. 0,99% sobre ingressos pagos, eventos gratuitos são gratuitos ou você pode hospedar seus próprios eventos sem custo algum."
+    },
+    "pricing": {
+      "eyebrow": "Preços",
+      "title": "Taxas mais baixas do que qualquer outra plataforma.",
+      "body": "A maioria das plataformas cobra de 3% a 5% mais uma taxa sobre cada ingresso. A Evnelo cobra 0,99% sobre ingressos pagos e nada sobre ingressos gratuitos. Você conecta sua própria conta Stripe, então o dinheiro dos ingressos vai direto para você e nunca fica retido conosco; a taxa de processamento da Stripe é aplicada de acordo com a tabela da Stripe, e você pode repassar as taxas aos compradores ou absorvê-las.",
+      "plans": {
+        "free": {
+          "title": "Eventos gratuitos",
+          "price": "$0",
+          "note": "Sem taxa de plataforma, sem taxa por ingresso, número ilimitado de participantes."
+        },
+        "paid": {
+          "title": "Eventos pagos",
+          "price": "0,99%",
+          "note": "O valor do ingresso é cobrado através da sua conta Stripe vinculada. Um ingresso de US$ 25 custa US$ 0,25, mais a taxa do Stripe."
+        },
+        "selfHosted": {
+          "title": "autohospedado",
+          "price": "$0",
+          "note": "Código aberto. Um único contêiner, seu MySQL e suas próprias chaves Stripe. Sem taxas de plataforma, nunca."
+        }
+      }
+    },
+    "flow": {
+      "eyebrow": "Como flui",
+      "title": "Tudo entre \"Eu quero ir\" e \"Eu estou aqui\".",
+      "steps": {
+        "publish": {
+          "title": "Publicar",
+          "text": "Uma página para o seu evento com capa, programação, local e anfitriões. Pode ser pública, não listada ou privada por convite."
+        },
+        "register": {
+          "title": "Cadastre-se",
+          "text": "Categorias de ingressos, perguntas personalizadas, convidados com ingressos individuais, códigos de desconto e lista de espera para ingressos esgotados."
+        },
+        "pay": {
+          "title": "Pagar e receber",
+          "text": "Cartões, Apple Pay, Google Pay, Pix. Bilhetes com código QR, passes para carteira digital, arquivos de calendário, confirmação por e-mail e SMS."
+        },
+        "checkin": {
+          "title": "Check-in",
+          "text": "Um scanner que funciona em qualquer navegador de celular, continua funcionando mesmo sem sinal e mostra o preenchimento da sala em tempo real."
+        }
+      }
+    },
+    "openSource": {
+      "eyebrow": "Código aberto",
+      "title": "Seus eventos. Seus dados. Sua infraestrutura.",
+      "body": "O Evnelo é de código aberto sob a licença Apache 2.0. Hospede-o você mesmo com um único contêiner e um banco de dados MySQL, conecte suas próprias chaves Stripe, Resend e Vonage e mantenha todos os registros de participantes em sua própria infraestrutura. Mesmo produto, sem taxas de plataforma.",
+      "points": {
+        "export": "Exportação e exclusão de participantes integradas",
+        "providers": "Traga seus próprios provedores de pagamento, e-mail e SMS.",
+        "ops": "Migrações, verificações de integridade e backups documentados.",
+        "migrate": "Migrar para ou a partir da edição hospedada é uma questão de banco de dados, não de reescrita."
+      },
+      "source": "Veja a fonte",
+      "apiReference": "Referência da API"
+    },
+    "developers": {
+      "eyebrow": "Para desenvolvedores",
+      "title": "Construído para servir de base para outras construções.",
+      "points": {
+        "rest": "API REST para cada recurso, com escritas idempotentes.",
+        "sdk": "SDK TypeScript gerado e um servidor MCP para agentes.",
+        "webhooks": "Webhooks assinados para cadastros, pagamentos e check-ins.",
+        "openapi": "Documentação OpenAPI e documentação interativa em /api/v1/docs"
+      }
+    },
+    "upcoming": {
+      "eyebrow": "Acontecerá em breve",
+      "title": "Eventos públicos em Evnelo",
+      "all": "Todos os eventos"
+    },
+    "cta": {
+      "title": "Faça com que a reunião flua.",
+      "body": "Crie seu primeiro evento em poucos minutos. Eventos gratuitos não exigem nada; eventos pagos exigem sua conta Stripe.",
+      "explore": "Veja o que está rolando"
+    }
+  },
+  "discover": {
+    "meta": {
+      "description": "Eventos públicos de todos os anfitriões no Evnelo. Pesquise por cidade, tema, data, preço e distância."
+    },
+    "headline": {
+      "query": {
+        "none": "Eventos correspondentes a “ {q} ”",
+        "city": "Eventos correspondentes a “ {q} ” em {city}",
+        "near": "Eventos que correspondam a “ {q} ” perto de você",
+        "online": "Eventos que correspondem a “ {q} ” online",
+        "inPerson": "Eventos que correspondam a “ {q} ” presencialmente"
+      },
+      "free": {
+        "none": "Eventos gratuitos",
+        "city": "Eventos gratuitos em {city}",
+        "near": "Eventos gratuitos perto de você",
+        "online": "Eventos online gratuitos",
+        "inPerson": "Eventos presenciais gratuitos"
+      },
+      "tag": {
+        "none": "eventos {tag}",
+        "city": "{tag} eventos em {city}",
+        "near": "{tag} eventos perto de você",
+        "online": "{tag} eventos online",
+        "inPerson": "{tag} eventos presenciais"
+      },
+      "paid": {
+        "none": "Eventos com ingressos",
+        "city": "Eventos com ingressos em {city}",
+        "near": "Eventos com ingressos perto de você",
+        "online": "Eventos com ingressos online",
+        "inPerson": "Eventos presenciais com ingressos"
+      },
+      "all": {
+        "none": "O que está passando",
+        "city": "Eventos em {city}",
+        "near": "Eventos perto de você",
+        "online": "Eventos online",
+        "inPerson": "Eventos presenciais"
+      }
+    },
+    "lead": "Palestras, workshops, jantares e encontros de todos os anfitriões do Evnelo.",
+    "jsonLdName": "Próximos eventos públicos",
+    "count": {
+      "exact": "{count, plural, one {evento #} other {eventos #}}",
+      "more": "{count, plural, one {# + evento} other {# + eventos}}",
+      "exactFrom": "{count, plural, one {evento #} other {eventos #}} de # {from}",
+      "moreFrom": "{count, plural, one {# + evento} other {# + eventos}} de # {from}"
+    },
+    "format": {
+      "online": "On-line",
+      "in_person": "Pessoalmente",
+      "hybrid": "Híbrido"
+    },
+    "price": {
+      "paid": "Pago"
+    },
+    "date": {
+      "today": "Hoje",
+      "week": "Essa semana",
+      "month": "Este mês",
+      "custom": "Escolha as datas"
+    },
+    "active": {
+      "showing": "Exibindo",
+      "query": "“ {q} ”",
+      "customRange": "{from} a {to}",
+      "customDates": "Datas personalizadas",
+      "within": "Dentro de {km} km",
+      "remove": "Remover filtro",
+      "clearAll": "Limpar tudo"
+    },
+    "search": {
+      "events": "Eventos de pesquisa",
+      "placeholder": "Pesquise eventos, anfitriões e etiquetas.",
+      "city": "Cidade",
+      "cityOption": "{city}, {country}",
+      "nearMe": "Perto de mim",
+      "nearYou": "Perto de você",
+      "unsupported": "Este navegador não pode compartilhar sua localização. Tente inserir uma cidade.",
+      "blocked": "Localização bloqueada. Filtre por cidade."
+    },
+    "toolbar": {
+      "label": "Filtros",
+      "km": "{km} km",
+      "anywhere": "Em qualquer lugar",
+      "view": "Visualizar",
+      "list": "Lista",
+      "calendar": "Calendário"
+    },
+    "customDates": {
+      "from": "De",
+      "to": "Para",
+      "apply": "Aplique as datas",
+      "clear": "Datas claras"
+    },
+    "topics": "Tópicos",
+    "sections": {
+      "featured": "Apresentou",
+      "upcoming": "Por vir"
+    },
+    "empty": {
+      "month": {
+        "title": "Nada agendado para este mês.",
+        "body": "Tente mais um mês ou limpe o filtro.",
+        "action": "Próximo mês"
+      },
+      "filtered": {
+        "title": "Nenhum evento corresponde a esses filtros.",
+        "body": "Tente um intervalo de datas maior ou limpe os filtros.",
+        "action": "Limpe os filtros"
+      },
+      "end": {
+        "title": "Você chegou ao fim.",
+        "body": "Esta página contém todos os eventos públicos futuros.",
+        "action": "Voltar ao início"
+      },
+      "none": {
+        "title": "Ainda não há eventos públicos programados.",
+        "body": "Seja o primeiro a organizar um."
+      }
+    },
+    "pagination": {
+      "label": "Paginação",
+      "more": "Carregar mais"
+    },
+    "card": {
+      "from": "de {price}",
+      "underOneKm": "A menos de 1 km de distância",
+      "kmAway": "{km} km de distância"
+    },
+    "calendar": {
+      "eyebrow": "Calendário",
+      "changeMonth": "Alterar mês",
+      "goTo": "Acesse {month}",
+      "today": "Hoje",
+      "dayCount": "{count, plural, one {evento #} other {eventos #}}",
+      "overflow": "+ {count} mais",
+      "timezoneNote": "Os horários são exibidos no fuso horário de cada evento.",
+      "rowTitle": "{name} — {time}"
+    }
+  },
+  "org": {
+    "meta": {
+      "description": "Eventos por {name}"
+    },
+    "eyebrow": "Organizador",
+    "upcoming": "Por vir",
+    "count": "{count, plural, one {evento #} other {eventos #}}",
+    "empty": {
+      "title": "Nada agendado no momento.",
+      "body": "Volte em breve ou veja quais outros servidores estão funcionando.",
+      "action": "Veja todos os eventos"
+    },
+    "past": "Eventos passados"
+  },
+  "report": {
+    "meta": {
+      "title": "Reportar um evento"
+    },
+    "eyebrow": "Relatório",
+    "title": "Reportar um evento",
+    "reasons": {
+      "spam": "Spam ou conteúdo enganoso",
+      "scam": "Golpe ou fraude",
+      "inappropriate": "Conteúdo impróprio",
+      "copyright": "Direitos autorais ou marca registrada",
+      "other": "Outra coisa"
+    },
+    "notFound": "Esse evento não pôde ser encontrado.",
+    "openFromEvent": "Abra esta página a partir de um evento para reportá-lo.",
+    "sent": "Obrigado. Seu relato sobre <b>{name}</b> foi registrado.",
+    "sentAndForwarded": "Obrigado. Seu relato sobre <b>{name}</b> foi registrado e enviado aos operadores desta instância.",
+    "reporting": "Relatórios <b>{name}</b> por {org}. Os relatórios são enviados para as pessoas que executam esta instância do Evnelo, não para o host.",
+    "errors": {
+      "limited": "Muitas denúncias da sua conexão. Tente novamente mais tarde.",
+      "invalid": "Verifique o formulário e tente novamente."
+    },
+    "form": {
+      "reason": "Razão",
+      "details": "Detalhes",
+      "optional": "(opcional)",
+      "email": "Seu e-mail",
+      "optionalFollowUp": "(opcional, caso possamos dar seguimento)",
+      "submit": "Enviar relatório"
+    },
+    "back": "Voltar ao evento"
+  },
+  "notFound": {
+    "meta": {
+      "title": "Página não encontrada"
+    },
+    "eyebrow": "404",
+    "title": "Não há nada aqui.",
+    "body": "O link pode estar desatualizado, o evento pode ter sido cancelado ou o endereço pode conter um erro de digitação.",
+    "action": "Veja os eventos públicos"
+  },
+  "error": {
+    "title": "Algo deu errado",
+    "body": "A página apresentou um erro. Tentar novamente geralmente resolve o problema; se o erro persistir, o servidor já foi notificado.",
+    "reference": "Referência {digest}",
+    "home": "Ir para casa"
+  }
+}

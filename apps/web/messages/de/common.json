@@ -1,0 +1,57 @@
+{
+  "language": "Sprache",
+  "brand": "Evnelo",
+  "tagline": "Ereignisse in Bewegung.",
+  "actions": {
+    "save": "Speichern",
+    "cancel": "Stornieren",
+    "close": "Schließen",
+    "delete": "Löschen",
+    "remove": "Entfernen",
+    "edit": "Bearbeiten",
+    "add": "Hinzufügen",
+    "back": "Zurück",
+    "continue": "Weitermachen",
+    "confirm": "Bestätigen",
+    "copy": "Kopie",
+    "copied": "Kopiert",
+    "search": "Suchen",
+    "retry": "Versuchen Sie es erneut",
+    "ok": "OK",
+    "discard": "Verwerfen",
+    "restore": "Wiederherstellen",
+    "signIn": "anmelden",
+    "signOut": "Abmelden",
+    "loading": "Laden…"
+  },
+  "labels": {
+    "optional": "optional",
+    "required": "Erforderlich",
+    "free": "Frei",
+    "soldOut": "Ausverkauft",
+    "cancelled": "Abgesagt",
+    "draft": "Entwurf",
+    "published": "Veröffentlicht",
+    "yes": "Ja",
+    "no": "NEIN",
+    "name": "Name",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "status": "Status",
+    "date": "Datum",
+    "created": "Erstellt",
+    "unknown": "Unbekannt"
+  },
+  "errors": {
+    "generic": "Etwas ist schiefgelaufen. Versuchen Sie es erneut.",
+    "network": "Netzwerkfehler. Bitte versuchen Sie es erneut.",
+    "notFound": "Nicht gefunden",
+    "rateLimited": "Zu viele Versuche. Warten Sie einige Minuten und versuchen Sie es erneut.",
+    "captcha": "Wir konnten nicht bestätigen, dass Sie kein Bot sind. Laden Sie die Seite neu und versuchen Sie es erneut."
+  },
+  "time": {
+    "momentAgo": "vor einem Augenblick",
+    "minutesAgo": "{minutes} Minuten zuvor",
+    "hoursAgo": "{hours, plural, one {# Stunden zuvor} other {vor # Stunden}}"
+  }
+}

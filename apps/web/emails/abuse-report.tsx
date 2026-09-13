@@ -1,17 +1,24 @@
 import * as React from "react";
-import { ButtonLink, EmailLayout, Para, Title, type EmailBrand } from "./layout";
+import { ButtonLink, EmailLayout, Para, Title, emailI18n, strong, type EmailBrand, type EmailI18n } from "./layout";
 
-export type AbuseReportProps = { brand: EmailBrand; eventName: string; eventUrl: string; orgName: string; reason: string; details: string | null; reporterEmail: string | null };
-export const abuseReportSubject = (p: AbuseReportProps) => `[Report] ${p.reason}: ${p.eventName}`;
+/**
+ * Goes to ABUSE_EMAIL, so `locale`/`t` is whatever the operator reads; the sender
+ * (app/(public)/report/page.tsx) may pass the reporter's request locale. `reason` is a label the
+ * caller has already translated.
+ */
+export type AbuseReportProps = EmailI18n & { brand: EmailBrand; eventName: string; eventUrl: string; orgName: string; reason: string; details: string | null; reporterEmail: string | null };
+export const abuseReportSubject = (p: AbuseReportProps) => emailI18n(p).t("abuseReport.subject", { reason: p.reason, eventName: p.eventName });
 
-export default function AbuseReport({ brand, eventName, eventUrl, orgName, reason, details, reporterEmail }: AbuseReportProps) {
+export default function AbuseReport(props: AbuseReportProps) {
+  const { brand, eventName, eventUrl, orgName, reason, details, reporterEmail } = props;
+  const { locale, t } = emailI18n(props);
   return (
-    <EmailLayout brand={brand} preview={`Someone reported ${eventName}.`}>
-      <Title>Event reported</Title>
-      <Para><strong>{eventName}</strong> by {orgName} was reported for <strong>{reason}</strong>.</Para>
+    <EmailLayout brand={brand} locale={locale} t={t} preview={t("abuseReport.preview", { eventName })}>
+      <Title>{t("abuseReport.title")}</Title>
+      <Para>{t.rich("abuseReport.intro", { eventName, orgName, reason, strong })}</Para>
       {details && <Para style={{ whiteSpace: "pre-wrap" }}>{details}</Para>}
-      <Para muted>{reporterEmail ? `Reporter: ${reporterEmail}` : "The reporter did not leave an email."}</Para>
-      <ButtonLink href={eventUrl}>Open the event</ButtonLink>
+      <Para muted>{reporterEmail ? t("abuseReport.reporter", { email: reporterEmail }) : t("abuseReport.noReporter")}</Para>
+      <ButtonLink href={eventUrl}>{t("abuseReport.cta")}</ButtonLink>
     </EmailLayout>
   );
 }

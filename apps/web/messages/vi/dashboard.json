@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "title": "Bảng điều khiển",
+    "checkin": "Đăng ký vào"
+  },
+  "shell": {
+    "organization": "Tổ chức",
+    "switchOrganization": "Tổ chức chuyển đổi"
+  },
+  "nav": {
+    "events": "Sự kiện",
+    "checkin": "Đăng ký vào",
+    "settings": "Cài đặt"
+  },
+  "status": {
+    "event": {
+      "draft": "bản nháp",
+      "published": "đã xuất bản",
+      "cancelled": "đã bị hủy bỏ",
+      "ended": "kết thúc"
+    },
+    "attendee": {
+      "confirmed": "đã được xác nhận",
+      "pending_approval": "đang chờ phê duyệt",
+      "waitlisted": "danh sách chờ",
+      "rejected": "vật bị loại bỏ",
+      "cancelled": "đã bị hủy bỏ"
+    },
+    "order": {
+      "pending": "chưa giải quyết",
+      "processing": "xử lý",
+      "paid": "trả",
+      "free": "miễn phí",
+      "refunded": "hoàn tiền",
+      "partially_refunded": "hoàn tiền một phần",
+      "failed": "thất bại",
+      "expired": "hết hạn"
+    },
+    "delivery": {
+      "delivered": "đã giao hàng",
+      "retrying": "thử lại",
+      "pending": "chưa giải quyết",
+      "failed": "thất bại"
+    }
+  },
+  "noAccess": {
+    "title": "Không có quyền truy cập",
+    "description": "Vai trò quyết định những quyền hạn mà mỗi cá nhân trong tổ chức có thể mở.",
+    "empty": {
+      "title": "Bạn không có quyền mở khu vực này.",
+      "description": "Vai trò của bạn trong tổ chức này không cho phép điều đó. Hãy yêu cầu chủ sở hữu hoặc quản trị viên thay đổi."
+    }
+  },
+  "events": {
+    "title": "Sự kiện",
+    "description": "Mọi thứ {org} đều đang hoạt động, với số lượng đăng ký, doanh thu và số cửa ra vào được hiển thị rõ ràng.",
+    "newEvent": "Sự kiện mới",
+    "groups": {
+      "upcoming": "Sắp tới",
+      "drafts": "Bản nháp",
+      "past": "Quá khứ"
+    },
+    "empty": {
+      "title": "Chưa có sự kiện nào",
+      "description": "Sự kiện đầu tiên của bạn sẽ vẫn ở dạng bản nháp cho đến khi bạn đăng tải, vì vậy không cần phải vội vàng để mọi thứ đều hoàn hảo.",
+      "action": "Tạo sự kiện đầu tiên của bạn"
+    },
+    "row": {
+      "online": "Trực tuyến",
+      "inPerson": "Trực tiếp",
+      "registered": "Đăng ký",
+      "pending": "{count} đang chờ xử lý",
+      "revenue": "Doanh thu",
+      "checkedIn": "Đã nhận phòng"
+    }
+  },
+  "checkin": {
+    "title": "Đăng ký vào",
+    "description": "{org}. Mở sự kiện trên điện thoại tại cửa; việc quét cần quyền truy cập camera.",
+    "in": "TRONG",
+    "empty": {
+      "title": "Hôm nay không có gì để quét cả.",
+      "description": "Các sự kiện đã đăng tải sẽ hiển thị ở đây từ thời điểm chúng được phát sóng cho đến một ngày sau khi kết thúc."
+    },
+    "event": {
+      "allCheckin": "Tất cả thủ tục nhận phòng",
+      "eventDashboard": "Bảng điều khiển sự kiện"
+    }
+  },
+  "event": {
+    "allEvents": "Tất cả các sự kiện",
+    "viewPage": "Xem trang",
+    "nav": {
+      "overview": "Tổng quan",
+      "tickets": "Vé",
+      "form": "Hình thức",
+      "invites": "Thư mời",
+      "attendees": "Người tham dự",
+      "waitlist": "Danh sách chờ",
+      "orders": "Đơn đặt hàng",
+      "checkin": "Đăng ký vào"
+    },
+    "new": {
+      "title": "Sự kiện mới",
+      "description": "Đã lưu dưới dạng bản nháp. Thêm vé và câu hỏi, sau đó xuất bản khi đã sẵn sàng."
+    },
+    "overview": {
+      "stats": {
+        "registered": "Đăng ký",
+        "awaitingApproval": "{count} đang chờ phê duyệt",
+        "confirmedAndApproved": "đã được xác nhận và phê duyệt",
+        "revenue": "Doanh thu",
+        "afterRefunds": "sau khi hoàn tiền",
+        "checkedIn": "Đã nhận phòng",
+        "percentOfRegistrations": "{percent} % số lượt đăng ký",
+        "nobodyYet": "Chưa có ai ở cửa cả.",
+        "capacity": "Dung tích",
+        "seatsLeft": "{count} chỗ ngồi",
+        "unlimitedSeats": "chỗ ngồi không giới hạn"
+      },
+      "registrationsByDay": "Đăng ký theo ngày",
+      "noRegistrations": {
+        "title": "Chưa có đăng ký nào",
+        "description": "Đường cong bắt đầu xuất hiện ngay từ thời điểm người đầu tiên đăng ký."
+      },
+      "tickets": "Vé",
+      "manage": "Quản lý",
+      "noTickets": {
+        "title": "Chưa có loại vé nào.",
+        "description": "Việc xuất bản mà không có người đại diện sẽ tạo ra một vé vào cửa miễn phí cho bạn.",
+        "action": "Thêm loại vé"
+      },
+      "ticketSales": "{hasQuantity, select, true {{sold} / {quantity} đã bán} other {{sold} đã bán}}{held, plural, =0 {} other {, # đã tổ chức}}",
+      "eventPage": "Trang sự kiện",
+      "visibility": {
+        "public": "Công khai: được liệt kê trên Discover và được lập chỉ mục.",
+        "unlisted": "Không công khai: bất kỳ ai có đường dẫn.",
+        "private": "Riêng tư: chỉ dành cho người được mời."
+      },
+      "actions": "Hành động",
+      "publish": "Công bố sự kiện",
+      "unpublish": "Hủy xuất bản, quay lại bản thảo",
+      "statusNote": {
+        "draft": "Chỉ bạn mới có thể xem sự kiện này cho đến khi nó được công bố.",
+        "published": "Đang phát trực tiếp. Việc hủy đăng tải sẽ ẩn trang; các đăng ký đã thực hiện vẫn được giữ nguyên.",
+        "cancelled": "Sự kiện này đã bị hủy bỏ."
+      },
+      "irreversible": "Không thể đảo ngược",
+      "cancelEvent": "Hủy sự kiện",
+      "cancelConfirm": "Bạn có thể hủy sự kiện này không? Mỗi người tham dự đã đăng ký sẽ nhận được email xác nhận hủy (và tin nhắn SMS nếu chọn nhận). Các đơn hàng đã thanh toán vẫn cần được hoàn tiền từ tab Đơn hàng.",
+      "deleteEvent": "Xóa sự kiện",
+      "deleteConfirm": "Xóa sự kiện này? Sự kiện sẽ biến mất khỏi bảng điều khiển. Thông tin người tham dự vẫn được lưu giữ."
+    },
+    "attendees": {
+      "exportCsv": "Xuất CSV",
+      "searchPlaceholder": "Tìm kiếm theo tên, email hoặc số điện thoại",
+      "filter": "Lọc",
+      "allOption": "Tất cả ( {count} )",
+      "statusOption": "{label} ( {count} )",
+      "pendingNote": "{count, plural, one {# đăng ký} other {# đăng ký}} Đang chờ sự chấp thuận của bạn.",
+      "review": "Ôn tập",
+      "columns": {
+        "ticket": "Vé",
+        "registered": "Đăng ký",
+        "files": "Tệp tin",
+        "actions": "Hành động"
+      },
+      "empty": {
+        "noMatch": {
+          "title": "Không có người tham dự nào phù hợp.",
+          "description": "Hãy thử tìm kiếm bằng cách khác hoặc xóa bộ lọc trạng thái."
+        },
+        "none": {
+          "title": "Chưa có ai đăng ký cả.",
+          "description": "Thông tin đăng ký sẽ được cập nhật ngay khi có người đăng ký."
+        }
+      },
+      "guestOf": "Khách của {name}",
+      "sms": "Tin nhắn SMS",
+      "paymentPending": "thanh toán đang chờ xử lý",
+      "approve": "Chấp thuận",
+      "reject": "Từ chối",
+      "ticket": "Vé",
+      "cancelConfirm": "Hủy đăng ký của {name}? Vé của họ sẽ không còn hiệu lực và chỗ ngồi sẽ được giải phóng. Không có email nào được gửi.",
+      "export": "Xuất khẩu",
+      "erase": "Xóa",
+      "eraseConfirm": "Xóa dữ liệu cá nhân của {name}? Tên, email, số điện thoại và câu trả lời sẽ được thay thế bằng các ký tự giữ chỗ, vé của họ bị hủy và các email đang chờ xử lý sẽ bị xóa. Thao tác này không thể hoàn tác."
+    },
+    "orders": {
+      "collected": "<strong>{amount}</strong> đã thu được, sau khi trừ đi các khoản hoàn trả",
+      "count": "{count, plural, one {# đơn hàng} other {# đơn hàng}}",
+      "columns": {
+        "order": "Đặt hàng",
+        "items": "Mặt hàng",
+        "total": "Tổng cộng",
+        "placed": "Đã đặt",
+        "actions": "Hành động"
+      },
+      "empty": {
+        "title": "Chưa có đơn hàng nào",
+        "description": "Mọi lượt đăng ký, dù miễn phí hay trả phí, đều hiển thị ở đây cùng với những thông tin đã được thu thập."
+      },
+      "people": "{count, plural, one {người #} other {# người}}",
+      "refunded": "{amount} đã được hoàn tiền"
+    }
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "description": "Hình ảnh tổ chức của bạn trước công chúng như thế nào, ai có thể làm việc trong đó và các hệ thống khác tương tác với nó ra sao.",
+    "tabs": {
+      "organization": "Tổ chức",
+      "members": "Thành viên",
+      "developer": "Nhà phát triển",
+      "payments": "Thanh toán"
+    },
+    "organization": {
+      "title": "Tổ chức",
+      "description": "Tên, URL công khai, logo và màu sắc chủ đạo được sử dụng trong email và trên trang đặt vé.",
+      "publicUrl": "URL công khai",
+      "publicUrlHelp": "/o/… Chữ cái viết thường, số, dấu gạch ngang.",
+      "website": "Trang web",
+      "websiteHelp": "Nhập example.com và chúng tôi sẽ tự động thêm https://.",
+      "logo": "Logo",
+      "logoHelp": "Được hiển thị trên trang sự kiện và email.",
+      "accentColour": "Màu nhấn",
+      "accentColourHelp": "Các nút trong email và trên trang đặt vé.",
+      "pickColour": "Chọn màu sắc",
+      "serviceFee": "Phí dịch vụ",
+      "serviceFeeHelp": "Mặc định cho các sự kiện mới: tính phí nền tảng cho người mua dưới dạng một khoản mục riêng, hoặc tự chịu phí đó.",
+      "buyerPaysFee": "Người mua thanh toán phí dịch vụ",
+      "socialLinks": "Liên kết mạng xã hội",
+      "platform": "Nền tảng",
+      "url": "URL",
+      "addLink": "Thêm liên kết",
+      "save": "Lưu tổ chức"
+    },
+    "members": {
+      "title": "Thành viên",
+      "description": "Chủ sở hữu và quản trị viên điều hành tổ chức; thành viên tạo và tổ chức sự kiện; nhân viên làm thủ tục check-in chỉ được phép quét vé.",
+      "roles": {
+        "owner": "Người sở hữu",
+        "admin": "Quản trị viên",
+        "member": "Thành viên",
+        "checkin": "Nhân viên lễ tân"
+      },
+      "columns": {
+        "member": "Thành viên",
+        "role": "Vai trò",
+        "since": "Từ"
+      },
+      "removeConfirm": "Xóa {email} khỏi tổ chức?",
+      "invited": "Được mời · hết hạn {date}",
+      "revoke": "Thu hồi",
+      "emailPlaceholder": "teammate@example.com",
+      "sendInvite": "Gửi lời mời"
+    },
+    "developer": {
+      "apiKeys": {
+        "title": "Khóa API",
+        "description": "Truy cập từ máy chủ này sang máy chủ khác vào các sự kiện, đơn đặt hàng và người tham dự của tổ chức này.",
+        "note": "Các khóa gọi API REST <docs></docs> với tư cách là tổ chức này. Gửi chúng dưới dạng <code>{header}</code>. Đọc danh sách khóa và lấy; ghi khóa cũng tạo.",
+        "newKey": "Sao chép khóa mới của bạn ngay bây giờ. Khóa này sẽ không hiển thị lại nữa.",
+        "saved": "Tôi đã lưu nó lại rồi.",
+        "columns": {
+          "key": "Chìa khóa",
+          "scopes": "Phạm vi",
+          "lastUsed": "Lần cuối sử dụng"
+        },
+        "never": "không bao giờ",
+        "empty": {
+          "title": "Chưa có khóa API nào",
+          "description": "Hãy tạo một bản sao cho mỗi tích hợp để bạn có thể thu hồi một công cụ riêng lẻ mà không ảnh hưởng đến các công cụ khác."
+        },
+        "revoked": "bị thu hồi",
+        "revokeConfirm": "Thu hồi \" {name} \"? Các yêu cầu có chứa mã này sẽ ngừng hoạt động ngay lập tức.",
+        "revoke": "Thu hồi",
+        "namePlaceholder": "Tên khóa, ví dụ: Zapier",
+        "nameLabel": "Tên khóa",
+        "scopeRead": "đọc",
+        "scopeWrite": "viết",
+        "create": "Tạo khóa"
+      },
+      "webhooks": {
+        "title": "Webhooks",
+        "description": "Một yêu cầu POST JSON đã ký sẽ được gửi đến điểm cuối của riêng bạn mỗi khi có sự kiện xảy ra ở đây.",
+        "note": "Chúng tôi gửi một gói tin JSON đến URL của bạn cho các sự kiện bạn chọn, được ký bằng HMAC-SHA256 ( <code>{signature}</code> trên <code>{template}</code> ). Các lần gửi không thành công sẽ được thử lại với khoảng thời gian chờ khoảng một ngày.",
+        "addWebhook": "Thêm webhook",
+        "count": "{count, plural, one {Điểm cuối #} other {các điểm cuối #}}",
+        "signingSecret": "Bí mật ký kết",
+        "copyPrompt": "Sao chép bí mật này",
+        "endpointUrl": "URL điểm cuối",
+        "endpointUrlHelp": "Chỉ sử dụng HTTPS (cho phép sử dụng http://localhost cho mục đích phát triển).",
+        "events": "Sự kiện",
+        "create": "Tạo webhook",
+        "columns": {
+          "endpoint": "Điểm cuối",
+          "events": "Sự kiện"
+        },
+        "empty": {
+          "title": "Chưa có webhook nào",
+          "description": "Hãy áp dụng một biện pháp vào chính dịch vụ của bạn để đảm bảo tính đồng bộ giữa CRM, kênh Slack hoặc bảng tính."
+        },
+        "hideDeliveries": "Ẩn các đơn hàng giao",
+        "recentDeliveries": "Các đơn hàng giao gần đây ( {count} )",
+        "nothingDelivered": "Chưa có gì được giao cả.",
+        "attempts": "{count, plural, one {# lần thử} other {# lần thử}}{hasStatus, select, true {, cuối cùng {status}} other {}}",
+        "allEvents": "Tất cả các sự kiện",
+        "active": "tích cực",
+        "paused": "tạm dừng",
+        "sendTest": "Gửi bài kiểm tra",
+        "pause": "Tạm dừng",
+        "resume": "Bản tóm tắt",
+        "rotateConfirm": "Xoay khóa bí mật khi ký? Khóa cũ sẽ ngừng hoạt động ngay lập tức.",
+        "rotateSecret": "Xoay bí mật",
+        "deleteConfirm": "Xóa webhook này?"
+      }
+    },
+    "payments": {
+      "title": "Thanh toán",
+      "descriptionCloud": "Vé đã thanh toán sẽ được chuyển thẳng vào tài khoản Stripe của bạn.",
+      "descriptionSelfHosted": "Phiên bản này tính phí thông qua các khóa Stripe do nhà điều hành cấu hình.",
+      "connected": "Tài khoản Stripe {id} đã được kết nối.",
+      "connectPrompt": "Kết nối tài khoản Stripe của bạn để bán vé có trả phí. Tính năng này được tích hợp trong quy trình thiết lập ban đầu của Connect.",
+      "configured": "Stripe đã được cấu hình. Vé đã thanh toán được tính vào tài khoản Stripe của máy chủ mà không mất phí nền tảng.",
+      "notConfigured": "Stripe chưa được cấu hình trên máy chủ này, vì vậy chỉ có thể bán vé miễn phí. Hãy thiết lập STRIPE_SECRET_KEY và STRIPE_PUBLISHABLE_KEY để kích hoạt thanh toán."
+    },
+    "danger": {
+      "title": "Dữ liệu và xóa",
+      "description": "Tải xuống tất cả những gì tổ chức này sở hữu dưới dạng JSON — sự kiện, đơn đặt hàng, người tham dự, thông tin đăng ký, cài đặt, không có thông tin bí mật. Việc xóa tổ chức sẽ hủy bỏ các sự kiện, thu hồi mọi vé, xóa tất cả dữ liệu cá nhân của người tham dự và vô hiệu hóa khóa API và webhook. Không thể hoàn tác.",
+      "download": "Tải xuống tất cả dữ liệu",
+      "confirmLabel": "Nhập {slug} để xác nhận",
+      "delete": "Xóa tổ chức",
+      "ownerOnly": "Chỉ chủ sở hữu mới có thể xóa tổ chức này."
+    }
+  },
+  "imageUpload": {
+    "uploadFailed": "Tải lên thất bại.",
+    "bucketRejected": "Thùng lưu trữ đã từ chối tải lên. Hãy kiểm tra cài đặt CORS và chính sách của nó.",
+    "connectionFailed": "Tải lên không thành công. Vui lòng kiểm tra kết nối và thử lại.",
+    "noImage": "Chưa có hình ảnh",
+    "uploading": "Đang tải lên…",
+    "replace": "Thay thế",
+    "replaceImage": "Thay thế hình ảnh",
+    "upload": "Tải lên",
+    "uploadImage": "Tải ảnh lên",
+    "urlPlaceholder": "https://… (cần cấu hình S3 để tải ảnh lên)",
+    "urlLabel": "{label} URL",
+    "formats": "JPEG, PNG hoặc WebP · dung lượng tối đa 5 MB"
+  },
+  "imageCrop": {
+    "openFailed": "Không thể mở hình ảnh đó.",
+    "renderFailed": "Trình duyệt này không thể hiển thị hình ảnh đã cắt. Vui lòng tải ảnh lên nguyên trạng.",
+    "dialogLabel": "Đóng khung hình ảnh bìa",
+    "title": "Đóng khung bìa sách",
+    "description": "Kéo để định vị và phóng to để lấp đầy toàn bộ hình ảnh. Đã lưu ở tỷ lệ 16:7, tỷ lệ mà các trang sự kiện sử dụng.",
+    "zoom": "Phóng",
+    "use": "Sử dụng phương pháp cắt này"
+  },
+  "address": {
+    "unavailable": "Chức năng tìm kiếm địa chỉ hiện tạm thời không khả dụng.",
+    "placeholder": "Bắt đầu nhập địa chỉ"
+  },
+  "linkTabs": {
+    "label": "Các phần"
+  },
+  "actions": {
+    "genericError": "Đã xảy ra lỗi.",
+    "formIssue": "{path}: {message}",
+    "formPath": "hình thức",
+    "checkForm": "Kiểm tra mẫu đơn.",
+    "saved": "Đã lưu.",
+    "savedNotified": "Đã lưu. Những người tham dự sẽ được thông báo về thời gian hoặc địa điểm mới.",
+    "deletePublished": "Hãy hủy đăng tải hoặc hủy sự kiện trước khi xóa nó.",
+    "addressRateLimited": "Quá nhiều lượt tìm kiếm địa chỉ. Vui lòng đợi một phút và thử lại.",
+    "addressUnavailable": "Chức năng tìm kiếm địa chỉ hiện tạm thời không khả dụng.",
+    "formSaved": "Biểu mẫu đã được lưu.",
+    "refund": {
+      "noPayment": "Đơn hàng này không có khoản thanh toán nào cần hoàn trả.",
+      "nothingToRefund": "Đơn hàng là {status}; không có gì để hoàn tiền.",
+      "requested": "Yêu cầu hoàn tiền. Đơn hàng sẽ được cập nhật ngay sau khi Stripe xác nhận."
+    },
+    "invitationSent": "Thư mời đã được gửi đến {email}.",
+    "apiKeyCreated": "Mã khóa đã được tạo. Hãy sao chép ngay; mã khóa sẽ không hiển thị lại nữa.",
+    "unknownError": "lỗi không xác định",
+    "eventInvite": {
+      "emailFailed": "Lời mời đã được tạo, nhưng không thể gửi email ( {reason} ). Hãy tự chia sẻ liên kết.",
+      "emailed": "Thư mời đã được gửi qua email đến {email}.",
+      "linkCreated": "Đã tạo liên kết mời."
+    },
+    "waitlist": {
+      "notFound": "Mục đó hiện không còn tồn tại.",
+      "alreadyOffered": "Người này hiện đã có một lời đề nghị tuyển dụng.",
+      "registered": "Người này đã đăng ký rồi.",
+      "noRoom": "Không còn chỗ trống nào cho loại vé đó (hoặc sự kiện đã hết chỗ). Hãy nhường chỗ cho người đầu tiên.",
+      "emailFailed": "Chỗ đã được giữ đến {deadline}, nhưng không thể gửi email ( {reason} ). Hãy gửi cho họ đường dẫn này: {url}",
+      "offered": "Thư mời đã được gửi qua email đến {email}; vị trí này được giữ đến {deadline}."
+    },
+    "discountCreated": "Mã {code} đã được tạo.",
+    "webhook": {
+      "created": "Webhook đã được tạo. Sao chép mã bí mật ký ngay bây giờ; mã này chỉ hiển thị một lần.",
+      "notFound": "Không tìm thấy webhook.",
+      "rotated": "Mã bí mật ký mới. Hãy cập nhật thiết bị nhận tín hiệu của bạn; mã bí mật cũ hiện không còn hoạt động nữa.",
+      "testQueued": "Đơn hàng thử nghiệm đang chờ xử lý; sẽ được gửi đi trong khoảng 10 giây. Vui lòng kiểm tra danh sách đơn hàng."
+    },
+    "deleteOrg": {
+      "ownerOnly": "Chỉ chủ sở hữu mới có thể xóa tổ chức.",
+      "confirmSlug": "Nhập URL của tổ chức ( {slug} ) để xác nhận."
+    }
+  }
+}

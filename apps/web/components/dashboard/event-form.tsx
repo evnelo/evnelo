@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { ChevronDown, History, Plus, X } from "lucide-react";
 import { SOCIAL_PLATFORMS, slugify } from "@evnelo/core";
 import { TIMEZONES, utcToZonedLocal, zonedLocalToUtc } from "@/lib/tz";
@@ -20,6 +21,8 @@ import { ImageUploadField } from "@/components/dashboard/image-upload-field";
 type Link = { platform: string; url: string };
 type Host = { name: string; title: string; avatarUrl: string; socialLinks: Link[] };
 type Sponsor = { name: string; logoUrl: string; tier: string; website: string; socialLinks: Link[] };
+type ManageT = ReturnType<typeof useTranslations<"manage">>;
+type CommonT = ReturnType<typeof useTranslations<"common">>;
 
 export type EventDefaults = Partial<{
   name: string; slug: string; descriptionMd: string; coverImageUrl: string; logoUrl: string; timezone: string; startsAt: string; endsAt: string;
@@ -47,6 +50,9 @@ function initial(d: EventDefaults, tz: string): Values {
 }
 
 export function EventForm({ mode, eventId, status, defaults, organizationSlug, uploadsEnabled }: { mode: "create" | "edit"; eventId?: string; status?: string; defaults: EventDefaults; organizationSlug: string; uploadsEnabled: boolean }) {
+  const t = useTranslations("manage");
+  const tc = useTranslations("common");
+  const locale = useLocale();
   const browserTz = useMemo(() => (typeof Intl !== "undefined" ? Intl.DateTimeFormat().resolvedOptions().timeZone : "UTC"), []);
   const [v, setV] = useState<Values>(() => initial(defaults, browserTz));
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
@@ -92,7 +98,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
 
   const submit = () => {
     setMsg({});
-    if (!v.startsLocal || !v.endsLocal) return setMsg({ error: "Set a start and an end time." });
+    if (!v.startsLocal || !v.endsLocal) return setMsg({ error: t("eventForm.validation.times") });
     const reminderHours = [...(v.reminder24 ? [24] : []), ...(v.reminder1 ? [1] : []), ...v.reminderCustom.split(/[,\s]+/).filter(Boolean).map(Number)];
     const payload = {
       name: v.name, slug: v.slug || undefined, descriptionMd: v.descriptionMd, coverImageUrl: v.coverImageUrl, logoUrl: v.logoUrl, timezone: v.timezone,
@@ -109,7 +115,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
       forgetBackup();
       baseline.current = JSON.stringify(v);
       if (mode === "create" && r.id) return router.push(`/dashboard/events/${r.id}`);
-      setMsg({ success: r.message ?? "Saved." });
+      setMsg({ success: r.message ?? t("eventForm.saved") });
       router.refresh();
     });
   };
@@ -118,12 +124,12 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
     <div className="space-y-2">
       {list.map((l, i) => (
         <div key={i} className="flex gap-2">
-          <div className="w-32 shrink-0"><Select value={l.platform} aria-label="Platform" onChange={(e) => onChange(list.map((x, j) => (j === i ? { ...x, platform: e.target.value } : x)))}>{SOCIAL_PLATFORMS.map((p) => <option key={p} value={p}>{p}</option>)}</Select></div>
-          <Input type="url" value={l.url} placeholder="https://" aria-label="URL" onChange={(e) => onChange(list.map((x, j) => (j === i ? { ...x, url: e.target.value } : x)))} />
-          <Button type="button" variant="ghost" size="icon" aria-label="Remove link" onClick={() => onChange(list.filter((_, j) => j !== i))}><X className="size-4" /></Button>
+          <div className="w-32 shrink-0"><Select value={l.platform} aria-label={t("eventForm.links.platform")} onChange={(e) => onChange(list.map((x, j) => (j === i ? { ...x, platform: e.target.value } : x)))}>{SOCIAL_PLATFORMS.map((p) => <option key={p} value={p}>{p}</option>)}</Select></div>
+          <Input type="url" value={l.url} placeholder="https://" aria-label={t("eventForm.links.url")} onChange={(e) => onChange(list.map((x, j) => (j === i ? { ...x, url: e.target.value } : x)))} />
+          <Button type="button" variant="ghost" size="icon" aria-label={t("eventForm.links.remove")} onClick={() => onChange(list.filter((_, j) => j !== i))}><X className="size-4" /></Button>
         </div>
       ))}
-      <Button type="button" variant="outline" size="sm" onClick={() => onChange([...list, { platform: "website", url: "" }])}><Plus className="size-4" /> Add link</Button>
+      <Button type="button" variant="outline" size="sm" onClick={() => onChange([...list, { platform: "website", url: "" }])}><Plus className="size-4" /> {t("eventForm.links.add")}</Button>
     </div>
   );
 
@@ -135,139 +141,145 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
       {restoredAt && (
         <Note className="flex flex-wrap items-center gap-x-4 gap-y-2 text-foreground">
           <History className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-          <span className="min-w-0 flex-1">Picked up where you left off: unsaved changes from {relativeTime(restoredAt)} are back in the form.</span>
+          <span className="min-w-0 flex-1">{t("eventForm.restore.notice", { when: relativeTime(restoredAt, tc, locale) })}</span>
           <span className="flex gap-2">
-            <Button type="button" size="sm" variant="outline" onClick={discardRestored}>Discard them</Button>
-            <Button type="button" size="sm" variant="ghost" onClick={() => setRestoredAt(null)}>OK</Button>
+            <Button type="button" size="sm" variant="outline" onClick={discardRestored}>{t("eventForm.restore.discard")}</Button>
+            <Button type="button" size="sm" variant="ghost" onClick={() => setRestoredAt(null)}>{tc("actions.ok")}</Button>
           </span>
         </Note>
       )}
 
-      <Section title="Basics" description="What people see first: the name, the address, the story, the artwork.">
+      <Section title={t("eventForm.basics.title")} description={t("eventForm.basics.description")}>
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Event name" htmlFor="name" className="sm:col-span-2"><Input id="name" value={v.name} onChange={(e) => set("name", e.target.value)} required maxLength={160} autoFocus={mode === "create"} /></Field>
-          <Field label="Event URL" htmlFor="slug" help={publicEventPath(organizationSlug, v.slug || "…")} className="sm:col-span-2"><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9\-]{3,80}" /></Field>
-          <Field label="Description" htmlFor="desc" optional help="Markdown is supported." className="sm:col-span-2"><Textarea id="desc" rows={6} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
-          <Field label="Tags" htmlFor="tags" optional help="Comma separated. Used for discovery." className="sm:col-span-2"><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="design, meetup" /></Field>
+          <Field label={t("eventForm.basics.name")} htmlFor="name" className="sm:col-span-2"><Input id="name" value={v.name} onChange={(e) => set("name", e.target.value)} required maxLength={160} autoFocus={mode === "create"} /></Field>
+          <Field label={t("eventForm.basics.url")} htmlFor="slug" help={publicEventPath(organizationSlug, v.slug || "…")} className="sm:col-span-2"><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9\-]{3,80}" /></Field>
+          <Field label={t("eventForm.basics.descriptionLabel")} htmlFor="desc" optional help={t("eventForm.basics.descriptionHelp")} className="sm:col-span-2"><Textarea id="desc" rows={6} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
+          <Field label={t("eventForm.basics.tags")} htmlFor="tags" optional help={t("eventForm.basics.tagsHelp")} className="sm:col-span-2"><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder={t("eventForm.basics.tagsPlaceholder")} /></Field>
           <div className="sm:col-span-2 grid gap-5 lg:grid-cols-[minmax(0,1fr)_10rem]">
-            <ImageUploadField label="Cover image" croppable value={v.coverImageUrl} onChange={(url) => set("coverImageUrl", url)} uploadsEnabled={uploadsEnabled} />
-            <ImageUploadField label="Event logo" value={v.logoUrl} onChange={(url) => set("logoUrl", url)} aspect="square" uploadsEnabled={uploadsEnabled} />
+            <ImageUploadField label={t("eventForm.basics.cover")} croppable value={v.coverImageUrl} onChange={(url) => set("coverImageUrl", url)} uploadsEnabled={uploadsEnabled} />
+            <ImageUploadField label={t("eventForm.basics.logo")} value={v.logoUrl} onChange={(url) => set("logoUrl", url)} aspect="square" uploadsEnabled={uploadsEnabled} />
           </div>
         </div>
       </Section>
 
-      <Section title="When" description="Times are stored in UTC and shown to everyone in the event's own zone.">
+      <Section title={t("eventForm.when.title")} description={t("eventForm.when.description")}>
         <div className="grid gap-5 sm:grid-cols-3">
-          <Field label="Starts" htmlFor="starts"><Input id="starts" type="datetime-local" value={v.startsLocal} onChange={(e) => set("startsLocal", e.target.value)} required /></Field>
-          <Field label="Ends" htmlFor="ends"><Input id="ends" type="datetime-local" value={v.endsLocal} onChange={(e) => set("endsLocal", e.target.value)} required /></Field>
-          <Field label="Time zone" htmlFor="tz"><Select id="tz" value={v.timezone} onChange={(e) => set("timezone", e.target.value)}>{TIMEZONES.map((z) => <option key={z} value={z}>{z}</option>)}</Select></Field>
+          <Field label={t("eventForm.when.starts")} htmlFor="starts"><Input id="starts" type="datetime-local" value={v.startsLocal} onChange={(e) => set("startsLocal", e.target.value)} required /></Field>
+          <Field label={t("eventForm.when.ends")} htmlFor="ends"><Input id="ends" type="datetime-local" value={v.endsLocal} onChange={(e) => set("endsLocal", e.target.value)} required /></Field>
+          <Field label={t("eventForm.when.timezone")} htmlFor="tz"><Select id="tz" value={v.timezone} onChange={(e) => set("timezone", e.target.value)}>{TIMEZONES.map((z) => <option key={z} value={z}>{z}</option>)}</Select></Field>
         </div>
-        {status === "published" && <p className="hairline mt-4 pt-3 text-xs text-muted-foreground">Changing the time of a published event emails every attendee.</p>}
+        {status === "published" && <p className="hairline mt-4 pt-3 text-xs text-muted-foreground">{t("eventForm.when.publishedNote")}</p>}
       </Section>
 
-      <Section title="Where" description="Where people turn up, or the link they join.">
+      <Section title={t("eventForm.where.title")} description={t("eventForm.where.description")}>
         <div className="mb-5 inline-flex rounded-lg border border-border/80 bg-muted/40 p-0.5 text-sm">
-          {(["in_person", "online", "hybrid"] as const).map((t) => (
-            <label key={t} className={`press cursor-pointer rounded-md px-3 py-1.5 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[var(--ring)] ${v.locationType === t ? "bg-card font-medium shadow-card" : "text-muted-foreground hover:text-foreground"}`}>
-              <input type="radio" name="locationType" checked={v.locationType === t} onChange={() => set("locationType", t)} className="sr-only" />
-              {t === "in_person" ? "In person" : t === "online" ? "Online" : "Hybrid"}
+          {(["in_person", "online", "hybrid"] as const).map((lt) => (
+            <label key={lt} className={`press cursor-pointer rounded-md px-3 py-1.5 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[var(--ring)] ${v.locationType === lt ? "bg-card font-medium shadow-card" : "text-muted-foreground hover:text-foreground"}`}>
+              <input type="radio" name="locationType" checked={v.locationType === lt} onChange={() => set("locationType", lt)} className="sr-only" />
+              {t(`eventForm.where.locationType.${lt}`)}
             </label>
           ))}
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
           {v.locationType !== "online" && (
             <>
-              <Field label="Venue" htmlFor="venue" className="sm:col-span-2"><Input id="venue" value={v.venueName} onChange={(e) => set("venueName", e.target.value)} placeholder="Venue name" /></Field>
-              <Field label="Address" htmlFor="address" className="sm:col-span-2" help="Pick a suggestion to fill city, country and map coordinates.">
+              <Field label={t("eventForm.where.venue")} htmlFor="venue" className="sm:col-span-2"><Input id="venue" value={v.venueName} onChange={(e) => set("venueName", e.target.value)} placeholder={t("eventForm.where.venuePlaceholder")} /></Field>
+              <Field label={t("eventForm.where.address")} htmlFor="address" className="sm:col-span-2" help={t("eventForm.where.addressHelp")}>
                 <AddressAutocomplete
                   value={v.address}
                   onChange={(address) => set("address", address)}
                   onSelect={(suggestion) => setV((current) => ({ ...current, address: suggestion.address, city: suggestion.city, country: suggestion.country, lat: suggestion.lat, lng: suggestion.lng }))}
                 />
               </Field>
-              <Field label="City" htmlFor="city"><Input id="city" value={v.city} onChange={(e) => set("city", e.target.value)} /></Field>
-              <Field label="Country code" htmlFor="country" help="Two-letter code, e.g. BR"><Input id="country" maxLength={2} value={v.country} onChange={(e) => set("country", e.target.value.toUpperCase())} placeholder="US" /></Field>
-              {v.lat && v.lng && <p className="text-xs text-muted-foreground sm:col-span-2">Map pin set from the address ({Number(v.lat).toFixed(4)}, {Number(v.lng).toFixed(4)}). Pick another suggestion to move it.</p>}
+              <Field label={t("eventForm.where.city")} htmlFor="city"><Input id="city" value={v.city} onChange={(e) => set("city", e.target.value)} /></Field>
+              <Field label={t("eventForm.where.country")} htmlFor="country" help={t("eventForm.where.countryHelp")}><Input id="country" maxLength={2} value={v.country} onChange={(e) => set("country", e.target.value.toUpperCase())} placeholder={t("eventForm.where.countryPlaceholder")} /></Field>
+              {v.lat && v.lng && <p className="text-xs text-muted-foreground sm:col-span-2">{t("eventForm.where.mapPin", { lat: Number(v.lat).toFixed(4), lng: Number(v.lng).toFixed(4) })}</p>}
             </>
           )}
           {v.locationType !== "in_person" && (
-            <Field label="Join link" htmlFor="online" help="Only shown to confirmed attendees, in their confirmation and reminders." className="sm:col-span-2"><Input id="online" type="url" value={v.onlineUrl} onChange={(e) => set("onlineUrl", e.target.value)} placeholder="https://meet…" /></Field>
+            <Field label={t("eventForm.where.joinLink")} htmlFor="online" help={t("eventForm.where.joinLinkHelp")} className="sm:col-span-2"><Input id="online" type="url" value={v.onlineUrl} onChange={(e) => set("onlineUrl", e.target.value)} placeholder={t("eventForm.where.joinLinkPlaceholder")} /></Field>
           )}
         </div>
       </Section>
 
-      <Section title="Registration" description="Who can find the event, and how many can come.">
+      <Section title={t("eventForm.registration.title")} description={t("eventForm.registration.description")}>
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Visibility" htmlFor="vis" help={v.visibility === "public" ? "Listed on Discover and indexed by search engines." : v.visibility === "unlisted" ? "Anyone with the link; not listed or indexed." : "Only people with an invite link."}>
-            <Select id="vis" value={v.visibility} onChange={(e) => set("visibility", e.target.value as Values["visibility"])}><option value="public">Public</option><option value="unlisted">Unlisted</option><option value="private">Private</option></Select>
+          <Field label={t("eventForm.registration.visibility")} htmlFor="vis" help={t(`eventForm.registration.visibilityHelp.${v.visibility}`)}>
+            <Select id="vis" value={v.visibility} onChange={(e) => set("visibility", e.target.value as Values["visibility"])}>
+              {(["public", "unlisted", "private"] as const).map((vis) => <option key={vis} value={vis}>{t(`eventForm.registration.visibilityOptions.${vis}`)}</option>)}
+            </Select>
           </Field>
-          <Field label="Capacity" htmlFor="cap" optional help="Leave empty for unlimited."><Input id="cap" type="number" min={1} value={v.capacity} onChange={(e) => set("capacity", e.target.value)} /></Field>
+          <Field label={t("eventForm.registration.capacity")} htmlFor="cap" optional help={t("eventForm.registration.capacityHelp")}><Input id="cap" type="number" min={1} value={v.capacity} onChange={(e) => set("capacity", e.target.value)} /></Field>
         </div>
       </Section>
 
-      <CollapsibleSection title="Registration options" description="Approval, guests, reminders, fees and refund policy." hint={optionsHint(v)} defaultOpen={Boolean(v.requiresApproval || v.collectPhone || v.guestsEnabled || v.waitlistEnabled || v.feePassThrough || v.refundPolicy)}>
+      <CollapsibleSection title={t("eventForm.options.title")} description={t("eventForm.options.description")} hint={optionsHint(v, t)} defaultOpen={Boolean(v.requiresApproval || v.collectPhone || v.guestsEnabled || v.waitlistEnabled || v.feePassThrough || v.refundPolicy)}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Toggle label="Approve each registration manually" help="People request to join; approve or reject them from Attendees." checked={v.requiresApproval} onChange={(c) => set("requiresApproval", c)} />
-          <Toggle label="Ask for a phone number" help="Optional field with SMS opt-in for tickets and reminders." checked={v.collectPhone} onChange={(c) => set("collectPhone", c)} />
-          <Toggle label="Allow guests (+1)" help="Each guest gets a separate ticket." checked={v.guestsEnabled} onChange={(c) => set("guestsEnabled", c)} />
-          {v.guestsEnabled && <Field label="Max guests per registration" htmlFor="maxg"><Input id="maxg" type="number" min={1} max={20} value={v.maxGuests} onChange={(e) => set("maxGuests", Number(e.target.value) || 1)} /></Field>}
-          <Toggle label="Waitlist when sold out" help="Visitors can queue; you offer spots from the Waitlist tab as seats free up." checked={v.waitlistEnabled} onChange={(c) => set("waitlistEnabled", c)} />
-          <Toggle label="Buyer pays the service fee" help="Cloud edition: show the 0.99% as a line item." checked={v.feePassThrough} onChange={(c) => set("feePassThrough", c)} />
-          <Field label="Refund policy" htmlFor="refund" optional help="Shown at checkout for paid tickets." className="sm:col-span-2"><Textarea id="refund" rows={3} value={v.refundPolicy} onChange={(e) => set("refundPolicy", e.target.value)} /></Field>
+          <Toggle label={t("eventForm.options.approval")} help={t("eventForm.options.approvalHelp")} checked={v.requiresApproval} onChange={(c) => set("requiresApproval", c)} />
+          <Toggle label={t("eventForm.options.phone")} help={t("eventForm.options.phoneHelp")} checked={v.collectPhone} onChange={(c) => set("collectPhone", c)} />
+          <Toggle label={t("eventForm.options.guests")} help={t("eventForm.options.guestsHelp")} checked={v.guestsEnabled} onChange={(c) => set("guestsEnabled", c)} />
+          {v.guestsEnabled && <Field label={t("eventForm.options.maxGuests")} htmlFor="maxg"><Input id="maxg" type="number" min={1} max={20} value={v.maxGuests} onChange={(e) => set("maxGuests", Number(e.target.value) || 1)} /></Field>}
+          <Toggle label={t("eventForm.options.waitlist")} help={t("eventForm.options.waitlistHelp")} checked={v.waitlistEnabled} onChange={(c) => set("waitlistEnabled", c)} />
+          <Toggle label={t("eventForm.options.feePassThrough")} help={t("eventForm.options.feePassThroughHelp")} checked={v.feePassThrough} onChange={(c) => set("feePassThrough", c)} />
+          <Field label={t("eventForm.options.refundPolicy")} htmlFor="refund" optional help={t("eventForm.options.refundPolicyHelp")} className="sm:col-span-2"><Textarea id="refund" rows={3} value={v.refundPolicy} onChange={(e) => set("refundPolicy", e.target.value)} /></Field>
         </div>
         <div className="hairline mt-5 pt-5">
-          <p className="eyebrow">Reminders</p>
+          <p className="eyebrow">{t("eventForm.options.reminders")}</p>
           <div className="mt-2 flex flex-wrap items-center gap-5 text-sm">
-            <label className="flex items-center gap-2"><input type="checkbox" checked={v.reminder24} onChange={(e) => set("reminder24", e.target.checked)} className="size-4 accent-[var(--primary)]" /> 24 hours before</label>
-            <label className="flex items-center gap-2"><input type="checkbox" checked={v.reminder1} onChange={(e) => set("reminder1", e.target.checked)} className="size-4 accent-[var(--primary)]" /> 1 hour before</label>
-            <label className="flex items-center gap-2">Also <Input value={v.reminderCustom} onChange={(e) => set("reminderCustom", e.target.value)} placeholder="48, 3" className="h-8 w-24" aria-label="Custom reminder hours" /> hours before</label>
+            <label className="flex items-center gap-2"><input type="checkbox" checked={v.reminder24} onChange={(e) => set("reminder24", e.target.checked)} className="size-4 accent-[var(--primary)]" /> {t("eventForm.options.reminder24")}</label>
+            <label className="flex items-center gap-2"><input type="checkbox" checked={v.reminder1} onChange={(e) => set("reminder1", e.target.checked)} className="size-4 accent-[var(--primary)]" /> {t("eventForm.options.reminder1")}</label>
+            <label className="flex items-center gap-2">
+              {t.rich("eventForm.options.reminderCustom", {
+                input: () => <Input value={v.reminderCustom} onChange={(e) => set("reminderCustom", e.target.value)} placeholder={t("eventForm.options.reminderCustomPlaceholder")} className="h-8 w-24" aria-label={t("eventForm.options.reminderCustomLabel")} />,
+              })}
+            </label>
           </div>
         </div>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Links" description="Social links shown on the event page." hint={countHint(v.socialLinks.length, "link")} defaultOpen={v.socialLinks.length > 0}>{links(v.socialLinks, (l) => set("socialLinks", l))}</CollapsibleSection>
+      <CollapsibleSection title={t("eventForm.links.title")} description={t("eventForm.links.description")} hint={t("eventForm.links.hint", { count: v.socialLinks.length })} defaultOpen={v.socialLinks.length > 0}>{links(v.socialLinks, (l) => set("socialLinks", l))}</CollapsibleSection>
 
-      <CollapsibleSection title="Hosts" description="People shown on the event page." hint={countHint(v.hosts.length, "host")} defaultOpen={v.hosts.length > 0}>
+      <CollapsibleSection title={t("eventForm.hosts.title")} description={t("eventForm.hosts.description")} hint={t("eventForm.hosts.hint", { count: v.hosts.length })} defaultOpen={v.hosts.length > 0}>
         <div className="space-y-3">
           {v.hosts.map((h, i) => (
             <div key={i} className="space-y-3 rounded-lg border border-border/80 bg-muted/25 p-3">
               <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
-                <Input value={h.name} placeholder="Name" aria-label="Host name" onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
-                <Input value={h.title} placeholder="Title" aria-label="Host title" onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)))} />
-                <Button type="button" variant="ghost" size="icon" aria-label="Remove host" onClick={() => set("hosts", v.hosts.filter((_, j) => j !== i))}><X className="size-4" /></Button>
+                <Input value={h.name} placeholder={tc("labels.name")} aria-label={t("eventForm.hosts.name")} onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
+                <Input value={h.title} placeholder={t("eventForm.hosts.titleField")} aria-label={t("eventForm.hosts.titleField")} onChange={(e) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)))} />
+                <Button type="button" variant="ghost" size="icon" aria-label={t("eventForm.hosts.remove")} onClick={() => set("hosts", v.hosts.filter((_, j) => j !== i))}><X className="size-4" /></Button>
               </div>
-              <ImageUploadField label="Avatar" aspect="avatar" uploadsEnabled={uploadsEnabled} value={h.avatarUrl} onChange={(url) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, avatarUrl: url } : x)))} />
+              <ImageUploadField label={t("eventForm.hosts.avatar")} aspect="avatar" uploadsEnabled={uploadsEnabled} value={h.avatarUrl} onChange={(url) => set("hosts", v.hosts.map((x, j) => (j === i ? { ...x, avatarUrl: url } : x)))} />
             </div>
           ))}
-          <Button type="button" variant="outline" size="sm" onClick={() => set("hosts", [...v.hosts, { name: "", title: "", avatarUrl: "", socialLinks: [] }])}><Plus className="size-4" /> Add host</Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => set("hosts", [...v.hosts, { name: "", title: "", avatarUrl: "", socialLinks: [] }])}><Plus className="size-4" /> {t("eventForm.hosts.add")}</Button>
         </div>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Sponsors" description="Logos appear on the event page in this order." hint={countHint(v.sponsors.length, "sponsor")} defaultOpen={v.sponsors.length > 0}>
+      <CollapsibleSection title={t("eventForm.sponsors.title")} description={t("eventForm.sponsors.description")} hint={t("eventForm.sponsors.hint", { count: v.sponsors.length })} defaultOpen={v.sponsors.length > 0}>
         <div className="space-y-3">
           {v.sponsors.map((s, i) => (
             <div key={i} className="space-y-3 rounded-lg border border-border/80 bg-muted/25 p-3">
               <div className="grid gap-2 sm:grid-cols-[1fr_8rem_1fr_auto]">
-                <Input value={s.name} placeholder="Name" aria-label="Sponsor name" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
-                <Input value={s.tier} placeholder="Tier" aria-label="Tier" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, tier: e.target.value } : x)))} />
-                <Input type="url" value={s.website} placeholder="Website" aria-label="Website" onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, website: e.target.value } : x)))} />
-                <Button type="button" variant="ghost" size="icon" aria-label="Remove sponsor" onClick={() => set("sponsors", v.sponsors.filter((_, j) => j !== i))}><X className="size-4" /></Button>
+                <Input value={s.name} placeholder={tc("labels.name")} aria-label={t("eventForm.sponsors.name")} onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} />
+                <Input value={s.tier} placeholder={t("eventForm.sponsors.tier")} aria-label={t("eventForm.sponsors.tier")} onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, tier: e.target.value } : x)))} />
+                <Input type="url" value={s.website} placeholder={t("eventForm.sponsors.website")} aria-label={t("eventForm.sponsors.website")} onChange={(e) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, website: e.target.value } : x)))} />
+                <Button type="button" variant="ghost" size="icon" aria-label={t("eventForm.sponsors.remove")} onClick={() => set("sponsors", v.sponsors.filter((_, j) => j !== i))}><X className="size-4" /></Button>
               </div>
-              <ImageUploadField label="Logo" aspect="thumb" uploadsEnabled={uploadsEnabled} value={s.logoUrl} onChange={(url) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, logoUrl: url } : x)))} />
+              <ImageUploadField label={t("eventForm.sponsors.logo")} aspect="thumb" uploadsEnabled={uploadsEnabled} value={s.logoUrl} onChange={(url) => set("sponsors", v.sponsors.map((x, j) => (j === i ? { ...x, logoUrl: url } : x)))} />
             </div>
           ))}
-          <Button type="button" variant="outline" size="sm" onClick={() => set("sponsors", [...v.sponsors, { name: "", logoUrl: "", tier: "", website: "", socialLinks: [] }])}><Plus className="size-4" /> Add sponsor</Button>
+          <Button type="button" variant="outline" size="sm" onClick={() => set("sponsors", [...v.sponsors, { name: "", logoUrl: "", tier: "", website: "", socialLinks: [] }])}><Plus className="size-4" /> {t("eventForm.sponsors.add")}</Button>
         </div>
       </CollapsibleSection>
 
-      <div className="surface-glass fixed inset-x-0 bottom-0 z-10 border-t border-border/80 px-4 sm:px-6 lg:left-64 lg:px-10">
+      <div className="surface-glass fixed inset-x-0 bottom-0 z-10 border-t border-border/80 px-4 sm:px-6 lg:start-64 lg:px-10">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 py-3">
           <div className="min-w-0 flex-1">
             {msg.error || msg.success
               ? <FormMessage error={msg.error} success={msg.success} />
-              : <p className="truncate text-xs text-muted-foreground">{mode === "create" ? "Nothing is public until you publish." : "Changes go live as soon as you save."}</p>}
+              : <p className="truncate text-xs text-muted-foreground">{mode === "create" ? t("eventForm.bar.createNote") : t("eventForm.bar.editNote")}</p>}
           </div>
-          <Button type="submit" size="lg" className="h-10 rounded-lg px-5 text-sm" pending={pending}>{mode === "create" ? "Create draft" : "Save changes"}</Button>
+          <Button type="submit" size="lg" className="h-10 rounded-lg px-5 text-sm" pending={pending}>{mode === "create" ? t("eventForm.bar.createDraft") : t("eventForm.bar.saveChanges")}</Button>
         </div>
       </div>
     </form>
@@ -296,7 +308,7 @@ function CollapsibleSection({ title, description, hint, children, defaultOpen = 
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between gap-4 rounded-xl p-5 text-left transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 sm:p-6"
+        className="flex w-full items-center justify-between gap-4 rounded-xl p-5 text-start transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 sm:p-6"
       >
         <span className="min-w-0">
           <span className="block text-sm font-medium">{title}</span>
@@ -318,24 +330,29 @@ function CollapsibleSection({ title, description, hint, children, defaultOpen = 
   );
 }
 
-function countHint(n: number, noun: string) {
-  return n === 0 ? `No ${noun}s yet` : `${n} ${noun}${n === 1 ? "" : "s"}`;
+/** Closed-state summary of the options section: which switches are on and which reminders go out. */
+function optionsHint(v: Values, t: ManageT) {
+  const on = [
+    v.requiresApproval && t("eventForm.options.hint.flags.approval"),
+    v.collectPhone && t("eventForm.options.hint.flags.phone"),
+    v.guestsEnabled && t("eventForm.options.hint.flags.guests"),
+    v.waitlistEnabled && t("eventForm.options.hint.flags.waitlist"),
+    v.feePassThrough && t("eventForm.options.hint.flags.feePassThrough"),
+  ].filter(Boolean) as string[];
+  const hours = [v.reminder24 && "24", v.reminder1 && "1", ...v.reminderCustom.split(/[,\s]+/).filter(Boolean)].filter(Boolean) as string[];
+  const reminders = hours.map((h) => t("eventForm.options.hint.hours", { hours: h }));
+  const first = on.length ? t("eventForm.options.hint.on", { items: on.join(", ") }) : t("eventForm.options.hint.defaults");
+  const second = reminders.length ? t("eventForm.options.hint.reminders", { items: reminders.join(", ") }) : t("eventForm.options.hint.noReminders");
+  return t("eventForm.options.hint.joined", { first, second });
 }
 
-function optionsHint(v: Values) {
-  const on = [v.requiresApproval && "approval", v.collectPhone && "phone", v.guestsEnabled && "guests", v.waitlistEnabled && "waitlist", v.feePassThrough && "buyer pays fee"].filter(Boolean) as string[];
-  const reminders = [v.reminder24 && "24h", v.reminder1 && "1h", ...v.reminderCustom.split(/[,\s]+/).filter(Boolean).map((h) => `${h}h`)].filter(Boolean) as string[];
-  const parts = [on.length ? `On: ${on.join(", ")}` : "Defaults", reminders.length ? `reminders ${reminders.join(", ")}` : "no reminders"];
-  return parts.join(" · ");
-}
-
-function relativeTime(iso: string) {
+function relativeTime(iso: string, tc: CommonT, locale: string) {
   const minutes = Math.round((Date.now() - new Date(iso).getTime()) / 60_000);
-  if (minutes < 1) return "a moment ago";
-  if (minutes < 60) return `${minutes} min ago`;
+  if (minutes < 1) return tc("time.momentAgo");
+  if (minutes < 60) return tc("time.minutesAgo", { minutes });
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
-  return new Date(iso).toLocaleString();
+  if (hours < 24) return tc("time.hoursAgo", { hours });
+  return new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(new Date(iso));
 }
 
 function Toggle({ label, help, checked, onChange }: { label: string; help?: string; checked: boolean; onChange: (c: boolean) => void }) {

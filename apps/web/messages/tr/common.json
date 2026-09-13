@@ -1,0 +1,57 @@
+{
+  "language": "Dil",
+  "brand": "Evnelo",
+  "tagline": "Hareket halindeki olaylar.",
+  "actions": {
+    "save": "Kaydetmek",
+    "cancel": "İptal etmek",
+    "close": "Kapalı",
+    "delete": "Silmek",
+    "remove": "Kaldırmak",
+    "edit": "Düzenlemek",
+    "add": "Eklemek",
+    "back": "Geri",
+    "continue": "Devam etmek",
+    "confirm": "Onaylamak",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "search": "Aramak",
+    "retry": "Tekrar deneyin",
+    "ok": "TAMAM",
+    "discard": "Atın",
+    "restore": "Eski haline getirmek",
+    "signIn": "Giriş yap",
+    "signOut": "oturumu Kapat",
+    "loading": "Yükleniyor…"
+  },
+  "labels": {
+    "optional": "isteğe bağlı",
+    "required": "Gerekli",
+    "free": "Özgür",
+    "soldOut": "Hepsi satıldı",
+    "cancelled": "İptal edildi",
+    "draft": "Taslak",
+    "published": "Yayınlandı",
+    "yes": "Evet",
+    "no": "HAYIR",
+    "name": "İsim",
+    "email": "E-posta",
+    "phone": "Telefon",
+    "status": "Durum",
+    "date": "Tarih",
+    "created": "Oluşturuldu",
+    "unknown": "Bilinmiyor"
+  },
+  "errors": {
+    "generic": "Bir sorun oluştu. Tekrar deneyin.",
+    "network": "Ağ hatası. Tekrar deneyin.",
+    "notFound": "Bulunamadı",
+    "rateLimited": "Çok fazla deneme yapıldı. Birkaç dakika bekleyin ve tekrar deneyin.",
+    "captcha": "Bot olmadığınızı doğrulayamadık. Lütfen sayfayı yeniden yükleyip tekrar deneyin."
+  },
+  "time": {
+    "momentAgo": "az önce",
+    "minutesAgo": "{minutes} dakika önce",
+    "hoursAgo": "{hours, plural, one {# saat önce} other {# saat önce}}"
+  }
+}

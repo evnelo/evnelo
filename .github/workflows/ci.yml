@@ -45,6 +45,8 @@ jobs:
         run: pnpm db:migrate
       - name: Typecheck
         run: pnpm typecheck
+      - name: Translations in sync with English
+        run: pnpm --filter @evnelo/web translate:check
       - name: Test
         run: pnpm test
       - name: Build

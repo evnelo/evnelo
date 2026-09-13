@@ -1,0 +1,57 @@
+{
+  "language": "Idioma",
+  "brand": "Evnelo",
+  "tagline": "Eventos en movimiento.",
+  "actions": {
+    "save": "Ahorrar",
+    "cancel": "Cancelar",
+    "close": "Cerca",
+    "delete": "Borrar",
+    "remove": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "back": "Atrás",
+    "continue": "Continuar",
+    "confirm": "Confirmar",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "search": "Buscar",
+    "retry": "Intentar otra vez",
+    "ok": "DE ACUERDO",
+    "discard": "Desechar",
+    "restore": "Restaurar",
+    "signIn": "Iniciar sesión",
+    "signOut": "desconectar",
+    "loading": "Cargando…"
+  },
+  "labels": {
+    "optional": "opcional",
+    "required": "Requerido",
+    "free": "Gratis",
+    "soldOut": "Agotado",
+    "cancelled": "Cancelado",
+    "draft": "Borrador",
+    "published": "Publicado",
+    "yes": "Sí",
+    "no": "No",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "status": "Estado",
+    "date": "Fecha",
+    "created": "Creado",
+    "unknown": "Desconocido"
+  },
+  "errors": {
+    "generic": "Algo salió mal. Inténtalo de nuevo.",
+    "network": "Error de red. Inténtalo de nuevo.",
+    "notFound": "Extraviado",
+    "rateLimited": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
+    "captcha": "No pudimos confirmar que no eres un bot. Recarga la página e inténtalo de nuevo."
+  },
+  "time": {
+    "momentAgo": "hace un momento",
+    "minutesAgo": "Hace {minutes} minutos",
+    "hoursAgo": "{hours, plural, one {Hace # horas} other {Hace # horas}}"
+  }
+}

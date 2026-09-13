@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "{orgName} کے ذریعے <link>Evnelo</link> کے ذریعے بھیجا گیا۔ یہ ایک لین دین کا پیغام ہے جس کے لیے آپ نے رجسٹر کیا ہے۔",
+    "when": "جب",
+    "where": "جہاں",
+    "online": "آن لائن",
+    "joinOnline": "آن لائن شامل ہوں →",
+    "admitOne": "ایک تسلیم کریں۔",
+    "ticketTypeGuestOf": "{ticketType} ، {host} کا مہمان",
+    "openTicket": "اوپن ٹکٹ",
+    "qrAlt": "ٹکٹ کیو آر کوڈ",
+    "scanAtDoor": "دروازے پر اسکین کریں۔"
+  },
+  "reminderWhen": {
+    "tomorrow": "کل",
+    "days": "میں {count, plural, one {# دن} other {# دن}}",
+    "hours": "میں {count, plural, one {# گھنٹہ} other {# گھنٹے}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {{eventName} کے لیے آپ کا ٹکٹ} other {آپ کے # ٹکٹ {eventName} کے لئے}}",
+    "preview": "آپ {eventName} میں ہیں۔ {count, plural, one {آپ کا ٹکٹ ہے۔} other {آپ کے ٹکٹ ہیں۔}} اندر",
+    "title": "آپ اندر ہیں",
+    "intro": "{count, plural, one {یہاں آپ کا ٹکٹ ہے۔<link>{eventName}</link>.} other {یہاں آپ کے # ٹکٹس ہیں۔<link>{eventName}</link>.}}",
+    "showQr": "دروازے پر، اپنے فون پر یا پرنٹ شدہ کیو آر کوڈ دکھائیں۔",
+    "addToCalendar": "کیلنڈر میں شامل کریں۔",
+    "questions": "تقریب کے بارے میں سوالات؟ {orgName} تک پہنچنے کے لیے اس ای میل کا جواب دیں۔",
+    "cta": "واقعہ کی تفصیلات دیکھیں"
+  },
+  "approvalPending": {
+    "subject": "{eventName} کے لیے درخواست موصول ہوئی",
+    "preview": "{orgName} آپ کی {eventName} میں شامل ہونے کی درخواست کا جائزہ لے رہا ہے۔",
+    "title": "درخواست موصول ہوئی۔",
+    "intro": "ہائے {name}, {orgName} <link>{eventName}</link> کے لئے ہر رجسٹریشن کا جائزہ لیتا ہے۔",
+    "partySize": "آپ کی درخواست {count} لوگوں پر محیط ہے۔",
+    "approved": "{count, plural, one {آپ کو اپنا ٹکٹ منظور ہوتے ہی ای میل کے ذریعے مل جائے گا۔} other {آپ کو اپنے ٹکٹ منظور ہوتے ہی ای میل کے ذریعے مل جائیں گے۔}}",
+    "nothingToDo": "ابھی کرنے کے لیے کچھ نہیں ہے۔ اگر آپ کے منصوبے بدل جاتے ہیں تو بس اس ای میل کو نظر انداز کر دیں۔"
+  },
+  "registrationRejected": {
+    "subject": "{eventName} کے لیے آپ کی درخواست پر اپ ڈیٹ",
+    "preview": "{orgName} {eventName} کے لئے آپ کی رجسٹریشن کی منظوری نہیں دے سکا۔",
+    "title": "ہم آپ کو فٹ نہیں کر سکے۔",
+    "intro": "ہائے {name}, {orgName} <link>{eventName}</link> کے لئے آپ کی رجسٹریشن کو منظور کرنے کے قابل نہیں تھا۔",
+    "refund": "کوئی بھی ادائیگی آپ کے کارڈ میں واپس کر دی جائے گی۔",
+    "noPayment": "کوئی ادائیگی نہیں کی گئی۔",
+    "questions": "سوالات؟ منتظم تک پہنچنے کے لیے اس ای میل کا جواب دیں۔"
+  },
+  "refundIssued": {
+    "subject": "{eventName} کے لیے {amount} کی واپسی",
+    "preview": "{amount} آپ کے کارڈ پر واپس جا رہا ہے۔",
+    "title": "رقم کی واپسی جاری",
+    "intro": "ہائے {name} ، {orgName} رقم کی واپسی <strong>{amount}</strong> آپ کے آرڈر کے لئے <link>{eventName}</link> ۔",
+    "cancelled": "{count, plural, one {آپ کا ٹکٹ منسوخ ہوگیا ہے اور اب اسکین نہیں ہوگا۔} other {آرڈر پر موجود تمام # ٹکٹ منسوخ کر دیے گئے ہیں اور مزید اسکین نہیں ہوں گے۔}}",
+    "timing": "ریفنڈز عام طور پر آپ کے بینک کے لحاظ سے 5 سے 10 کاروباری دنوں میں آپ کے کارڈ تک پہنچ جاتے ہیں۔",
+    "receipt": "یہ ای میل آپ کی رسید ہے۔"
+  },
+  "eventReminder": {
+    "subject": "{eventName} ہے {when}",
+    "preview": "{eventName} ہے {when} {where}",
+    "title": "{eventName} ہے {when}",
+    "tickets": "{count, plural, one {آپ کا ٹکٹ، اسکین کرنے کے لیے تیار ہے:} other {آپ کے ٹکٹ، اسکین کرنے کے لیے تیار ہیں:}}",
+    "cta": "واقعہ کی تفصیلات اور ہدایات",
+    "stopPrompt": "اس ایونٹ کے لیے یاددہانی نہیں چاہتے؟ <link>یاد دہانیوں کو روکیں</link>.",
+    "stillGetThrough": "تصدیقات اور تبدیلیاں اب بھی ہوتی ہیں۔"
+  },
+  "eventUpdated": {
+    "subjectBoth": "{eventName} کے لیے نیا وقت اور جگہ",
+    "subjectSchedule": "{eventName} کے لیے نیا وقت",
+    "subjectVenue": "{eventName} کے لیے نیا مقام",
+    "previewBoth": "{eventName} نے وقت اور جگہ بدل دی ہے۔",
+    "previewSchedule": "{eventName} نے وقت بدل دیا ہے۔",
+    "previewVenue": "{eventName} نے جگہ بدل دی ہے۔",
+    "title": "{eventName} بدل گیا ہے۔",
+    "introBoth": "ہائے {name} ، {orgName} نے <link>{eventName}</link> کے لئے وقت اور جگہ کو اپ ڈیٹ کیا۔",
+    "introSchedule": "ہائے {name} ، {orgName} نے <link>{eventName}</link> کے لئے وقت کو اپ ڈیٹ کیا۔",
+    "introVenue": "ہائے {name} ، {orgName} نے <link>{eventName}</link> کے لئے جگہ کو اپ ڈیٹ کیا۔",
+    "newDetails": "نئی تفصیلات یہ ہیں۔",
+    "staysValid": "آپ کا ٹکٹ درست رہتا ہے۔",
+    "cta": "میرا کیلنڈر اپ ڈیٹ کریں۔"
+  },
+  "eventCancelled": {
+    "subject": "{eventName} منسوخ کر دیا گیا ہے۔",
+    "preview": "{eventName} آگے نہیں جا رہا ہے۔",
+    "title": "{eventName} منسوخ کر دیا گیا ہے۔",
+    "intro": "ہائے {name} ، {orgName} نے <strong>{eventName}</strong> کو منسوخ کر دیا ہے، جو {when} کو شیڈول کیا گیا تھا۔",
+    "noLongerValid": "آپ کا ٹکٹ اب درست نہیں ہے۔",
+    "refund": "آپ کی ادائیگی آپ کے استعمال کردہ کارڈ پر واپس کر دی جائے گی۔ اس کے گزرنے پر ایک علیحدہ ای میل کی توقع کریں۔",
+    "noPayment": "کوئی ادائیگی نہیں کی گئی تھی، لہذا واپسی کے لیے کچھ نہیں ہے۔",
+    "questions": "سوالات؟ منتظم تک پہنچنے کے لیے اس ای میل کا جواب دیں۔"
+  },
+  "eventInvite": {
+    "subject": "آپ مدعو ہیں: {eventName}",
+    "preview": "{orgName} نے آپ کو {eventName} میں مدعو کیا۔",
+    "title": "آپ مدعو ہیں۔",
+    "intro": "<strong>{orgName}</strong> آپ کو ایک نجی تقریب میں مدعو کر رہا ہے۔",
+    "cta": "ایونٹ دیکھیں اور رجسٹر کریں۔",
+    "personal": "یہ لنک آپ کے لیے ذاتی ہے۔",
+    "personalExpires": "یہ لنک آپ کے لیے ذاتی ہے اور {expires} کو ختم ہو جائے گا۔",
+    "registerWith": "اس ای میل ایڈریس کے ساتھ رجسٹر کریں۔"
+  },
+  "orgInvite": {
+    "subject": "آپ کو Evnelo پر {orgName} پر مدعو کیا گیا ہے۔",
+    "preview": "{orgName} بطور {role} شامل کریں۔",
+    "title": "شامل ہوں {orgName}",
+    "invitedBy": "{invitedBy} نے آپ کو <strong>{orgName}</strong> کے لئے <strong>{role}</strong> کے لئے ایونٹس چلانے میں مدد کے لئے مدعو کیا ہے۔",
+    "invited": "آپ کو <strong>{orgName}</strong> کے لئے <strong>{role}</strong> کے ایونٹس چلانے میں مدد کے لئے مدعو کیا گیا ہے۔",
+    "cta": "دعوت قبول کریں۔",
+    "validity": "یہ لنک 14 دنوں کے لیے درست ہے اور صرف اس ای میل ایڈریس کے ساتھ کام کرتا ہے جس پر اسے بھیجا گیا تھا۔"
+  },
+  "magicLink": {
+    "subject": "{host} میں سائن ان کریں",
+    "preview": "{host} کے لیے آپ کا سائن ان لنک",
+    "title": "سائن ان کریں۔",
+    "intro": "{host} میں سائن ان کرنے کے لیے بٹن پر کلک کریں۔",
+    "expiry": "لنک ایک بار کام کرتا ہے اور 15 منٹ میں ختم ہو جاتا ہے۔",
+    "cta": "{host} میں سائن ان کریں",
+    "ignore": "اگر آپ نے یہ نہیں پوچھا تو آپ اس ای میل کو نظر انداز کر سکتے ہیں۔",
+    "nobody": "لنک کے بغیر کوئی بھی سائن ان نہیں کر سکتا۔"
+  },
+  "waitlistJoined": {
+    "subject": "آپ {eventName} کے انتظار کی فہرست میں ہیں",
+    "preview": "انتظار کی فہرست میں آپ کا نمبر {position} ہے۔",
+    "title": "آپ انتظار کی فہرست میں ہیں۔",
+    "full": "<strong>{eventName}</strong> ابھی بھرا ہوا ہے۔",
+    "position": "آپ لائن میں نمبر <strong>{position}</strong> ہیں۔",
+    "offer": "اگر کوئی جگہ کھل جاتی ہے، تو ہم آپ کو اس کا دعوی کرنے کے لیے ایک لنک ای میل کریں گے۔ لنک 24 گھنٹے تک درست رہتا ہے۔",
+    "cta": "واقعہ دیکھیں"
+  },
+  "waitlistOffer": {
+    "subject": "ایک جگہ کھل گئی: {eventName}",
+    "preview": "{deadline} سے پہلے اپنی جگہ کا دعوی کریں۔",
+    "title": "ایک جگہ کھل گئی۔",
+    "reserved": "اچھی خبر: <strong>{ticketType}</strong> جگہ <strong>{eventName}</strong> کے لئے آپ کے لئے مخصوص ہے۔",
+    "claimBefore": "<strong>{deadline}</strong> سے پہلے اس کا دعوی کریں، اس کے بعد یہ لائن میں اگلے شخص کے پاس جاتا ہے۔",
+    "cta": "میری جگہ کا دعوی کریں۔",
+    "registerWith": "اس ای میل ایڈریس کے ساتھ رجسٹر کریں۔",
+    "personal": "لنک آپ کا ذاتی ہے۔"
+  },
+  "abuseReport": {
+    "subject": "[رپورٹ] {reason}: {eventName}",
+    "preview": "کسی نے اطلاع دی {eventName}",
+    "title": "واقعہ کی اطلاع دی گئی۔",
+    "intro": "<strong>{eventName}</strong> بذریعہ {orgName} اطلاع دی گئی <strong>{reason}</strong> کے لئے۔",
+    "reporter": "رپورٹر: {email}",
+    "noReporter": "رپورٹر نے کوئی ای میل نہیں چھوڑی۔",
+    "cta": "ایونٹ کھولیں۔"
+  },
+  "sms": {
+    "confirmation": "آپ {event} میں ہیں۔ آپ کا ٹکٹ: {ticketUrl}",
+    "reminder": "{event} ہے {when} ٹکٹ: {ticketUrl}",
+    "updated": "{event} نے اپنا وقت یا مقام تبدیل کر دیا ہے۔ تفصیلات: {url}",
+    "cancelled": "{event} منسوخ کر دیا گیا ہے۔ کوئی بھی ادائیگی واپس کر دی جائے گی۔"
+  }
+}

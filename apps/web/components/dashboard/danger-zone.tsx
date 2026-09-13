@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,15 +10,16 @@ import { SectionTray } from "@/components/dashboard/page-chrome";
 import { deleteOrganizationAction } from "@/app/dashboard/actions";
 
 export function DangerZone({ slug, isOwner }: { slug: string; isOwner: boolean }) {
+  const t = useTranslations("dashboard");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string>();
   const [pending, start] = useTransition();
   return (
     <SectionTray
       tone="destructive"
-      title="Data and deletion"
-      description="Download everything this organization owns as JSON — events, orders, attendees, check-ins, settings, no secrets. Deleting the organization cancels its events, revokes every ticket, erases all attendee personal data and disables API keys and webhooks. It cannot be undone."
-      actions={<Button asChild variant="outline"><a href="/dashboard/settings/export"><Download className="size-4" /> Download all data</a></Button>}
+      title={t("settings.danger.title")}
+      description={t("settings.danger.description")}
+      actions={<Button asChild variant="outline"><a href="/dashboard/settings/export"><Download className="size-4" /> {t("settings.danger.download")}</a></Button>}
     >
       {isOwner ? (
         <form
@@ -25,12 +27,12 @@ export function DangerZone({ slug, isOwner }: { slug: string; isOwner: boolean }
           action={(fd) => start(async () => { const r = await deleteOrganizationAction(fd); if (r && !r.ok) setError(r.error); })}
         >
           <div className="min-w-56 flex-1">
-            <Field label={`Type ${slug} to confirm`} htmlFor="del-confirm"><Input id="del-confirm" name="confirm" value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="off" placeholder={slug} /></Field>
+            <Field label={t("settings.danger.confirmLabel", { slug })} htmlFor="del-confirm"><Input id="del-confirm" name="confirm" value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="off" placeholder={slug} /></Field>
           </div>
-          <Button type="submit" variant="destructive" pending={pending} disabled={confirm !== slug}>Delete organization</Button>
+          <Button type="submit" variant="destructive" pending={pending} disabled={confirm !== slug}>{t("settings.danger.delete")}</Button>
         </form>
       ) : (
-        <p className="text-sm text-muted-foreground">Only the owner can delete this organization.</p>
+        <p className="text-sm text-muted-foreground">{t("settings.danger.ownerOnly")}</p>
       )}
       <div className="mt-3"><FormMessage error={error} /></div>
     </SectionTray>

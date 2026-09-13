@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "Được gửi bởi {orgName} thông qua <link>Evnelo</link>. Đây là tin nhắn giao dịch về một sự kiện mà bạn đã đăng ký.",
+    "when": "Khi",
+    "where": "Ở đâu",
+    "online": "Trực tuyến",
+    "joinOnline": "Tham gia trực tuyến →",
+    "admitOne": "Hãy thừa nhận một người",
+    "ticketTypeGuestOf": "{ticketType}, khách của {host}",
+    "openTicket": "Vé mở",
+    "qrAlt": "Mã QR vé",
+    "scanAtDoor": "Quét mã tại cửa"
+  },
+  "reminderWhen": {
+    "tomorrow": "Ngày mai",
+    "days": "TRONG {count, plural, one {# ngày} other {# ngày}}",
+    "hours": "TRONG {count, plural, one {# giờ} other {# giờ}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {Vé của bạn cho {eventName}} other {Vé của bạn cho {eventName} là # vé.}}",
+    "preview": "Bạn sắp phải đối mặt với {eventName}. {count, plural, one {Vé của bạn là} other {Vé của bạn là}} bên trong.",
+    "title": "Bạn đã được chấp nhận.",
+    "intro": "{count, plural, one {Đây là vé của bạn<link>{eventName}</link>.} other {Đây là # vé của bạn cho<link>{eventName}</link>.}}",
+    "showQr": "Hãy hiển thị mã QR tại cửa, trên điện thoại hoặc bản in.",
+    "addToCalendar": "Thêm vào lịch",
+    "questions": "Bạn có thắc mắc gì về sự kiện? Vui lòng trả lời email này để liên hệ với {orgName}.",
+    "cta": "Xem chi tiết sự kiện"
+  },
+  "approvalPending": {
+    "subject": "Yêu cầu đã được nhận cho {eventName}",
+    "preview": "{orgName} đang xem xét yêu cầu tham gia {eventName} của bạn.",
+    "title": "Yêu cầu đã được nhận",
+    "intro": "Chào {name}, {orgName} xem xét mọi đăng ký cho <link>{eventName}</link>.",
+    "partySize": "Yêu cầu của bạn bao gồm {count} người.",
+    "approved": "{count, plural, one {Bạn sẽ nhận được vé qua email ngay sau khi yêu cầu được chấp thuận.} other {Bạn sẽ nhận được vé qua email ngay sau khi yêu cầu được duyệt.}}",
+    "nothingToDo": "Hiện tại chưa có việc gì cần làm. Nếu kế hoạch của bạn thay đổi, hãy bỏ qua email này."
+  },
+  "registrationRejected": {
+    "subject": "Thông tin cập nhật về yêu cầu của bạn cho {eventName}",
+    "preview": "{orgName} không thể phê duyệt đăng ký của bạn cho {eventName}.",
+    "title": "Chúng tôi không thể sắp xếp chỗ cho bạn.",
+    "intro": "Chào {name}, {orgName} không thể phê duyệt đăng ký của bạn cho <link>{eventName}</link>.",
+    "refund": "Mọi khoản thanh toán sẽ được hoàn trả vào thẻ của bạn.",
+    "noPayment": "Không có khoản thanh toán nào được thực hiện.",
+    "questions": "Có thắc mắc gì? Vui lòng trả lời email này để liên hệ với người tổ chức."
+  },
+  "refundIssued": {
+    "subject": "Hoàn tiền {amount} cho {eventName}",
+    "preview": "{amount} đang được hoàn trả vào thẻ của bạn.",
+    "title": "Đã hoàn tiền.",
+    "intro": "Chào {name}, {orgName} đã hoàn tiền <strong>{amount}</strong> cho đơn hàng của bạn tới <link>{eventName}</link>.",
+    "cancelled": "{count, plural, one {Vé của bạn đã bị hủy và không thể quét được nữa.} other {Tất cả vé # trong đơn hàng đều bị hủy và sẽ không thể quét được nữa.}}",
+    "timing": "Tiền hoàn trả thường sẽ được chuyển vào thẻ của bạn trong vòng 5 đến 10 ngày làm việc, tùy thuộc vào ngân hàng của bạn.",
+    "receipt": "Email này là biên lai của bạn."
+  },
+  "eventReminder": {
+    "subject": "{eventName} là {when}",
+    "preview": "{eventName} là {when}. {where}.",
+    "title": "{eventName} là {when}",
+    "tickets": "{count, plural, one {Vé của bạn, sẵn sàng để quét:} other {Vé của bạn đã sẵn sàng để quét:}}",
+    "cta": "Thông tin chi tiết và hướng dẫn về sự kiện",
+    "stopPrompt": "Bạn không muốn nhận lời nhắc cho sự kiện này? <link>Dừng lời nhắc</link>.",
+    "stillGetThrough": "Các xác nhận và thay đổi vẫn được thực hiện thành công."
+  },
+  "eventUpdated": {
+    "subjectBoth": "Thời gian và địa điểm mới cho {eventName}",
+    "subjectSchedule": "Thời gian mới cho {eventName}",
+    "subjectVenue": "Địa điểm mới cho {eventName}",
+    "previewBoth": "{eventName} đã thay đổi thời gian và địa điểm.",
+    "previewSchedule": "{eventName} đã thay đổi thời gian.",
+    "previewVenue": "{eventName} đã thay đổi địa điểm.",
+    "title": "{eventName} đã thay đổi",
+    "introBoth": "Chào {name}, {orgName} đã cập nhật thời gian và địa điểm cho <link>{eventName}</link>.",
+    "introSchedule": "Chào {name}, {orgName} đã cập nhật thời gian cho <link>{eventName}</link>.",
+    "introVenue": "Chào {name}, {orgName} đã cập nhật địa điểm cho <link>{eventName}</link>.",
+    "newDetails": "Dưới đây là thông tin chi tiết mới.",
+    "staysValid": "Vé của bạn vẫn còn hiệu lực.",
+    "cta": "Cập nhật lịch của tôi"
+  },
+  "eventCancelled": {
+    "subject": "{eventName} đã bị hủy bỏ",
+    "preview": "{eventName} sẽ không được tiến hành.",
+    "title": "{eventName} đã bị hủy",
+    "intro": "Chào {name}, {orgName} đã hủy <strong>{eventName}</strong>, chuyến bay dự kiến diễn ra vào {when}.",
+    "noLongerValid": "Vé của bạn không còn hiệu lực.",
+    "refund": "Khoản thanh toán của bạn sẽ được hoàn trả vào thẻ bạn đã sử dụng; bạn sẽ nhận được một email riêng khi giao dịch hoàn tất.",
+    "noPayment": "Chưa có khoản thanh toán nào được thực hiện, vì vậy không có gì để hoàn trả.",
+    "questions": "Có thắc mắc gì? Vui lòng trả lời email này để liên hệ với người tổ chức."
+  },
+  "eventInvite": {
+    "subject": "Bạn được mời: {eventName}",
+    "preview": "{orgName} đã mời bạn đến {eventName}.",
+    "title": "Bạn được mời",
+    "intro": "<strong>{orgName}</strong> trân trọng mời bạn tham dự một sự kiện riêng tư.",
+    "cta": "Xem sự kiện và đăng ký",
+    "personal": "Liên kết này chỉ dành riêng cho bạn.",
+    "personalExpires": "Liên kết này chỉ dành riêng cho bạn và sẽ hết hạn vào {expires}.",
+    "registerWith": "Đăng ký bằng địa chỉ email này."
+  },
+  "orgInvite": {
+    "subject": "Bạn được mời tham gia {orgName} trên Evnelo",
+    "preview": "Tham gia {orgName} với tư cách là {role}.",
+    "title": "Tham gia {orgName}",
+    "invitedBy": "{invitedBy} đã mời bạn giúp tổ chức các sự kiện cho <strong>{orgName}</strong> với tư cách là <strong>{role}</strong>.",
+    "invited": "Bạn được mời tham gia hỗ trợ tổ chức các sự kiện cho <strong>{orgName}</strong> với tư cách là <strong>{role}</strong>.",
+    "cta": "Chấp nhận lời mời",
+    "validity": "Liên kết này có hiệu lực trong 14 ngày và chỉ hoạt động với địa chỉ email mà nó được gửi đến."
+  },
+  "magicLink": {
+    "subject": "Đăng nhập vào {host}",
+    "preview": "Liên kết đăng nhập của bạn cho {host}",
+    "title": "Đăng nhập",
+    "intro": "Nhấp vào nút để đăng nhập vào {host}.",
+    "expiry": "Liên kết này chỉ hoạt động một lần và sẽ hết hạn sau 15 phút.",
+    "cta": "Đăng nhập vào {host}",
+    "ignore": "Nếu bạn không yêu cầu nhận email này, bạn có thể bỏ qua nó.",
+    "nobody": "Không ai có thể đăng nhập nếu không có liên kết."
+  },
+  "waitlistJoined": {
+    "subject": "Bạn đang trong danh sách chờ cho {eventName}",
+    "preview": "Bạn là người thứ {position} trong danh sách chờ.",
+    "title": "Bạn đang trong danh sách chờ.",
+    "full": "<strong>{eventName}</strong> hiện đã đầy.",
+    "position": "Bạn là người thứ <strong>{position}</strong> trong hàng.",
+    "offer": "Nếu có chỗ trống, chúng tôi sẽ gửi email cho bạn một đường dẫn để đăng ký; đường dẫn này có hiệu lực trong 24 giờ.",
+    "cta": "Xem sự kiện"
+  },
+  "waitlistOffer": {
+    "subject": "Một vị trí trống đã được mở ra: {eventName}",
+    "preview": "Đăng ký giữ chỗ trước ngày {deadline}.",
+    "title": "Một vị trí đã trống.",
+    "reserved": "Tin vui: Một chỗ <strong>{ticketType}</strong> cho <strong>{eventName}</strong> đã được dành riêng cho bạn.",
+    "claimBefore": "Hãy nhận trước <strong>{deadline}</strong>, sau đó nó sẽ thuộc về người tiếp theo trong danh sách.",
+    "cta": "Tôi sẽ giành lấy vị trí của mình.",
+    "registerWith": "Đăng ký bằng địa chỉ email này.",
+    "personal": "Liên kết này chỉ dành riêng cho bạn."
+  },
+  "abuseReport": {
+    "subject": "[Báo cáo] {reason}: {eventName}",
+    "preview": "Ai đó đã báo cáo {eventName}.",
+    "title": "Sự kiện đã được báo cáo",
+    "intro": "<strong>{eventName}</strong> bởi {orgName} đã được báo cáo cho <strong>{reason}</strong>.",
+    "reporter": "Phóng viên: {email}",
+    "noReporter": "Phóng viên không để lại địa chỉ email.",
+    "cta": "Khai mạc sự kiện"
+  },
+  "sms": {
+    "confirmation": "Bạn sẽ được vào cửa với giá {event}. Vé của bạn: {ticketUrl}",
+    "reminder": "{event} là {when}. Vé: {ticketUrl}",
+    "updated": "{event} đã thay đổi thời gian hoặc địa điểm. Chi tiết: {url}",
+    "cancelled": "{event} đã bị hủy. Mọi khoản thanh toán sẽ được hoàn trả."
+  }
+}

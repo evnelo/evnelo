@@ -110,10 +110,10 @@ export function Metric({ label, value, sub, className }: { label: React.ReactNod
   );
 }
 
-/** Month over day, like a tear-off desk calendar. Rendered in the event's own time zone. */
-export function DateLeaf({ date, timezone, className }: { date: Date; timezone: string; className?: string }) {
-  const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: timezone }).format(date).toUpperCase();
-  const day = new Intl.DateTimeFormat("en-US", { day: "numeric", timeZone: timezone }).format(date);
+/** Month over day, like a tear-off desk calendar. Rendered in the event's own time zone and the viewer's locale. */
+export function DateLeaf({ date, timezone, locale, className }: { date: Date; timezone: string; locale: string; className?: string }) {
+  const month = new Intl.DateTimeFormat(locale, { month: "short", timeZone: timezone }).format(date).toLocaleUpperCase(locale);
+  const day = new Intl.DateTimeFormat(locale, { day: "numeric", timeZone: timezone }).format(date);
   return (
     <div className={cn("date-leaf", className)} aria-hidden>
       <span>{month}</span>

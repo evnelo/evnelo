@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "title": "Armaturenbrett",
+    "checkin": "Einchecken"
+  },
+  "shell": {
+    "organization": "Organisation",
+    "switchOrganization": "Switch-Organisation"
+  },
+  "nav": {
+    "events": "Veranstaltungen",
+    "checkin": "Einchecken",
+    "settings": "Einstellungen"
+  },
+  "status": {
+    "event": {
+      "draft": "Entwurf",
+      "published": "veröffentlicht",
+      "cancelled": "abgesagt",
+      "ended": "Ende"
+    },
+    "attendee": {
+      "confirmed": "bestätigt",
+      "pending_approval": "vorbehaltlich der Genehmigung",
+      "waitlisted": "auf der Warteliste",
+      "rejected": "abgelehnt",
+      "cancelled": "abgesagt"
+    },
+    "order": {
+      "pending": "ausstehend",
+      "processing": "Verarbeitung",
+      "paid": "bezahlt",
+      "free": "frei",
+      "refunded": "erstattet",
+      "partially_refunded": "teilweise erstattet",
+      "failed": "fehlgeschlagen",
+      "expired": "Abgelaufen"
+    },
+    "delivery": {
+      "delivered": "geliefert",
+      "retrying": "erneuter Versuch",
+      "pending": "ausstehend",
+      "failed": "fehlgeschlagen"
+    }
+  },
+  "noAccess": {
+    "title": "Kein Zugriff",
+    "description": "Rollen legen fest, welche Bereiche jede Person in einer Organisation eröffnen kann.",
+    "empty": {
+      "title": "Dieses Gebiet steht Ihnen nicht zur Verfügung.",
+      "description": "Ihre Rolle in dieser Organisation erlaubt das nicht. Bitten Sie einen Inhaber oder Administrator, dies zu ändern."
+    }
+  },
+  "events": {
+    "title": "Veranstaltungen",
+    "description": "Alles läuft rund {org}, Anmeldungen, Einnahmen und Besucherzahlen sind auf einen Blick ersichtlich.",
+    "newEvent": "Neues Ereignis",
+    "groups": {
+      "upcoming": "Demnächst",
+      "drafts": "Entwürfe",
+      "past": "Vergangenheit"
+    },
+    "empty": {
+      "title": "Noch keine Veranstaltungen",
+      "description": "Ihr erstes Event bleibt ein Entwurf, bis Sie es veröffentlichen, daher besteht keine Eile, alles perfekt zu machen.",
+      "action": "Erstelle dein erstes Event"
+    },
+    "row": {
+      "online": "Online",
+      "inPerson": "Persönlich",
+      "registered": "Eingetragen",
+      "pending": "{count} ausstehend",
+      "revenue": "Einnahmen",
+      "checkedIn": "Eingecheckt"
+    }
+  },
+  "checkin": {
+    "title": "Einchecken",
+    "description": "{org}. Öffnen Sie eine Veranstaltung auf dem Telefon an der Tür; Scannen erfordert Kamerazugriff.",
+    "in": "In",
+    "empty": {
+      "title": "Heute gibt es nichts zu scannen",
+      "description": "Veröffentlichte Veranstaltungen erscheinen hier vom Moment ihrer Veröffentlichung bis einen Tag nach ihrem Ende."
+    },
+    "event": {
+      "allCheckin": "Alle Check-in",
+      "eventDashboard": "Event-Dashboard"
+    }
+  },
+  "event": {
+    "allEvents": "Alle Veranstaltungen",
+    "viewPage": "Seite anzeigen",
+    "nav": {
+      "overview": "Überblick",
+      "tickets": "Tickets",
+      "form": "Bilden",
+      "invites": "Einladungen",
+      "attendees": "Teilnehmer",
+      "waitlist": "Warteliste",
+      "orders": "Bestellungen",
+      "checkin": "Einchecken"
+    },
+    "new": {
+      "title": "Neues Ereignis",
+      "description": "Als Entwurf gespeichert. Fügen Sie Tickets und Fragen hinzu und veröffentlichen Sie den Beitrag, sobald er fertig ist."
+    },
+    "overview": {
+      "stats": {
+        "registered": "Eingetragen",
+        "awaitingApproval": "{count} warten auf Genehmigung",
+        "confirmedAndApproved": "bestätigt und genehmigt",
+        "revenue": "Einnahmen",
+        "afterRefunds": "nach Rückerstattungen",
+        "checkedIn": "Eingecheckt",
+        "percentOfRegistrations": "{percent} % der Registrierungen",
+        "nobodyYet": "Noch niemand an der Tür",
+        "capacity": "Kapazität",
+        "seatsLeft": "{count} Plätze frei",
+        "unlimitedSeats": "unbegrenzte Sitzplätze"
+      },
+      "registrationsByDay": "Anmeldungen pro Tag",
+      "noRegistrations": {
+        "title": "Noch keine Anmeldungen",
+        "description": "Die Kurve beginnt in dem Moment, in dem sich die erste Person anmeldet."
+      },
+      "tickets": "Tickets",
+      "manage": "Verwalten",
+      "noTickets": {
+        "title": "Noch keine Ticketarten verfügbar",
+        "description": "Veröffentlichung ohne Angabe eines Grundes generiert für Sie eine kostenlose Eintrittskarte.",
+        "action": "Fügen Sie einen Tickettyp hinzu"
+      },
+      "ticketSales": "{hasQuantity, select, true {{sold} / {quantity} verkauft} other {{sold} verkauft}}{held, plural, =0 {} other {, # gehalten}}",
+      "eventPage": "Veranstaltungsseite",
+      "visibility": {
+        "public": "Öffentlich: auf Discover gelistet und indexiert.",
+        "unlisted": "Nicht gelistet: Jeder, der den Link hat.",
+        "private": "Privat: Nur auf Einladung."
+      },
+      "actions": "Aktionen",
+      "publish": "Veranstaltung veröffentlichen",
+      "unpublish": "Veröffentlichung aufheben, zurück zum Entwurf",
+      "statusNote": {
+        "draft": "Nur Sie können dieses Ereignis sehen, bis es veröffentlicht wird.",
+        "published": "Live. Durch das Aufheben der Veröffentlichung wird die Seite ausgeblendet; bereits erfolgte Anmeldungen bleiben erhalten.",
+        "cancelled": "Diese Veranstaltung wurde abgesagt."
+      },
+      "irreversible": "Irreversibel",
+      "cancelEvent": "Veranstaltung absagen",
+      "cancelConfirm": "Diese Veranstaltung absagen? Jeder angemeldete Teilnehmer erhält eine Stornierungs-E-Mail (und gegebenenfalls eine SMS). Bezahlte Bestellungen müssen weiterhin über den Reiter „Bestellungen“ erstattet werden.",
+      "deleteEvent": "Löschereignis",
+      "deleteConfirm": "Diese Veranstaltung löschen? Sie verschwindet aus dem Dashboard. Die Teilnehmerdaten bleiben erhalten."
+    },
+    "attendees": {
+      "exportCsv": "CSV exportieren",
+      "searchPlaceholder": "Name, E-Mail-Adresse oder Telefonnummer suchen",
+      "filter": "Filter",
+      "allOption": "Alle ( {count} )",
+      "statusOption": "{label} ( {count} )",
+      "pendingNote": "{count, plural, one {# Registrierung} other {# Anmeldungen}} Wir warten auf Ihre Genehmigung.",
+      "review": "Rezension",
+      "columns": {
+        "ticket": "Ticket",
+        "registered": "Eingetragen",
+        "files": "Dateien",
+        "actions": "Aktionen"
+      },
+      "empty": {
+        "noMatch": {
+          "title": "Keine Teilnehmer übereinstimmen",
+          "description": "Versuchen Sie eine andere Suche oder löschen Sie den Statusfilter."
+        },
+        "none": {
+          "title": "Bisher hat sich noch niemand registriert.",
+          "description": "Die Registrierungen landen hier, sobald sich jemand anmeldet."
+        }
+      },
+      "guestOf": "Gast von {name}",
+      "sms": "SMS",
+      "paymentPending": "Zahlung ausstehend",
+      "approve": "Genehmigen",
+      "reject": "Ablehnen",
+      "ticket": "Ticket",
+      "cancelConfirm": "Die Registrierung von {name} stornieren? Das Ticket verliert seine Gültigkeit und der Sitzplatz wird freigegeben. Es wird keine E-Mail versendet.",
+      "export": "Export",
+      "erase": "Löschen",
+      "eraseConfirm": "Die persönlichen Daten von {name} löschen? Name, E-Mail-Adresse, Telefonnummer und Antworten werden durch Platzhalter ersetzt, das Ticket wird storniert und alle E-Mails in der Warteschlange werden gelöscht. Dies kann nicht rückgängig gemacht werden."
+    },
+    "orders": {
+      "collected": "<strong>{amount}</strong> gesammelt, netto nach Rückerstattungen",
+      "count": "{count, plural, one {# Bestellung} other {# Bestellungen}}",
+      "columns": {
+        "order": "Befehl",
+        "items": "Artikel",
+        "total": "Gesamt",
+        "placed": "Platziert",
+        "actions": "Aktionen"
+      },
+      "empty": {
+        "title": "Noch keine Bestellungen",
+        "description": "Jede Registrierung, ob kostenlos oder kostenpflichtig, wird hier zusammen mit den gesammelten Daten angezeigt."
+      },
+      "people": "{count, plural, one {# Person} other {# Personen}}",
+      "refunded": "{amount} erstattet"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "description": "Wie Ihre Organisation in der Öffentlichkeit wahrgenommen wird, wer darin arbeiten kann und wie andere Systeme mit ihr kommunizieren.",
+    "tabs": {
+      "organization": "Organisation",
+      "members": "Mitglieder",
+      "developer": "Entwickler",
+      "payments": "Zahlungen"
+    },
+    "organization": {
+      "title": "Organisation",
+      "description": "Name, öffentliche URL, Logo und die Akzentfarbe, die in E-Mails und auf Ticketseiten verwendet wird.",
+      "publicUrl": "Öffentliche URL",
+      "publicUrlHelp": "/o/… Kleinbuchstaben, Zahlen, Bindestriche.",
+      "website": "Webseite",
+      "websiteHelp": "Geben Sie example.com ein und wir fügen https:// automatisch hinzu.",
+      "logo": "Logo",
+      "logoHelp": "Wird auf Veranstaltungsseiten und in E-Mails angezeigt.",
+      "accentColour": "Akzentfarbe",
+      "accentColourHelp": "Schaltflächen in E-Mails und auf Ticketseiten.",
+      "pickColour": "Farbe auswählen",
+      "serviceFee": "Servicegebühr",
+      "serviceFeeHelp": "Standardeinstellung für neue Veranstaltungen: Die Plattformgebühr wird dem Käufer als Einzelposten in Rechnung gestellt oder von ihm übernommen.",
+      "buyerPaysFee": "Der Käufer zahlt die Servicegebühr.",
+      "socialLinks": "Soziale Verbindungen",
+      "platform": "Plattform",
+      "url": "URL",
+      "addLink": "Link hinzufügen",
+      "save": "Organisation retten"
+    },
+    "members": {
+      "title": "Mitglieder",
+      "description": "Eigentümer und Administratoren verwalten die Organisation; Mitglieder erstellen und führen Veranstaltungen durch; das Check-in-Personal kann nur Tickets scannen.",
+      "roles": {
+        "owner": "Eigentümer",
+        "admin": "Administrator",
+        "member": "Mitglied",
+        "checkin": "Check-in-Personal"
+      },
+      "columns": {
+        "member": "Mitglied",
+        "role": "Rolle",
+        "since": "Seit"
+      },
+      "removeConfirm": "Soll {email} aus der Organisation entfernt werden?",
+      "invited": "Eingeladen · läuft ab {date}",
+      "revoke": "Widerrufen",
+      "emailPlaceholder": "teammate@example.com",
+      "sendInvite": "Einladung senden"
+    },
+    "developer": {
+      "apiKeys": {
+        "title": "API-Schlüssel",
+        "description": "Server-zu-Server-Zugriff auf die Veranstaltungen, Bestellungen und Teilnehmer dieser Organisation.",
+        "note": "Schlüssel rufen die <docs>-API dieser Organisation auf. Senden Sie sie als</docs>. Lesen Sie die <code>und rufen Sie Schlüssel</code>; schreiben Sie Schlüssel {header} erstellen Sie diese.",
+        "newKey": "Kopieren Sie jetzt Ihren neuen Schlüssel. Er wird nicht erneut angezeigt.",
+        "saved": "Ich habe es gespeichert",
+        "columns": {
+          "key": "Schlüssel",
+          "scopes": "Zielfernrohre",
+          "lastUsed": "Zuletzt verwendet"
+        },
+        "never": "niemals",
+        "empty": {
+          "title": "Noch keine API-Schlüssel",
+          "description": "Erstellen Sie für jede Integration eine separate Schnittstelle, damit Sie ein einzelnes Tool deaktivieren können, ohne die übrigen zu beeinträchtigen."
+        },
+        "revoked": "widerrufen",
+        "revokeConfirm": "Widerrufen \" {name} \"? Anfragen damit funktionieren sofort nicht mehr.",
+        "revoke": "Widerrufen",
+        "namePlaceholder": "Schlüsselname, z. B. Zapier",
+        "nameLabel": "Schlüsselname",
+        "scopeRead": "lesen",
+        "scopeWrite": "schreiben",
+        "create": "Schlüssel erstellen"
+      },
+      "webhooks": {
+        "title": "Webhooks",
+        "description": "Immer wenn hier etwas passiert, wird ein signierter JSON-POST-Request an Ihren eigenen Endpunkt gesendet.",
+        "note": "Wir senden einen JSON-Envelope an Ihre URL für die von Ihnen ausgewählten Ereignisse. Dieser Envelope ist mit HMAC-SHA256 ( <code>{signature}</code> über <code>{template}</code> ) signiert. Fehlgeschlagene Zustellungen werden mit einer Wartezeit von etwa einem Tag wiederholt.",
+        "addWebhook": "Webhook hinzufügen",
+        "count": "{count, plural, one {# Endpunkt} other {# Endpunkte}}",
+        "signingSecret": "Geheimschrift",
+        "copyPrompt": "Kopiere dieses Geheimnis",
+        "endpointUrl": "Endpunkt-URL",
+        "endpointUrlHelp": "Nur HTTPS (http://localhost ist für Entwicklungszwecke zulässig).",
+        "events": "Veranstaltungen",
+        "create": "Webhook erstellen",
+        "columns": {
+          "endpoint": "Endpunkt",
+          "events": "Veranstaltungen"
+        },
+        "empty": {
+          "title": "Noch keine Webhooks",
+          "description": "Richten Sie Ihren Blick auf Ihren eigenen Service, um ein CRM-System, einen Slack-Kanal oder eine Tabellenkalkulation synchron zu halten."
+        },
+        "hideDeliveries": "Lieferungen ausblenden",
+        "recentDeliveries": "Aktuelle Lieferungen ( {count} )",
+        "nothingDelivered": "Es wurde noch nichts geliefert.",
+        "attempts": "{count, plural, one {# Versuche} other {# Versuche}}{hasStatus, select, true {, letzte {status}} other {}}",
+        "allEvents": "Alle Veranstaltungen",
+        "active": "aktiv",
+        "paused": "pausiert",
+        "sendTest": "Test senden",
+        "pause": "Pause",
+        "resume": "Wieder aufnehmen",
+        "rotateConfirm": "Das Signaturgeheimnis ändern? Das alte funktioniert sofort nicht mehr.",
+        "rotateSecret": "Geheimnis drehen",
+        "deleteConfirm": "Diesen Webhook löschen?"
+      }
+    },
+    "payments": {
+      "title": "Zahlungen",
+      "descriptionCloud": "Bezahlte Tickets werden direkt Ihrem Stripe-Konto gutgeschrieben.",
+      "descriptionSelfHosted": "Diese Instanz wickelt die Transaktionen über die vom Betreiber konfigurierten Stripe-Schlüssel ab.",
+      "connected": "Stripe-Konto {id} verbunden.",
+      "connectPrompt": "Verbinden Sie Ihr Stripe-Konto, um kostenpflichtige Tickets zu verkaufen. Dies ist im Rahmen des Connect-Onboarding-Prozesses enthalten.",
+      "configured": "Stripe ist konfiguriert. Bezahlte Tickets werden über das Stripe-Konto der Instanz ohne Plattformgebühr abgerechnet.",
+      "notConfigured": "Stripe ist auf dieser Instanz nicht konfiguriert, daher können nur kostenlose Tickets verkauft werden. Um Zahlungen zu aktivieren, müssen Sie die Schlüssel STRIPE_SECRET_KEY und STRIPE_PUBLISHABLE_KEY festlegen."
+    },
+    "danger": {
+      "title": "Daten und Löschung",
+      "description": "Laden Sie alle Daten dieser Organisation im JSON-Format herunter – Veranstaltungen, Bestellungen, Teilnehmer, Check-ins, Einstellungen (keine vertraulichen Daten). Durch das Löschen der Organisation werden alle Veranstaltungen abgebrochen, alle Tickets widerrufen, alle personenbezogenen Daten der Teilnehmer gelöscht und API-Schlüssel sowie Webhooks deaktiviert. Dieser Vorgang kann nicht rückgängig gemacht werden.",
+      "download": "Alle Daten herunterladen",
+      "confirmLabel": "Geben Sie {slug} ein, um zu bestätigen",
+      "delete": "Organisation löschen",
+      "ownerOnly": "Nur der Inhaber kann diese Organisation löschen."
+    }
+  },
+  "imageUpload": {
+    "uploadFailed": "Upload fehlgeschlagen.",
+    "bucketRejected": "Der Speicher-Bucket hat den Upload abgelehnt. Überprüfen Sie die CORS- und Richtlinieneinstellungen.",
+    "connectionFailed": "Der Upload ist fehlgeschlagen. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+    "noImage": "Noch kein Bild vorhanden",
+    "uploading": "Wird hochgeladen…",
+    "replace": "Ersetzen",
+    "replaceImage": "Bild ersetzen",
+    "upload": "Hochladen",
+    "uploadImage": "Bild hochladen",
+    "urlPlaceholder": "https://… (Für Bild-Uploads muss S3 konfiguriert sein)",
+    "urlLabel": "{label} URL",
+    "formats": "JPEG, PNG oder WebP · max. 5 MB"
+  },
+  "imageCrop": {
+    "openFailed": "Das Bild konnte nicht geöffnet werden.",
+    "renderFailed": "Dieser Browser konnte den Ausschnitt nicht darstellen. Laden Sie stattdessen das Bild unverändert hoch.",
+    "dialogLabel": "Rahmen Sie das Titelbild ein",
+    "title": "Rahmen Sie das Cover ein",
+    "description": "Zum Positionieren ziehen und zum Ausfüllen zoomen. Gespeichert im Seitenverhältnis 16:7, dem Seitenverhältnis, das Veranstaltungsseiten verwenden.",
+    "zoom": "Zoom",
+    "use": "Verwenden Sie diese Ernte"
+  },
+  "address": {
+    "unavailable": "Die Adresssuche ist vorübergehend nicht verfügbar.",
+    "placeholder": "Beginnen Sie mit der Eingabe einer Adresse"
+  },
+  "linkTabs": {
+    "label": "Abschnitte"
+  },
+  "actions": {
+    "genericError": "Etwas ist schiefgelaufen.",
+    "formIssue": "{path}: {message}",
+    "formPath": "bilden",
+    "checkForm": "Überprüfen Sie das Formular.",
+    "saved": "Gespeichert.",
+    "savedNotified": "Gespeichert. Die Teilnehmer werden über den neuen Zeitpunkt bzw. Ort informiert.",
+    "deletePublished": "Die Veranstaltung muss vor dem Löschen abgesagt oder die Veröffentlichung aufgehoben werden.",
+    "addressRateLimited": "Zu viele Adresssuchen. Bitte warten Sie einen Moment und versuchen Sie es erneut.",
+    "addressUnavailable": "Die Adresssuche ist vorübergehend nicht verfügbar.",
+    "formSaved": "Formular gespeichert.",
+    "refund": {
+      "noPayment": "Für diese Bestellung gibt es keine Zahlung, die erstattet werden muss.",
+      "nothingToRefund": "Bestellung ist {status}; es gibt nichts zu erstatten.",
+      "requested": "Rückerstattung beantragt. Die Bestellung wird aktualisiert, sobald Stripe die Rückerstattung bestätigt hat."
+    },
+    "invitationSent": "Einladung an {email} gesendet.",
+    "apiKeyCreated": "Schlüssel erstellt. Kopieren Sie ihn jetzt; er wird nicht erneut angezeigt.",
+    "unknownError": "unbekannter Fehler",
+    "eventInvite": {
+      "emailFailed": "Die Einladung wurde erstellt, aber die E-Mail konnte nicht versendet werden ( {reason} ). Teilen Sie den Link selbst.",
+      "emailed": "Einladung per E-Mail an {email} gesendet.",
+      "linkCreated": "Einladungslink erstellt."
+    },
+    "waitlist": {
+      "notFound": "Dieser Eintrag existiert nicht mehr.",
+      "alreadyOffered": "Für diese Person liegt bereits ein offenes Angebot vor.",
+      "registered": "Diese Person ist bereits registriert.",
+      "noRoom": "Für diese Ticketart sind keine Plätze mehr frei (oder die Veranstaltung ist ausgebucht). Zuerst ein kostenloser Platz.",
+      "emailFailed": "Platz reserviert bis {deadline}, aber die E-Mail konnte nicht gesendet werden ( {reason} ). Senden Sie ihnen diesen Link: {url}",
+      "offered": "Das Angebot wurde per E-Mail an {email} gesendet; der Platz ist bis zum {deadline} reserviert."
+    },
+    "discountCreated": "Code {code} erstellt.",
+    "webhook": {
+      "created": "Webhook erstellt. Kopieren Sie jetzt das Signaturgeheimnis; es wird nur einmal angezeigt.",
+      "notFound": "Webhook nicht gefunden.",
+      "rotated": "Neues Signaturgeheimnis. Aktualisieren Sie Ihren Receiver; das alte Geheimnis funktioniert nicht mehr.",
+      "testQueued": "Die Testzustellung ist in der Warteschlange; sie wird in etwa 10 Sekunden versendet. Bitte überprüfen Sie die Zustellliste."
+    },
+    "deleteOrg": {
+      "ownerOnly": "Nur ein Inhaber kann die Organisation löschen.",
+      "confirmSlug": "Geben Sie die Organisations-URL ( {slug} ) zur Bestätigung ein."
+    }
+  }
+}

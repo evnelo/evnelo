@@ -1,10 +1,11 @@
 import { captureError } from "@/lib/observability";
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 import { and, eq, inArray, isNull, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { attendees, events, orders, orderItems, organizations, registrationFields, ticketTypes } from "@evnelo/db";
 import { buildAnswersSchema, computeOrder, currentEdition, newId } from "@evnelo/core";
-import { capacityAllows, consumeDiscountCode, consumeEventInvite, consumeWaitlistOffer, discountProblem, discountProblemMessage, findDiscountCode, toDiscount } from "@evnelo/core/services";
+import { capacityAllows, consumeDiscountCode, consumeEventInvite, consumeWaitlistOffer, discountProblem, findDiscountCode, toDiscount } from "@evnelo/core/services";
 import { eventAccess } from "@/lib/event-access";
 import { waitlistOffer } from "@/lib/waitlist-access";
 import { db } from "@/lib/db";
@@ -15,7 +16,7 @@ import { checkoutStripeAccount, paymentsConfigured } from "@/lib/payment-flow";
 import { signPaymentResume } from "@/lib/payment-resume";
 import { clientAddress } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
-import { CAPTCHA_FAILED_MESSAGE, verifyCaptcha } from "@/lib/captcha";
+import { verifyCaptcha } from "@/lib/captcha";
 import { verifyRegistrationFile } from "@/lib/storage";
 import { requestLocale } from "@/lib/locale";
 
@@ -50,8 +51,9 @@ const body = z.object({
  * One live registration per email per event (guests with their own email included).
  */
 export async function POST(req: Request) {
+  const [t, tc] = await Promise.all([getTranslations("event"), getTranslations("common")]);
   const parsed = body.safeParse(await req.json().catch(() => null));
-  if (!parsed.success) return NextResponse.json({ error: "Check the form and try again.", issues: parsed.error.issues }, { status: 400 });
+  if (!parsed.success) return NextResponse.json({ error: t("errors.checkForm"), issues: parsed.error.issues }, { status: 400 });
   const input = parsed.data;
 
   // Abuse limits: per client when a trusted proxy header identifies one, per email, and a per-event
@@ -63,39 +65,39 @@ export async function POST(req: Request) {
     consumeSharedRateLimit("register:email", input.email, 5, 10 * 60_000),
     consumeSharedRateLimit("register:event", input.eventId, 600, 60_000),
   ]);
-  if (allowed.includes(false)) return NextResponse.json({ error: "Too many registration attempts. Wait a few minutes and try again." }, { status: 429, headers: { "Retry-After": "60" } });
-  if (!(await verifyCaptcha(input.captchaToken, "register", address))) return NextResponse.json({ error: CAPTCHA_FAILED_MESSAGE }, { status: 400 });
+  if (allowed.includes(false)) return NextResponse.json({ error: t("errors.tooManyRegistrations") }, { status: 429, headers: { "Retry-After": "60" } });
+  if (!(await verifyCaptcha(input.captchaToken, "register", address))) return NextResponse.json({ error: tc("errors.captcha") }, { status: 400 });
 
   const [event] = await db.select().from(events).where(eq(events.id, input.eventId)).limit(1);
-  if (!event || event.status !== "published") return NextResponse.json({ error: "This event isn't open for registration." }, { status: 404 });
+  if (!event || event.status !== "published") return NextResponse.json({ error: t("errors.notOpenForRegistration") }, { status: 404 });
   // private events: an organization member, or a valid invite cookie (set by /i/{token}); email-bound invites must match
   const access = event.visibility === "private" ? await eventAccess(event) : { isMember: false, invite: null, inviteProblem: null };
   const invite = access.isMember ? null : access.invite;
   if (event.visibility === "private" && !access.isMember && !invite) {
-    const why = access.inviteProblem === "exhausted" ? "Your invitation has already been used the maximum number of times." : access.inviteProblem === "expired" ? "Your invitation has expired." : "This event is invite-only. Open the invitation link you received to register.";
-    return NextResponse.json({ error: `${why} Ask the host for a new invitation.` }, { status: 403 });
+    const why = access.inviteProblem === "exhausted" ? t("errors.inviteExhaustedAsk") : access.inviteProblem === "expired" ? t("errors.inviteExpiredAsk") : t("errors.inviteOnlyAsk");
+    return NextResponse.json({ error: why }, { status: 403 });
   }
-  if (invite?.email && invite.email !== input.email) return NextResponse.json({ error: `This invitation was sent to ${invite.email}. Register with that email address.` }, { status: 403 });
+  if (invite?.email && invite.email !== input.email) return NextResponse.json({ error: t("errors.inviteEmail", { email: invite.email }) }, { status: 403 });
   const [tt] = await db.select().from(ticketTypes).where(and(eq(ticketTypes.id, input.ticketTypeId), eq(ticketTypes.eventId, event.id))).limit(1);
-  if (!tt) return NextResponse.json({ error: "That ticket isn't available." }, { status: 404 });
+  if (!tt) return NextResponse.json({ error: t("errors.ticketUnavailable") }, { status: 404 });
   const now = new Date();
-  if ((tt.salesStartAt && tt.salesStartAt > now) || (tt.salesEndAt && tt.salesEndAt < now)) return NextResponse.json({ error: "Sales for this ticket are closed." }, { status: 409 });
+  if ((tt.salesStartAt && tt.salesStartAt > now) || (tt.salesEndAt && tt.salesEndAt < now)) return NextResponse.json({ error: t("errors.salesClosed") }, { status: 409 });
 
   // a waitlist offer unlocks exactly one seat of one ticket type for the person it was made to
   const offer = event.waitlistEnabled ? await waitlistOffer(event.id, now) : null;
   if (offer) {
-    if (offer.email !== input.email) return NextResponse.json({ error: `This reserved spot is for ${offer.email}. Register with that email address.` }, { status: 403 });
-    if (offer.ticketTypeId !== tt.id) return NextResponse.json({ error: "Your reserved spot is for a different ticket type." }, { status: 400 });
-    if (input.guests.length > 0) return NextResponse.json({ error: "A waitlist spot covers one person; guests can join the waitlist separately." }, { status: 400 });
+    if (offer.email !== input.email) return NextResponse.json({ error: t("errors.offerEmail", { email: offer.email }) }, { status: 403 });
+    if (offer.ticketTypeId !== tt.id) return NextResponse.json({ error: t("errors.offerTicketType") }, { status: 400 });
+    if (input.guests.length > 0) return NextResponse.json({ error: t("errors.offerNoGuests") }, { status: 400 });
   }
-  if (input.guests.length > 0 && !event.guestsEnabled) return NextResponse.json({ error: "This event doesn't allow guests." }, { status: 400 });
-  if (input.guests.length > event.maxGuests) return NextResponse.json({ error: `You can bring up to ${event.maxGuests} guest${event.maxGuests === 1 ? "" : "s"}.` }, { status: 400 });
+  if (input.guests.length > 0 && !event.guestsEnabled) return NextResponse.json({ error: t("errors.guestsNotAllowed") }, { status: 400 });
+  if (input.guests.length > event.maxGuests) return NextResponse.json({ error: t("errors.maxGuests", { count: event.maxGuests }) }, { status: 400 });
   const quantity = 1 + input.guests.length;
-  if (quantity < tt.minPerOrder || quantity > tt.maxPerOrder) return NextResponse.json({ error: `Choose between ${tt.minPerOrder} and ${tt.maxPerOrder} tickets.` }, { status: 400 });
+  if (quantity < tt.minPerOrder || quantity > tt.maxPerOrder) return NextResponse.json({ error: t("errors.quantityRange", { min: tt.minPerOrder, max: tt.maxPerOrder }) }, { status: 400 });
 
   // every email in the party must be distinct
   const emails = [input.email, ...input.guests.map((g) => g.email).filter((e): e is string => !!e)];
-  if (new Set(emails).size !== emails.length) return NextResponse.json({ error: "Each guest needs their own email address, or none." }, { status: 400 });
+  if (new Set(emails).size !== emails.length) return NextResponse.json({ error: t("errors.distinctEmails") }, { status: 400 });
 
   // server-side validation of custom fields with the same schema the browser used
   const fields = await db.select().from(registrationFields).where(eq(registrationFields.eventId, event.id));
@@ -108,7 +110,7 @@ export async function POST(req: Request) {
     ...(ord.success ? [] : ord.error.issues),
     ...guests.flatMap((g) => (g.parsed.success ? [] : g.parsed.error.issues.map((is) => ({ ...is, path: ["guests", g.index, ...is.path] })))),
   ];
-  if (!att.success || !ord.success || issues.length) return NextResponse.json({ error: "Some answers need attention.", issues }, { status: 400 });
+  if (!att.success || !ord.success || issues.length) return NextResponse.json({ error: t("errors.answersNeedAttention"), issues }, { status: 400 });
 
   // `file` answers are object keys. The schema proved the shape and the event; confirm the object
   // exists in our prefix with an allowed type before storing a key the dashboard will link to.
@@ -121,8 +123,8 @@ export async function POST(req: Request) {
     .filter((a): a is (typeof fileAnswers)[number] => a !== null);
   if (missingFiles.length) {
     return NextResponse.json({
-      error: "Some answers need attention.",
-      issues: missingFiles.map((a) => ({ code: "custom", message: "Upload the file again", path: a.path })),
+      error: t("errors.answersNeedAttention"),
+      issues: missingFiles.map((a) => ({ code: "custom", message: t("errors.uploadAgain"), path: a.path })),
     }, { status: 400 });
   }
 
@@ -133,11 +135,11 @@ export async function POST(req: Request) {
   const discountCode = input.discountCode && tt.priceMinor > 0 ? await findDiscountCode(db, event.id, input.discountCode) : null;
   if (input.discountCode && tt.priceMinor > 0) {
     const problem = discountProblem(discountCode, now);
-    if (problem) return NextResponse.json({ error: discountProblemMessage[problem], issues: [{ path: ["discountCode"], message: discountProblemMessage[problem] }] }, { status: 400 });
+    if (problem) return NextResponse.json({ error: t(`discount.problem.${problem}`), issues: [{ path: ["discountCode"], message: t(`discount.problem.${problem}`) }] }, { status: 400 });
   }
   const fees = computeOrder([{ unitPriceMinor: tt.priceMinor, quantity, taxRateBps: tt.taxRateBps }], { edition, feePassThrough: event.feePassThrough, discount: discountCode ? toDiscount(discountCode) : null });
   const isFree = fees.totalMinor === 0;
-  if (!isFree && !paymentsConfigured(env.STRIPE_SECRET_KEY, env.STRIPE_PUBLISHABLE_KEY)) return NextResponse.json({ error: "This event can't take payments yet. Contact the host." }, { status: 503 });
+  if (!isFree && !paymentsConfigured(env.STRIPE_SECRET_KEY, env.STRIPE_PUBLISHABLE_KEY)) return NextResponse.json({ error: t("errors.paymentsNotConfigured") }, { status: 503 });
   const orderId = newId();
   const holdExpiresAt = isFree ? null : new Date(now.getTime() + HOLD_MINUTES * 60_000);
   const status = event.requiresApproval ? ("pending_approval" as const) : ("confirmed" as const);
@@ -193,13 +195,12 @@ export async function POST(req: Request) {
     return { ok: true as const };
   });
   if ("duplicate" in result) {
-    const who = result.duplicate === input.email ? "This email is" : `${result.duplicate} is`;
-    return NextResponse.json({ error: `${who} already registered for this event.` }, { status: 409 });
+    return NextResponse.json({ error: result.duplicate === input.email ? t("errors.alreadyRegistered") : t("errors.otherAlreadyRegistered", { email: result.duplicate ?? "" }) }, { status: 409 });
   }
-  if ("discountGone" in result) return NextResponse.json({ error: "That discount code was just used up. Remove it and try again." }, { status: 409 });
-  if ("offerLapsed" in result) return NextResponse.json({ error: "Your reserved spot expired. If another opens up, the host can offer it to you again." }, { status: 409 });
-  if ("inviteExhausted" in result) return NextResponse.json({ error: "This invitation has already been used the maximum number of times." }, { status: 409 });
-  if ("soldOut" in result) return NextResponse.json({ error: quantity > 1 ? "Not enough tickets left for your whole party." : "That ticket just sold out." }, { status: 409 });
+  if ("discountGone" in result) return NextResponse.json({ error: t("errors.discountUsedUp") }, { status: 409 });
+  if ("offerLapsed" in result) return NextResponse.json({ error: t("errors.offerLapsed") }, { status: 409 });
+  if ("inviteExhausted" in result) return NextResponse.json({ error: t("errors.inviteExhausted") }, { status: 409 });
+  if ("soldOut" in result) return NextResponse.json({ error: quantity > 1 ? t("errors.notEnoughTickets") : t("errors.justSoldOut") }, { status: 409 });
 
   if (isFree) {
     await fulfilFreeOrder(orderId);
@@ -215,11 +216,11 @@ export async function POST(req: Request) {
   } catch (e) {
     captureError("orders.createPaymentIntent", e, { eventId: event.id });
     await releaseOrder(orderId, "failed"); // give the hold back, don't strand inventory
-    return NextResponse.json({ error: "Payments are unavailable right now. Please try again in a few minutes." }, { status: 503 });
+    return NextResponse.json({ error: t("errors.paymentsUnavailable") }, { status: 503 });
   }
   if (!pi.client_secret) {
     await releaseOrder(orderId, "failed");
-    return NextResponse.json({ error: "Payments are unavailable right now. Please try again in a few minutes." }, { status: 503 });
+    return NextResponse.json({ error: t("errors.paymentsUnavailable") }, { status: 503 });
   }
   await db.update(orders).set({ stripePaymentIntentId: pi.id }).where(eq(orders.id, orderId));
   const resumeToken = await signPaymentResume({ orderId, eventId: event.id, expiresAt: new Date(now.getTime() + 24 * 60 * 60_000) }, env.AUTH_SECRET);

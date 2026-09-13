@@ -1,7 +1,9 @@
 import * as React from "react";
+import type { Metadata } from "next";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { getTranslations } from "next-intl/server";
 import { Flag } from "lucide-react";
 import { createEventReport, eventReportInput } from "@evnelo/core/services";
 import { events, organizations } from "@evnelo/db";
@@ -9,10 +11,11 @@ import { db } from "@/lib/db";
 import { emailConfigured, env } from "@/lib/env";
 import { clientAddressFromHeaders } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
-import { CAPTCHA_FAILED_MESSAGE, CAPTCHA_FIELD, verifyCaptcha } from "@/lib/captcha";
+import { CAPTCHA_FIELD, verifyCaptcha } from "@/lib/captcha";
 import { CaptchaField } from "@/components/captcha";
 import { captureError } from "@/lib/observability";
-import { renderEmail, sendEmail } from "@/lib/email";
+import { emailTranslator, renderEmail, sendEmail } from "@/lib/email";
+import { DEFAULT_LOCALE } from "@/i18n/locales";
 import { publicEventPath } from "@/lib/urls";
 import { Button } from "@/components/ui/button";
 import { SubmitButton } from "@/components/ui/submit-button";
@@ -24,12 +27,17 @@ import { FormMessage } from "@/components/ui/form-field";
 import { NarrowPage } from "@/components/narrow-page";
 import AbuseReport, { abuseReportSubject } from "@/emails/abuse-report";
 
-export const metadata = { title: "Report an event", robots: "noindex,nofollow" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("public.report");
+  return { title: t("meta.title"), robots: "noindex,nofollow" };
+}
 
-const REASONS: Record<string, string> = { spam: "Spam or misleading", scam: "Scam or fraud", inappropriate: "Inappropriate content", copyright: "Copyright or trademark", other: "Something else" };
+/** Option values; the labels live in public.json under report.reasons. */
+const REASON_IDS = ["spam", "scam", "inappropriate", "copyright", "other"] as const;
 
 export default async function ReportPage({ searchParams }: { searchParams: Promise<{ event?: string; sent?: string; error?: string }> }) {
   const { event: eventId, sent, error } = await searchParams;
+  const [t, tc] = await Promise.all([getTranslations("public.report"), getTranslations("common")]);
   const [row] = eventId && eventId.length === 26
     ? await db.select({ id: events.id, name: events.name, slug: events.slug, orgSlug: organizations.slug, orgName: organizations.name }).from(events).innerJoin(organizations, eq(organizations.id, events.organizationId)).where(eq(events.id, eventId)).limit(1)
     : [];
@@ -46,7 +54,10 @@ export default async function ReportPage({ searchParams }: { searchParams: Promi
     if (!target) redirect(`/report?error=invalid`);
     await createEventReport(db, parsed.data);
     if (env.ABUSE_EMAIL && emailConfigured) {
-      const props = { brand: { orgName: "Evnelo", appUrl: env.APP_URL }, eventName: target.name, eventUrl: `${env.APP_URL}${publicEventPath(target.orgSlug, target.slug)}`, orgName: target.orgName, reason: REASONS[parsed.data.reason] ?? parsed.data.reason, details: parsed.data.details || null, reporterEmail: parsed.data.reporterEmail || null };
+      // this one goes to whoever runs the instance, not to the reporter: keep it in the default language
+      const ta = await getTranslations({ locale: DEFAULT_LOCALE, namespace: "public.report" });
+      const reason = REASON_IDS.find((id) => id === parsed.data.reason);
+      const props = { ...(await emailTranslator(DEFAULT_LOCALE)), brand: { orgName: "Evnelo", appUrl: env.APP_URL }, eventName: target.name, eventUrl: `${env.APP_URL}${publicEventPath(target.orgSlug, target.slug)}`, orgName: target.orgName, reason: reason ? ta(`reasons.${reason}`) : parsed.data.reason, details: parsed.data.details || null, reporterEmail: parsed.data.reporterEmail || null };
       try {
         const { html, text } = await renderEmail(React.createElement(AbuseReport, props));
         await sendEmail({ to: env.ABUSE_EMAIL, subject: abuseReportSubject(props), html, text, replyTo: parsed.data.reporterEmail || undefined });
@@ -56,30 +67,30 @@ export default async function ReportPage({ searchParams }: { searchParams: Promi
   }
 
   const description = !row
-    ? (error === "invalid" ? "That event could not be found." : "Open this page from an event to report it.")
+    ? (error === "invalid" ? t("notFound") : t("openFromEvent"))
     : sent
-      ? <span className="text-foreground">Thanks. Your report about <strong>{row.name}</strong> was recorded{env.ABUSE_EMAIL ? " and sent to the operators of this instance" : ""}.</span>
-      : <>Reporting <strong className="text-foreground">{row.name}</strong> by {row.orgName}. Reports go to the people who run this Evnelo instance, not to the host.</>;
+      ? <span className="text-foreground">{t.rich(env.ABUSE_EMAIL ? "sentAndForwarded" : "sent", { name: row.name, b: (chunks) => <strong>{chunks}</strong> })}</span>
+      : t.rich("reporting", { name: row.name, org: row.orgName, b: (chunks) => <strong className="text-foreground">{chunks}</strong> });
 
   return (
-    <NarrowPage icon={<Flag />} eyebrow="Report" title="Report an event" description={description}>
+    <NarrowPage icon={<Flag />} eyebrow={t("eyebrow")} title={t("title")} description={description}>
       {row && !sent && (
         <>
-          {error === "limited" && <div className="mb-4"><FormMessage error="Too many reports from your connection. Try again later." /></div>}
-          {error === "invalid" && <div className="mb-4"><FormMessage error="Check the form and try again." /></div>}
-          {error === "captcha" && <div className="mb-4"><FormMessage error={CAPTCHA_FAILED_MESSAGE} /></div>}
+          {error === "limited" && <div className="mb-4"><FormMessage error={t("errors.limited")} /></div>}
+          {error === "invalid" && <div className="mb-4"><FormMessage error={t("errors.invalid")} /></div>}
+          {error === "captcha" && <div className="mb-4"><FormMessage error={tc("errors.captcha")} /></div>}
           <form action={submit} className="space-y-5">
             <input type="hidden" name="eventId" value={row.id} />
-            <div><Label htmlFor="reason">Reason</Label><Select id="reason" name="reason" className="mt-1.5 h-11" defaultValue="spam">{Object.entries(REASONS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select></div>
-            <div><Label htmlFor="details">Details <span className="font-normal text-muted-foreground">(optional)</span></Label><Textarea id="details" name="details" rows={4} maxLength={2000} className="mt-1.5" /></div>
-            <div><Label htmlFor="reporterEmail">Your email <span className="font-normal text-muted-foreground">(optional, if we may follow up)</span></Label><Input id="reporterEmail" name="reporterEmail" type="email" className="mt-1.5 h-11" /></div>
+            <div><Label htmlFor="reason">{t("form.reason")}</Label><Select id="reason" name="reason" className="mt-1.5 h-11" defaultValue="spam">{REASON_IDS.map((id) => <option key={id} value={id}>{t(`reasons.${id}`)}</option>)}</Select></div>
+            <div><Label htmlFor="details">{t("form.details")} <span className="font-normal text-muted-foreground">{t("form.optional")}</span></Label><Textarea id="details" name="details" rows={4} maxLength={2000} className="mt-1.5" /></div>
+            <div><Label htmlFor="reporterEmail">{t("form.email")} <span className="font-normal text-muted-foreground">{t("form.optionalFollowUp")}</span></Label><Input id="reporterEmail" name="reporterEmail" type="email" className="mt-1.5 h-11" /></div>
             <CaptchaField action="report" />
-            <SubmitButton size="lg">Send report</SubmitButton>
+            <SubmitButton size="lg">{t("form.submit")}</SubmitButton>
           </form>
         </>
       )}
       {row && sent && (
-        <Button asChild variant="outline" size="lg"><a href={publicEventPath(row.orgSlug, row.slug)}>Back to the event</a></Button>
+        <Button asChild variant="outline" size="lg"><a href={publicEventPath(row.orgSlug, row.slug)}>{t("back")}</a></Button>
       )}
     </NarrowPage>
   );

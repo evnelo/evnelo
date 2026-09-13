@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { MapPin, Video } from "lucide-react";
 import type { PublicEvent } from "@evnelo/core/services";
 import { publicEventPath } from "@/lib/urls";
@@ -8,36 +9,22 @@ import { cn, formatMoney } from "@/lib/utils";
 export type CardEvent = Pick<PublicEvent, "id" | "slug" | "name" | "coverImageUrl" | "startsAt" | "timezone" | "city" | "locationType" | "venueName" | "orgName" | "orgSlug"> &
   Partial<Pick<PublicEvent, "isFree" | "minPriceMinor" | "currency" | "distanceKm">>;
 
-/** "Free" when nothing is charged, otherwise the cheapest visible tier. */
-export function priceLabel(event: Pick<PublicEvent, "isFree" | "minPriceMinor" | "currency">): string {
-  if (event.isFree || event.minPriceMinor === null || event.minPriceMinor === 0) return "Free";
-  return `from ${formatMoney(event.minPriceMinor, event.currency ?? "USD")}`;
-}
-
-function optionalPrice(event: CardEvent): string | null {
+/** Null when the card has no price summary; otherwise whether nothing is charged, plus the cheapest visible tier. */
+function pricing(event: CardEvent): { free: boolean; minor: number; currency: string } | null {
   if (event.isFree === undefined || event.minPriceMinor === undefined) return null;
-  return priceLabel({ isFree: event.isFree, minPriceMinor: event.minPriceMinor, currency: event.currency ?? null });
+  const free = event.isFree || event.minPriceMinor === null || event.minPriceMinor === 0;
+  return { free, minor: event.minPriceMinor ?? 0, currency: event.currency ?? "USD" };
 }
 
-export function distanceLabel(distanceKm: number | null): string | null {
-  if (distanceKm === null) return null;
-  return distanceKm < 1 ? "Under 1 km away" : `${Math.round(distanceKm)} km away`;
+function whenLabel(event: Pick<PublicEvent, "startsAt" | "timezone">, locale: string) {
+  return new Intl.DateTimeFormat(locale, { weekday: "short", month: "short", day: "numeric", hour: "numeric", timeZone: event.timezone }).format(event.startsAt);
 }
 
-function whenLabel(event: Pick<PublicEvent, "startsAt" | "timezone">) {
-  return new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", timeZone: event.timezone }).format(event.startsAt);
-}
-
-function leafParts(event: Pick<PublicEvent, "startsAt" | "timezone">) {
+function leafParts(event: Pick<PublicEvent, "startsAt" | "timezone">, locale: string) {
   return {
-    month: new Intl.DateTimeFormat("en-US", { month: "short", timeZone: event.timezone }).format(event.startsAt),
-    day: new Intl.DateTimeFormat("en-US", { day: "numeric", timeZone: event.timezone }).format(event.startsAt),
+    month: new Intl.DateTimeFormat(locale, { month: "short", timeZone: event.timezone }).format(event.startsAt),
+    day: new Intl.DateTimeFormat(locale, { day: "numeric", timeZone: event.timezone }).format(event.startsAt),
   };
-}
-
-function place(event: CardEvent) {
-  if (event.locationType === "online") return "Online";
-  return event.city ?? event.venueName ?? (event.locationType === "hybrid" ? "Hybrid" : null);
 }
 
 function PlaceIcon({ event, className }: { event: CardEvent; className?: string }) {
@@ -54,10 +41,17 @@ const focusRing = "group block h-full rounded-xl focus-visible:outline-none focu
  * price over a scrim); `compact` runs image-beside-text so two of them stack next to a featured card.
  */
 export function EventCard({ event, variant = "default", className }: { event: CardEvent; variant?: Variant; className?: string }) {
-  const distance = distanceLabel(event.distanceKm ?? null);
-  const where = place(event);
-  const price = optionalPrice(event);
-  const { month, day } = leafParts(event);
+  const t = useTranslations("public.discover");
+  const tc = useTranslations("common");
+  const locale = useLocale();
+  const distanceKm = event.distanceKm ?? null;
+  const distance = distanceKm === null ? null : distanceKm < 1 ? t("card.underOneKm") : t("card.kmAway", { km: Math.round(distanceKm) });
+  const where = event.locationType === "online" ? t("format.online") : event.city ?? event.venueName ?? (event.locationType === "hybrid" ? t("format.hybrid") : null);
+  const priced = pricing(event);
+  const price = priced === null ? null : priced.free ? tc("labels.free") : t("card.from", { price: formatMoney(priced.minor, priced.currency, locale) });
+  const free = priced?.free ?? false;
+  const { month, day } = leafParts(event, locale);
+  const when = whenLabel(event, locale);
   const href = publicEventPath(event.orgSlug, event.slug);
 
   if (variant === "featured") {
@@ -66,11 +60,11 @@ export function EventCard({ event, variant = "default", className }: { event: Ca
         <article className="lift relative isolate flex aspect-[4/3] h-full flex-col justify-end overflow-hidden rounded-xl bg-muted shadow-card sm:aspect-[16/9] lg:aspect-auto lg:min-h-[30rem]">
           {event.coverImageUrl && <img src={event.coverImageUrl} alt="" className="absolute inset-0 -z-10 size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />}
           <div className="scrim absolute inset-0 -z-10" aria-hidden />
-          <div className="date-leaf absolute left-5 top-5 border-transparent shadow-lift"><span>{month}</span><span>{day}</span></div>
+          <div className="date-leaf absolute start-5 top-5 border-transparent shadow-lift"><span>{month}</span><span>{day}</span></div>
           <div className="flex items-end justify-between gap-6 p-5 text-white sm:p-7">
             <div className="min-w-0">
               <p className="flex flex-wrap items-center gap-x-2 text-[13px] font-medium text-white/85">
-                <span>{whenLabel(event)}</span>
+                <span>{when}</span>
                 <span aria-hidden>·</span>
                 <span className="inline-flex items-center gap-1"><PlaceIcon event={event} className="text-white/85" />{event.orgName}{where ? `, ${where}` : ""}</span>
               </p>
@@ -97,10 +91,10 @@ export function EventCard({ event, variant = "default", className }: { event: Ca
               <div className="flex size-full items-center justify-center font-display text-7xl text-muted-foreground/30" aria-hidden>{day}</div>
             )}
           </div>
-          <div className={cn("date-leaf absolute bottom-0 left-4 z-10 translate-y-1/2 shadow-card", compact && "lg:bottom-auto lg:left-3 lg:top-3 lg:translate-y-0")}><span>{month}</span><span>{day}</span></div>
+          <div className={cn("date-leaf absolute bottom-0 start-4 z-10 translate-y-1/2 shadow-card", compact && "lg:bottom-auto lg:start-3 lg:top-3 lg:translate-y-0")}><span>{month}</span><span>{day}</span></div>
         </div>
         <div className={cn("flex flex-1 flex-col p-5 pt-10", compact && "lg:p-5")}>
-          <p className="text-[13px] font-medium text-muted-foreground">{whenLabel(event)}</p>
+          <p className="text-[13px] font-medium text-muted-foreground">{when}</p>
           <h3 className={cn("display mt-1.5 text-2xl", compact && "lg:text-xl")}>{event.name}</h3>
           <div className="mt-auto flex items-end justify-between gap-3 pt-4 text-sm text-muted-foreground">
             <p className="flex min-w-0 flex-wrap items-center gap-x-1.5">
@@ -109,7 +103,7 @@ export function EventCard({ event, variant = "default", className }: { event: Ca
               {where && <span>· {where}</span>}
               {distance && <span>· {distance}</span>}
             </p>
-            {price && <span className={cn("shrink-0 font-display text-base text-foreground", price === "Free" && "text-accent-foreground")}>{price}</span>}
+            {price && <span className={cn("shrink-0 font-display text-base text-foreground", free && "text-accent-foreground")}>{price}</span>}
           </div>
         </div>
       </article>
@@ -119,11 +113,13 @@ export function EventCard({ event, variant = "default", className }: { event: Ca
 
 /** Compact row used inside calendar cells, where there is no room for a cover image. */
 export function EventRow({ event }: { event: PublicEvent }) {
-  const time = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: event.timezone }).format(event.startsAt);
+  const t = useTranslations("public.discover.calendar");
+  const locale = useLocale();
+  const time = new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit", timeZone: event.timezone }).format(event.startsAt);
   return (
     <Link
       href={publicEventPath(event.orgSlug, event.slug)}
-      title={`${event.name} — ${time}`}
+      title={t("rowTitle", { name: event.name, time })}
       className="press block truncate rounded-md border border-transparent bg-accent px-1.5 py-1 text-[11px] leading-tight text-accent-foreground hover:border-ring"
     >
       <span className="tabular-nums opacity-70">{time}</span> {event.name}

@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "title": "계기반",
+    "checkin": "체크인"
+  },
+  "shell": {
+    "organization": "조직",
+    "switchOrganization": "조직을 전환하세요"
+  },
+  "nav": {
+    "events": "이벤트",
+    "checkin": "체크인",
+    "settings": "설정"
+  },
+  "status": {
+    "event": {
+      "draft": "초안",
+      "published": "출판됨",
+      "cancelled": "취소",
+      "ended": "끝났습니다"
+    },
+    "attendee": {
+      "confirmed": "확인됨",
+      "pending_approval": "승인 대기 중",
+      "waitlisted": "대기자 명단에 올랐습니다",
+      "rejected": "거부됨",
+      "cancelled": "취소"
+    },
+    "order": {
+      "pending": "보류 중",
+      "processing": "처리 중",
+      "paid": "유급의",
+      "free": "무료",
+      "refunded": "환불됨",
+      "partially_refunded": "부분 환불됨",
+      "failed": "실패한",
+      "expired": "만료됨"
+    },
+    "delivery": {
+      "delivered": "배송 완료",
+      "retrying": "다시 시도 중",
+      "pending": "보류 중",
+      "failed": "실패한"
+    }
+  },
+  "noAccess": {
+    "title": "접근 불가",
+    "description": "조직 내 각 구성원이 열 수 있는 권한은 역할에 따라 결정됩니다.",
+    "empty": {
+      "title": "이 구역은 당신이 열 수 있는 곳이 아닙니다.",
+      "description": "당신의 직책상 그럴 수 없습니다. 담당자나 관리자에게 변경을 요청하세요."
+    }
+  },
+  "events": {
+    "title": "이벤트",
+    "description": "모든 것이 {org} 작동하고 있으며, 등록 현황, 매출, 방문객 수 등을 한눈에 확인할 수 있습니다.",
+    "newEvent": "새로운 이벤트",
+    "groups": {
+      "upcoming": "다가오는",
+      "drafts": "체커",
+      "past": "과거"
+    },
+    "empty": {
+      "title": "아직 이벤트가 없습니다.",
+      "description": "첫 번째 이벤트는 게시하기 전까지 초안 상태로 유지되므로 모든 것을 완벽하게 작성해야 한다는 부담감이 없습니다.",
+      "action": "첫 번째 이벤트를 만들어 보세요"
+    },
+    "row": {
+      "online": "온라인",
+      "inPerson": "직접",
+      "registered": "등기",
+      "pending": "{count} 보류 중",
+      "revenue": "수익",
+      "checkedIn": "체크인 완료"
+    }
+  },
+  "checkin": {
+    "title": "체크인",
+    "description": "{org}. 입구에서 휴대폰으로 이벤트를 여세요. 스캔하려면 카메라 접근 권한이 필요합니다.",
+    "in": "~ 안에",
+    "empty": {
+      "title": "오늘은 스캔할 게 없네요.",
+      "description": "게시된 이벤트는 이벤트가 시작된 순간부터 종료된 다음 날까지 여기에 표시됩니다."
+    },
+    "event": {
+      "allCheckin": "모든 체크인",
+      "eventDashboard": "이벤트 대시보드"
+    }
+  },
+  "event": {
+    "allEvents": "모든 이벤트",
+    "viewPage": "페이지 보기",
+    "nav": {
+      "overview": "개요",
+      "tickets": "티켓",
+      "form": "형태",
+      "invites": "초대",
+      "attendees": "참석자",
+      "waitlist": "대기자 명단",
+      "orders": "명령",
+      "checkin": "체크인"
+    },
+    "new": {
+      "title": "새로운 이벤트",
+      "description": "임시 저장되었습니다. 문의 사항과 질문을 추가하고 준비가 되면 게시하세요."
+    },
+    "overview": {
+      "stats": {
+        "registered": "등기",
+        "awaitingApproval": "{count} 승인 대기 중",
+        "confirmedAndApproved": "확인 및 승인됨",
+        "revenue": "수익",
+        "afterRefunds": "환불 후",
+        "checkedIn": "체크인 완료",
+        "percentOfRegistrations": "등록의 {percent} %",
+        "nobodyYet": "아직 문 앞에 아무도 없네요",
+        "capacity": "용량",
+        "seatsLeft": "남은 좌석 수: {count} 석",
+        "unlimitedSeats": "무제한 좌석"
+      },
+      "registrationsByDay": "일별 등록 현황",
+      "noRegistrations": {
+        "title": "아직 등록된 사람이 없습니다.",
+        "description": "곡선은 첫 번째 사람이 가입하는 순간부터 시작됩니다."
+      },
+      "tickets": "티켓",
+      "manage": "관리하다",
+      "noTickets": {
+        "title": "아직 티켓 종류가 없습니다.",
+        "description": "별도의 허가 없이 출판하면 일반 입장권이 무료로 제공됩니다.",
+        "action": "티켓 유형을 추가하세요"
+      },
+      "ticketSales": "{hasQuantity, select, true {{sold} / {quantity} 판매됨} other {{sold} 판매됨}}{held, plural, =0 {} other {, # 보유}}",
+      "eventPage": "이벤트 페이지",
+      "visibility": {
+        "public": "공개: Discover에 등재되어 있고 색인화되어 있습니다.",
+        "unlisted": "비공개: 링크를 가진 모든 사람.",
+        "private": "비공개: 초대받은 사람만 이용 가능합니다."
+      },
+      "actions": "행위",
+      "publish": "이벤트 게시",
+      "unpublish": "게시 취소, 초안으로 돌아가기",
+      "statusNote": {
+        "draft": "이 이벤트는 게시되기 전까지는 본인만 볼 수 있습니다.",
+        "published": "활성화되어 있습니다. 게시 취소를 하면 페이지가 숨겨지고, 이미 등록된 정보는 유지됩니다.",
+        "cancelled": "이 행사는 취소되었습니다."
+      },
+      "irreversible": "뒤집을 수 없는",
+      "cancelEvent": "이벤트 취소",
+      "cancelConfirm": "이 이벤트를 취소하시겠습니까? 등록된 모든 참석자에게 취소 이메일이 발송됩니다(SMS 수신에 동의한 경우 SMS도 발송됩니다). 이미 결제하신 주문은 주문 탭에서 환불받으셔야 합니다.",
+      "deleteEvent": "이벤트 삭제",
+      "deleteConfirm": "이 이벤트를 삭제하시겠습니까? 대시보드에서 사라집니다. 참석자 기록은 유지됩니다."
+    },
+    "attendees": {
+      "exportCsv": "CSV 내보내기",
+      "searchPlaceholder": "이름, 이메일 또는 전화번호로 검색하세요.",
+      "filter": "필터",
+      "allOption": "모두 ( {count} )",
+      "statusOption": "{label} ( {count} )",
+      "pendingNote": "{count, plural, one {# 등록} other {# 등록}} 승인을 기다리고 있습니다.",
+      "review": "검토",
+      "columns": {
+        "ticket": "표",
+        "registered": "등기",
+        "files": "파일",
+        "actions": "행위"
+      },
+      "empty": {
+        "noMatch": {
+          "title": "참석자 정보가 일치하지 않습니다.",
+          "description": "다른 검색어를 사용하거나 상태 필터를 지워보세요."
+        },
+        "none": {
+          "title": "아직 아무도 등록하지 않았습니다.",
+          "description": "회원 가입이 완료되는 순간 등록 정보가 여기에 표시됩니다."
+        }
+      },
+      "guestOf": "{name} 의 손님",
+      "sms": "SMS",
+      "paymentPending": "결제 대기 중",
+      "approve": "승인하다",
+      "reject": "거부하다",
+      "ticket": "표",
+      "cancelConfirm": "{name} 님의 등록을 취소하시겠습니까? 해당 사용자의 티켓은 더 이상 유효하지 않으며 좌석이 비게 됩니다. 이메일은 발송되지 않습니다.",
+      "export": "내보내다",
+      "erase": "지우다",
+      "eraseConfirm": "{name} 님의 개인 정보를 삭제하시겠습니까? 이름, 이메일, 전화번호 및 답변은 자리 표시자로 대체되고, 티켓은 취소되며, 대기 중인 이메일은 삭제됩니다. 이 작업은 되돌릴 수 없습니다."
+    },
+    "orders": {
+      "collected": "<strong>{amount}</strong> 환불액을 제외하고 수집된 금액",
+      "count": "{count, plural, one {# 주문} other {# 주문}}",
+      "columns": {
+        "order": "주문하다",
+        "items": "품목",
+        "total": "총",
+        "placed": "배치됨",
+        "actions": "행위"
+      },
+      "empty": {
+        "title": "아직 주문이 없습니다.",
+        "description": "무료든 유료든 모든 등록 내역과 수집된 정보가 여기에 표시됩니다."
+      },
+      "people": "{count, plural, one {# 명} other {# 명}}",
+      "refunded": "{amount} 환불됨"
+    }
+  },
+  "settings": {
+    "title": "설정",
+    "description": "조직의 대외적인 모습, 조직 내 인력 구성, 그리고 다른 시스템과의 연동 방식에 대한 내용입니다.",
+    "tabs": {
+      "organization": "조직",
+      "members": "회원들",
+      "developer": "개발자",
+      "payments": "결제"
+    },
+    "organization": {
+      "title": "조직",
+      "description": "이름, 공개 URL, 로고 및 이메일과 티켓 페이지에 사용되는 강조 색상.",
+      "publicUrl": "공개 URL",
+      "publicUrlHelp": "/o/… 소문자, 숫자, 하이픈.",
+      "website": "웹사이트",
+      "websiteHelp": "example.com을 입력하시면 자동으로 https://가 추가됩니다.",
+      "logo": "심벌 마크",
+      "logoHelp": "이벤트 페이지와 이메일에 표시됩니다.",
+      "accentColour": "포인트 색상",
+      "accentColourHelp": "이메일과 티켓 페이지에 있는 버튼.",
+      "pickColour": "색상을 선택하세요",
+      "serviceFee": "서비스 수수료",
+      "serviceFeeHelp": "새로운 이벤트의 기본 설정은 플랫폼 수수료를 구매자에게 별도 항목으로 부과하거나, 플랫폼에서 직접 부담하는 것입니다.",
+      "buyerPaysFee": "구매자가 서비스 수수료를 지불합니다.",
+      "socialLinks": "소셜 링크",
+      "platform": "플랫폼",
+      "url": "URL",
+      "addLink": "링크 추가",
+      "save": "저장 조직"
+    },
+    "members": {
+      "title": "회원들",
+      "description": "소유자와 관리자는 조직을 관리하고, 회원은 이벤트를 생성하고 운영하며, 체크인 담당자는 티켓만 스캔할 수 있습니다.",
+      "roles": {
+        "owner": "소유자",
+        "admin": "관리자",
+        "member": "회원",
+        "checkin": "체크인 직원"
+      },
+      "columns": {
+        "member": "회원",
+        "role": "역할",
+        "since": "부터"
+      },
+      "removeConfirm": "조직에서 {email} 제거하시겠습니까?",
+      "invited": "초대됨 · 만료일 {date}",
+      "revoke": "취소",
+      "emailPlaceholder": "팀메이트@example.com",
+      "sendInvite": "초대 보내기"
+    },
+    "developer": {
+      "apiKeys": {
+        "title": "API 키",
+        "description": "이 조직의 이벤트, 주문 및 참석자에 대한 서버 간 액세스 권한입니다.",
+        "note": "이 조직을 대신하여 키를 호출하려면 <docs>REST API</docs> 사용하십시오. 키는 <code>{header}</code> 형식으로 전송하십시오. 키 목록을 읽고 가져올 수 있으며, 키를 작성하고 생성할 수도 있습니다.",
+        "newKey": "지금 새 키를 복사하세요. 다시는 표시되지 않습니다.",
+        "saved": "저장해뒀어요",
+        "columns": {
+          "key": "열쇠",
+          "scopes": "스코프",
+          "lastUsed": "마지막 사용"
+        },
+        "never": "절대",
+        "empty": {
+          "title": "아직 API 키가 없습니다.",
+          "description": "통합 기능별로 하나씩 생성하여 특정 도구만 취소하더라도 나머지 기능은 그대로 유지되도록 하세요."
+        },
+        "revoked": "취소됨",
+        "revokeConfirm": "\" {name} \"을 취소하시겠습니까? 해당 요청은 즉시 작동을 멈춥니다.",
+        "revoke": "취소",
+        "namePlaceholder": "주요 이름 (예: Zapier)",
+        "nameLabel": "키 이름",
+        "scopeRead": "읽다",
+        "scopeWrite": "쓰다",
+        "create": "키를 생성합니다"
+      },
+      "webhooks": {
+        "title": "웹훅",
+        "description": "여기서 어떤 일이 발생할 때마다 서명된 JSON POST 요청이 사용자 지정 엔드포인트로 전송됩니다.",
+        "note": "선택하신 이벤트에 대한 JSON 형식의 패킷을 HMAC-SHA256( <code>{signature}</code> over <code>{template}</code> )으로 서명하여 귀하의 URL로 POST 방식으로 전송합니다. 전송 실패 시 약 하루 동안 백오프를 거쳐 재시도합니다.",
+        "addWebhook": "웹훅 추가",
+        "count": "{count, plural, one {# 엔드포인트} other {# 엔드포인트}}",
+        "signingSecret": "서명 비밀",
+        "copyPrompt": "이 비밀을 복사하세요",
+        "endpointUrl": "엔드포인트 URL",
+        "endpointUrlHelp": "HTTPS만 사용 가능합니다(개발 환경에서는 http://localhost 사용 가능).",
+        "events": "이벤트",
+        "create": "웹훅 생성",
+        "columns": {
+          "endpoint": "엔드포인트",
+          "events": "이벤트"
+        },
+        "empty": {
+          "title": "아직 웹훅이 없습니다.",
+          "description": "CRM, 슬랙 채널 또는 스프레드시트를 동기화하려면 자체 서비스에 하나를 지정하세요."
+        },
+        "hideDeliveries": "배송 숨기기",
+        "recentDeliveries": "최근 배송 ( {count} )",
+        "nothingDelivered": "아직 아무것도 배송되지 않았습니다.",
+        "attempts": "{count, plural, one {# 시도} other {# 번 시도}}{hasStatus, select, true {마지막 {status}} other {}}",
+        "allEvents": "모든 이벤트",
+        "active": "활동적인",
+        "paused": "일시 중지됨",
+        "sendTest": "테스트 전송",
+        "pause": "정지시키다",
+        "resume": "재개하다",
+        "rotateConfirm": "서명 암호를 변경하시겠습니까? 기존 암호는 즉시 작동을 멈춥니다.",
+        "rotateSecret": "비밀을 회전시키세요",
+        "deleteConfirm": "이 웹훅을 삭제하시겠습니까?"
+      }
+    },
+    "payments": {
+      "title": "결제",
+      "descriptionCloud": "유료 티켓 결제 금액은 고객님의 Stripe 계정으로 바로 입금됩니다.",
+      "descriptionSelfHosted": "이 인스턴스는 운영자가 구성한 Stripe 키를 통해 요금이 청구됩니다.",
+      "connected": "Stripe 계정 {id} 이 연결되었습니다.",
+      "connectPrompt": "Stripe 계정을 연결하여 유료 티켓을 판매하세요. Connect 온보딩 과정에 포함되어 있습니다.",
+      "configured": "Stripe가 설정되었습니다. 유료 티켓은 플랫폼 수수료 없이 인스턴스의 Stripe 계정으로 청구됩니다.",
+      "notConfigured": "이 인스턴스에는 Stripe가 설정되어 있지 않으므로 무료 티켓만 판매할 수 있습니다. 결제를 활성화하려면 STRIPE_SECRET_KEY 및 STRIPE_PUBLISHABLE_KEY를 설정하십시오."
+    },
+    "danger": {
+      "title": "데이터 및 삭제",
+      "description": "이 조직이 소유한 모든 데이터(이벤트, 주문, 참석자, 체크인, 설정 등)를 JSON 형식으로 다운로드하세요. 단, 비밀 정보는 포함되지 않습니다. 조직을 삭제하면 해당 조직의 이벤트가 취소되고, 모든 티켓이 무효화되며, 참석자의 개인 데이터가 모두 삭제되고, API 키와 웹훅이 비활성화됩니다. 이 작업은 되돌릴 수 없습니다.",
+      "download": "모든 데이터 다운로드",
+      "confirmLabel": "확인하려면 {slug} 입력하세요.",
+      "delete": "조직 삭제",
+      "ownerOnly": "소유자만 이 조직을 삭제할 수 있습니다."
+    }
+  },
+  "imageUpload": {
+    "uploadFailed": "업로드에 실패했습니다.",
+    "bucketRejected": "스토리지 버킷에서 업로드를 거부했습니다. CORS 및 정책 설정을 확인하세요.",
+    "connectionFailed": "업로드에 실패했습니다. 연결 상태를 확인하고 다시 시도하세요.",
+    "noImage": "아직 이미지가 없습니다",
+    "uploading": "업로드 중…",
+    "replace": "바꾸다",
+    "replaceImage": "이미지 교체",
+    "upload": "업로드",
+    "uploadImage": "이미지 업로드",
+    "urlPlaceholder": "https://… (이미지 업로드를 위해서는 S3 구성이 필요합니다)",
+    "urlLabel": "{label} URL",
+    "formats": "JPEG, PNG 또는 WebP 형식, 최대 5MB"
+  },
+  "imageCrop": {
+    "openFailed": "해당 이미지를 열 수 없습니다.",
+    "renderFailed": "이 브라우저는 자른 부분을 제대로 렌더링할 수 없습니다. 이미지를 원본 그대로 업로드해 주세요.",
+    "dialogLabel": "표지 이미지를 액자에 넣으세요",
+    "title": "표지를 액자에 넣으세요",
+    "description": "드래그하여 위치를 조정하고 확대/축소하여 채우세요. 이벤트 페이지에서 사용하는 16:7 비율로 저장되었습니다.",
+    "zoom": "줌",
+    "use": "이 작물을 사용하세요"
+  },
+  "address": {
+    "unavailable": "주소 검색 기능이 일시적으로 중단되었습니다.",
+    "placeholder": "주소 입력을 시작하세요"
+  },
+  "linkTabs": {
+    "label": "섹션"
+  },
+  "actions": {
+    "genericError": "뭔가 잘못됐어요.",
+    "formIssue": "{path}: {message}",
+    "formPath": "형태",
+    "checkForm": "양식을 확인하세요.",
+    "saved": "저장되었습니다.",
+    "savedNotified": "저장되었습니다. 참석자들에게 새로운 시간이나 장소를 알려드리겠습니다.",
+    "deletePublished": "이벤트를 삭제하기 전에 게시 취소 또는 취소하세요.",
+    "addressRateLimited": "주소 검색 횟수가 너무 많습니다. 잠시 기다렸다가 다시 시도해 주세요.",
+    "addressUnavailable": "주소 검색 기능이 일시적으로 중단되었습니다.",
+    "formSaved": "양식이 저장되었습니다.",
+    "refund": {
+      "noPayment": "이 주문은 환불할 결제 내역이 없습니다.",
+      "nothingToRefund": "주문 건수는 {status} 입니다. 환불할 금액이 없습니다.",
+      "requested": "환불 요청되었습니다. Stripe에서 환불이 확인되는 대로 주문 정보가 업데이트됩니다."
+    },
+    "invitationSent": "{email} 님께 초대장을 보냈습니다.",
+    "apiKeyCreated": "키가 생성되었습니다. 지금 복사하세요. 다시 표시되지 않습니다.",
+    "unknownError": "알 수 없는 오류",
+    "eventInvite": {
+      "emailFailed": "초대장이 생성되었지만 이메일을 보낼 수 없습니다( {reason} ). 링크를 직접 공유하세요.",
+      "emailed": "초대장이 {email} 에게 이메일로 발송되었습니다.",
+      "linkCreated": "초대 링크가 생성되었습니다."
+    },
+    "waitlist": {
+      "notFound": "해당 항목은 더 이상 존재하지 않습니다.",
+      "alreadyOffered": "이 사람은 이미 다른 팀과 계약하여 새로운 제안을 받은 상태입니다.",
+      "registered": "이 사람은 이미 등록했습니다.",
+      "noRoom": "해당 티켓 종류에는 빈 좌석이 없습니다(또는 행사가 만석입니다). 먼저 빈 좌석 하나를 비워주세요.",
+      "emailFailed": "자리가 {deadline} 까지 예약되었지만 이메일을 보낼 수 없었습니다( {reason} ). 이 링크를 보내주세요: {url}",
+      "offered": "{email} 에게 이메일로 제안이 발송되었습니다. 해당 자리는 {deadline} 까지 예약이 유지됩니다."
+    },
+    "discountCreated": "코드 {code} 이 생성되었습니다.",
+    "webhook": {
+      "created": "웹훅이 생성되었습니다. 서명 비밀 키를 복사하세요. 한 번만 표시됩니다.",
+      "notFound": "웹훅을 찾을 수 없습니다.",
+      "rotated": "새로운 서명 암호를 사용하세요. 수신기를 업데이트하십시오. 이전 암호는 더 이상 작동하지 않습니다.",
+      "testQueued": "테스트 배송이 대기 중입니다. 약 10초 내에 발송됩니다. 배송 목록을 확인하세요."
+    },
+    "deleteOrg": {
+      "ownerOnly": "조직을 삭제할 수 있는 권한은 소유자에게만 있습니다.",
+      "confirmSlug": "확인하려면 조직 URL( {slug} )을 입력하세요."
+    }
+  }
+}

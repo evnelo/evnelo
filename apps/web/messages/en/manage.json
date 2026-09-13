@@ -1,1 +1,434 @@
-{}
+{
+  "eventForm": {
+    "validation": {
+      "times": "Set a start and an end time."
+    },
+    "saved": "Saved.",
+    "restore": {
+      "notice": "Picked up where you left off: unsaved changes from {when} are back in the form.",
+      "discard": "Discard them"
+    },
+    "basics": {
+      "title": "Basics",
+      "description": "What people see first: the name, the address, the story, the artwork.",
+      "name": "Event name",
+      "url": "Event URL",
+      "descriptionLabel": "Description",
+      "descriptionHelp": "Markdown is supported.",
+      "tags": "Tags",
+      "tagsHelp": "Comma separated. Used for discovery.",
+      "tagsPlaceholder": "design, meetup",
+      "cover": "Cover image",
+      "logo": "Event logo"
+    },
+    "when": {
+      "title": "When",
+      "description": "Times are stored in UTC and shown to everyone in the event's own zone.",
+      "starts": "Starts",
+      "ends": "Ends",
+      "timezone": "Time zone",
+      "publishedNote": "Changing the time of a published event emails every attendee."
+    },
+    "where": {
+      "title": "Where",
+      "description": "Where people turn up, or the link they join.",
+      "locationType": {
+        "in_person": "In person",
+        "online": "Online",
+        "hybrid": "Hybrid"
+      },
+      "venue": "Venue",
+      "venuePlaceholder": "Venue name",
+      "address": "Address",
+      "addressHelp": "Pick a suggestion to fill city, country and map coordinates.",
+      "city": "City",
+      "country": "Country code",
+      "countryHelp": "Two-letter code, e.g. BR",
+      "countryPlaceholder": "US",
+      "mapPin": "Map pin set from the address ({lat}, {lng}). Pick another suggestion to move it.",
+      "joinLink": "Join link",
+      "joinLinkHelp": "Only shown to confirmed attendees, in their confirmation and reminders.",
+      "joinLinkPlaceholder": "https://meet…"
+    },
+    "registration": {
+      "title": "Registration",
+      "description": "Who can find the event, and how many can come.",
+      "visibility": "Visibility",
+      "visibilityOptions": {
+        "public": "Public",
+        "unlisted": "Unlisted",
+        "private": "Private"
+      },
+      "visibilityHelp": {
+        "public": "Listed on Discover and indexed by search engines.",
+        "unlisted": "Anyone with the link; not listed or indexed.",
+        "private": "Only people with an invite link."
+      },
+      "capacity": "Capacity",
+      "capacityHelp": "Leave empty for unlimited."
+    },
+    "options": {
+      "title": "Registration options",
+      "description": "Approval, guests, reminders, fees and refund policy.",
+      "approval": "Approve each registration manually",
+      "approvalHelp": "People request to join; approve or reject them from Attendees.",
+      "phone": "Ask for a phone number",
+      "phoneHelp": "Optional field with SMS opt-in for tickets and reminders.",
+      "guests": "Allow guests (+1)",
+      "guestsHelp": "Each guest gets a separate ticket.",
+      "maxGuests": "Max guests per registration",
+      "waitlist": "Waitlist when sold out",
+      "waitlistHelp": "Visitors can queue; you offer spots from the Waitlist tab as seats free up.",
+      "feePassThrough": "Buyer pays the service fee",
+      "feePassThroughHelp": "Cloud edition: show the 0.99% as a line item.",
+      "refundPolicy": "Refund policy",
+      "refundPolicyHelp": "Shown at checkout for paid tickets.",
+      "reminders": "Reminders",
+      "reminder24": "24 hours before",
+      "reminder1": "1 hour before",
+      "reminderCustom": "Also <input></input> hours before",
+      "reminderCustomLabel": "Custom reminder hours",
+      "reminderCustomPlaceholder": "48, 3",
+      "hint": {
+        "joined": "{first} · {second}",
+        "on": "On: {items}",
+        "defaults": "Defaults",
+        "reminders": "reminders {items}",
+        "noReminders": "no reminders",
+        "hours": "{hours}h",
+        "flags": {
+          "approval": "approval",
+          "phone": "phone",
+          "guests": "guests",
+          "waitlist": "waitlist",
+          "feePassThrough": "buyer pays fee"
+        }
+      }
+    },
+    "links": {
+      "title": "Links",
+      "description": "Social links shown on the event page.",
+      "hint": "{count, plural, =0 {No links yet} one {# link} other {# links}}",
+      "platform": "Platform",
+      "url": "URL",
+      "remove": "Remove link",
+      "add": "Add link"
+    },
+    "hosts": {
+      "title": "Hosts",
+      "description": "People shown on the event page.",
+      "hint": "{count, plural, =0 {No hosts yet} one {# host} other {# hosts}}",
+      "name": "Host name",
+      "titleField": "Title",
+      "remove": "Remove host",
+      "avatar": "Avatar",
+      "add": "Add host"
+    },
+    "sponsors": {
+      "title": "Sponsors",
+      "description": "Logos appear on the event page in this order.",
+      "hint": "{count, plural, =0 {No sponsors yet} one {# sponsor} other {# sponsors}}",
+      "name": "Sponsor name",
+      "tier": "Tier",
+      "website": "Website",
+      "remove": "Remove sponsor",
+      "logo": "Logo",
+      "add": "Add sponsor"
+    },
+    "bar": {
+      "createNote": "Nothing is public until you publish.",
+      "editNote": "Changes go live as soon as you save.",
+      "createDraft": "Create draft",
+      "saveChanges": "Save changes"
+    }
+  },
+  "fields": {
+    "title": "Registration form",
+    "description": "Name and email are always asked. Your own questions can apply to the registrant, the whole order or each guest, and can appear only when an earlier answer matches.",
+    "add": "Add question",
+    "empty": {
+      "title": "Just name and email",
+      "description": "Add a question when you need something more — a dietary note, a company, a t-shirt size.",
+      "action": "Add your first question"
+    },
+    "untitled": "Untitled question",
+    "types": {
+      "short_text": "Short text",
+      "long_text": "Long text",
+      "email": "Email",
+      "phone": "Phone",
+      "number": "Number",
+      "select": "Single choice",
+      "multi_select": "Multiple choice",
+      "checkbox": "Checkbox",
+      "date": "Date",
+      "url": "Link",
+      "file": "File upload",
+      "consent": "Consent (must be ticked)"
+    },
+    "scopes": {
+      "attendee": "Each registrant",
+      "order": "Once per order",
+      "guest": "Each guest"
+    },
+    "badges": {
+      "required": "required",
+      "conditional": "conditional"
+    },
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "question": "Question",
+    "key": "Key",
+    "keyHelp": "Column name in exports and the API. Lowercase, underscores.",
+    "type": "Type",
+    "fileNeedsS3": "File upload needs S3 storage configured on this instance.",
+    "fileUnavailable": "S3 storage is not configured, so registrants cannot upload this file. The form shows it as unavailable.",
+    "asked": "Asked",
+    "options": "Options",
+    "optionsHelp": "One per line. Use “value | Label” to store a different value.",
+    "helpText": "Help text",
+    "placeholder": "Placeholder",
+    "requiredOnlyWhenShown": "(only when shown)",
+    "onlyForTicketTypes": "Only for these ticket types",
+    "noneSelectedIsAll": "(none selected = all)",
+    "condition": "Show only when an earlier answer matches",
+    "conditionNeedsEarlier": "(add a question above it first)",
+    "showWhen": "Show when <select></select> of these match:",
+    "allOrAny": "All or any",
+    "match": {
+      "and": "all",
+      "or": "any"
+    },
+    "ops": {
+      "eq": "is",
+      "neq": "is not",
+      "contains": "contains",
+      "empty": "is empty",
+      "not_empty": "is not empty"
+    },
+    "rule": {
+      "field": "Field",
+      "operator": "Operator",
+      "value": "Value",
+      "choose": "Choose…",
+      "checked": "checked",
+      "unchecked": "unchecked",
+      "remove": "Remove rule",
+      "add": "Add rule"
+    },
+    "dependNote": "A question may only depend on one positioned above it.",
+    "save": "Save form"
+  },
+  "ticketTypes": {
+    "title": "Ticket types",
+    "descriptionEmpty": "Publishing without a ticket type creates a free General admission ticket automatically.",
+    "descriptionGuests": "What people can buy, and how many of each. Guests pay the same price as the registrant's ticket.",
+    "description": "What people can buy, and how many of each. A price of 0 means free.",
+    "add": "Add ticket type",
+    "saved": "Saved.",
+    "columns": {
+      "price": "Price",
+      "sold": "Sold",
+      "salesWindow": "Sales window"
+    },
+    "empty": {
+      "title": "No ticket types yet",
+      "description": "Add one for each thing people can buy — early bird, standard, students."
+    },
+    "tax": "+{rate}% tax",
+    "soldOfQuantity": "{sold} / {quantity}",
+    "held": "{count} held",
+    "window": "{start} → {end}",
+    "windowNow": "now",
+    "windowEvent": "event",
+    "always": "Always",
+    "badges": {
+      "hidden": "hidden",
+      "code": "code"
+    },
+    "confirmDelete": "Delete \"{name}\"?",
+    "dialog": {
+      "editTitle": "Edit ticket type",
+      "newTitle": "New ticket type",
+      "description": "Price in {currency}. Set quantity for a limited run."
+    },
+    "form": {
+      "description": "Description",
+      "price": "Price",
+      "currency": "Currency",
+      "tax": "Tax %",
+      "quantity": "Quantity",
+      "quantityHelp": "Empty = unlimited",
+      "minPerOrder": "Min per order",
+      "maxPerOrder": "Max per order",
+      "salesStart": "Sales start",
+      "salesEnd": "Sales end",
+      "hidden": "Hidden from the event page",
+      "accessCode": "Access code"
+    }
+  },
+  "discounts": {
+    "title": "Discount codes",
+    "description": "Percent or fixed amount off the order. Buyers enter the code at checkout; it applies to every ticket in the order.",
+    "add": "Add code",
+    "form": {
+      "code": "Code",
+      "codePlaceholder": "EARLYBIRD",
+      "type": "Type",
+      "kind": {
+        "percent": "% off",
+        "fixed": "{currency} off"
+      },
+      "percent": "Percent",
+      "amount": "Amount ({currency})",
+      "maxUses": "Max uses",
+      "unlimited": "unlimited",
+      "expires": "Expires",
+      "create": "Create"
+    },
+    "columns": {
+      "code": "Code",
+      "discount": "Discount",
+      "uses": "Uses",
+      "expires": "Expires"
+    },
+    "empty": {
+      "title": "No discount codes",
+      "description": "Codes are the easiest way to run an early bird, a partner rate or a friends-and-family price."
+    },
+    "percentOff": "{value}% off",
+    "amountOff": "{amount} off",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Never",
+    "status": {
+      "expired": "expired",
+      "usedUp": "used up",
+      "active": "active"
+    },
+    "confirmDelete": "Delete code {code}? Orders that already used it keep their discount."
+  },
+  "invites": {
+    "title": "Invitations",
+    "description": "One link per guest, or one link for everyone. Each invite tracks how many times it has been used.",
+    "privateNote": "This event is private: only people who open an invitation link (or members of your organization) can see it and register. Email invites only work with the address they were sent to.",
+    "publicNote": "Invitations only restrict access on <b>private</b> events. This event is {visibility}, so anyone with the link can register; you can still send invites as a courtesy.",
+    "visibility": {
+      "public": "public",
+      "unlisted": "unlisted",
+      "private": "private"
+    },
+    "form": {
+      "emailPlaceholder": "guest@example.com",
+      "maxUses": "Max uses",
+      "expiresInDays": "Expires in (days)",
+      "never": "never",
+      "create": "Create invite",
+      "help": "Leave the email empty for a shareable link anyone can use."
+    },
+    "copyPrompt": "Copy this link",
+    "newLink": "New link",
+    "copyLink": "Copy link",
+    "columns": {
+      "invite": "Invite",
+      "uses": "Uses",
+      "expires": "Expires"
+    },
+    "empty": {
+      "title": "No invitations yet",
+      "description": "Create one above to hand out a link, or address it to a single email."
+    },
+    "shareableLink": "Shareable link",
+    "created": "Created {date}",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Never",
+    "status": {
+      "expired": "expired",
+      "usedUp": "used up",
+      "active": "active"
+    },
+    "revoke": "Revoke",
+    "confirmRevoke": "Revoke this invitation? The link stops working immediately."
+  },
+  "waitlist": {
+    "title": "Waitlist",
+    "summary": "{waiting} waiting, {offered} offered, {registered} registered.",
+    "description": "The queue that forms once the event sells out.",
+    "enabledNote": "When the event sells out, visitors can join this list. Promoting someone holds one seat for them for 24 hours and emails a claim link; unclaimed seats go back to the pool.",
+    "disabledNote": "The waitlist is off for this event (Edit → Registration options). People who joined earlier are still listed here.",
+    "columns": {
+      "person": "Person",
+      "joined": "Joined",
+      "actions": "Actions"
+    },
+    "empty": {
+      "title": "Nobody on the waitlist",
+      "description": "People queue here once every ticket is gone. You decide who gets the next free seat."
+    },
+    "status": {
+      "waiting": "waiting",
+      "offered": "offered",
+      "registered": "registered",
+      "expired": "expired"
+    },
+    "heldUntil": "{ticketType} until {time}",
+    "lapsed": "Offer lapsed; can be promoted again",
+    "ticketType": "Ticket type",
+    "option": "{name} · {price}",
+    "optionWithRoom": "{name} · {price} · {room} left",
+    "offer": "Offer a spot",
+    "confirmRemove": "Remove {email} from the waitlist?",
+    "confirmRemoveOffered": "Remove {email} from the waitlist? Their held seat is released."
+  },
+  "refund": {
+    "confirm": "Refund {amount} in full? Tickets on this order stop working and the seats are released once Stripe confirms.",
+    "requested": "Refund requested.",
+    "button": "Refund {amount}"
+  },
+  "chart": {
+    "peak": "Peak {max}/day",
+    "summary": "{total, plural, one {# registration} other {# registrations}} over {days, plural, one {# day} other {# days}}",
+    "aria": "Registrations per day. Peak {max} on a single day, {total} in total.",
+    "tooltip": "{date}: {count}"
+  },
+  "scanner": {
+    "outcome": {
+      "ok": "Checked in",
+      "offline_ok": "Checked in (offline, will sync)",
+      "already": "Already checked in",
+      "not_confirmed": "Registration not confirmed",
+      "revoked": "Ticket cancelled or refunded",
+      "wrong_event": "Ticket is for another event",
+      "not_found": "Not a valid ticket",
+      "offline_unknown": "Unknown ticket (offline)",
+      "error": "Could not check in"
+    },
+    "checkedIn": "Checked in",
+    "ofConfirmed": "/ {confirmed}",
+    "mode": "Check-in mode",
+    "scan": "Scan",
+    "progress": "{pct}% of confirmed tickets · updated {time}",
+    "progressQueued": "{pct}% of confirmed tickets · updated {time} · {count} waiting to sync",
+    "offline": "Offline: scans are saved and synced later",
+    "guestOf": "Guest of {name}",
+    "ticketTypeInAt": "{ticketType} · in at {time}",
+    "undo": "Undo",
+    "camera": {
+      "denied": "Camera access was blocked. Allow the camera for this site, or use Search to check people in by name.",
+      "unsupported": "This browser can't use the camera. Use Search, or paste a ticket link below.",
+      "starting": "Starting camera…",
+      "point": "Point at the QR code on the ticket"
+    },
+    "manualPlaceholder": "Or paste a ticket link / code",
+    "manualLabel": "Ticket link or code",
+    "checkIn": "Check in",
+    "searchPlaceholder": "Search by name or email",
+    "searchLabel": "Search attendees",
+    "noMatches": "No confirmed attendees match.",
+    "listGuestOf": "· guest of {name}",
+    "listDetail": "{ticketType} · {email}",
+    "listDetailInAt": "{ticketType} · {email} · in at {time}",
+    "recent": "Recent",
+    "recentDetail": "· {ticketType} · {time}",
+    "recentDetailManual": "· {ticketType} · {time} · manual"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "由{orgName}通过<link>Evnelo</link>发送。这是一条关于您已注册活动的交易信息。",
+    "when": "什么时候",
+    "where": "在哪里",
+    "online": "在线的",
+    "joinOnline": "在线加入 →",
+    "admitOne": "允许一人",
+    "ticketTypeGuestOf": "{ticketType} ， {host}的客人",
+    "openTicket": "打开工单",
+    "qrAlt": "门票二维码",
+    "scanAtDoor": "门口扫描"
+  },
+  "reminderWhen": {
+    "tomorrow": "明天",
+    "days": "在 {count, plural, one {#天} other {#天}}",
+    "hours": "在 {count, plural, one {#小时} other {#小时}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {您的票号是{eventName}} other {您有# {eventName}的门票}}",
+    "preview": "你将获得{eventName} 。 {count, plural, one {您的票是} other {您的票是}} 里面。",
+    "title": "你入选了。",
+    "intro": "{count, plural, one {这是您的票。<link>{eventName}</link> 。} other {这是您的#张票<link>{eventName}</link> 。}}",
+    "showQr": "请在门口出示手机上的二维码或打印出来的二维码。",
+    "addToCalendar": "添加到日历",
+    "questions": "有关活动的任何疑问？请回复此邮件联系{orgName} 。",
+    "cta": "查看活动详情"
+  },
+  "approvalPending": {
+    "subject": "收到请求，请求号为{eventName}",
+    "preview": "{orgName}正在审核您加入{eventName}请求。",
+    "title": "已收到请求",
+    "intro": "您好{name} ， {orgName}会审核<link>{eventName}</link>的每一次注册。",
+    "partySize": "您的请求涵盖{count}人。",
+    "approved": "{count, plural, one {您的机票申请一旦获得批准，您将立即通过电子邮件收到机票。} other {申请获批后，您将立即通过电子邮件收到电子票。}}",
+    "nothingToDo": "目前无需采取任何行动。如果您的计划有变，请忽略此邮件。"
+  },
+  "registrationRejected": {
+    "subject": "关于您提出的{eventName}请求的最新进展",
+    "preview": "{orgName}无法批准您对{eventName}注册。",
+    "title": "我们没法安排你入住",
+    "intro": "您好{name} ， {orgName}无法批准您注册<link>{eventName}</link> 。",
+    "refund": "任何已支付的款项都将退还到您的卡上。",
+    "noPayment": "未收取任何费用。",
+    "questions": "如有疑问，请回复此邮件联系主办方。"
+  },
+  "refundIssued": {
+    "subject": "退款金额为{amount} ，对应款项为{eventName}",
+    "preview": "{amount}正在返回您的卡中。",
+    "title": "已退款",
+    "intro": "您好{name} ， {orgName}已将您订单的款项退还给<strong>{amount}</strong>至<link>{eventName}</link> 。",
+    "cancelled": "{count, plural, one {您的车票已被取消，无法再进行扫描。} other {订单上的所有#票都已取消，将不再扫描。}}",
+    "timing": "退款通常会在 5 到 10 个工作日内到达您的卡上，具体时间取决于您的银行。",
+    "receipt": "这封邮件就是您的收据。"
+  },
+  "eventReminder": {
+    "subject": "{eventName}是{when}",
+    "preview": "{eventName}是{when}. {where}.",
+    "title": "{eventName}是{when}",
+    "tickets": "{count, plural, one {您的车票已准备好扫描：} other {您的车票已准备好扫描：}}",
+    "cta": "活动详情及路线指引",
+    "stopPrompt": "不想收到此活动的提醒？ <link>停止提醒</link> 。",
+    "stillGetThrough": "确认和更改仍然会生效。"
+  },
+  "eventUpdated": {
+    "subjectBoth": "{eventName}的新时间和地点",
+    "subjectSchedule": "{eventName}的新时间",
+    "subjectVenue": "{eventName}的新位置",
+    "previewBoth": "{eventName}改变了时间和地点。",
+    "previewSchedule": "{eventName}改变了时间。",
+    "previewVenue": "{eventName}已经改变了地点。",
+    "title": "{eventName}已更改",
+    "introBoth": "嗨{name} ， {orgName}更新了<link>{eventName}</link>的时间和地点。",
+    "introSchedule": "嗨{name} ， {orgName}更新了<link>{eventName}</link>的时间。",
+    "introVenue": "嗨{name} ， {orgName}更新了<link>{eventName}</link>的位置。",
+    "newDetails": "以下是最新细节。",
+    "staysValid": "您的车票仍然有效。",
+    "cta": "更新我的日历"
+  },
+  "eventCancelled": {
+    "subject": "{eventName}已取消",
+    "preview": "{eventName}不会继续进行。",
+    "title": "{eventName}已取消",
+    "intro": "您好{name} ， {orgName}取消了原定于{when}举行的<strong>{eventName}</strong> 。",
+    "noLongerValid": "您的车票已失效。",
+    "refund": "您的款项将退还至您使用的银行卡；款项到账后，您将收到一封单独的电子邮件。",
+    "noPayment": "没有收取任何费用，所以无需退款。",
+    "questions": "如有疑问，请回复此邮件联系主办方。"
+  },
+  "eventInvite": {
+    "subject": "您受邀参加： {eventName}",
+    "preview": "{orgName}邀请你参加{eventName} 。",
+    "title": "您已受邀",
+    "intro": "<strong>{orgName}</strong>邀请您参加私人活动。",
+    "cta": "查看活动并注册",
+    "personal": "此链接仅供您个人使用。",
+    "personalExpires": "此链接仅供您个人使用，将于{expires}过期。",
+    "registerWith": "请使用此电子邮件地址注册。"
+  },
+  "orgInvite": {
+    "subject": "您受邀参加 Evnelo 上的{orgName}",
+    "preview": "将{orgName}加入为{role} 。",
+    "title": "加入{orgName}",
+    "invitedBy": "{invitedBy}邀请您协助<strong>{orgName}</strong>举办活动，担任<strong>{role}</strong> 。",
+    "invited": "您已被邀请协助举办<strong>{orgName}</strong>的活动，担任<strong>{role}</strong> 。",
+    "cta": "接受邀请",
+    "validity": "该链接有效期为14天，且仅适用于发送到该链接的电子邮件地址。"
+  },
+  "magicLink": {
+    "subject": "登录到{host}",
+    "preview": "您的登录链接（适用于{host}",
+    "title": "登入",
+    "intro": "点击按钮登录{host} 。",
+    "expiry": "该链接只能使用一次，15分钟后失效。",
+    "cta": "登录到{host}",
+    "ignore": "如果您没有要求收到此邮件，您可以忽略它。",
+    "nobody": "没有链接谁都无法登录。"
+  },
+  "waitlistJoined": {
+    "subject": "您已进入{eventName}的候补名单。",
+    "preview": "您在候补名单上的号码是{position}号。",
+    "title": "您已在候补名单上",
+    "full": "<strong>{eventName}</strong>目前已满。",
+    "position": "您排在第<strong>{position}</strong>号。",
+    "offer": "如果有名额空缺，我们会通过电子邮件向您发送一个链接，您可以点击该链接领取名额；该链接有效期为 24 小时。",
+    "cta": "查看活动"
+  },
+  "waitlistOffer": {
+    "subject": "一个空缺： {eventName}",
+    "preview": "请在{deadline}之前预定您的位置。",
+    "title": "一个职位空缺出来了。",
+    "reserved": "好消息：已为您预留了<strong>{ticketType}</strong>个<strong>{eventName}</strong>名额。",
+    "claimBefore": "请在<strong>{deadline}</strong>之前领取，之后将顺延给下一位排队的人。",
+    "cta": "占位",
+    "registerWith": "请使用此电子邮件地址注册。",
+    "personal": "该链接仅供您个人使用。"
+  },
+  "abuseReport": {
+    "subject": "[报告] {reason}: {eventName}",
+    "preview": "有人举报了{eventName} 。",
+    "title": "事件报告",
+    "intro": "<strong>{eventName}</strong>由{orgName}报告给<strong>{reason}</strong> 。",
+    "reporter": "记者： {email}",
+    "noReporter": "记者没有留下电子邮件。",
+    "cta": "开启活动"
+  },
+  "sms": {
+    "confirmation": "您入场时间为{event} 。您的票号： {ticketUrl}",
+    "reminder": "{event}是{when} 。票号： {ticketUrl}",
+    "updated": "{event}的时间或地点已更改。详情： {url}",
+    "cancelled": "{event}已取消。所有款项将退还。"
+  }
+}

@@ -1,8 +1,9 @@
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { MailQuestion, UserPlus } from "lucide-react";
 import { acceptInvite, getInvite } from "@evnelo/core/services";
-import { ROLE_LABELS } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { ORG_COOKIE, currentUser } from "@/lib/auth/session";
 import { Button } from "@/components/ui/button";
@@ -10,13 +11,15 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import { FormMessage } from "@/components/ui/form-field";
 import { NarrowPage } from "@/components/narrow-page";
 
-export const metadata = { title: "Invitation", robots: "noindex" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("auth.invite");
+  return { title: t("meta.title"), robots: "noindex" };
+}
 
 export default async function InvitePage({ params, searchParams }: { params: Promise<{ token: string }>; searchParams: Promise<{ error?: string }> }) {
   const { token } = await params;
   const { error } = await searchParams;
-  const row = await getInvite(db, token);
-  const user = await currentUser();
+  const [row, user, t] = await Promise.all([getInvite(db, token), currentUser(), getTranslations("auth.invite")]);
 
   async function accept() {
     "use server";
@@ -33,22 +36,22 @@ export default async function InvitePage({ params, searchParams }: { params: Pro
 
   if (!row) {
     return (
-      <NarrowPage icon={<MailQuestion />} eyebrow="Invitation" title="Invite not found" description="This link isn't valid. Ask the person who invited you for a new one." />
+      <NarrowPage icon={<MailQuestion />} eyebrow={t("eyebrow")} title={t("notFound.title")} description={t("notFound.description")} />
     );
   }
 
   return (
     <NarrowPage
       icon={<UserPlus />}
-      eyebrow="Invitation"
-      title={`Join ${row.org.name}`}
-      description={<>You've been invited to {row.org.name} as <strong className="text-foreground">{ROLE_LABELS[row.invite.role]}</strong>. The invite was sent to {row.invite.email}.</>}
+      eyebrow={t("eyebrow")}
+      title={t("title", { org: row.org.name })}
+      description={t.rich("description", { org: row.org.name, role: t(`roles.${row.invite.role}`), email: row.invite.email, b: (chunks) => <strong className="text-foreground">{chunks}</strong> })}
     >
       {error && <div className="mb-4"><FormMessage error={error} /></div>}
       {user ? (
-        <form action={accept}><SubmitButton size="lg">Accept as {user.email}</SubmitButton></form>
+        <form action={accept}><SubmitButton size="lg">{t("accept", { email: user.email })}</SubmitButton></form>
       ) : (
-        <Button asChild size="lg"><a href={`/login?next=${encodeURIComponent(`/invite/${token}`)}&email=${encodeURIComponent(row.invite.email)}`}>Sign in to accept</a></Button>
+        <Button asChild size="lg"><a href={`/login?next=${encodeURIComponent(`/invite/${token}`)}&email=${encodeURIComponent(row.invite.email)}`}>{t("signIn")}</a></Button>
       )}
     </NarrowPage>
   );

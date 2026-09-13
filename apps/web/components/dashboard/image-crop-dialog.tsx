@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 
 /** Cover art is rendered at 16:7 everywhere, so that is the only ratio we offer. */
@@ -16,6 +17,8 @@ type Size = { width: number; height: number };
  * the framed image. Deliberately dependency-free: it is two transforms and one drawImage.
  */
 export function ImageCropDialog({ file, onCancel, onCropped }: { file: File; onCancel: () => void; onCropped: (file: File) => void }) {
+  const t = useTranslations("dashboard");
+  const tc = useTranslations("common");
   const [src, setSrc] = useState<string>();
   const [image, setImage] = useState<HTMLImageElement>();
   const [frame, setFrame] = useState<Size>({ width: 0, height: 0 });
@@ -31,10 +34,10 @@ export function ImageCropDialog({ file, onCancel, onCropped }: { file: File; onC
     setSrc(url);
     const element = new Image();
     element.onload = () => setImage(element);
-    element.onerror = () => setError("That image could not be opened.");
+    element.onerror = () => setError(t("imageCrop.openFailed"));
     element.src = url;
     return () => URL.revokeObjectURL(url);
-  }, [file]);
+  }, [file, t]);
 
   useEffect(() => {
     const node = frameRef.current;
@@ -85,18 +88,18 @@ export function ImageCropDialog({ file, onCancel, onCropped }: { file: File; onC
       if (!blob) throw new Error("unsupported");
       onCropped(new File([blob], "cover.webp", { type: "image/webp" }));
     } catch {
-      setError("This browser could not render the crop. Upload the image as it is instead.");
+      setError(t("imageCrop.renderFailed"));
     } finally {
       setBusy(false);
     }
   };
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Frame the cover image" className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+    <div role="dialog" aria-modal="true" aria-label={t("imageCrop.dialogLabel")} className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
       <div className="w-full max-w-2xl space-y-4 rounded-lg border bg-card p-4 shadow-lg">
         <div>
-          <p className="text-sm font-medium">Frame the cover</p>
-          <p className="text-xs text-muted-foreground">Drag to position and zoom to fill. Saved at 16:7, the ratio event pages use.</p>
+          <p className="text-sm font-medium">{t("imageCrop.title")}</p>
+          <p className="text-xs text-muted-foreground">{t("imageCrop.description")}</p>
         </div>
         <div
           ref={frameRef}
@@ -115,6 +118,7 @@ export function ImageCropDialog({ file, onCancel, onCropped }: { file: File; onC
           onPointerCancel={() => { drag.current = undefined; }}
         >
           {src && image && (
+            // physical `left`: the offset maths is in screen pixels and must not mirror in RTL
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={src}
@@ -130,18 +134,18 @@ export function ImageCropDialog({ file, onCancel, onCropped }: { file: File; onC
           )}
         </div>
         <label className="flex items-center gap-3 text-sm">
-          Zoom
+          {t("imageCrop.zoom")}
           <input
             type="range" min={1} max={MAX_ZOOM} step={0.01} value={zoom}
             onChange={(event) => setZoom(Number(event.target.value))}
             className="h-1 flex-1 cursor-pointer accent-[var(--primary)]"
-            aria-label="Zoom"
+            aria-label={t("imageCrop.zoom")}
           />
         </label>
         {error && <p className="text-xs text-destructive">{error}</p>}
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="ghost" onClick={onCancel} disabled={busy}>Cancel</Button>
-          <Button type="button" onClick={() => void apply()} pending={busy} disabled={!image}>Use this crop</Button>
+          <Button type="button" variant="ghost" onClick={onCancel} disabled={busy}>{tc("actions.cancel")}</Button>
+          <Button type="button" onClick={() => void apply()} pending={busy} disabled={!image}>{t("imageCrop.use")}</Button>
         </div>
       </div>
     </div>

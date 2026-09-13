@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { and, asc, desc, eq, gte, isNull, lt } from "drizzle-orm";
 import { CalendarPlus, Globe } from "lucide-react";
 import { events, organizations } from "@evnelo/db";
@@ -25,14 +26,14 @@ async function load(slug: string) {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const data = await load((await params).slug);
-  return data ? { title: data.org.name, description: `Events by ${data.org.name}` } : {};
+  const [data, t] = await Promise.all([params.then((p) => load(p.slug)), getTranslations("public.org")]);
+  return data ? { title: data.org.name, description: t("meta.description", { name: data.org.name }) } : {};
 }
 
 const stagger = (index: number) => ({ ["--stagger" as string]: Math.min(index, 12) }) as React.CSSProperties;
 
 export default async function OrgPage({ params }: Params) {
-  const data = await load((await params).slug);
+  const [data, t] = await Promise.all([params.then((p) => load(p.slug)), getTranslations("public.org")]);
   if (!data) notFound();
   const { org, upcoming, past } = data;
   const toCard = (e: (typeof upcoming)[number]): CardEvent => ({
@@ -50,7 +51,7 @@ export default async function OrgPage({ params }: Params) {
           <span aria-hidden className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-accent font-display text-3xl text-accent-foreground shadow-card sm:size-24">{initials}</span>
         )}
         <div className="min-w-0">
-          <p className="eyebrow">Organizer</p>
+          <p className="eyebrow">{t("eyebrow")}</p>
           <h1 className="display mt-1 text-4xl sm:text-6xl">{org.name}</h1>
           <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-muted-foreground">
             {org.website && (
@@ -65,15 +66,15 @@ export default async function OrgPage({ params }: Params) {
 
       <section className="hairline mt-12 pt-8">
         <div className="flex items-baseline justify-between gap-4">
-          <h2 className="display text-3xl">Upcoming</h2>
-          {upcoming.length > 0 && <span className="text-sm text-muted-foreground tabular-nums">{upcoming.length} {upcoming.length === 1 ? "event" : "events"}</span>}
+          <h2 className="display text-3xl">{t("upcoming")}</h2>
+          {upcoming.length > 0 && <span className="text-sm text-muted-foreground tabular-nums">{t("count", { count: upcoming.length })}</span>}
         </div>
         {upcoming.length === 0 ? (
           <div className="animate-rise mx-auto mt-10 max-w-md text-center">
             <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-accent text-accent-foreground"><CalendarPlus className="size-6" aria-hidden /></div>
-            <p className="display mt-5 text-2xl">Nothing scheduled right now.</p>
-            <p className="mt-2 text-sm text-muted-foreground">Check back soon, or see what other hosts are running.</p>
-            <div className="mt-6"><Link href="/discover" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>Browse all events</Link></div>
+            <p className="display mt-5 text-2xl">{t("empty.title")}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{t("empty.body")}</p>
+            <div className="mt-6"><Link href="/discover" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>{t("empty.action")}</Link></div>
           </div>
         ) : (
           <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -86,7 +87,7 @@ export default async function OrgPage({ params }: Params) {
 
       {past.length > 0 && (
         <section className="hairline mt-12 pt-8">
-          <h2 className="display text-3xl">Past events</h2>
+          <h2 className="display text-3xl">{t("past")}</h2>
           <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {past.map((e, index) => (
               <li key={e.id} className="animate-rise opacity-90" style={stagger(index)}><EventCard event={toCard(e)} /></li>

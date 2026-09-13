@@ -2,10 +2,11 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Resend from "next-auth/providers/resend";
 import * as React from "react";
+import { getLocale } from "next-intl/server";
 import { db } from "@/lib/db";
 import { emailConfigured, env } from "@/lib/env";
 import { drizzleAdapter } from "@/lib/auth/adapter";
-import { renderEmail, sendEmail } from "@/lib/email";
+import { emailLocale, emailTranslator, renderEmail, sendEmail } from "@/lib/email";
 import MagicLink, { magicLinkSubject } from "@/emails/magic-link";
 
 export const googleEnabled = Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET);
@@ -32,8 +33,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (process.env.NODE_ENV === "production") throw new Error("RESEND_API_KEY is not set; magic-link sign-in needs email.");
           return; // dev without email: the link above is enough
         }
-        const { html, text } = await renderEmail(React.createElement(MagicLink, { brand: { orgName: "Evnelo", appUrl: env.APP_URL }, url, host }));
-        await sendEmail({ to: identifier, subject: magicLinkSubject({ brand: { orgName: "Evnelo", appUrl: env.APP_URL }, url, host }), html, text });
+        // the language of the request that asked for the link (sendVerificationRequest runs inside it)
+        const locale = emailLocale(await getLocale().catch(() => null));
+        const props = { ...(await emailTranslator(locale)), brand: { orgName: "Evnelo", appUrl: env.APP_URL }, url, host };
+        const { html, text } = await renderEmail(React.createElement(MagicLink, props));
+        await sendEmail({ to: identifier, subject: magicLinkSubject(props), html, text });
       },
     }),
     ...(googleEnabled ? [Google({ clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET, allowDangerousEmailAccountLinking: true })] : []),

@@ -1,0 +1,57 @@
+{
+  "language": "Linguagem",
+  "brand": "Evnelo",
+  "tagline": "Acontecimentos em movimento.",
+  "actions": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "delete": "Excluir",
+    "remove": "Remover",
+    "edit": "Editar",
+    "add": "Adicionar",
+    "back": "Voltar",
+    "continue": "Continuar",
+    "confirm": "Confirmar",
+    "copy": "Cópia",
+    "copied": "Copiado",
+    "search": "Procurar",
+    "retry": "Tente novamente",
+    "ok": "OK",
+    "discard": "Descartar",
+    "restore": "Restaurar",
+    "signIn": "Entrar",
+    "signOut": "sair",
+    "loading": "Carregando…"
+  },
+  "labels": {
+    "optional": "opcional",
+    "required": "Obrigatório",
+    "free": "Livre",
+    "soldOut": "Vendido",
+    "cancelled": "Cancelado",
+    "draft": "Rascunho",
+    "published": "Publicado",
+    "yes": "Sim",
+    "no": "Não",
+    "name": "Nome",
+    "email": "E-mail",
+    "phone": "Telefone",
+    "status": "Status",
+    "date": "Data",
+    "created": "Criado",
+    "unknown": "Desconhecido"
+  },
+  "errors": {
+    "generic": "Algo deu errado. Tente novamente.",
+    "network": "Erro de rede. Tente novamente.",
+    "notFound": "Não encontrado",
+    "rateLimited": "Muitas tentativas. Aguarde alguns minutos e tente novamente.",
+    "captcha": "Não foi possível confirmar se você não é um robô. Recarregue a página e tente novamente."
+  },
+  "time": {
+    "momentAgo": "há pouco",
+    "minutesAgo": "{minutes} min atrás",
+    "hoursAgo": "{hours, plural, one {# hora atrás} other {# horas atrás}}"
+  }
+}

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 import { requireEvent } from "@/lib/dashboard";
 import { captureError } from "@/lib/observability";
 import { REGISTRATION_DOWNLOAD_EXPIRY_SECONDS } from "@/lib/registration-uploads";
@@ -14,12 +15,13 @@ export const runtime = "nodejs";
  * The key is rebuilt from this server's own prefix, so nothing in the URL can point elsewhere.
  */
 export async function GET(_request: Request, { params }: { params: Promise<{ eventId: string; file: string }> }) {
-  if (!storageConfigured) return new NextResponse("Not found", { status: 404 });
+  const [t, tc] = await Promise.all([getTranslations("event"), getTranslations("common")]);
+  if (!storageConfigured) return new NextResponse(tc("errors.notFound"), { status: 404 });
   const { eventId, file } = await params;
   const { event } = await requireEvent(eventId, "manage_attendees");
 
   const verified = await verifyRegistrationFile(`${registrationUploadPrefix(event.id)}${file}`, event.id);
-  if (!verified) return new NextResponse("Not found", { status: 404 });
+  if (!verified) return new NextResponse(tc("errors.notFound"), { status: 404 });
 
   try {
     const url = await presignRegistrationDownload(verified.key, {
@@ -29,6 +31,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ eve
     return NextResponse.redirect(url, { status: 302, headers: { "cache-control": "private, no-store", "referrer-policy": "no-referrer" } });
   } catch (error) {
     captureError("uploads.registration.download", error, { eventId: event.id });
-    return new NextResponse("File storage is unavailable right now.", { status: 503 });
+    return new NextResponse(t("errors.storageUnavailable"), { status: 503 });
   }
 }

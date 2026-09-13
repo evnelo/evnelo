@@ -1,19 +1,21 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 export type LinkTab = { key: string; label: string; href: string };
 
 /** Underlined tabs that are plain links, so each tab has a URL and works before hydration. */
 export function LinkTabs({ tabs, active, className }: { tabs: LinkTab[]; active: string; className?: string }) {
+  const t = useTranslations("dashboard");
   return (
-    <nav aria-label="Sections" className={cn("no-scrollbar -mx-1 overflow-x-auto overflow-y-hidden px-1", className)}>
+    <nav aria-label={t("linkTabs.label")} className={cn("no-scrollbar -mx-1 overflow-x-auto overflow-y-hidden px-1", className)}>
       <div className="flex w-max min-w-full gap-1 border-b border-border/70">
-      {tabs.map((t) => {
-        const current = t.key === active;
+      {tabs.map((tab) => {
+        const current = tab.key === active;
         return (
           <Link
-            key={t.key}
-            href={t.href}
+            key={tab.key}
+            href={tab.href}
             scroll={false}
             aria-current={current ? "page" : undefined}
             className={cn(
@@ -21,7 +23,7 @@ export function LinkTabs({ tabs, active, className }: { tabs: LinkTab[]; active:
               current ? "font-medium text-foreground after:bg-pulse" : "text-muted-foreground after:bg-transparent hover:text-foreground hover:after:bg-border",
             )}
           >
-            {t.label}
+            {tab.label}
           </Link>
         );
       })}

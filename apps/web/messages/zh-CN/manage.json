@@ -1,0 +1,434 @@
+{
+  "eventForm": {
+    "validation": {
+      "times": "设定开始时间和结束时间。"
+    },
+    "saved": "已保存。",
+    "restore": {
+      "notice": "从您上次中断的地方继续： {when}中未保存的更改已恢复到表单中。",
+      "discard": "丢弃它们"
+    },
+    "basics": {
+      "title": "基础知识",
+      "description": "人们首先看到的是：名称、地址、故事、艺术作品。",
+      "name": "事件名称",
+      "url": "事件 URL",
+      "descriptionLabel": "描述",
+      "descriptionHelp": "支持 Markdown 格式。",
+      "tags": "标签",
+      "tagsHelp": "逗号分隔。用于发现。",
+      "tagsPlaceholder": "设计，聚会",
+      "cover": "封面图片",
+      "logo": "活动标志"
+    },
+    "when": {
+      "title": "什么时候",
+      "description": "时间以 UTC 时间存储，并向活动所在时区的所有人显示。",
+      "starts": "开始",
+      "ends": "结束",
+      "timezone": "时区",
+      "publishedNote": "更改已发布活动的时间会向所有参与者发送电子邮件。"
+    },
+    "where": {
+      "title": "在哪里",
+      "description": "人们聚集的地方，或者他们加入的链接。",
+      "locationType": {
+        "in_person": "亲自",
+        "online": "在线的",
+        "hybrid": "杂交种"
+      },
+      "venue": "场地",
+      "venuePlaceholder": "场地名称",
+      "address": "地址",
+      "addressHelp": "选择一个建议来填写城市、国家和地图坐标。",
+      "city": "城市",
+      "country": "国家代码",
+      "countryHelp": "两位字母代码，例如 BR",
+      "countryPlaceholder": "我们",
+      "mapPin": "从地址 ( {lat}, {lng} ) 设置地图图钉。选择其他建议来移动它。",
+      "joinLink": "加入链接",
+      "joinLinkHelp": "仅向已确认的与会者显示，显示在确认函和提醒邮件中。",
+      "joinLinkPlaceholder": "https://meet…"
+    },
+    "registration": {
+      "title": "登记",
+      "description": "谁能找到这个活动，又有多少人能来参加？",
+      "visibility": "能见度",
+      "visibilityOptions": {
+        "public": "民众",
+        "unlisted": "未公开",
+        "private": "私人的"
+      },
+      "visibilityHelp": {
+        "public": "已在Discover上架，并被搜索引擎收录。",
+        "unlisted": "任何拥有该链接的人；未列入名单或索引。",
+        "private": "只有拥有邀请链接的人才能访问。"
+      },
+      "capacity": "容量",
+      "capacityHelp": "留空表示无限制。"
+    },
+    "options": {
+      "title": "注册选项",
+      "description": "审批、宾客、提醒、费用和退款政策。",
+      "approval": "手动批准每项注册。",
+      "approvalHelp": "人们申请加入；批准或拒绝其加入参会名单。",
+      "phone": "索要电话号码",
+      "phoneHelp": "可选字段，用于选择是否接收短信通知以接收票务和提醒。",
+      "guests": "允许访客（+1）",
+      "guestsHelp": "每位客人都会拿到一张单独的票。",
+      "maxGuests": "每人最多可登记入住人数",
+      "waitlist": "售罄后进入候补名单",
+      "waitlistHelp": "访客可以排队；当有空位时，您可以从“候补名单”选项卡提供名额。",
+      "feePassThrough": "买方支付服务费",
+      "feePassThroughHelp": "云版本：将 0.99% 显示为一个单独的项目。",
+      "refundPolicy": "退款政策",
+      "refundPolicyHelp": "付费门票结账时显示。",
+      "reminders": "提醒",
+      "reminder24": "24小时前",
+      "reminder1": "提前1小时",
+      "reminderCustom": "此外，在<input></input>小时前",
+      "reminderCustomLabel": "自定义提醒时间",
+      "reminderCustomPlaceholder": "48，3",
+      "hint": {
+        "joined": "{first} · {second}",
+        "on": "日期： {items}",
+        "defaults": "默认值",
+        "reminders": "提醒{items}",
+        "noReminders": "没有提醒",
+        "hours": "{hours}小时",
+        "flags": {
+          "approval": "赞同",
+          "phone": "电话",
+          "guests": "客人",
+          "waitlist": "候补名单",
+          "feePassThrough": "买家支付费用"
+        }
+      }
+    },
+    "links": {
+      "title": "链接",
+      "description": "活动页面上会显示社交链接。",
+      "hint": "{count, plural, =0 {暂无链接} one {#链接} other {#链接}}",
+      "platform": "平台",
+      "url": "URL",
+      "remove": "移除链接",
+      "add": "添加链接"
+    },
+    "hosts": {
+      "title": "主持人",
+      "description": "活动页面上显示的人员。",
+      "hint": "{count, plural, =0 {目前还没有主持人} one {#主机} other {#主机}}",
+      "name": "主机名",
+      "titleField": "标题",
+      "remove": "主机",
+      "avatar": "阿凡达",
+      "add": "添加主机"
+    },
+    "sponsors": {
+      "title": "赞助商",
+      "description": "活动页面上的徽标按此顺序显示。",
+      "hint": "{count, plural, =0 {目前还没有赞助商} one {#赞助商} other {#赞助商}}",
+      "name": "赞助商名称",
+      "tier": "层级",
+      "website": "网站",
+      "remove": "移除赞助商",
+      "logo": "标识",
+      "add": "添加赞助商"
+    },
+    "bar": {
+      "createNote": "发布之前，所有内容都是不公开的。",
+      "editNote": "保存后更改立即生效。",
+      "createDraft": "创建草稿",
+      "saveChanges": "保存更改"
+    }
+  },
+  "fields": {
+    "title": "登记表",
+    "description": "系统始终会询问姓名和电子邮件地址。您可以提出自己的问题，这些问题可以针对注册人、整个订单或每位宾客，并且只有在之前的答案匹配时才会显示。",
+    "add": "添加问题",
+    "empty": {
+      "title": "只需提供姓名和邮箱地址",
+      "description": "如果您需要更多信息，例如饮食说明、公司名称或 T 恤尺码，请添加问题。",
+      "action": "添加你的第一个问题"
+    },
+    "untitled": "无标题问题",
+    "types": {
+      "short_text": "短文本",
+      "long_text": "长文本",
+      "email": "电子邮件",
+      "phone": "电话",
+      "number": "数字",
+      "select": "单选",
+      "multi_select": "多项选择题",
+      "checkbox": "复选框",
+      "date": "日期",
+      "url": "关联",
+      "file": "文件上传",
+      "consent": "同意（必须勾选）"
+    },
+    "scopes": {
+      "attendee": "每位注册者",
+      "order": "每笔订单限用一次",
+      "guest": "每位客人"
+    },
+    "badges": {
+      "required": "必需的",
+      "conditional": "条件"
+    },
+    "moveUp": "向上",
+    "moveDown": "向下",
+    "question": "问题",
+    "key": "钥匙",
+    "keyHelp": "导出数据和 API 中的列名。小写，带下划线。",
+    "type": "类型",
+    "fileNeedsS3": "文件上传需要在此实例上配置 S3 存储。",
+    "fileUnavailable": "S3 存储未配置，因此注册者无法上传此文件。表单显示该文件不可用。",
+    "asked": "问",
+    "options": "选项",
+    "optionsHelp": "每行一个值。使用“值 | 标签”可以存储不同的值。",
+    "helpText": "帮助文本",
+    "placeholder": "占位符",
+    "requiredOnlyWhenShown": "（仅在显示时）",
+    "onlyForTicketTypes": "仅适用于这些类型的门票",
+    "noneSelectedIsAll": "（未选择任何选项 = 全部）",
+    "condition": "仅当之前的答案匹配时才显示",
+    "conditionNeedsEarlier": "（请先在上面添加一个问题）",
+    "showWhen": "显示以下<select></select>匹配项：",
+    "allOrAny": "全部或任何",
+    "match": {
+      "and": "全部",
+      "or": "任何"
+    },
+    "ops": {
+      "eq": "是",
+      "neq": "不是",
+      "contains": "包含",
+      "empty": "空",
+      "not_empty": "不为空"
+    },
+    "rule": {
+      "field": "场地",
+      "operator": "操作员",
+      "value": "价值",
+      "choose": "选择…",
+      "checked": "已检查",
+      "unchecked": "未经核实",
+      "remove": "移除规则",
+      "add": "添加规则"
+    },
+    "dependNote": "一个问题可能只取决于它上面的一个问题。",
+    "save": "保存表单"
+  },
+  "ticketTypes": {
+    "title": "票种",
+    "descriptionEmpty": "发布时未指定票种，则会自动生成一张免费的普通入场券。",
+    "descriptionGuests": "人们可以购买哪些商品，以及每种商品的数量。来宾支付的价格与注册者的门票价格相同。",
+    "description": "人们可以购买哪些商品，以及每种商品的数量。价格为 0 表示免费。",
+    "add": "添加票务类型",
+    "saved": "已保存。",
+    "columns": {
+      "price": "价格",
+      "sold": "卖",
+      "salesWindow": "销售窗口"
+    },
+    "empty": {
+      "title": "暂无票种",
+      "description": "每增加一项，就给人们可以购买的商品增加一项——早鸟价、标准价、学生价。"
+    },
+    "tax": "+ {rate} % 税",
+    "soldOfQuantity": "{sold} / {quantity}",
+    "held": "{count}举行",
+    "window": "{start} → {end}",
+    "windowNow": "现在",
+    "windowEvent": "事件",
+    "always": "总是",
+    "badges": {
+      "hidden": "隐",
+      "code": "代码"
+    },
+    "confirmDelete": "删除“ {name} ”？",
+    "dialog": {
+      "editTitle": "编辑票务类型",
+      "newTitle": "新的票务类型",
+      "description": "价格单位为{currency} 。限量发售，请设置数量。"
+    },
+    "form": {
+      "description": "描述",
+      "price": "价格",
+      "currency": "货币",
+      "tax": "税 ％",
+      "quantity": "数量",
+      "quantityHelp": "空 = 无限",
+      "minPerOrder": "每单最低消费",
+      "maxPerOrder": "每笔订单最高限额",
+      "salesStart": "销售开始",
+      "salesEnd": "销售结束",
+      "hidden": "已从活动页面隐藏",
+      "accessCode": "访问码"
+    }
+  },
+  "discounts": {
+    "title": "折扣码",
+    "description": "订单可享受百分比或固定金额折扣。买家在结账时输入优惠码；该优惠码适用于订单中的每张商品。",
+    "add": "添加代码",
+    "form": {
+      "code": "代码",
+      "codePlaceholder": "早鸟优惠",
+      "type": "类型",
+      "kind": {
+        "percent": "％ 离开",
+        "fixed": "{currency}关闭"
+      },
+      "percent": "百分比",
+      "amount": "金额（ {currency} ）",
+      "maxUses": "最大使用量",
+      "unlimited": "无限",
+      "expires": "过期",
+      "create": "创造"
+    },
+    "columns": {
+      "code": "代码",
+      "discount": "折扣",
+      "uses": "用途",
+      "expires": "过期"
+    },
+    "empty": {
+      "title": "没有折扣码",
+      "description": "使用优惠码是享受早鸟价、合作伙伴价或亲友价的最简单方法。"
+    },
+    "percentOff": "{value} % 折扣",
+    "amountOff": "{amount}关闭",
+    "usesOfMax": "{uses} / {max}",
+    "never": "绝不",
+    "status": {
+      "expired": "已到期",
+      "usedUp": "用完了",
+      "active": "积极的"
+    },
+    "confirmDelete": "删除代码{code} ？已使用该代码的订单仍保留折扣。"
+  },
+  "invites": {
+    "title": "邀请函",
+    "description": "每位访客一个链接，或者所有人共用一个链接。每个邀请都会记录其使用次数。",
+    "privateNote": "本次活动为私密活动：只有打开邀请链接的人员（或您组织的成员）才能查看和注册。电子邮件邀请仅对发送至该邮箱的地址有效。",
+    "publicNote": "邀请函仅限制对<b>私人</b>活动的访问。本次活动是{visibility} ，因此任何拥有链接的人都可以注册；您仍然可以出于礼貌发送邀请。",
+    "visibility": {
+      "public": "民众",
+      "unlisted": "未公开",
+      "private": "私人的"
+    },
+    "form": {
+      "emailPlaceholder": "guest@example.com",
+      "maxUses": "最大使用量",
+      "expiresInDays": "（天）后过期",
+      "never": "绝不",
+      "create": "创建邀请",
+      "help": "将电子邮件地址留空，即可生成任何人都可以使用的分享链接。"
+    },
+    "copyPrompt": "复制此链接",
+    "newLink": "新链接",
+    "copyLink": "复制链接",
+    "columns": {
+      "invite": "邀请",
+      "uses": "用途",
+      "expires": "过期"
+    },
+    "empty": {
+      "title": "目前还没有收到邀请。",
+      "description": "在上方创建一个链接，或者将其发送到单个电子邮件地址。"
+    },
+    "shareableLink": "分享链接",
+    "created": "创建于{date}",
+    "usesOfMax": "{uses} / {max}",
+    "never": "绝不",
+    "status": {
+      "expired": "已到期",
+      "usedUp": "用完了",
+      "active": "积极的"
+    },
+    "revoke": "撤销",
+    "confirmRevoke": "撤回此邀请？链接将立即失效。"
+  },
+  "waitlist": {
+    "title": "候补名单",
+    "summary": "{waiting}等待， {offered}提供， {registered}注册。",
+    "description": "活动门票售罄后形成的长队。",
+    "enabledNote": "活动门票售罄后，访客可以加入候补名单。推广者将为其保留一个座位24小时，并通过电子邮件发送领取链接；未领取的座位将重新开放给候补名单。",
+    "disabledNote": "本次活动的候补名单已关闭（编辑 → 注册选项）。之前加入的人员仍会显示在此处。",
+    "columns": {
+      "person": "人",
+      "joined": "加入",
+      "actions": "行动"
+    },
+    "empty": {
+      "title": "候补名单上没有人",
+      "description": "所有票都售罄后，人们就在这里排队。由你来决定下一个空位给谁。"
+    },
+    "status": {
+      "waiting": "等待",
+      "offered": "提供",
+      "registered": "挂号的",
+      "expired": "已到期"
+    },
+    "heldUntil": "从{ticketType}到{time}",
+    "lapsed": "优惠已过期；可以再次推广",
+    "ticketType": "票种",
+    "option": "{name} · {price}",
+    "optionWithRoom": "{name} · {price} · {room}左侧",
+    "offer": "提供一个位置",
+    "confirmRemove": "从候补名单中移除{email} ？",
+    "confirmRemoveOffered": "将{email}从候补名单中移除？他们保留的座位将被释放。"
+  },
+  "refund": {
+    "confirm": "全额退款{amount} ？此订单中的门票将停止使用，Stripe确认后座位将被释放。",
+    "requested": "已申请退款。",
+    "button": "退款{amount}"
+  },
+  "chart": {
+    "peak": "峰值{max} /天",
+    "summary": "{total, plural, one {#注册} other {#注册}} 超过 {days, plural, one {#天} other {#天}}",
+    "aria": "每日注册量。单日峰值{max} ，总计{total} 。",
+    "tooltip": "{date}: {count}"
+  },
+  "scanner": {
+    "outcome": {
+      "ok": "已办理入住",
+      "offline_ok": "已签到（离线，稍后同步）",
+      "already": "已办理入住",
+      "not_confirmed": "注册未确认",
+      "revoked": "机票取消或退款",
+      "wrong_event": "门票是另一场活动的。",
+      "not_found": "无效票",
+      "offline_unknown": "未知票务（离线）",
+      "error": "无法办理入住手续"
+    },
+    "checkedIn": "已办理入住",
+    "ofConfirmed": "/ {confirmed}",
+    "mode": "办理入住手续",
+    "scan": "扫描",
+    "progress": "已确认门票占比{pct} % · 更新于{time}",
+    "progressQueued": "已确认票数的{pct} % · 已更新{time} · 等待同步{count}",
+    "offline": "离线模式：扫描结果会保存并在稍后同步。",
+    "guestOf": "{name}的客人",
+    "ticketTypeInAt": "{ticketType} · 在{time}",
+    "undo": "撤销",
+    "camera": {
+      "denied": "摄像头访问已被阻止。请允许此站点使用摄像头，或使用搜索功能按姓名签到。",
+      "unsupported": "此浏览器无法使用摄像头。请使用搜索功能，或在下方粘贴工单链接。",
+      "starting": "启动相机……",
+      "point": "将手指指向票上的二维码"
+    },
+    "manualPlaceholder": "或者粘贴工单链接/代码",
+    "manualLabel": "票务链接或代码",
+    "checkIn": "报到",
+    "searchPlaceholder": "按姓名或电子邮件搜索",
+    "searchLabel": "搜索与会者",
+    "noMatches": "没有已确认的出席者。",
+    "listGuestOf": "· {name}的客人",
+    "listDetail": "{ticketType} · {email}",
+    "listDetailInAt": "{ticketType} · {email} · 在{time}",
+    "recent": "最近的",
+    "recentDetail": "· {ticketType} · {time}",
+    "recentDetailManual": "· {ticketType} · {time} · 手册"
+  }
+}

@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "description": "活动，动态进行中。开放的活动基础设施：发布活动、注册参与者、出售或赠送门票、向社区发送消息、签到。"
+  },
+  "nav": {
+    "discover": "发现",
+    "pricing": "定价",
+    "dashboard": "仪表板",
+    "signIn": "登入",
+    "host": "举办活动",
+    "hostShort": "主持人",
+    "api": "API"
+  },
+  "footer": {
+    "tagline": "活动，动态进行中。开放的活动基础设施：免费活动完全免费，付费活动主办方需支付 0.99% 的费用。",
+    "credit": "由<inevent>InEvent</inevent>为您呈现。"
+  },
+  "og": {
+    "subtitle": "开放活动基础设施。发布、注册、参加。"
+  },
+  "github": {
+    "label": "GitHub 上的 evnelo/evnelo"
+  },
+  "captcha": {
+    "notice": "本网站受 reCAPTCHA 保护，并适用 Google <privacy>隐私政策</privacy>和<terms>服务条款</terms> 。"
+  },
+  "hero": {
+    "eyebrow": "开放活动基础设施",
+    "title": "从点击鼠标到抵达大门。",
+    "lead": "在一个开放平台上发布活动、售票、向与会者发送消息和进行签到，或者在您自己的技术栈上自行托管。",
+    "pricing": "<b>0.99%</b>付费门票。免费活动保持免费。__ <br></br> <b>0%</b>如果您自行主办。",
+    "explore": "探索活动",
+    "scene": {
+      "steps": {
+        "discover": {
+          "label": "发现",
+          "sub": "找到能打动你的事物。"
+        },
+        "register": {
+          "label": "登记",
+          "sub": "只需点击几下即可"
+        },
+        "ticketing": {
+          "label": "售票处",
+          "sub": "销售无限制"
+        },
+        "checkin": {
+          "label": "报到",
+          "sub": "快速、友好、灵活。"
+        },
+        "attendance": {
+          "label": "出勤率",
+          "sub": "真实的人，持久的影响。"
+        }
+      },
+      "event": {
+        "category": "音乐",
+        "title": "日落时分",
+        "date": "2024年8月24日，星期六",
+        "place": "河滨公园"
+      },
+      "create": {
+        "title": "创建您的活动",
+        "publish": "发布活动"
+      },
+      "ticket": {
+        "title": "普通入场",
+        "meta": "2024年8月24日，星期六<br></br>河滨公园"
+      },
+      "checkin": {
+        "title": "与会者已签到",
+        "welcome": "欢迎！"
+      },
+      "attendance": {
+        "more": "+ {count}",
+        "meta": "出席人数"
+      },
+      "notes": {
+        "left": "更多活动。__ <br></br>一个更加开放的世界。",
+        "right": "事件<br></br>能感动人。"
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Evnelo：动态事件",
+      "description": "开放的活动基础设施。发布活动、注册参与者、出售或赠送门票、向社区发送消息并签到。付费门票收取 0.99% 的佣金，免费活动完全免费，或者您可以免费自行举办活动。"
+    },
+    "pricing": {
+      "eyebrow": "定价",
+      "title": "费用比任何其他平台都低。",
+      "body": "大多数平台会对每张票收取 3% 到 5% 的佣金，外加手续费。Evnelo 对付费票收取 0.99% 的佣金，免费票不收取任何费用。您可以关联自己的 Stripe 账户，这样票款就会直接进入您的账户，无需经过我们这里；Stripe 会收取手续费，您可以选择将费用转嫁给买家或自行承担。",
+      "plans": {
+        "free": {
+          "title": "免费活动",
+          "price": "0美元",
+          "note": "无平台费，无门票费，参与人数不限。"
+        },
+        "paid": {
+          "title": "付费活动",
+          "price": "0.99%",
+          "note": "票价将通过您关联的 Stripe 账户收取。例如，一张 25 美元的门票，您需要支付 25 美分，外加 Stripe 手续费。"
+        },
+        "selfHosted": {
+          "title": "自托管",
+          "price": "0美元",
+          "note": "开源。一个容器，你的 MySQL，你自己的 Stripe 密钥。永远没有平台费用。"
+        }
+      }
+    },
+    "flow": {
+      "eyebrow": "它如何流动",
+      "title": "介于“我想去”和“我在这里”之间的所有情况。",
+      "steps": {
+        "publish": {
+          "title": "发布",
+          "text": "活动页面，包含封面、日程安排、场地和主办方信息。可选择公开、不公开或仅限受邀人士参加。"
+        },
+        "register": {
+          "title": "登记",
+          "text": "门票等级、您自己的问题、携带个人门票的客人、折扣码、售罄时的候补名单。"
+        },
+        "pay": {
+          "title": "付款和收款",
+          "text": "支持银行卡、Apple Pay、Google Pay、Pix 支付。提供二维码门票、电子钱包通行证、日历文件、电子邮件和短信确认。"
+        },
+        "checkin": {
+          "title": "报到",
+          "text": "一款可在任何手机浏览器中运行的扫描仪，即使没有信号也能持续工作，并实时显示房间的填充情况。"
+        }
+      }
+    },
+    "openSource": {
+      "eyebrow": "开源",
+      "title": "你的事件。你的数据。你的技术栈。",
+      "body": "Evnelo 采用 Apache 2.0 许可证开源。您只需一个容器和一个 MySQL 数据库即可自行托管，集成您自己的 Stripe、Resend 和 Vonage 密钥，并将所有与会者记录保存在您自己的基础设施上。产品功能相同，无需平台费用。",
+      "points": {
+        "export": "内置与会者导出和删除功能",
+        "providers": "自备支付、电子邮件和短信服务提供商",
+        "ops": "迁移、健康检查和备份已记录在案",
+        "migrate": "迁移到托管版本或从托管版本迁移到数据库，而不是重写。"
+      },
+      "source": "查看来源",
+      "apiReference": "API 参考"
+    },
+    "developers": {
+      "eyebrow": "对于开发者",
+      "title": "专为后续建设而建。",
+      "points": {
+        "rest": "每个资源都提供 REST API，并支持幂等写入。",
+        "sdk": "为代理程序生成 TypeScript SDK 和 MCP 服务器",
+        "webhooks": "用于注册、付款和签到的已签名 Webhook",
+        "openapi": "OpenAPI 文档和交互式文档位于 /api/v1/docs"
+      }
+    },
+    "upcoming": {
+      "eyebrow": "即将发生",
+      "title": "Evnelo上的公共活动",
+      "all": "所有活动"
+    },
+    "cta": {
+      "title": "建立聚集流程。",
+      "body": "几分钟即可创建您的第一个活动。免费活动无需任何操作；付费活动需要您的 Stripe 账户。",
+      "explore": "看看有什么活动"
+    }
+  },
+  "discover": {
+    "meta": {
+      "description": "Evnelo 上所有房东举办的公开活动。按城市、主题、日期、价格和距离搜索。"
+    },
+    "headline": {
+      "query": {
+        "none": "匹配“ {q} ”的事件",
+        "city": "在{city}中匹配“ {q} ”的事件",
+        "near": "您附近的匹配“ {q} ”的活动",
+        "online": "在线活动匹配“ {q} ”",
+        "inPerson": "符合“ {q} ”条件的线下活动"
+      },
+      "free": {
+        "none": "免费活动",
+        "city": "{city}的免费活动",
+        "near": "您附近的免费活动",
+        "online": "免费线上活动",
+        "inPerson": "免费线下活动"
+      },
+      "tag": {
+        "none": "{tag}事件",
+        "city": "{city}中的{tag}事件",
+        "near": "您附近的{tag}活动",
+        "online": "{tag}活动",
+        "inPerson": "{tag}参加的活动"
+      },
+      "paid": {
+        "none": "需购票入场的活动",
+        "city": "{city}的售票活动",
+        "near": "您附近的售票活动",
+        "online": "在线购票活动",
+        "inPerson": "需购票才能参加的现场活动"
+      },
+      "all": {
+        "none": "有什么节目？",
+        "city": "{city}事件",
+        "near": "您附近的活动",
+        "online": "线上活动",
+        "inPerson": "线下活动"
+      }
+    },
+    "lead": "Evnelo 上每位主持人都会举办讲座、研讨会、晚宴和聚会。",
+    "jsonLdName": "即将举行的公共活动",
+    "count": {
+      "exact": "{count, plural, one {#事件} other {#事件}}",
+      "more": "{count, plural, one {# + 事件} other {# + 事件}}",
+      "exactFrom": "{count, plural, one {#事件} other {#事件}} 从# {from}",
+      "moreFrom": "{count, plural, one {# + 事件} other {# + 事件}} 从# {from}"
+    },
+    "format": {
+      "online": "在线的",
+      "in_person": "亲自",
+      "hybrid": "杂交种"
+    },
+    "price": {
+      "paid": "有薪酬的"
+    },
+    "date": {
+      "today": "今天",
+      "week": "本星期",
+      "month": "本月",
+      "custom": "日期"
+    },
+    "active": {
+      "showing": "显示",
+      "query": "“ {q} ”",
+      "customRange": "{from}到{to}",
+      "customDates": "自定义日期",
+      "within": "在{km}公里范围内",
+      "remove": "移除过滤器",
+      "clearAll": "全部清除"
+    },
+    "search": {
+      "events": "搜索事件",
+      "placeholder": "搜索活动、主持人及标签",
+      "city": "城市",
+      "cityOption": "{city} ， {country}",
+      "nearMe": "我附近",
+      "nearYou": "您附近",
+      "unsupported": "此浏览器无法分享您的位置信息。请尝试输入城市名称。",
+      "blocked": "位置信息已被屏蔽。请改用城市筛选。"
+    },
+    "toolbar": {
+      "label": "过滤器",
+      "km": "{km}公里",
+      "anywhere": "任何地方",
+      "view": "看法",
+      "list": "列表",
+      "calendar": "日历"
+    },
+    "customDates": {
+      "from": "从",
+      "to": "到",
+      "apply": "申请日期",
+      "clear": "明确日期"
+    },
+    "topics": "主题",
+    "sections": {
+      "featured": "精选",
+      "upcoming": "即将推出"
+    },
+    "empty": {
+      "month": {
+        "title": "本月无任何安排。",
+        "body": "再试一个月或者清理一下滤芯。",
+        "action": "下个月"
+      },
+      "filtered": {
+        "title": "没有事件符合这些筛选条件。",
+        "body": "尝试扩大日期范围或清除筛选条件。",
+        "action": "清除过滤器"
+      },
+      "end": {
+        "title": "你已到达终点。",
+        "body": "本页列出了所有即将举行的公开活动。",
+        "action": "回到起点"
+      },
+      "none": {
+        "title": "目前暂无即将举行的公开活动。",
+        "body": "率先举办一次。"
+      }
+    },
+    "pagination": {
+      "label": "分页",
+      "more": "加载更多"
+    },
+    "card": {
+      "from": "从{price}",
+      "underOneKm": "距离不到1公里",
+      "kmAway": "距此{km}公里"
+    },
+    "calendar": {
+      "eyebrow": "日历",
+      "changeMonth": "月份变更",
+      "goTo": "前往{month}",
+      "today": "今天",
+      "dayCount": "{count, plural, one {#事件} other {#事件}}",
+      "overflow": "+ {count}更多",
+      "timezoneNote": "时间以各赛事所在时区显示。",
+      "rowTitle": "{name} — {time}"
+    }
+  },
+  "org": {
+    "meta": {
+      "description": "{name}事件"
+    },
+    "eyebrow": "组织者",
+    "upcoming": "即将推出",
+    "count": "{count, plural, one {#事件} other {#事件}}",
+    "empty": {
+      "title": "目前暂无安排。",
+      "body": "请稍后再来查看，或看看其他主机正在运行哪些程序。",
+      "action": "浏览所有活动"
+    },
+    "past": "往事"
+  },
+  "report": {
+    "meta": {
+      "title": "报告事件"
+    },
+    "eyebrow": "报告",
+    "title": "报告事件",
+    "reasons": {
+      "spam": "垃圾邮件或误导性信息",
+      "scam": "诈骗或欺诈",
+      "inappropriate": "不当内容",
+      "copyright": "版权或商标",
+      "other": "其他"
+    },
+    "notFound": "未找到该事件。",
+    "openFromEvent": "从事件页面打开此页面即可进行报告。",
+    "sent": "谢谢。您关于<b>{name}</b>的报告已记录。",
+    "sentAndForwarded": "谢谢。您关于<b>{name}</b>的报告已记录并发送给该实例的操作员。",
+    "reporting": "由{org}报告<b>{name}</b> 。报告将发送给运行此 Evnelo 实例的人员，而不是主机。",
+    "errors": {
+      "limited": "您的连接报告过多，请稍后再试。",
+      "invalid": "检查表格并重试。"
+    },
+    "form": {
+      "reason": "原因",
+      "details": "细节",
+      "optional": "（选修的）",
+      "email": "您的电子邮件",
+      "optionalFollowUp": "（可选，如果我们可以跟进的话）",
+      "submit": "发送报告"
+    },
+    "back": "返回活动页面"
+  },
+  "notFound": {
+    "meta": {
+      "title": "页面未找到"
+    },
+    "eyebrow": "404",
+    "title": "这里什么也没有",
+    "body": "链接可能已失效，活动可能已被取消，或者地址有误。",
+    "action": "浏览公共活动"
+  },
+  "error": {
+    "title": "出问题了",
+    "body": "页面出现错误。通常重试即可解决；如果错误持续发生，则已通知服务器。",
+    "reference": "参考号{digest}",
+    "home": "回家"
+  }
+}

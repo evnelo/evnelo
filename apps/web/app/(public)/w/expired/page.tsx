@@ -1,19 +1,25 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Hourglass } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { NarrowPage } from "@/components/narrow-page";
 
-export const metadata = { title: "Waitlist", robots: "noindex" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("event");
+  return { title: t("offerExpired.metaTitle"), robots: "noindex" };
+}
 
-export default function OfferExpiredPage() {
+export default async function OfferExpiredPage() {
+  const t = await getTranslations("event");
   return (
     <NarrowPage
       icon={<Hourglass />}
-      eyebrow="Waitlist"
-      title="This spot is no longer reserved"
-      description="The offer expired or was already used. You are still on the waitlist: if another spot opens, the host can offer it to you again."
+      eyebrow={t("offerExpired.eyebrow")}
+      title={t("offerExpired.title")}
+      description={t("offerExpired.description")}
     >
-      <Link href="/discover" className={buttonVariants({ variant: "outline", size: "lg" })}>Browse public events</Link>
+      <Link href="/discover" className={buttonVariants({ variant: "outline", size: "lg" })}>{t("offerExpired.browse")}</Link>
     </NarrowPage>
   );
 }

@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "{orgName} থেকে <link>Evnelo</link> এর মাধ্যমে পাঠানো হয়েছে। এটি আপনার নিবন্ধিত একটি অনুষ্ঠান সম্পর্কিত একটি লেনদেনমূলক বার্তা।",
+    "when": "যখন",
+    "where": "কোথায়",
+    "online": "অনলাইন",
+    "joinOnline": "অনলাইনে যোগদান করুন →",
+    "admitOne": "একজনকে স্বীকার করুন",
+    "ticketTypeGuestOf": "{ticketType}, {host} এর অতিথি",
+    "openTicket": "খোলা টিকিট",
+    "qrAlt": "টিকিট কিউআর কোড",
+    "scanAtDoor": "দরজায় স্ক্যান করুন"
+  },
+  "reminderWhen": {
+    "tomorrow": "আগামীকাল",
+    "days": "ভিতরে {count, plural, one {# দিন} other {# দিন}}",
+    "hours": "ভিতরে {count, plural, one {# ঘন্টা} other {# ঘন্টা}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {আপনার টিকিট {eventName}} other {আপনার # টিকিটের জন্য {eventName} টিকিট}}",
+    "preview": "আপনার জন্য খরচ হবে {eventName} । {count, plural, one {আপনার টিকিট হল} other {আপনার টিকিটগুলো হল}} ভিতরে।",
+    "title": "আপনি প্রবেশ করেছেন।",
+    "intro": "{count, plural, one {এখানে আপনার টিকিট<link>{eventName}</link>.} other {এখানে আপনার # টি টিকিট রয়েছে<link>{eventName}</link>.}}",
+    "showQr": "দরজায়, আপনার ফোনে অথবা প্রিন্ট করে কিউআর কোডটি দেখান।",
+    "addToCalendar": "ক্যালেন্ডারে যোগ করুন",
+    "questions": "অনুষ্ঠানটি সম্পর্কে কোনো প্রশ্ন আছে? {orgName} যোগাযোগ করতে এই ইমেইলের উত্তর দিন।",
+    "cta": "অনুষ্ঠানের বিবরণ দেখুন"
+  },
+  "approvalPending": {
+    "subject": "{eventName} এর জন্য অনুরোধ পাওয়া গেছে",
+    "preview": "{orgName} আপনার {eventName} এ যোগদানের অনুরোধটি পর্যালোচনা করছে।",
+    "title": "অনুরোধ গৃহীত হয়েছে",
+    "intro": "হাই {name}, {orgName} <link>{eventName}</link> এর প্রতিটি রেজিস্ট্রেশন পর্যালোচনা করেন।",
+    "partySize": "আপনার অনুরোধটি {count} জনের জন্য প্রযোজ্য।",
+    "approved": "{count, plural, one {আপনার টিকিটটি অনুমোদিত হওয়া মাত্রই ইমেইলের মাধ্যমে পেয়ে যাবেন।} other {অনুমোদন পাওয়া মাত্রই আপনি ইমেইলের মাধ্যমে আপনার টিকিটগুলো পেয়ে যাবেন।}}",
+    "nothingToDo": "আপাতত কিছু করার নেই। আপনার পরিকল্পনা পরিবর্তন হলে, এই ইমেলটি উপেক্ষা করবেন।"
+  },
+  "registrationRejected": {
+    "subject": "আপনার {eventName} অনুরোধের আপডেট",
+    "preview": "{orgName} আপনার {eventName} এর জন্য নিবন্ধন অনুমোদন করতে পারেনি।",
+    "title": "আমরা আপনাকে জায়গা দিতে পারিনি",
+    "intro": "হাই {name}, {orgName} আপনার <link>{eventName}</link> এর জন্য নিবন্ধন অনুমোদন করতে পারেননি।",
+    "refund": "যেকোনো পেমেন্ট আপনার কার্ডে ফেরত দেওয়া হবে।",
+    "noPayment": "কোনো অর্থ গ্রহণ করা হয়নি।",
+    "questions": "কোনো প্রশ্ন আছে? আয়োজকের সাথে যোগাযোগ করতে এই ইমেইলে উত্তর দিন।"
+  },
+  "refundIssued": {
+    "subject": "{eventName} এর জন্য {amount} ফেরত",
+    "preview": "{amount} আপনার কার্ডে ফেরত পাঠানো হচ্ছে।",
+    "title": "ফেরত দেওয়া হয়েছে",
+    "intro": "হাই {name}, {orgName} আপনার অর্ডারের জন্য <strong>{amount}</strong> কে <link>{eventName}</link> কে টাকা ফেরত দিয়েছেন।",
+    "cancelled": "{count, plural, one {আপনার টিকিটটি বাতিল করা হয়েছে এবং এটি আর স্ক্যান করা যাবে না।} other {অর্ডারের সমস্ত # টি টিকিট বাতিল করা হয়েছে এবং সেগুলি আর স্ক্যান করা যাবে না।}}",
+    "timing": "আপনার ব্যাংকের ওপর নির্ভর করে, রিফান্ড সাধারণত ৫ থেকে ১০ কার্যদিবসের মধ্যে আপনার কার্ডে পৌঁছে যায়।",
+    "receipt": "এই ইমেলটি আপনার রসিদ।"
+  },
+  "eventReminder": {
+    "subject": "{eventName} হল {when}",
+    "preview": "{eventName} হল {when}. {where}.",
+    "title": "{eventName} হল {when}",
+    "tickets": "{count, plural, one {আপনার টিকিট, স্ক্যান করার জন্য প্রস্তুত:} other {আপনার টিকিটগুলো স্ক্যান করার জন্য প্রস্তুত:}}",
+    "cta": "অনুষ্ঠানের বিবরণ এবং দিকনির্দেশনা",
+    "stopPrompt": "এই ইভেন্টের জন্য রিমাইন্ডার চান না? <link>বন্ধ করুন</link>",
+    "stillGetThrough": "নিশ্চিতকরণ এবং পরিবর্তনগুলো ঠিকই পৌঁছে যায়।"
+  },
+  "eventUpdated": {
+    "subjectBoth": "{eventName} জন্য নতুন সময় ও স্থান",
+    "subjectSchedule": "{eventName} জন্য নতুন সময়",
+    "subjectVenue": "{eventName} এর নতুন অবস্থান",
+    "previewBoth": "{eventName} সময় ও স্থান পরিবর্তন করেছে।",
+    "previewSchedule": "{eventName} সময় পরিবর্তন করেছে।",
+    "previewVenue": "{eventName} স্থানটি পরিবর্তন করেছে।",
+    "title": "{eventName} পরিবর্তিত হয়েছে",
+    "introBoth": "হাই {name}, {orgName} <link>{eventName}</link> এর জন্য সময় এবং স্থান আপডেট করেছেন।",
+    "introSchedule": "হাই {name}, {orgName} <link>{eventName}</link> এর জন্য সময় আপডেট করেছেন।",
+    "introVenue": "হাই {name}, {orgName} <link>{eventName}</link> এর জন্য জায়গাটি আপডেট করেছেন।",
+    "newDetails": "এই হলো নতুন বিবরণ।",
+    "staysValid": "আপনার টিকিটটি বৈধ থাকবে।",
+    "cta": "আমার ক্যালেন্ডার আপডেট করুন"
+  },
+  "eventCancelled": {
+    "subject": "{eventName} বাতিল করা হয়েছে",
+    "preview": "{eventName} অগ্রসর হচ্ছে না।",
+    "title": "{eventName} বাতিল করা হয়েছে",
+    "intro": "হাই {name}, {orgName} <strong>{eventName}</strong> বাতিল করেছেন, যা {when} তারিখে নির্ধারিত ছিল।",
+    "noLongerValid": "আপনার টিকিটটি আর বৈধ নয়।",
+    "refund": "আপনার ব্যবহৃত কার্ডেই টাকা ফেরত দেওয়া হবে; টাকা পাঠানো হয়ে গেলে একটি পৃথক ইমেল পাবেন।",
+    "noPayment": "কোনো অর্থ গ্রহণ করা হয়নি, তাই ফেরত দেওয়ার কিছু নেই।",
+    "questions": "কোনো প্রশ্ন আছে? আয়োজকের সাথে যোগাযোগ করতে এই ইমেইলে উত্তর দিন।"
+  },
+  "eventInvite": {
+    "subject": "আপনাকে আমন্ত্রণ জানানো হচ্ছে: {eventName}",
+    "preview": "{orgName} আপনাকে {eventName} এ আমন্ত্রণ জানিয়েছে।",
+    "title": "আপনাকে আমন্ত্রণ জানানো হচ্ছে।",
+    "intro": "<strong>{orgName}</strong> আপনাকে একটি ব্যক্তিগত অনুষ্ঠানে আমন্ত্রণ জানাচ্ছে।",
+    "cta": "অনুষ্ঠানটি দেখুন এবং নিবন্ধন করুন",
+    "personal": "এই সংযোগটি আপনার ব্যক্তিগত।",
+    "personalExpires": "এই লিঙ্কটি আপনার ব্যক্তিগত এবং এর মেয়াদ {expires} তারিখে শেষ হবে।",
+    "registerWith": "এই ইমেল ঠিকানা দিয়ে নিবন্ধন করুন।"
+  },
+  "orgInvite": {
+    "subject": "আপনাকে Evnelo-তে {orgName} তে আমন্ত্রণ জানানো হচ্ছে।",
+    "preview": "{orgName} কে {role} হিসেবে যুক্ত করুন।",
+    "title": "যোগদান করুন {orgName}",
+    "invitedBy": "{invitedBy} আপনাকে <strong>{orgName}</strong> এর জন্য <strong>{role}</strong> হিসেবে অনুষ্ঠান পরিচালনায় সাহায্য করার জন্য আমন্ত্রণ জানিয়েছে।",
+    "invited": "আপনাকে <strong>{orgName}</strong> এবং <strong>{role}</strong> এর জন্য অনুষ্ঠান পরিচালনায় সাহায্য করার জন্য আমন্ত্রণ জানানো হয়েছে।",
+    "cta": "আমন্ত্রণ গ্রহণ করুন",
+    "validity": "লিঙ্কটি ১৪ দিনের জন্য বৈধ এবং এটি শুধুমাত্র সেই ইমেল ঠিকানাতেই কাজ করবে যেখানে এটি পাঠানো হয়েছে।"
+  },
+  "magicLink": {
+    "subject": "{host} এ সাইন ইন করুন",
+    "preview": "আপনার সাইন-ইন লিঙ্ক {host}",
+    "title": "সাইন ইন করুন",
+    "intro": "{host} এ সাইন ইন করতে বোতামটি ক্লিক করুন।",
+    "expiry": "লিঙ্কটি একবার ব্যবহার করা যাবে এবং ১৫ মিনিট পর এর মেয়াদ শেষ হয়ে যাবে।",
+    "cta": "{host} এ সাইন ইন করুন",
+    "ignore": "আপনি যদি এটি না চেয়ে থাকেন, তবে এই ইমেলটি উপেক্ষা করতে পারেন।",
+    "nobody": "লিঙ্কটি ছাড়া কেউ সাইন ইন করতে পারবে না।"
+  },
+  "waitlistJoined": {
+    "subject": "আপনি {eventName} এর জন্য অপেক্ষমাণ তালিকায় আছেন।",
+    "preview": "অপেক্ষমান তালিকায় আপনার নম্বর {position} ।",
+    "title": "আপনি অপেক্ষমাণ তালিকায় আছেন।",
+    "full": "<strong>{eventName}</strong> এই মুহূর্তে পূর্ণ আছে।",
+    "position": "আপনি লাইনে <strong>{position}</strong> নম্বর।",
+    "offer": "কোনো আসন খালি হলে, সেটি দাবি করার জন্য আমরা আপনাকে একটি লিঙ্ক ইমেল করব; লিঙ্কটি ২৪ ঘণ্টার জন্য বৈধ থাকবে।",
+    "cta": "ইভেন্টটি দেখুন"
+  },
+  "waitlistOffer": {
+    "subject": "একটি পদ খালি হয়েছে: {eventName}",
+    "preview": "{deadline} এর আগে আপনার স্থান নিশ্চিত করুন।",
+    "title": "একটি পদ খালি হয়েছে",
+    "reserved": "সুসংবাদ: <strong>{ticketType}</strong> এর জন্য <strong>{eventName}</strong> একটি স্থান আপনার জন্য সংরক্ষিত আছে।",
+    "claimBefore": "<strong>{deadline}</strong> এর আগে এটি দাবি করুন, এরপর এটি লাইনে থাকা পরবর্তী ব্যক্তির কাছে চলে যাবে।",
+    "cta": "আমার জায়গাটা দাবি করুন",
+    "registerWith": "এই ইমেল ঠিকানা দিয়ে নিবন্ধন করুন।",
+    "personal": "এই সংযোগটি আপনার ব্যক্তিগত।"
+  },
+  "abuseReport": {
+    "subject": "[প্রতিবেদন] {reason}: {eventName}",
+    "preview": "কেউ {eventName} রিপোর্ট করেছে।",
+    "title": "ঘটনাটি রিপোর্ট করা হয়েছে",
+    "intro": "<strong>{eventName}</strong> by {orgName} was reported for <strong>{reason}</strong>.",
+    "reporter": "প্রতিবেদক: {email}",
+    "noReporter": "প্রতিবেদক কোনো ইমেইল রেখে যাননি।",
+    "cta": "অনুষ্ঠানটি শুরু করুন"
+  },
+  "sms": {
+    "confirmation": "আপনার প্রবেশমূল্য {event} । আপনার টিকিট: {ticketUrl}",
+    "reminder": "{event} হল {when} । টিকিট: {ticketUrl}",
+    "updated": "{event} তার সময় বা স্থান পরিবর্তন করেছে। বিস্তারিত: {url}",
+    "cancelled": "{event} বাতিল করা হয়েছে। প্রদত্ত সমস্ত অর্থ ফেরত দেওয়া হবে।"
+  }
+}

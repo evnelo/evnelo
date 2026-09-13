@@ -1,16 +1,18 @@
 import * as React from "react";
-import { ButtonLink, EmailLayout, Para, Title, type EmailBrand } from "./layout";
+import { ButtonLink, EmailLayout, Para, Title, emailI18n, type EmailBrand, type EmailI18n } from "./layout";
 
-export type MagicLinkProps = { brand: EmailBrand; url: string; host: string };
-export const magicLinkSubject = (p: MagicLinkProps) => `Sign in to ${p.host}`;
+export type MagicLinkProps = EmailI18n & { brand: EmailBrand; url: string; host: string };
+export const magicLinkSubject = (p: MagicLinkProps) => emailI18n(p).t("magicLink.subject", { host: p.host });
 
-export default function MagicLink({ brand, url, host }: MagicLinkProps) {
+export default function MagicLink(props: MagicLinkProps) {
+  const { brand, url, host } = props;
+  const { locale, t } = emailI18n(props);
   return (
-    <EmailLayout brand={brand} preview={`Your sign-in link for ${host}`}>
-      <Title>Sign in</Title>
-      <Para>Click the button to sign in to {host}. The link works once and expires in 15 minutes.</Para>
-      <ButtonLink href={url}>Sign in to {host}</ButtonLink>
-      <Para muted style={{ margin: "20px 0 0", fontSize: 13 }}>If you didn't ask for this, you can ignore this email. Nobody can sign in without the link.</Para>
+    <EmailLayout brand={brand} locale={locale} t={t} preview={t("magicLink.preview", { host })}>
+      <Title>{t("magicLink.title")}</Title>
+      <Para>{t("magicLink.intro", { host })} {t("magicLink.expiry")}</Para>
+      <ButtonLink href={url}>{t("magicLink.cta", { host })}</ButtonLink>
+      <Para muted style={{ margin: "20px 0 0", fontSize: 13 }}>{t("magicLink.ignore")} {t("magicLink.nobody")}</Para>
     </EmailLayout>
   );
 }

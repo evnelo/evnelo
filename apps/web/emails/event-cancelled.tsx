@@ -1,16 +1,18 @@
 import * as React from "react";
-import { EmailLayout, Para, Title, type EmailBrand, type EmailEvent } from "./layout";
+import { EmailLayout, Para, Title, emailI18n, strong, type EmailBrand, type EmailEvent, type EmailI18n } from "./layout";
 
-export type EventCancelledProps = { brand: EmailBrand; event: EmailEvent; attendeeName: string; paid: boolean };
-export const eventCancelledSubject = (p: EventCancelledProps) => `${p.event.name} has been cancelled`;
+export type EventCancelledProps = EmailI18n & { brand: EmailBrand; event: EmailEvent; attendeeName: string; paid: boolean };
+export const eventCancelledSubject = (p: EventCancelledProps) => emailI18n(p).t("eventCancelled.subject", { eventName: p.event.name });
 
-export default function EventCancelled({ brand, event, attendeeName, paid }: EventCancelledProps) {
+export default function EventCancelled(props: EventCancelledProps) {
+  const { brand, event, attendeeName, paid } = props;
+  const { locale, t } = emailI18n(props);
   return (
-    <EmailLayout brand={brand} preview={`${event.name} is not going ahead.`}>
-      <Title>{event.name} is cancelled</Title>
-      <Para>Hi {attendeeName}, {brand.orgName} has cancelled <strong>{event.name}</strong>, which was scheduled for {event.when}. Your ticket is no longer valid.</Para>
-      <Para>{paid ? "Your payment will be refunded to the card you used; expect a separate email when it goes through." : "No payment was taken, so there's nothing to refund."}</Para>
-      <Para muted style={{ margin: 0, fontSize: 13 }}>Questions? Reply to this email to reach the organizer.</Para>
+    <EmailLayout brand={brand} locale={locale} t={t} preview={t("eventCancelled.preview", { eventName: event.name })}>
+      <Title>{t("eventCancelled.title", { eventName: event.name })}</Title>
+      <Para>{t.rich("eventCancelled.intro", { name: attendeeName, orgName: brand.orgName, eventName: event.name, when: event.when, strong })} {t("eventCancelled.noLongerValid")}</Para>
+      <Para>{paid ? t("eventCancelled.refund") : t("eventCancelled.noPayment")}</Para>
+      <Para muted style={{ margin: 0, fontSize: 13 }}>{t("eventCancelled.questions")}</Para>
     </EmailLayout>
   );
 }

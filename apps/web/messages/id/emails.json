@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "Dikirim oleh {orgName} melalui <link>Evnelo</link>. Ini adalah pesan transaksional tentang acara yang telah Anda daftarkan.",
+    "when": "Kapan",
+    "where": "Di mana",
+    "online": "On line",
+    "joinOnline": "Gabung secara online →",
+    "admitOne": "Masuk satu orang",
+    "ticketTypeGuestOf": "{ticketType}, tamu dari {host}",
+    "openTicket": "Buka tiket",
+    "qrAlt": "Kode QR tiket",
+    "scanAtDoor": "Pindai di pintu masuk"
+  },
+  "reminderWhen": {
+    "tomorrow": "besok",
+    "days": "di dalam {count, plural, one {hari #} other {# hari}}",
+    "hours": "di dalam {count, plural, one {jam #} other {# jam}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {Tiket Anda untuk {eventName}} other {Anda memiliki # tiket untuk {eventName}}}",
+    "preview": "Anda akan dikenakan biaya {eventName}. {count, plural, one {Tiket Anda adalah} other {Tiket Anda adalah}} di dalam.",
+    "title": "Anda diterima.",
+    "intro": "{count, plural, one {Ini tiket Anda untuk<link>{eventName}</link>.} other {Berikut adalah # tiket Anda untuk<link>{eventName}</link>.}}",
+    "showQr": "Tunjukkan kode QR di pintu masuk, di ponsel Anda, atau yang sudah dicetak.",
+    "addToCalendar": "Tambahkan ke kalender",
+    "questions": "Ada pertanyaan tentang acara ini? Balas email ini untuk menghubungi {orgName}.",
+    "cta": "Lihat detail acara"
+  },
+  "approvalPending": {
+    "subject": "Permintaan diterima untuk {eventName}",
+    "preview": "{orgName} sedang meninjau permintaan Anda untuk bergabung dengan {eventName}.",
+    "title": "Permintaan diterima",
+    "intro": "Hai {name}, {orgName} meninjau setiap pendaftaran untuk <link>{eventName}</link>.",
+    "partySize": "Permintaan Anda mencakup {count} orang.",
+    "approved": "{count, plural, one {Anda akan menerima tiket Anda melalui email segera setelah disetujui.} other {Anda akan menerima tiket melalui email segera setelah disetujui.}}",
+    "nothingToDo": "Tidak ada yang perlu dilakukan untuk saat ini. Jika rencana Anda berubah, abaikan saja email ini."
+  },
+  "registrationRejected": {
+    "subject": "Pembaruan atas permintaan Anda untuk {eventName}",
+    "preview": "{orgName} tidak dapat menyetujui pendaftaran Anda untuk {eventName}.",
+    "title": "Kami tidak bisa mengakomodasi Anda.",
+    "intro": "Hai {name}, {orgName} tidak dapat menyetujui pendaftaran Anda untuk <link>{eventName}</link>.",
+    "refund": "Pembayaran apa pun akan dikembalikan ke kartu Anda.",
+    "noPayment": "Tidak ada pembayaran yang dilakukan.",
+    "questions": "Ada pertanyaan? Balas email ini untuk menghubungi penyelenggara."
+  },
+  "refundIssued": {
+    "subject": "Pengembalian dana sebesar {amount} untuk {eventName}",
+    "preview": "{amount} sedang dalam perjalanan kembali ke kartu Anda.",
+    "title": "Pengembalian dana telah diterbitkan.",
+    "intro": "Hai {name}, {orgName} telah mengembalikan dana <strong>{amount}</strong> untuk pesanan Anda ke <link>{eventName}</link>.",
+    "cancelled": "{count, plural, one {Tiket Anda telah dibatalkan dan tidak dapat dipindai lagi.} other {Semua # tiket dalam pesanan dibatalkan dan tidak akan dapat dipindai lagi.}}",
+    "timing": "Pengembalian dana biasanya akan sampai ke kartu Anda dalam waktu 5 hingga 10 hari kerja, tergantung pada bank Anda.",
+    "receipt": "Email ini adalah tanda terima Anda."
+  },
+  "eventReminder": {
+    "subject": "{eventName} adalah {when}",
+    "preview": "{eventName} adalah {when}. {where}.",
+    "title": "{eventName} adalah {when}",
+    "tickets": "{count, plural, one {Tiket Anda, siap dipindai:} other {Tiket Anda, siap dipindai:}}",
+    "cta": "Detail acara dan petunjuk arah",
+    "stopPrompt": "Tidak ingin menerima pengingat untuk acara ini? <link>Hentikan pengingat</link>.",
+    "stillGetThrough": "Konfirmasi dan perubahan tetap tersampaikan."
+  },
+  "eventUpdated": {
+    "subjectBoth": "Waktu dan tempat baru untuk {eventName}",
+    "subjectSchedule": "Waktu baru untuk {eventName}",
+    "subjectVenue": "Lokasi baru untuk {eventName}",
+    "previewBoth": "{eventName} telah mengubah waktu dan tempatnya.",
+    "previewSchedule": "{eventName} telah mengubah waktu.",
+    "previewVenue": "{eventName} telah mengubah tempat tersebut.",
+    "title": "{eventName} telah berubah",
+    "introBoth": "Hai {name}, {orgName} memperbarui waktu dan tempat untuk <link>{eventName}</link>.",
+    "introSchedule": "Hai {name}, {orgName} memperbarui waktu untuk <link>{eventName}</link>.",
+    "introVenue": "Hai {name}, {orgName} memperbarui tempat untuk <link>{eventName}</link>.",
+    "newDetails": "Berikut detail terbarunya.",
+    "staysValid": "Tiket Anda tetap berlaku.",
+    "cta": "Perbarui kalender saya"
+  },
+  "eventCancelled": {
+    "subject": "{eventName} telah dibatalkan",
+    "preview": "{eventName} tidak akan dilanjutkan.",
+    "title": "{eventName} dibatalkan",
+    "intro": "Hai {name}, {orgName} telah membatalkan <strong>{eventName}</strong>, yang dijadwalkan pada {when}.",
+    "noLongerValid": "Tiket Anda sudah tidak berlaku lagi.",
+    "refund": "Pembayaran Anda akan dikembalikan ke kartu yang Anda gunakan; Anda akan menerima email terpisah setelah proses pengembalian dana selesai.",
+    "noPayment": "Tidak ada pembayaran yang dilakukan, jadi tidak ada yang perlu dikembalikan.",
+    "questions": "Ada pertanyaan? Balas email ini untuk menghubungi penyelenggara."
+  },
+  "eventInvite": {
+    "subject": "Anda diundang: {eventName}",
+    "preview": "{orgName} mengundang Anda ke {eventName}.",
+    "title": "Anda diundang",
+    "intro": "<strong>{orgName}</strong> mengundang Anda ke acara pribadi.",
+    "cta": "Lihat acara dan daftar",
+    "personal": "Tautan ini bersifat pribadi bagi Anda.",
+    "personalExpires": "Tautan ini bersifat pribadi untuk Anda dan akan kedaluwarsa {expires}.",
+    "registerWith": "Daftar dengan alamat email ini."
+  },
+  "orgInvite": {
+    "subject": "Anda diundang ke {orgName} di Evnelo",
+    "preview": "Gabungkan {orgName} dengan {role}.",
+    "title": "Gabung {orgName}",
+    "invitedBy": "{invitedBy} mengundang Anda untuk membantu menjalankan acara untuk <strong>{orgName}</strong> sebagai <strong>{role}</strong>.",
+    "invited": "Anda telah diundang untuk membantu menjalankan acara untuk <strong>{orgName}</strong> sebagai <strong>{role}</strong>.",
+    "cta": "Terima undangan",
+    "validity": "Tautan tersebut berlaku selama 14 hari dan hanya berfungsi dengan alamat email yang digunakan saat tautan tersebut dikirimkan."
+  },
+  "magicLink": {
+    "subject": "Masuk ke {host}",
+    "preview": "Tautan masuk Anda untuk {host}",
+    "title": "Masuk",
+    "intro": "Klik tombol untuk masuk ke {host}.",
+    "expiry": "Tautan tersebut hanya berlaku sekali dan akan kedaluwarsa dalam 15 menit.",
+    "cta": "Masuk ke {host}",
+    "ignore": "Jika Anda tidak meminta ini, Anda dapat mengabaikan email ini.",
+    "nobody": "Tidak seorang pun dapat masuk tanpa tautan tersebut."
+  },
+  "waitlistJoined": {
+    "subject": "Anda berada dalam daftar tunggu untuk {eventName}",
+    "preview": "Anda nomor {position} dalam daftar tunggu.",
+    "title": "Anda masuk dalam daftar tunggu",
+    "full": "<strong>{eventName}</strong> saat ini sudah penuh.",
+    "position": "Anda adalah nomor <strong>{position}</strong> dalam antrean.",
+    "offer": "Jika ada tempat yang kosong, kami akan mengirimkan tautan melalui email agar Anda dapat mengklaimnya; tautan tersebut berlaku selama 24 jam.",
+    "cta": "Lihat acara"
+  },
+  "waitlistOffer": {
+    "subject": "Tersedia satu lowongan: {eventName}",
+    "preview": "Pesan tempat Anda sebelum {deadline}.",
+    "title": "Ada lowongan yang tersedia.",
+    "reserved": "Kabar baik: <strong>{ticketType}</strong> tempat untuk <strong>{eventName}</strong> telah dipesan untuk Anda.",
+    "claimBefore": "Ambil sebelum <strong>{deadline}</strong>, setelah itu akan diberikan kepada orang berikutnya dalam antrean.",
+    "cta": "Ambil tempatku",
+    "registerWith": "Daftar dengan alamat email ini.",
+    "personal": "Tautan tersebut bersifat pribadi bagi Anda."
+  },
+  "abuseReport": {
+    "subject": "[Laporan] {reason}: {eventName}",
+    "preview": "Seseorang melaporkan {eventName}.",
+    "title": "Peristiwa dilaporkan",
+    "intro": "<strong>{eventName}</strong> oleh {orgName} dilaporkan untuk <strong>{reason}</strong>.",
+    "reporter": "Reporter: {email}",
+    "noReporter": "Reporter itu tidak meninggalkan alamat email.",
+    "cta": "Buka acara"
+  },
+  "sms": {
+    "confirmation": "Anda akan dikenakan biaya {event}. Tiket Anda: {ticketUrl}",
+    "reminder": "{event} adalah {when}. Tiket: {ticketUrl}",
+    "updated": "{event} telah mengubah waktu atau tempatnya. Detailnya: {url}",
+    "cancelled": "{event} telah dibatalkan. Semua pembayaran akan dikembalikan."
+  }
+}

@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { getTranslations } from "next-intl/server";
 import { OG_SIZE, SYMBOL_PATH, og, ogFontList } from "@/lib/og";
 
 export const runtime = "nodejs";
@@ -8,7 +9,7 @@ export const alt = "Evnelo";
 
 /** Default share card: wordmark, tagline, the Flow Line motif (brand book §15). */
 export default async function DefaultOgImage() {
-  const fonts = await ogFontList();
+  const [fonts, t, tc] = await Promise.all([ogFontList(), getTranslations("public"), getTranslations("common")]);
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 72, background: og.paper, color: og.ink, fontFamily: "Instrument Sans" }}>
@@ -24,8 +25,8 @@ export default async function DefaultOgImage() {
           <circle cx="1048" cy="40" r="9" fill={og.pulse} />
         </svg>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <div style={{ fontSize: 96, fontWeight: 700, lineHeight: 1, letterSpacing: -4, display: "flex" }}>Events, in motion.</div>
-          <div style={{ fontSize: 32, color: og.muted, display: "flex" }}>Open event infrastructure. Publish, register, attend.</div>
+          <div style={{ fontSize: 96, fontWeight: 700, lineHeight: 1, letterSpacing: -4, display: "flex" }}>{tc("tagline")}</div>
+          <div style={{ fontSize: 32, color: og.muted, display: "flex" }}>{t("og.subtitle")}</div>
         </div>
       </div>
     ),

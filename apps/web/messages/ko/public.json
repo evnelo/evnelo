@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "description": "움직이는 이벤트. 개방형 이벤트 인프라: 이벤트 게시, 참석자 등록, 티켓 판매 또는 무료 배포, 커뮤니티 메시지 전송, 참석자 체크인."
+  },
+  "nav": {
+    "discover": "발견하다",
+    "pricing": "가격",
+    "dashboard": "계기반",
+    "signIn": "로그인",
+    "host": "이벤트를 주최하세요",
+    "hostShort": "주인",
+    "api": "API"
+  },
+  "footer": {
+    "tagline": "이벤트, 끊임없이 변화하는 세상. 개방형 이벤트 인프라: 무료 이벤트는 무료이며, 유료 이벤트는 주최자에게 0.99%의 수수료가 부과됩니다.",
+    "credit": "<inevent>InEvent</inevent> 에서 제공합니다."
+  },
+  "og": {
+    "subtitle": "개방형 이벤트 인프라. 게시, 등록, 참석."
+  },
+  "github": {
+    "label": "GitHub의 evnelo/evnelo"
+  },
+  "captcha": {
+    "notice": "이 사이트는 reCAPTCHA와 Google로 보호됩니다.<privacy>개인정보 보호정책</privacy> 그리고<terms>서비스 약관</terms> 적용하다."
+  },
+  "hero": {
+    "eyebrow": "오픈 이벤트 인프라",
+    "title": "첫 클릭부터 정문까지.",
+    "lead": "이벤트 게시, 티켓 판매, 참석자 메시지 전송, 체크인 기능을 하나의 개방형 플랫폼에서 이용하거나, 자체 스택에서 호스팅할 수 있습니다.",
+    "pricing": "유료 티켓 구매 시 <b>%</b>. <br>이벤트</br> 무료로 유지됩니다. 직접 주최하는 경우 0% <b></b>",
+    "explore": "이벤트 살펴보기",
+    "scene": {
+      "steps": {
+        "discover": {
+          "label": "발견하다",
+          "sub": "당신을 감동시키는 것을 찾으세요"
+        },
+        "register": {
+          "label": "등록하다",
+          "sub": "몇 번의 클릭만으로 가능합니다."
+        },
+        "ticketing": {
+          "label": "티켓팅",
+          "sub": "제한 없이 판매하세요"
+        },
+        "checkin": {
+          "label": "체크인",
+          "sub": "빠르고, 친절하고, 유연합니다."
+        },
+        "attendance": {
+          "label": "출석",
+          "sub": "실제 사람들. 지속적인 영향력."
+        }
+      },
+      "event": {
+        "category": "음악",
+        "title": "선셋 세션",
+        "date": "2024년 8월 24일 토요일",
+        "place": "리버사이드 공원"
+      },
+      "create": {
+        "title": "이벤트 생성하기",
+        "publish": "이벤트 게시"
+      },
+      "ticket": {
+        "title": "일반 입장",
+        "meta": "2024년 8월 24일 토요일 <br></br> 리버사이드 공원"
+      },
+      "checkin": {
+        "title": "참석자 체크인 완료",
+        "welcome": "환영!"
+      },
+      "attendance": {
+        "more": "+ {count}",
+        "meta": "참석한 사람들"
+      },
+      "notes": {
+        "left": "더 많은 이벤트. <br></br> 더 열린 세상.",
+        "right": "이벤트<br></br> 사람들을 움직이다."
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "에브넬로: 움직이는 사건들",
+      "description": "개방형 이벤트 인프라를 활용하세요. 이벤트를 게시하고, 참석자를 등록하고, 티켓을 판매하거나 무료로 배포하고, 커뮤니티에 메시지를 보내고, 참석자 체크인을 할 수 있습니다. 유료 티켓 판매 수수료는 0.99%이며, 무료 이벤트는 무료로 진행하거나 자체 호스팅도 가능합니다."
+    },
+    "pricing": {
+      "eyebrow": "가격",
+      "title": "다른 어떤 플랫폼보다 수수료가 저렴합니다.",
+      "body": "대부분의 플랫폼은 티켓 한 장당 3~5%의 수수료를 부과합니다. 하지만 Evnelo는 유료 티켓에 대해서는 0.99%의 수수료만 부과하고 무료 티켓에 대해서는 아무런 수수료도 부과하지 않습니다. Evnelo는 자체 Stripe 계정을 연결하여 티켓 판매 대금을 직접 수령할 수 있도록 하며, Stripe의 처리 수수료는 Stripe에서 정한 요율로 적용됩니다. 이 수수료는 구매자에게 전가하거나 직접 부담할 수 있습니다.",
+      "plans": {
+        "free": {
+          "title": "무료 행사",
+          "price": "0달러",
+          "note": "플랫폼 이용료 없음, 티켓당 수수료 없음, 참석 인원 제한 없음."
+        },
+        "paid": {
+          "title": "유료 이벤트",
+          "price": "0.99%",
+          "note": "티켓 가격은 연결된 Stripe 계정을 통해 청구됩니다. 25달러짜리 티켓은 25센트에 Stripe 수수료가 추가됩니다."
+        },
+        "selfHosted": {
+          "title": "자체 호스팅",
+          "price": "0달러",
+          "note": "오픈 소스. 하나의 컨테이너, MySQL, Stripe 키. 플랫폼 수수료는 절대 없습니다."
+        }
+      }
+    },
+    "flow": {
+      "eyebrow": "어떻게 흐르는가",
+      "title": "\"가고 싶다\"와 \"여기 있다\" 사이의 모든 것.",
+      "steps": {
+        "publish": {
+          "title": "게시",
+          "text": "표지 이미지, 일정, 장소 및 주최자 정보를 포함하는 이벤트 페이지입니다. 공개, 비공개 또는 초대 전용으로 설정할 수 있습니다."
+        },
+        "register": {
+          "title": "등록하다",
+          "text": "티켓 등급, 문의 사항, 기존 티켓 소지 게스트, 할인 코드, 매진 시 대기자 명단 등 다양한 기능을 제공합니다."
+        },
+        "pay": {
+          "title": "지불하고 받으십시오",
+          "text": "카드, 애플페이, 구글페이, 픽스 결제 가능. QR 코드 티켓, 지갑 패스, 캘린더 파일, 이메일 및 SMS 확인 서비스 제공."
+        },
+        "checkin": {
+          "title": "체크인",
+          "text": "어떤 스마트폰 브라우저에서든 실행되고, 신호 없이도 계속 작동하며, 방에 사람이 채워지는 과정을 실시간으로 보여주는 스캐너입니다."
+        }
+      }
+    },
+    "openSource": {
+      "eyebrow": "오픈 소스",
+      "title": "이벤트, 데이터, 스택 모두 여러분의 것입니다.",
+      "body": "Evnelo는 Apache 2.0 라이선스 하에 제공되는 오픈 소스 소프트웨어입니다. 컨테이너 하나와 MySQL 데이터베이스 하나로 직접 호스팅하고, Stripe, Resend, Vonage 결제 키를 연결하여 모든 참석자 기록을 자체 인프라에 보관할 수 있습니다. 동일한 제품을 플랫폼 수수료 없이 이용할 수 있습니다.",
+      "points": {
+        "export": "참석자 정보 내보내기 및 삭제 기능이 내장되어 있습니다.",
+        "providers": "결제, 이메일 및 SMS 제공업체를 직접 선택하세요.",
+        "ops": "마이그레이션, 상태 점검 및 백업이 문서화되었습니다.",
+        "migrate": "호스팅 버전으로 이동하거나 호스팅 버전에서 이동하는 것은 데이터베이스를 새로 작성하는 것이 아니라 데이터베이스를 옮기는 작업입니다."
+      },
+      "source": "소스 보기",
+      "apiReference": "API 참조"
+    },
+    "developers": {
+      "eyebrow": "개발자용",
+      "title": "그 위에 건축물을 지을 수 있도록 지어졌습니다.",
+      "points": {
+        "rest": "모든 리소스에 대한 REST API 제공, 쓰기 멱등성 보장",
+        "sdk": "에이전트용 TypeScript SDK 및 MCP 서버가 생성되었습니다.",
+        "webhooks": "등록, 결제 및 체크인을 위한 서명된 웹훅",
+        "openapi": "OpenAPI 문서 및 대화형 문서는 /api/v1/docs에서 확인할 수 있습니다."
+      }
+    },
+    "upcoming": {
+      "eyebrow": "곧 시작됩니다",
+      "title": "에브넬로에서 열리는 공개 행사",
+      "all": "모든 이벤트"
+    },
+    "cta": {
+      "title": "모임의 흐름을 만드세요.",
+      "body": "몇 분 만에 첫 이벤트를 만들어 보세요. 무료 이벤트는 아무것도 필요하지 않으며, 유료 이벤트는 Stripe 계정이 필요합니다.",
+      "explore": "어떤 행사가 있는지 확인해 보세요"
+    }
+  },
+  "discover": {
+    "meta": {
+      "description": "Evnelo의 모든 호스트가 주최하는 공개 행사를 검색하세요. 도시, 주제, 날짜, 가격 및 거리별로 검색할 수 있습니다."
+    },
+    "headline": {
+      "query": {
+        "none": "“ {q} ”과 일치하는 이벤트",
+        "city": "{city} 에서 “ {q} ”과 일치하는 이벤트",
+        "near": "주변에서 “ {q} ”과 일치하는 이벤트",
+        "online": "온라인에서 “ {q} ”과 일치하는 이벤트",
+        "inPerson": "“ {q} ”과 일치하는 대면 행사"
+      },
+      "free": {
+        "none": "무료 행사",
+        "city": "{city} 에서 열리는 무료 행사",
+        "near": "근처에서 열리는 무료 행사",
+        "online": "무료 온라인 이벤트",
+        "inPerson": "무료 오프라인 행사"
+      },
+      "tag": {
+        "none": "{tag} 이벤트",
+        "city": "{city} 에서 {tag} 이벤트가 발생했습니다.",
+        "near": "근처에서 열리는 {tag} 이벤트",
+        "online": "{tag} 온라인 이벤트",
+        "inPerson": "{tag} 개의 대면 행사"
+      },
+      "paid": {
+        "none": "유료 이벤트",
+        "city": "{city} 에서 열리는 유료 이벤트",
+        "near": "가까운 곳에서 열리는 유료 행사",
+        "online": "온라인 유료 이벤트",
+        "inPerson": "유료 대면 행사"
+      },
+      "all": {
+        "none": "무슨 행사가 있나요?",
+        "city": "{city} 의 이벤트",
+        "near": "가까운 곳에서 열리는 행사",
+        "online": "온라인 이벤트",
+        "inPerson": "대면 행사"
+      }
+    },
+    "lead": "Evnelo의 모든 호스트가 주최하는 강연, 워크숍, 만찬 및 모임을 만나보세요.",
+    "jsonLdName": "다가오는 공개 행사",
+    "count": {
+      "exact": "{count, plural, one {# 이벤트} other {# 이벤트}}",
+      "more": "{count, plural, one {# + 이벤트} other {# + 이벤트}}",
+      "exactFrom": "{count, plural, one {# 이벤트} other {# 이벤트}} # {from} 부터",
+      "moreFrom": "{count, plural, one {# + 이벤트} other {# + 이벤트}} # {from} 부터"
+    },
+    "format": {
+      "online": "온라인",
+      "in_person": "직접",
+      "hybrid": "잡종"
+    },
+    "price": {
+      "paid": "유급의"
+    },
+    "date": {
+      "today": "오늘",
+      "week": "이번 주",
+      "month": "이번 달",
+      "custom": "날짜를 선택하세요"
+    },
+    "active": {
+      "showing": "전시",
+      "query": "“ {q} ”",
+      "customRange": "{from} 에서 {to} 까지",
+      "customDates": "맞춤 날짜",
+      "within": "{km} 이내",
+      "remove": "필터를 제거하세요",
+      "clearAll": "모두 지우기"
+    },
+    "search": {
+      "events": "이벤트 검색",
+      "placeholder": "이벤트, 호스트 및 태그를 검색하세요.",
+      "city": "도시",
+      "cityOption": "{city}, {country}",
+      "nearMe": "내 주변",
+      "nearYou": "당신 근처",
+      "unsupported": "이 브라우저는 사용자의 위치 정보를 공유할 수 없습니다. 도시 이름을 입력해 보세요.",
+      "blocked": "해당 위치가 차단되었습니다. 도시별로 필터링하세요."
+    },
+    "toolbar": {
+      "label": "필터",
+      "km": "{km} km",
+      "anywhere": "어딘가에",
+      "view": "보다",
+      "list": "목록",
+      "calendar": "달력"
+    },
+    "customDates": {
+      "from": "에서",
+      "to": "에게",
+      "apply": "신청 날짜",
+      "clear": "명확한 날짜"
+    },
+    "topics": "주제",
+    "sections": {
+      "featured": "추천",
+      "upcoming": "다가오는"
+    },
+    "empty": {
+      "month": {
+        "title": "이번 달에는 예정된 일정이 없습니다.",
+        "body": "한 달 더 기다려보거나 필터를 초기화해 보세요.",
+        "action": "다음 달"
+      },
+      "filtered": {
+        "title": "이 필터와 일치하는 이벤트가 없습니다.",
+        "body": "날짜 범위를 넓히거나 필터를 지워보세요.",
+        "action": "필터를 지우세요"
+      },
+      "end": {
+        "title": "끝에 도달하셨습니다.",
+        "body": "이 페이지에는 예정된 모든 공개 행사가 나와 있습니다.",
+        "action": "처음으로 돌아가기"
+      },
+      "none": {
+        "title": "아직 예정된 공개 행사가 없습니다.",
+        "body": "첫 번째로 호스트가 되어 보세요."
+      }
+    },
+    "pagination": {
+      "label": "쪽수 매기기",
+      "more": "더 보기"
+    },
+    "card": {
+      "from": "{price} 부터",
+      "underOneKm": "1km 미만 거리",
+      "kmAway": "{km} 떨어진 곳"
+    },
+    "calendar": {
+      "eyebrow": "달력",
+      "changeMonth": "월 변경",
+      "goTo": "{month} 으로 이동하세요",
+      "today": "오늘",
+      "dayCount": "{count, plural, one {# 이벤트} other {# 이벤트}}",
+      "overflow": "+ {count} 개 더",
+      "timezoneNote": "시간은 각 이벤트의 시간대를 기준으로 표시됩니다.",
+      "rowTitle": "{name} — {time}"
+    }
+  },
+  "org": {
+    "meta": {
+      "description": "이벤트 작성자: {name}"
+    },
+    "eyebrow": "조직자",
+    "upcoming": "다가오는",
+    "count": "{count, plural, one {# 이벤트} other {# 이벤트}}",
+    "empty": {
+      "title": "현재 예정된 일정은 없습니다.",
+      "body": "잠시 후 다시 확인해 보시거나, 다른 호스트들이 어떤 프로그램을 운영하고 있는지 확인해 보세요.",
+      "action": "모든 이벤트를 살펴보세요"
+    },
+    "past": "지난 이벤트"
+  },
+  "report": {
+    "meta": {
+      "title": "이벤트 신고하기"
+    },
+    "eyebrow": "보고서",
+    "title": "이벤트 신고하기",
+    "reasons": {
+      "spam": "스팸 또는 오해의 소지가 있는",
+      "scam": "사기 또는 부정행위",
+      "inappropriate": "부적절한 콘텐츠",
+      "copyright": "저작권 또는 상표권",
+      "other": "다른 것"
+    },
+    "notFound": "해당 이벤트를 찾을 수 없습니다.",
+    "openFromEvent": "이벤트 신고를 하려면 이벤트 페이지에서 이 페이지를 여세요.",
+    "sent": "감사합니다. <b>{name}</b> 에 대한 보고서를 접수했습니다.",
+    "sentAndForwarded": "감사합니다. <b>{name}</b> 에 대한 보고서가 기록되어 해당 인스턴스의 운영자에게 전송되었습니다.",
+    "reporting": "<b>{name}</b> 를 {org} 님이 보고합니다. 보고서는 호스트가 아닌 이 Evnelo 인스턴스를 운영하는 담당자에게 전송됩니다.",
+    "errors": {
+      "limited": "인터넷 연결에서 너무 많은 신고가 접수되었습니다. 나중에 다시 시도해 주세요.",
+      "invalid": "입력 내용을 확인하고 다시 시도해 주세요."
+    },
+    "form": {
+      "reason": "이유",
+      "details": "세부",
+      "optional": "(선택 과목)",
+      "email": "귀하의 이메일",
+      "optionalFollowUp": "(선택 사항이며, 추가 문의가 있으시면 알려주세요.)",
+      "submit": "보고서 보내기"
+    },
+    "back": "이벤트 페이지로 돌아가기"
+  },
+  "notFound": {
+    "meta": {
+      "title": "페이지를 찾을 수 없습니다"
+    },
+    "eyebrow": "404",
+    "title": "여기에는 아무것도 없어요",
+    "body": "링크가 오래되었거나, 이벤트가 종료되었거나, 주소에 오타가 있을 수 있습니다.",
+    "action": "공개 행사를 찾아보세요"
+  },
+  "error": {
+    "title": "뭔가 잘못됐어요",
+    "body": "페이지에서 오류가 발생했습니다. 다시 시도하면 대부분 해결되지만, 계속해서 오류가 발생하는 경우 호스팅 업체에 알림이 전송된 것입니다.",
+    "reference": "참고 {digest}",
+    "home": "집에 가세요"
+  }
+}

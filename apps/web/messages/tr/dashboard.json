@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "title": "Kontrol Paneli",
+    "checkin": "Giriş"
+  },
+  "shell": {
+    "organization": "Organizasyon",
+    "switchOrganization": "Organizasyonu değiştirin"
+  },
+  "nav": {
+    "events": "Olaylar",
+    "checkin": "Giriş",
+    "settings": "Ayarlar"
+  },
+  "status": {
+    "event": {
+      "draft": "taslak",
+      "published": "yayınlandı",
+      "cancelled": "iptal edildi",
+      "ended": "sona erdi"
+    },
+    "attendee": {
+      "confirmed": "onaylandı",
+      "pending_approval": "onay bekliyor",
+      "waitlisted": "bekleme listesinde",
+      "rejected": "Reddedilmiş",
+      "cancelled": "iptal edildi"
+    },
+    "order": {
+      "pending": "askıda olması",
+      "processing": "işleme",
+      "paid": "paralı",
+      "free": "özgür",
+      "refunded": "iade edildi",
+      "partially_refunded": "kısmen iade edildi",
+      "failed": "arızalı",
+      "expired": "günü geçmiş"
+    },
+    "delivery": {
+      "delivered": "teslim edilmiş",
+      "retrying": "yeniden deneme",
+      "pending": "askıda olması",
+      "failed": "arızalı"
+    }
+  },
+  "noAccess": {
+    "title": "Erişim yok",
+    "description": "Roller, bir organizasyondaki her kişinin neleri açabileceğini belirler.",
+    "empty": {
+      "title": "Bu alanı açmak sizin yetkinizde değil.",
+      "description": "Bu kuruluştaki rolünüz buna izin vermiyor. Bir yöneticiden veya yetkiliden bunu değiştirmesini isteyin."
+    }
+  },
+  "events": {
+    "title": "Olaylar",
+    "description": "Her şey {org} çalışıyor; kayıtlar, gelirler ve kapı numaraları bir bakışta görülebiliyor.",
+    "newEvent": "Yeni etkinlik",
+    "groups": {
+      "upcoming": "Yakında",
+      "drafts": "Taslaklar",
+      "past": "Geçmiş"
+    },
+    "empty": {
+      "title": "Henüz hiçbir etkinlik yok.",
+      "description": "İlk etkinliğiniz yayınlanana kadar taslak halinde kalır, bu nedenle her şeyi doğru yapma konusunda acele etmenize gerek yok.",
+      "action": "İlk etkinliğinizi oluşturun"
+    },
+    "row": {
+      "online": "Çevrimiçi",
+      "inPerson": "Şahsen",
+      "registered": "Kayıtlı",
+      "pending": "{count} beklemede",
+      "revenue": "Hasılat",
+      "checkedIn": "Giriş yapıldı."
+    }
+  },
+  "checkin": {
+    "title": "Giriş",
+    "description": "{org}. Kapıda telefondan bir etkinlik açın; tarama için kamera erişimi gereklidir.",
+    "in": "İçinde",
+    "empty": {
+      "title": "Bugün taranacak bir şey yok.",
+      "description": "Yayınlanan etkinlikler, yayınlandıkları andan itibaren sona erdikten bir gün sonrasına kadar burada görünür."
+    },
+    "event": {
+      "allCheckin": "Tüm giriş işlemleri",
+      "eventDashboard": "Etkinlik panosu"
+    }
+  },
+  "event": {
+    "allEvents": "Tüm etkinlikler",
+    "viewPage": "Sayfayı görüntüle",
+    "nav": {
+      "overview": "Genel Bakış",
+      "tickets": "Biletler",
+      "form": "Biçim",
+      "invites": "Davetiyeler",
+      "attendees": "Katılımcılar",
+      "waitlist": "Bekleme listesi",
+      "orders": "Siparişler",
+      "checkin": "Giriş"
+    },
+    "new": {
+      "title": "Yeni etkinlik",
+      "description": "Taslak olarak kaydedildi. Talepleri ve soruları ekleyin, hazır olduğunda yayınlayın."
+    },
+    "overview": {
+      "stats": {
+        "registered": "Kayıtlı",
+        "awaitingApproval": "{count} onay bekliyor",
+        "confirmedAndApproved": "onaylandı ve doğrulandı",
+        "revenue": "Hasılat",
+        "afterRefunds": "geri ödemelerden sonra",
+        "checkedIn": "Giriş yapıldı.",
+        "percentOfRegistrations": "kayıtların % {percent}",
+        "nobodyYet": "Henüz kapıda kimse yok.",
+        "capacity": "Kapasite",
+        "seatsLeft": "{count} koltuk kaldı",
+        "unlimitedSeats": "sınırsız koltuk"
+      },
+      "registrationsByDay": "Günlük kayıtlar",
+      "noRegistrations": {
+        "title": "Henüz kayıt yok.",
+        "description": "Eğri, ilk kişi kaydolduğu anda başlar."
+      },
+      "tickets": "Biletler",
+      "manage": "Üstesinden gelmek",
+      "noTickets": {
+        "title": "Henüz bilet türü yok.",
+        "description": "Lisanssız yayın yapmak size ücretsiz genel giriş bileti kazandırır.",
+        "action": "Bilet türü ekle"
+      },
+      "ticketSales": "{hasQuantity, select, true {{sold} / {quantity} adet satıldı} other {{sold} satıldı}}{held, plural, =0 {} other {, # tutuldu}}",
+      "eventPage": "Etkinlik sayfası",
+      "visibility": {
+        "public": "Herkese açık: Discover'da listelenmiş ve indekslenmiş.",
+        "unlisted": "Listelenmemiş: bağlantıya sahip herkes.",
+        "private": "Özel: Sadece davetliler için."
+      },
+      "actions": "Eylemler",
+      "publish": "Etkinliği yayınla",
+      "unpublish": "Yayından kaldır, taslağa geri dön",
+      "statusNote": {
+        "draft": "Bu etkinlik yayınlanana kadar sadece siz görebilirsiniz.",
+        "published": "Yayında. Yayını kaldırmak sayfayı gizler; daha önce alınmış kayıtlar saklanır.",
+        "cancelled": "Bu etkinlik iptal edildi."
+      },
+      "irreversible": "Geri döndürülemez",
+      "cancelEvent": "Etkinliği iptal et",
+      "cancelConfirm": "Bu etkinliği iptal etmek mi istiyorsunuz? Kayıtlı her katılımcıya iptal e-postası (ve isteğe bağlı olarak SMS) gönderilecektir. Ödemesi yapılmış siparişlerin iadesi, Siparişler sekmesinden yapılmalıdır.",
+      "deleteEvent": "Etkinliği sil",
+      "deleteConfirm": "Bu etkinliği silmek ister misiniz? Etkinlik kontrol panelinden kaybolur. Katılımcı kayıtları saklanır."
+    },
+    "attendees": {
+      "exportCsv": "CSV olarak dışa aktar",
+      "searchPlaceholder": "İsim, e-posta veya telefon numarasıyla arama yapın.",
+      "filter": "Filtrele",
+      "allOption": "Tümü ( {count} )",
+      "statusOption": "{label} ( {count} )",
+      "pendingNote": "{count, plural, one {# kayıt} other {# kayıt}} Onayınızı bekliyoruz.",
+      "review": "Gözden geçirmek",
+      "columns": {
+        "ticket": "Bilet",
+        "registered": "Kayıtlı",
+        "files": "Dosyalar",
+        "actions": "Eylemler"
+      },
+      "empty": {
+        "noMatch": {
+          "title": "Katılımcılar arasında eşleşme yok.",
+          "description": "Farklı bir arama deneyin veya durum filtresini temizleyin."
+        },
+        "none": {
+          "title": "Henüz kimse kayıt olmadı.",
+          "description": "Birisi kaydolduğu anda kayıtlar buraya düşer."
+        }
+      },
+      "guestOf": "{name} 'ın misafiri",
+      "sms": "SMS",
+      "paymentPending": "ödeme bekleniyor",
+      "approve": "Onaylamak",
+      "reject": "Reddetmek",
+      "ticket": "Bilet",
+      "cancelConfirm": "{name} 'ın kaydını iptal mi edeyim? Bileti geçerliliğini yitirir ve koltuk boşalır. E-posta gönderilmez.",
+      "export": "İhracat",
+      "erase": "Sil",
+      "eraseConfirm": "{name} 'ın kişisel verilerini silmek mi istiyorsunuz? Adı, e-postası, telefonu ve yanıtları yer tutucularla değiştirilir, bileti iptal edilir ve sıraya alınmış e-postalar silinir. Bu işlem geri alınamaz."
+    },
+    "orders": {
+      "collected": "<strong>{amount}</strong> tahsil edildi, iadeler düşüldükten sonra",
+      "count": "{count, plural, one {# sıra} other {# sipariş}}",
+      "columns": {
+        "order": "Emir",
+        "items": "Öğeler",
+        "total": "Toplam",
+        "placed": "Yerleştirildi",
+        "actions": "Eylemler"
+      },
+      "empty": {
+        "title": "Henüz sipariş yok.",
+        "description": "İster ücretsiz ister ücretli olsun, her kayıt işlemi ve toplanan veriler burada gösterilmektedir."
+      },
+      "people": "{count, plural, one {# kişi} other {# kişi}}",
+      "refunded": "{amount} iade edildi"
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "description": "Organizasyonunuzun kamuoyundaki görünümü, kimlerin burada çalışabileceği ve diğer sistemlerin onunla nasıl iletişim kurduğu.",
+    "tabs": {
+      "organization": "Organizasyon",
+      "members": "Üyeler",
+      "developer": "Geliştirici",
+      "payments": "Ödemeler"
+    },
+    "organization": {
+      "title": "Organizasyon",
+      "description": "İsim, herkese açık URL, logo ve e-postalarda ve bilet sayfalarında kullanılan vurgu rengi.",
+      "publicUrl": "Herkese açık URL",
+      "publicUrlHelp": "/o/… Küçük harfler, rakamlar, tireler.",
+      "website": "Web sitesi",
+      "websiteHelp": "Örneğin example.com adresini girin, biz de otomatik olarak https:// ekleyeceğiz.",
+      "logo": "Logo",
+      "logoHelp": "Etkinlik sayfalarında ve e-postalarda gösterilir.",
+      "accentColour": "Vurgu rengi",
+      "accentColourHelp": "E-postalardaki ve bilet sayfalarındaki düğmeler.",
+      "pickColour": "Renk seçin",
+      "serviceFee": "Hizmet ücreti",
+      "serviceFeeHelp": "Yeni etkinlikler için varsayılan ayar: platform ücretini alıcıya ayrı bir kalem olarak yansıtın veya alıcı tarafından karşılayın.",
+      "buyerPaysFee": "Hizmet bedelini alıcı öder.",
+      "socialLinks": "Sosyal bağlantılar",
+      "platform": "Platform",
+      "url": "URL",
+      "addLink": "Bağlantı ekle",
+      "save": "Organizasyonu kurtarın"
+    },
+    "members": {
+      "title": "Üyeler",
+      "description": "Organizasyonun yönetimini sahipler ve yöneticiler üstlenir; üyeler etkinlikler oluşturur ve yürütür; giriş kontrol personeli yalnızca biletleri tarayabilir.",
+      "roles": {
+        "owner": "Mal sahibi",
+        "admin": "Yönetici",
+        "member": "Üye",
+        "checkin": "Giriş işlemleri personeli"
+      },
+      "columns": {
+        "member": "Üye",
+        "role": "Rol",
+        "since": "O zamandan beri"
+      },
+      "removeConfirm": "Organizasyondan {email} ı kaldır?",
+      "invited": "Davetli · Geçerlilik süresi {date}",
+      "revoke": "Geri çekmek",
+      "emailPlaceholder": "teammate@example.com",
+      "sendInvite": "Davetiye gönder"
+    },
+    "developer": {
+      "apiKeys": {
+        "title": "API anahtarları",
+        "description": "Bu kuruluşun etkinliklerine, siparişlerine ve katılımcılarına sunucudan sunucuya erişim.",
+        "note": "Anahtarlar, bu kuruluş olarak <docs>REST API</docs> i çağırır. Bunları <code>{header}</code> olarak gönderin. Anahtar listesini okuyun ve alın; anahtarları yazın ve oluşturun.",
+        "newKey": "Yeni anahtarınızı şimdi kopyalayın. Bir daha gösterilmeyecektir.",
+        "saved": "Kaydettim.",
+        "columns": {
+          "key": "Anahtar",
+          "scopes": "Kapsamlar",
+          "lastUsed": "Son kullanım"
+        },
+        "never": "Asla",
+        "empty": {
+          "title": "Henüz API anahtarı yok.",
+          "description": "Her entegrasyon için bir tane oluşturun, böylece diğerlerini bozmadan tek bir aracı iptal edebilirsiniz."
+        },
+        "revoked": "iptal edildi",
+        "revokeConfirm": "\" {name} \" işaretini iptal et? Bu işaretle yapılan istekler anında çalışmayı durdurur.",
+        "revoke": "Geri çekmek",
+        "namePlaceholder": "Anahtar adı, örneğin Zapier",
+        "nameLabel": "Anahtar adı",
+        "scopeRead": "Okumak",
+        "scopeWrite": "yazmak",
+        "create": "Anahtar oluştur"
+      },
+      "webhooks": {
+        "title": "Web kancaları",
+        "description": "Burada bir şey olduğunda, kendi uç noktanıza imzalı bir JSON POST isteği gönderilir.",
+        "note": "Seçtiğiniz etkinlikler için, HMAC-SHA256 ( <code>{signature}</code> over <code>{template}</code> ) ile imzalanmış bir JSON zarfını URL'nize POST ediyoruz. Başarısız teslimatlar yaklaşık bir gün gecikmeyle yeniden denenir.",
+        "addWebhook": "Web kancası ekle",
+        "count": "{count, plural, one {# uç noktası} other {# uç noktaları}}",
+        "signingSecret": "İmza sırrı",
+        "copyPrompt": "Bu sırrı kopyala",
+        "endpointUrl": "Uç nokta URL'si",
+        "endpointUrlHelp": "Yalnızca https (geliştirme amaçlı http://localhost kullanımına izin verilir).",
+        "events": "Olaylar",
+        "create": "Web kancası oluştur",
+        "columns": {
+          "endpoint": "Uç nokta",
+          "events": "Olaylar"
+        },
+        "empty": {
+          "title": "Henüz web kancası yok.",
+          "description": "CRM, Slax kanalı veya elektronik tablo gibi uygulamaları düzenli tutmak için birinci noktayı kendi servis sağlayıcınıza yönlendirin."
+        },
+        "hideDeliveries": "Teslimatları gizle",
+        "recentDeliveries": "Son teslimatlar ( {count} )",
+        "nothingDelivered": "Henüz hiçbir şey teslim edilmedi.",
+        "attempts": "{count, plural, one {# deneme} other {# deneme}}{hasStatus, select, true {, son {status}} other {}}",
+        "allEvents": "Tüm etkinlikler",
+        "active": "aktif",
+        "paused": "duraklatıldı",
+        "sendTest": "Test gönder",
+        "pause": "Duraklat",
+        "resume": "Sürdürmek",
+        "rotateConfirm": "İmzalama sırrını değiştirirseniz, eskisi hemen çalışmayı durdurur.",
+        "rotateSecret": "Gizliyi döndür",
+        "deleteConfirm": "Bu web kancasını silmek ister misiniz?"
+      }
+    },
+    "payments": {
+      "title": "Ödemeler",
+      "descriptionCloud": "Ödenmiş biletlerin ücreti doğrudan Stripe hesabınıza yatırılır.",
+      "descriptionSelfHosted": "Bu işlem, operatörünün yapılandırdığı Stripe anahtarları üzerinden ücretlendirme yapar.",
+      "connected": "Stripe hesabı {id} bağlandı.",
+      "connectPrompt": "Ücretli bilet satmak için Stripe hesabınızı bağlayın. Connect kurulum süreciyle birlikte gelir.",
+      "configured": "Stripe yapılandırıldı. Ödenen biletler, platform ücreti alınmadan, ilgili sistemin Stripe hesabından tahsil ediliyor.",
+      "notConfigured": "Bu örnekte Stripe yapılandırılmamıştır, bu nedenle yalnızca ücretsiz biletler satılabilir. Ödemeleri etkinleştirmek için STRIPE_SECRET_KEY ve STRIPE_PUBLISHABLE_KEY ayarlarını yapın."
+    },
+    "danger": {
+      "title": "Veri ve silme",
+      "description": "Bu kuruluşun sahip olduğu her şeyi JSON formatında indirin — etkinlikler, siparişler, katılımcılar, girişler, ayarlar, gizli bilgiler yok. Kuruluşu silmek, etkinliklerini iptal eder, tüm biletleri geçersiz kılar, tüm katılımcı kişisel verilerini siler ve API anahtarlarını ve web kancalarını devre dışı bırakır. Geri alınamaz.",
+      "download": "Tüm verileri indir",
+      "confirmLabel": "Onaylamak için {slug} yazın.",
+      "delete": "Organizasyonu sil",
+      "ownerOnly": "Bu kuruluşu yalnızca sahibi silebilir."
+    }
+  },
+  "imageUpload": {
+    "uploadFailed": "Yükleme başarısız oldu.",
+    "bucketRejected": "Depolama kovası yüklemeyi reddetti. CORS ve politika ayarlarını kontrol edin.",
+    "connectionFailed": "Yükleme başarısız oldu. Bağlantınızı kontrol edin ve tekrar deneyin.",
+    "noImage": "Henüz resim yok.",
+    "uploading": "Yükleniyor…",
+    "replace": "Yer değiştirmek",
+    "replaceImage": "Resmi değiştir",
+    "upload": "Yüklemek",
+    "uploadImage": "Resim yükle",
+    "urlPlaceholder": "https://… (Görüntü yüklemeleri için S3 yapılandırması gereklidir)",
+    "urlLabel": "{label} URL",
+    "formats": "JPEG, PNG veya WebP · maksimum 5 MB"
+  },
+  "imageCrop": {
+    "openFailed": "Bu resim açılamadı.",
+    "renderFailed": "Bu tarayıcı kırpılmış görüntüyü işleyemedi. Lütfen görüntüyü olduğu gibi yükleyin.",
+    "dialogLabel": "Kapak resmini çerçeveleyin",
+    "title": "Kapak çerçevesini oluşturun",
+    "description": "Konumlandırmak için sürükleyin ve doldurmak için yakınlaştırın. Etkinlik sayfalarının kullandığı 16:7 oranında kaydedildi.",
+    "zoom": "Zoom",
+    "use": "Bu ürünü kullanın"
+  },
+  "address": {
+    "unavailable": "Adres arama özelliği geçici olarak kullanılamıyor.",
+    "placeholder": "Adres yazmaya başlayın."
+  },
+  "linkTabs": {
+    "label": "Bölümler"
+  },
+  "actions": {
+    "genericError": "Bir şeyler ters gitti.",
+    "formIssue": "{path}: {message}",
+    "formPath": "biçim",
+    "checkForm": "Formu kontrol edin.",
+    "saved": "Kaydedildi.",
+    "savedNotified": "Kaydedildi. Katılımcılara yeni zaman veya yer bildirilecektir.",
+    "deletePublished": "Etkinliği silmeden önce yayından kaldırın veya iptal edin.",
+    "addressRateLimited": "Çok fazla adres araması yapıldı. Bir dakika bekleyin ve tekrar deneyin.",
+    "addressUnavailable": "Adres arama özelliği geçici olarak kullanılamıyor.",
+    "formSaved": "Form kaydedildi.",
+    "refund": {
+      "noPayment": "Bu siparişte iade edilecek bir ödeme bulunmamaktadır.",
+      "nothingToRefund": "Sipariş {status}; iade edilecek bir şey yok.",
+      "requested": "Para iadesi talep edildi. Stripe onayladığı anda sipariş güncellenecektir."
+    },
+    "invitationSent": "Davetiye {email} adresine gönderildi.",
+    "apiKeyCreated": "Anahtar oluşturuldu. Şimdi kopyalayın; bir daha gösterilmeyecek.",
+    "unknownError": "bilinmeyen hata",
+    "eventInvite": {
+      "emailFailed": "Davetiye oluşturuldu, ancak e-posta gönderilemedi ( {reason} ). Bağlantıyı kendiniz paylaşın.",
+      "emailed": "Davetiye {email} adresine e-posta ile gönderildi.",
+      "linkCreated": "Davet bağlantısı oluşturuldu."
+    },
+    "waitlist": {
+      "notFound": "Bu kayıt artık mevcut değil.",
+      "alreadyOffered": "Bu kişinin halihazırda açık bir iş teklifi var.",
+      "registered": "Bu kişi zaten kayıt yaptırmış.",
+      "noRoom": "Bu bilet türünde ücretsiz koltuk bulunmamaktadır (veya etkinlik kapasitesi dolmuştur). Önce ücretsiz olan bir koltuğu deneyin.",
+      "emailFailed": "Yer {deadline} tarihine kadar rezerve edildi, ancak e-posta gönderilemedi ( {reason} ). Onlara şu bağlantıyı gönderin: {url}",
+      "offered": "Teklif {email} adresine e-posta ile gönderildi; yer {deadline} tarihine kadar rezerve edildi."
+    },
+    "discountCreated": "Kod {code} oluşturuldu.",
+    "webhook": {
+      "created": "Webhook oluşturuldu. İmzalama gizli anahtarını şimdi kopyalayın; yalnızca bir kez gösterilecektir.",
+      "notFound": "Webhook bulunamadı.",
+      "rotated": "Yeni imzalama gizli kodu. Alıcınızı güncelleyin; eski gizli kod artık çalışmıyor.",
+      "testQueued": "Test gönderimi sıraya alındı; yaklaşık 10 saniye içinde gönderilecek. Gönderim listesini kontrol edin."
+    },
+    "deleteOrg": {
+      "ownerOnly": "Kuruluşu yalnızca sahibi silebilir.",
+      "confirmSlug": "Onaylamak için kuruluşun URL'sini ( {slug} ) yazın."
+    }
+  }
+}

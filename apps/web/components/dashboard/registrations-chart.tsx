@@ -1,3 +1,4 @@
+import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 /**
@@ -9,12 +10,14 @@ import { cn } from "@/lib/utils";
 const VIEW_W = 1000;
 const VIEW_H = 100;
 
-const label = (day: string) => {
+const label = (day: string, locale: string) => {
   const d = new Date(`${day}T00:00:00Z`);
-  return Number.isNaN(d.getTime()) ? day : new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(d);
+  return Number.isNaN(d.getTime()) ? day : new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", timeZone: "UTC" }).format(d);
 };
 
 export function RegistrationsChart({ data, className }: { data: { day: string; count: number }[]; className?: string }) {
+  const t = useTranslations("manage");
+  const locale = useLocale();
   const max = Math.max(1, ...data.map((d) => d.count));
   const total = data.reduce((a, d) => a + d.count, 0);
   const slot = VIEW_W / data.length;
@@ -28,10 +31,10 @@ export function RegistrationsChart({ data, className }: { data: { day: string; c
   return (
     <div className={cn("min-w-0", className)}>
       <div className="flex items-baseline justify-between gap-4">
-        <p className="eyebrow">Peak {max}/day</p>
-        <p className="text-xs tabular-nums text-muted-foreground">{total} registration{total === 1 ? "" : "s"} over {data.length} day{data.length === 1 ? "" : "s"}</p>
+        <p className="eyebrow">{t("chart.peak", { max })}</p>
+        <p className="text-xs tabular-nums text-muted-foreground">{t("chart.summary", { total, days: data.length })}</p>
       </div>
-      <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" className="mt-2 h-28 w-full" role="img" aria-label={`Registrations per day. Peak ${max} on a single day, ${total} in total.`}>
+      <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none" className="mt-2 h-28 w-full" role="img" aria-label={t("chart.aria", { max, total })}>
         {[0, 0.5, 1].map((f) => (
           <line
             key={f}
@@ -57,14 +60,14 @@ export function RegistrationsChart({ data, className }: { data: { day: string; c
               fill="var(--primary)"
               opacity={i === data.length - 1 ? 1 : 0.82}
             >
-              <title>{`${label(d.day)}: ${d.count}`}</title>
+              <title>{t("chart.tooltip", { date: label(d.day, locale), count: d.count })}</title>
             </rect>
           );
         })}
       </svg>
       <div className="hairline mt-2 flex items-center justify-between pt-2">
-        <span className="eyebrow">{first ? label(first.day) : ""}</span>
-        {data.length > 1 && <span className="eyebrow">{last ? label(last.day) : ""}</span>}
+        <span className="eyebrow">{first ? label(first.day, locale) : ""}</span>
+        {data.length > 1 && <span className="eyebrow">{last ? label(last.day, locale) : ""}</span>}
       </div>
     </div>
   );

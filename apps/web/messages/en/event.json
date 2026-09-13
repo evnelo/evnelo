@@ -1,1 +1,227 @@
-{}
+{
+  "page": {
+    "format": {
+      "online": "Online",
+      "hybrid": "Hybrid",
+      "in_person": "In person"
+    },
+    "formatWithCity": "{format} · {city}",
+    "placeOnline": "Online, link shared after you register",
+    "hostedBy": "Hosted by <a>{name}</a>",
+    "privateInvite": "Private event. Your invitation is active.",
+    "privateInviteFor": "Private event. Your invitation for {email} is active.",
+    "privateMember": "Private event. You can see it because you help run it.",
+    "about": "About",
+    "where": "Where",
+    "openInMaps": "Open in maps",
+    "hosts": "Hosts",
+    "sponsors": "Sponsors",
+    "report": "Report this event"
+  },
+  "og": {
+    "free": "Free",
+    "from": "from {price}",
+    "online": "Online"
+  },
+  "calendar": {
+    "online": "Online"
+  },
+  "social": {
+    "website": "Website",
+    "other": "Link"
+  },
+  "ticket": {
+    "cancelled": "This event has been cancelled. This ticket is no longer valid.",
+    "eyebrow": "Your ticket",
+    "online": "Online",
+    "admit": "Admit",
+    "guestOf": "Guest of {name}",
+    "statusLabel": "Status",
+    "status": {
+      "confirmed": "Confirmed",
+      "pending_approval": "pending approval",
+      "rejected": "rejected",
+      "cancelled": "cancelled",
+      "waitlisted": "waitlisted"
+    },
+    "admitOne": "Admit one",
+    "qrAlt": "Ticket QR code",
+    "scanAtDoor": "Scan at the door",
+    "joinOnline": "Join online",
+    "addToCalendar": "Add to calendar",
+    "eventPage": "Event page",
+    "appleWallet": "Add to Apple Wallet",
+    "googleWallet": "Add to Google Wallet",
+    "doorHint": "At the door, show this QR code on your phone or on paper. The host scans it once, and you are in."
+  },
+  "inviteExpired": {
+    "metaTitle": "Invitation",
+    "eyebrow": "Invitation",
+    "title": "This invitation is no longer valid",
+    "description": "It may have expired or been used the maximum number of times. Ask the host for a new link.",
+    "browse": "Browse public events"
+  },
+  "offerExpired": {
+    "metaTitle": "Waitlist",
+    "eyebrow": "Waitlist",
+    "title": "This spot is no longer reserved",
+    "description": "The offer expired or was already used. You are still on the waitlist: if another spot opens, the host can offer it to you again.",
+    "browse": "Browse public events"
+  },
+  "register": {
+    "eyebrow": "Registration",
+    "eyebrowApproval": "Registration, approval required",
+    "eyebrowGuests": "Registration, guests welcome",
+    "priceRange": "{min} to {max}",
+    "offerReserved": "A <b>{ticketType}</b> spot is reserved for {email} until {time}. Register with that email.",
+    "steps": "Steps",
+    "stepDetails": "Details",
+    "stepPayment": "Payment",
+    "button": "Register",
+    "buttonApproval": "Request to join",
+    "dialogDescription": "Fill in your details to get your ticket.",
+    "dialogPayTitle": "Complete payment",
+    "dialogPayDescription": "Complete payment before the reservation timer expires."
+  },
+  "success": {
+    "approvalPaid": "Payment received. Request sent. You'll get an email once the host approves it.",
+    "approval": "Request sent. You'll get an email once the host approves it.",
+    "partyPaid": "Payment received. You're in, all {count} of you. The tickets are on their way to your inbox.",
+    "party": "You're in, all {count} of you. The tickets are on their way to your inbox.",
+    "singlePaid": "Payment received. You're in. Your ticket is on its way to your inbox.",
+    "single": "You're in. Your ticket is on its way to your inbox."
+  },
+  "payment": {
+    "outcome": {
+      "received": "Payment received.",
+      "processing": "Your payment is processing. We'll email your ticket when it completes.",
+      "retry": "Your payment was not completed. Choose another payment method and try again.",
+      "pending": "Complete the additional payment step to continue."
+    },
+    "processingNotice": "Payment processing. We’ll email your ticket when Stripe confirms it.",
+    "check": "Check payment",
+    "verifying": "Verifying your payment…",
+    "checkAgain": "Check again",
+    "registerAgain": "Register again",
+    "refundedLapsed": "Your payment arrived after the reservation had lapsed, so it has been refunded; it will show on your statement within 5 to 10 days. Register again to get a ticket.",
+    "reservationClosed": "This ticket reservation expired or closed. Register again to continue.",
+    "couldNotStart": "Payment could not be started. Your reservation will be released automatically.",
+    "failed": "Your payment could not be completed. Try again.",
+    "stripeUnreachable": "Stripe could not be reached. Your reservation is still available; try again.",
+    "holdExpired": "This ticket reservation expired. Close this window and register again.",
+    "reservedFor": "Tickets reserved for {time}.",
+    "submitting": "Processing payment…",
+    "expiredButton": "Reservation expired",
+    "pay": "Pay and register",
+    "secure": "Payments are securely processed by Stripe. Evnelo does not store card details."
+  },
+  "form": {
+    "validation": {
+      "name": "Enter your name",
+      "email": "Enter a valid email",
+      "phone": "Use international format, e.g. +5511999999999",
+      "guestName": "Enter your guest's name"
+    },
+    "optional": "(optional)",
+    "chooseOne": "Choose one",
+    "ticket": "Ticket",
+    "yourDetails": "Your details",
+    "smsOptIn": "Text me my ticket and a reminder before the event. Reply STOP to opt out.",
+    "guests": "Guests",
+    "bringUpTo": "Bring up to {count, plural, one {# guest} other {# guests}}",
+    "bringUpToEach": "Bring up to {count, plural, one {# guest} other {# guests}}, {price} each",
+    "guestCount": "{count} of {max}",
+    "guestCountEach": "{count} of {max}, {price} each",
+    "guestN": "Guest {n}",
+    "removeGuestN": "Remove guest {n}",
+    "guestEmailOptional": "(optional, we'll send their ticket to you otherwise)",
+    "addGuest": "Add a guest",
+    "lineItem": "{count} × {name}",
+    "continueToPayment": "Continue to payment, {price}",
+    "continueToPaymentFor": "Continue to payment, {price} for {count}",
+    "registerFreeWithCode": "Register, free with code",
+    "registerPeopleFreeWithCode": "Register {count} people, free with code",
+    "registerPeople": "Register {count} people",
+    "register": "Register"
+  },
+  "discount": {
+    "invalid": "That code isn't valid.",
+    "have": "Have a discount code?",
+    "label": "Discount code",
+    "placeholder": "CODE",
+    "applied": "Applied",
+    "apply": "Apply",
+    "off": "{code}: {amount} off.",
+    "offFree": "{code}: {amount} off, your ticket is free.",
+    "enterCode": "Enter a code.",
+    "problem": {
+      "not_found": "That code isn't valid for this event.",
+      "expired": "That code has expired.",
+      "exhausted": "That code has been used up."
+    }
+  },
+  "file": {
+    "couldNotUpload": "That file could not be uploaded.",
+    "rejected": "The upload was rejected. Try a different file.",
+    "failed": "Upload failed. Check your connection and try again.",
+    "unavailable": "File uploads are unavailable on this site. Ask the organizer how to send this.",
+    "remove": "Remove file",
+    "uploading": "Uploading…",
+    "choose": "Choose a file",
+    "hint": "PDF, JPEG, PNG or WebP. Only the organizers can open it.",
+    "hintMax": "PDF, JPEG, PNG or WebP · max {size}. Only the organizers can open it.",
+    "megabytes": "{count} MB"
+  },
+  "waitlist": {
+    "already": "You're already on the waitlist. We'll email you if a spot opens up.",
+    "joined": "You're on the waitlist. We'll email you a link to claim a spot if one opens up.",
+    "soldOut": "Sold out. Join the waitlist and we’ll email you if a spot opens up.",
+    "join": "Join the waitlist",
+    "description": "Leave your details and we’ll email you a link to claim a spot if one opens up. Links are valid for 24 hours."
+  },
+  "errors": {
+    "checkForm": "Check the form and try again.",
+    "tooManyRegistrations": "Too many registration attempts. Wait a few minutes and try again.",
+    "notOpenForRegistration": "This event isn't open for registration.",
+    "inviteExhaustedAsk": "Your invitation has already been used the maximum number of times. Ask the host for a new invitation.",
+    "inviteExpiredAsk": "Your invitation has expired. Ask the host for a new invitation.",
+    "inviteOnlyAsk": "This event is invite-only. Open the invitation link you received to register. Ask the host for a new invitation.",
+    "inviteEmail": "This invitation was sent to {email}. Register with that email address.",
+    "ticketUnavailable": "That ticket isn't available.",
+    "salesClosed": "Sales for this ticket are closed.",
+    "offerEmail": "This reserved spot is for {email}. Register with that email address.",
+    "offerTicketType": "Your reserved spot is for a different ticket type.",
+    "offerNoGuests": "A waitlist spot covers one person; guests can join the waitlist separately.",
+    "guestsNotAllowed": "This event doesn't allow guests.",
+    "maxGuests": "You can bring up to {count, plural, one {# guest} other {# guests}}.",
+    "quantityRange": "Choose between {min} and {max} tickets.",
+    "distinctEmails": "Each guest needs their own email address, or none.",
+    "answersNeedAttention": "Some answers need attention.",
+    "uploadAgain": "Upload the file again",
+    "paymentsNotConfigured": "This event can't take payments yet. Contact the host.",
+    "alreadyRegistered": "This email is already registered for this event.",
+    "otherAlreadyRegistered": "{email} is already registered for this event.",
+    "discountUsedUp": "That discount code was just used up. Remove it and try again.",
+    "offerLapsed": "Your reserved spot expired. If another opens up, the host can offer it to you again.",
+    "inviteExhausted": "This invitation has already been used the maximum number of times.",
+    "notEnoughTickets": "Not enough tickets left for your whole party.",
+    "justSoldOut": "That ticket just sold out.",
+    "paymentsUnavailable": "Payments are unavailable right now. Please try again in a few minutes.",
+    "invalidResume": "Invalid payment-resume request.",
+    "tooManyPaymentChecks": "Too many payment checks. Wait a minute and try again.",
+    "paymentSessionNotFound": "Payment session not found.",
+    "paymentNotVerified": "Payment session could not be verified.",
+    "waitlistInput": "Enter your name and a valid email.",
+    "tooManyAttempts": "Too many attempts. Wait a few minutes and try again.",
+    "eventNotOpen": "This event isn't open.",
+    "noWaitlist": "This event doesn't have a waitlist.",
+    "uploadsNotConfigured": "File uploads aren't configured on this instance.",
+    "chooseFile": "Choose a file to upload.",
+    "uploadType": "Upload a PDF, JPEG, PNG or WebP file.",
+    "uploadTooLarge": "Files must be 10 MB or smaller.",
+    "unknownEvent": "Unknown event.",
+    "noFileField": "This event doesn't ask for a file.",
+    "tooManyUploads": "Too many uploads right now. Try again later.",
+    "storageUnavailable": "File storage is unavailable right now."
+  }
+}

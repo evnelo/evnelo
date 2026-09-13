@@ -1,21 +1,22 @@
 import * as React from "react";
-import { Link } from "@react-email/components";
-import { EmailLayout, Para, Title, colors, type EmailBrand, type EmailEvent } from "./layout";
+import { EmailLayout, Para, Title, emailI18n, linkTo, strong, type EmailBrand, type EmailEvent, type EmailI18n } from "./layout";
 
-export type RefundIssuedProps = { brand: EmailBrand; event: EmailEvent; attendeeName: string; amount: string; ticketCount: number };
+/** `amount` arrives pre-formatted in the recipient's locale (formatMoney(minor, currency, locale)). */
+export type RefundIssuedProps = EmailI18n & { brand: EmailBrand; event: EmailEvent; attendeeName: string; amount: string; ticketCount: number };
 
-export const refundIssuedSubject = (p: RefundIssuedProps) => `Refund of ${p.amount} for ${p.event.name}`;
+export const refundIssuedSubject = (p: RefundIssuedProps) => emailI18n(p).t("refundIssued.subject", { amount: p.amount, eventName: p.event.name });
 
-export default function RefundIssued({ brand, event, attendeeName, amount, ticketCount }: RefundIssuedProps) {
+export default function RefundIssued(props: RefundIssuedProps) {
+  const { brand, event, attendeeName, amount, ticketCount } = props;
+  const { locale, t } = emailI18n(props);
   return (
-    <EmailLayout brand={brand} preview={`${amount} is on its way back to your card.`}>
-      <Title>Refund issued</Title>
+    <EmailLayout brand={brand} locale={locale} t={t} preview={t("refundIssued.preview", { amount })}>
+      <Title>{t("refundIssued.title")}</Title>
       <Para>
-        Hi {attendeeName}, {brand.orgName} refunded <strong>{amount}</strong> for your order to <Link href={event.url} style={{ color: colors.accent }}>{event.name}</Link>.
-        {ticketCount > 1 ? ` All ${ticketCount} tickets on the order are cancelled` : " Your ticket is cancelled"} and will no longer scan.
+        {t.rich("refundIssued.intro", { name: attendeeName, orgName: brand.orgName, amount, eventName: event.name, strong, link: linkTo(event.url) })} {t("refundIssued.cancelled", { count: ticketCount })}
       </Para>
       <Para muted style={{ margin: 0, fontSize: 13 }}>
-        Refunds usually reach your card in 5 to 10 business days, depending on your bank. This email is your receipt.
+        {t("refundIssued.timing")} {t("refundIssued.receipt")}
       </Para>
     </EmailLayout>
   );

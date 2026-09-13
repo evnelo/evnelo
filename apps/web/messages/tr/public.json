@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "description": "Hareket halindeki etkinlikler. Açık etkinlik altyapısı: etkinlikleri yayınlayın, katılımcıları kaydedin, bilet satın veya hediye edin, topluluğunuza mesaj gönderin, kişilerin giriş çıkışlarını kontrol edin."
+  },
+  "nav": {
+    "discover": "Keşfetmek",
+    "pricing": "Fiyatlandırma",
+    "dashboard": "Kontrol Paneli",
+    "signIn": "Giriş yap",
+    "host": "Bir etkinlik düzenleyin",
+    "hostShort": "Ev sahibi",
+    "api": "API"
+  },
+  "footer": {
+    "tagline": "Hareket halindeki etkinlikler. Açık etkinlik altyapısı: ücretsiz etkinlikler ücretsizdir, ücretli etkinlikler ise ev sahibine %0,99 maliyet getirir.",
+    "credit": "Bu etkinlik <inevent>InEvent</inevent> tarafından sunulmaktadır."
+  },
+  "og": {
+    "subtitle": "Açık etkinlik altyapısı. Yayınlayın, kayıt olun, katılın."
+  },
+  "github": {
+    "label": "evnelo/evnelo GitHub'da"
+  },
+  "captcha": {
+    "notice": "Bu site reCAPTCHA ile korunmaktadır ve Google <privacy>Gizlilik Politikası</privacy> ve <terms>Hizmet Şartları</terms> geçerlidir."
+  },
+  "hero": {
+    "eyebrow": "Açık etkinlik altyapısı",
+    "title": "İlk tıklamadan ön kapıya kadar.",
+    "lead": "Etkinlikleri yayınlayın, bilet satın, katılımcılara mesaj gönderin ve giriş-çıkış işlemlerini tek bir açık platformda gerçekleştirin veya kendi altyapınızda barındırın.",
+    "pricing": "Ücretli biletlerde <b>%0,99 indirim</b>. Ücretsiz etkinlikler ücretsiz kalır.<br></br> Kendi sunucunuzda barındırırsanız <b>%0</b>.",
+    "explore": "Etkinlikleri keşfedin",
+    "scene": {
+      "steps": {
+        "discover": {
+          "label": "Keşfetmek",
+          "sub": "Sizi harekete geçiren şeyi bulun."
+        },
+        "register": {
+          "label": "Kayıt olmak",
+          "sub": "Birkaç tıklama uzaklıkta"
+        },
+        "ticketing": {
+          "label": "Biletleme",
+          "sub": "Sınırsız satış yapın"
+        },
+        "checkin": {
+          "label": "Giriş",
+          "sub": "Hızlı. Dost canlısı. Esnek."
+        },
+        "attendance": {
+          "label": "Katılım",
+          "sub": "Gerçek insanlar. Kalıcı etki."
+        }
+      },
+      "event": {
+        "category": "Müzik",
+        "title": "Gün Batımı Seansları",
+        "date": "Cumartesi, 24 Ağustos 2024",
+        "place": "Nehir Kenarı Parkı"
+      },
+      "create": {
+        "title": "Etkinliğinizi oluşturun",
+        "publish": "Etkinliği yayınla"
+      },
+      "ticket": {
+        "title": "Genel Giriş",
+        "meta": "Cumartesi, 24 Ağustos 2024 <br></br> Riverside Park"
+      },
+      "checkin": {
+        "title": "Katılımcı giriş yaptı.",
+        "welcome": "Hoş geldin!"
+      },
+      "attendance": {
+        "more": "+ {count}",
+        "meta": "insanlar katıldı"
+      },
+      "notes": {
+        "left": "Daha fazla etkinlik. <br></br> Daha açık bir dünya.",
+        "right": "<br>insanları harekete</br>."
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Evnelo: Hareket Halindeki Olaylar",
+      "description": "Açık etkinlik altyapısı. Etkinlikler yayınlayın, katılımcıları kaydedin, bilet satın veya ücretsiz dağıtın, topluluğunuza mesaj gönderin ve kişilerin giriş çıkışlarını kontrol edin. Ücretli biletlerde %0,99 komisyon, ücretsiz etkinlikler ücretsizdir veya kendi etkinliğinizi hiçbir ücret ödemeden kendiniz düzenleyebilirsiniz."
+    },
+    "pricing": {
+      "eyebrow": "Fiyatlandırma",
+      "title": "Diğer platformlara göre daha düşük ücretler.",
+      "body": "Çoğu platform her bilet için %3 ila %5 artı bir ücret alıyor. Evnelo, ücretli biletlerden %0,99, ücretsiz biletlerden ise hiçbir ücret almıyor. Kendi Stripe hesabınızı bağlıyorsunuz, böylece bilet parası doğrudan size gidiyor ve asla bizde kalmıyor; Stripe'ın işlem ücreti Stripe'ın oranında uygulanıyor ve ücretleri alıcılara yansıtabilir veya kendiniz karşılayabilirsiniz.",
+      "plans": {
+        "free": {
+          "title": "Ücretsiz etkinlikler",
+          "price": "0 dolar",
+          "note": "Platform ücreti yok, bilet başına ücret yok, katılımcı sayısı sınırsız."
+        },
+        "paid": {
+          "title": "Ücretli etkinlikler",
+          "price": "0,99%",
+          "note": "Bilet fiyatı, bağlı Stripe hesabınız üzerinden tahsil edilir. 25 dolarlık bir bilet size 25 sente mal olur, buna Stripe komisyonu da eklenir."
+        },
+        "selfHosted": {
+          "title": "Kendi sunucunuzda barındırılan",
+          "price": "0 dolar",
+          "note": "Açık kaynak kodlu. Tek bir konteyner, MySQL veritabanınız, kendi Stripe anahtarlarınız. Hiçbir zaman platform ücreti yok."
+        }
+      }
+    },
+    "flow": {
+      "eyebrow": "Akış şekli",
+      "title": "\"Gitmek istiyorum\" ile \"Buradayım\" arasındaki her şey.",
+      "steps": {
+        "publish": {
+          "title": "Yayınla",
+          "text": "Kapak fotoğrafınız, programınız, mekanınız ve organizatörlerinizle birlikte bir etkinlik sayfası. Herkese açık, gizli veya davetle özel olabilir."
+        },
+        "register": {
+          "title": "Kayıt olmak",
+          "text": "Bilet kademeleri, kendi sorularınız, kendi biletleriyle gelen misafirler, indirim kodları, biletler tükendiğinde bekleme listesi."
+        },
+        "pay": {
+          "title": "Öde ve al",
+          "text": "Kartlar, Apple Pay, Google Pay, Pix. QR kodlu biletler, cüzdan geçiş kartları, takvim dosyaları, e-posta ve SMS ile onay."
+        },
+        "checkin": {
+          "title": "Giriş",
+          "text": "Herhangi bir telefon tarayıcısında çalışan, sinyal olmadan da çalışmaya devam eden ve odanın dolmasını canlı olarak gösteren bir tarayıcı."
+        }
+      }
+    },
+    "openSource": {
+      "eyebrow": "Açık kaynak",
+      "title": "Etkinlikleriniz. Verileriniz. Teknoloji yığınınız.",
+      "body": "Evnelo, Apache 2.0 lisansı altında açık kaynaklıdır. Tek bir konteyner ve tek bir MySQL veritabanı ile kendiniz barındırın, kendi Stripe, Resend ve Vonage anahtarlarınızı takın ve her katılımcı kaydını kendi altyapınızda tutun. Aynı ürün, platform ücreti yok.",
+      "points": {
+        "export": "Katılımcı dışa aktarma ve silme özelliği entegre edilmiştir.",
+        "providers": "Kendi ödeme, e-posta ve SMS sağlayıcılarınızı getirin.",
+        "ops": "Taşıma işlemleri, sağlık kontrolleri ve yedeklemeler belgelenmiştir.",
+        "migrate": "Barındırılan sürüme geçiş veya barındırma sürümünden ayrılma, veritabanıyla ilgili bir işlemdir, yeniden yazma işlemi değildir."
+      },
+      "source": "Kaynak kodunu görüntüle",
+      "apiReference": "API referansı"
+    },
+    "developers": {
+      "eyebrow": "Geliştiriciler için",
+      "title": "Üzerine yeni yapılar inşa edilebilmesi için inşa edilmiştir.",
+      "points": {
+        "rest": "Her kaynak için, tekrarlanabilir yazma işlemlerine sahip REST API.",
+        "sdk": "Ajanlar için TypeScript SDK ve MCP sunucusu oluşturuldu.",
+        "webhooks": "Kayıt, ödeme ve giriş işlemleri için imzalanmış web kancaları.",
+        "openapi": "OpenAPI dokümanı ve etkileşimli dokümanlar /api/v1/docs adresinde bulunmaktadır."
+      }
+    },
+    "upcoming": {
+      "eyebrow": "Yakında gerçekleşecek",
+      "title": "Evnelo'da halka açık etkinlikler",
+      "all": "Tüm etkinlikler"
+    },
+    "cta": {
+      "title": "Toplanma sürecini kolaylaştırın.",
+      "body": "İlk etkinliğinizi birkaç dakika içinde oluşturun. Ücretsiz etkinlikler için hiçbir şeye gerek yok; ücretli etkinlikler için Stripe hesabınıza ihtiyacınız var.",
+      "explore": "Programda neler var bir bakın."
+    }
+  },
+  "discover": {
+    "meta": {
+      "description": "Evnelo'da her organizatörün düzenlediği herkese açık etkinlikler. Şehir, konu, tarih, fiyat ve mesafe kriterlerine göre arama yapın."
+    },
+    "headline": {
+      "query": {
+        "none": "“ {q} ” ile eşleşen olaylar",
+        "city": "{city} içinde “ {q} ” ile eşleşen olaylar",
+        "near": "Yakınınızda “ {q} ” ile eşleşen etkinlikler",
+        "online": "Çevrimiçi olarak “ {q} ” ile eşleşen etkinlikler",
+        "inPerson": "Şahsen “ {q} ” ile eşleşen etkinlikler"
+      },
+      "free": {
+        "none": "Ücretsiz etkinlikler",
+        "city": "{city} 'da ücretsiz etkinlikler",
+        "near": "Yakınınızdaki ücretsiz etkinlikler",
+        "online": "Ücretsiz çevrimiçi etkinlikler",
+        "inPerson": "Ücretsiz yüz yüze etkinlikler"
+      },
+      "tag": {
+        "none": "{tag} etkinlik",
+        "city": "{city} yılında {tag} olay",
+        "near": "Yakınınızda {tag} etkinlik",
+        "online": "{tag} çevrimiçi etkinlik",
+        "inPerson": "{tag} etkinlik şahsen"
+      },
+      "paid": {
+        "none": "Biletli etkinlikler",
+        "city": "Biletli etkinlikler {city}",
+        "near": "Yakınınızdaki biletli etkinlikler",
+        "online": "Biletli etkinlikler çevrimiçi",
+        "inPerson": "Biletli etkinliklere şahsen katılın"
+      },
+      "all": {
+        "none": "Programda neler var?",
+        "city": "{city} daki olaylar",
+        "near": "Yakınınızdaki etkinlikler",
+        "online": "Çevrimiçi etkinlikler",
+        "inPerson": "Şahsen katılabileceğiniz etkinlikler"
+      }
+    },
+    "lead": "Evnelo'daki her ev sahibinden söyleşiler, atölye çalışmaları, akşam yemekleri ve buluşmalar.",
+    "jsonLdName": "Yaklaşan halka açık etkinlikler",
+    "count": {
+      "exact": "{count, plural, one {# etkinliği} other {# etkinlik}}",
+      "more": "{count, plural, one {# + etkinlik} other {# + etkinlikler}}",
+      "exactFrom": "{count, plural, one {# etkinliği} other {# etkinlik}} # {from} den",
+      "moreFrom": "{count, plural, one {# + etkinlik} other {# + etkinlikler}} # {from} den"
+    },
+    "format": {
+      "online": "Çevrimiçi",
+      "in_person": "Şahsen",
+      "hybrid": "Hibrit"
+    },
+    "price": {
+      "paid": "Paralı"
+    },
+    "date": {
+      "today": "Bugün",
+      "week": "Bu hafta",
+      "month": "Bu ay",
+      "custom": "Tarihleri seçin"
+    },
+    "active": {
+      "showing": "Gösteriliyor",
+      "query": "“ {q} ”",
+      "customRange": "{from} ile {to} arası",
+      "customDates": "Özel tarihler",
+      "within": "{km} km içinde",
+      "remove": "Filtreyi kaldır",
+      "clearAll": "Tümünü temizle"
+    },
+    "search": {
+      "events": "Arama etkinlikleri",
+      "placeholder": "Etkinlikleri, sunucuları ve etiketleri arayın",
+      "city": "Şehir",
+      "cityOption": "{city}, {country}",
+      "nearMe": "Yakınımda",
+      "nearYou": "Yakınınızda",
+      "unsupported": "Bu tarayıcı konumunuzu paylaşamaz. Bunun yerine bir şehir belirtmeyi deneyin.",
+      "blocked": "Konum engellendi. Bunun yerine şehre göre filtreleyin."
+    },
+    "toolbar": {
+      "label": "Filtreler",
+      "km": "{km} km",
+      "anywhere": "Herhangi bir yer",
+      "view": "Görüş",
+      "list": "Liste",
+      "calendar": "Takvim"
+    },
+    "customDates": {
+      "from": "İtibaren",
+      "to": "İle",
+      "apply": "Tarihleri uygulayın",
+      "clear": "Tarihleri temizle"
+    },
+    "topics": "Konular",
+    "sections": {
+      "featured": "Öne Çıkanlar",
+      "upcoming": "Yakında"
+    },
+    "empty": {
+      "month": {
+        "title": "Bu ay için planlanmış bir şey yok.",
+        "body": "Bir ay daha deneyin veya filtreyi temizleyin.",
+        "action": "Gelecek ay"
+      },
+      "filtered": {
+        "title": "Bu filtrelerle eşleşen etkinlik bulunamadı.",
+        "body": "Daha geniş bir tarih aralığı deneyin veya filtreleri temizleyin.",
+        "action": "Filtreleri temizle"
+      },
+      "end": {
+        "title": "Sonuna ulaştınız.",
+        "body": "Bu sayfada yaklaşan tüm halka açık etkinlikler yer almaktadır.",
+        "action": "Başa dön"
+      },
+      "none": {
+        "title": "Henüz planlanmış halka açık bir etkinlik yok.",
+        "body": "İlk ev sahibi siz olun."
+      }
+    },
+    "pagination": {
+      "label": "Sayfalama",
+      "more": "Daha fazla yükle"
+    },
+    "card": {
+      "from": "{price} dan itibaren",
+      "underOneKm": "1 km'den daha az uzaklıkta",
+      "kmAway": "{km} km uzaklıkta"
+    },
+    "calendar": {
+      "eyebrow": "Takvim",
+      "changeMonth": "Ay değiştir",
+      "goTo": "{month} adresine gidin",
+      "today": "Bugün",
+      "dayCount": "{count, plural, one {# etkinliği} other {# etkinlik}}",
+      "overflow": "+ {count} daha fazla",
+      "timezoneNote": "Etkinliklerin saatleri, her etkinliğin kendi saat dilimine göre gösterilmektedir.",
+      "rowTitle": "{name} — {time}"
+    }
+  },
+  "org": {
+    "meta": {
+      "description": "Etkinlikler {name} tarafından düzenlenmiştir."
+    },
+    "eyebrow": "Organizatör",
+    "upcoming": "Yakında",
+    "count": "{count, plural, one {# etkinliği} other {# etkinlik}}",
+    "empty": {
+      "title": "Şu an için planlanmış bir şey yok.",
+      "body": "Kısa süre sonra tekrar kontrol edin veya diğer sunucuların neler sunduğuna bakın.",
+      "action": "Tüm etkinliklere göz atın"
+    },
+    "past": "Geçmiş etkinlikler"
+  },
+  "report": {
+    "meta": {
+      "title": "Bir olayı bildirin"
+    },
+    "eyebrow": "Rapor",
+    "title": "Bir olayı bildirin",
+    "reasons": {
+      "spam": "Spam veya yanıltıcı",
+      "scam": "Dolandırıcılık veya sahtekarlık",
+      "inappropriate": "Uygunsuz içerik",
+      "copyright": "Telif hakkı veya ticari marka",
+      "other": "Başka bir şey"
+    },
+    "notFound": "O etkinlik bulunamadı.",
+    "openFromEvent": "Bir etkinlik hakkında rapor vermek için bu sayfayı etkinlikten açın.",
+    "sent": "Teşekkürler. <b>{name}</b> hakkındaki raporunuz kaydedildi.",
+    "sentAndForwarded": "Teşekkürler. <b>{name}</b> hakkındaki raporunuz kaydedildi ve bu örneğin operatörlerine gönderildi.",
+    "reporting": "Raporlama <b>{name}</b> tarafından {org} yapılıyor. Raporlar, bu Evnelo örneğini çalıştıran kişilere gider, sunucuya değil.",
+    "errors": {
+      "limited": "Bağlantınızdan çok fazla rapor geldi. Lütfen daha sonra tekrar deneyin.",
+      "invalid": "Formu kontrol edin ve tekrar deneyin."
+    },
+    "form": {
+      "reason": "Sebep",
+      "details": "Detaylar",
+      "optional": "(isteğe bağlı)",
+      "email": "E-postanız",
+      "optionalFollowUp": "(İsteğe bağlı, takip etmemizi isterseniz)",
+      "submit": "Rapor gönder"
+    },
+    "back": "Etkinliğe geri dön"
+  },
+  "notFound": {
+    "meta": {
+      "title": "Sayfa bulunamadı."
+    },
+    "eyebrow": "404",
+    "title": "Burada hiçbir şey yok.",
+    "body": "Bağlantı eski olabilir, etkinlik kaldırılmış olabilir veya adreste yazım hatası olabilir.",
+    "action": "Herkese açık etkinliklere göz atın"
+  },
+  "error": {
+    "title": "Bir şeyler ters gitti.",
+    "body": "Sayfada bir hata oluştu. Tekrar denemek genellikle işe yarar; eğer bu durum devam ederse, sunucuya bildirim gönderilmiştir.",
+    "reference": "Referans {digest}",
+    "home": "Eve git"
+  }
+}

@@ -1,21 +1,27 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Compass } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { NarrowPage } from "@/components/narrow-page";
 
-export const metadata = { title: "Page not found" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("public.notFound");
+  return { title: t("meta.title") };
+}
 
-export default function NotFound() {
+export default async function NotFound() {
+  const t = await getTranslations("public.notFound");
   return (
     <NarrowPage
       brand
       align="center"
       icon={<Compass />}
-      eyebrow="404"
-      title="There's nothing here"
-      description="The link may be old, the event may have been taken down, or the address has a typo."
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      description={t("body")}
     >
-      <Link href="/discover" className={buttonVariants({ size: "lg" })}>Browse public events</Link>
+      <Link href="/discover" className={buttonVariants({ size: "lg" })}>{t("action")}</Link>
     </NarrowPage>
   );
 }

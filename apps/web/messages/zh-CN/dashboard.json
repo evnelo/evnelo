@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "title": "仪表板",
+    "checkin": "报到"
+  },
+  "shell": {
+    "organization": "组织",
+    "switchOrganization": "切换组织"
+  },
+  "nav": {
+    "events": "活动",
+    "checkin": "报到",
+    "settings": "设置"
+  },
+  "status": {
+    "event": {
+      "draft": "草稿",
+      "published": "已发布",
+      "cancelled": "取消",
+      "ended": "结束"
+    },
+    "attendee": {
+      "confirmed": "确认的",
+      "pending_approval": "待批准",
+      "waitlisted": "已列入候补名单",
+      "rejected": "拒绝",
+      "cancelled": "取消"
+    },
+    "order": {
+      "pending": "待办的",
+      "processing": "加工",
+      "paid": "有薪酬的",
+      "free": "自由的",
+      "refunded": "已退款",
+      "partially_refunded": "部分退款",
+      "failed": "失败的",
+      "expired": "已到期"
+    },
+    "delivery": {
+      "delivered": "发表",
+      "retrying": "重试",
+      "pending": "待办的",
+      "failed": "失败的"
+    }
+  },
+  "noAccess": {
+    "title": "无访问权限",
+    "description": "角色决定了组织中每个人可以打开哪些窗口。",
+    "empty": {
+      "title": "这片区域你无权开放。",
+      "description": "你在这个组织中的角色不允许你这样做。请联系所有者或管理员进行更改。"
+    }
+  },
+  "events": {
+    "title": "活动",
+    "description": "所有{org}都在运行，注册人数、收入和入场人数一目了然。",
+    "newEvent": "新活动",
+    "groups": {
+      "upcoming": "即将推出",
+      "drafts": "草稿",
+      "past": "过去的"
+    },
+    "empty": {
+      "title": "目前还没有活动",
+      "description": "你的第一个活动在发布之前都会保持草稿状态，所以不必急于把所有事情都做好。",
+      "action": "创建您的第一个活动"
+    },
+    "row": {
+      "online": "在线的",
+      "inPerson": "亲自",
+      "registered": "挂号的",
+      "pending": "{count}待定",
+      "revenue": "收入",
+      "checkedIn": "已办理入住"
+    }
+  },
+  "checkin": {
+    "title": "报到",
+    "description": "{org} 。在门口用手机打开活动；扫描需要摄像头访问权限。",
+    "in": "在",
+    "empty": {
+      "title": "今天没有需要扫描的内容",
+      "description": "已发布的活动将从上线之日起一直显示在这里，直到活动结束后的第二天。"
+    },
+    "event": {
+      "allCheckin": "所有入住",
+      "eventDashboard": "事件仪表板"
+    }
+  },
+  "event": {
+    "allEvents": "所有活动",
+    "viewPage": "查看页面",
+    "nav": {
+      "overview": "概述",
+      "tickets": "门票",
+      "form": "形式",
+      "invites": "邀请",
+      "attendees": "与会者",
+      "waitlist": "候补名单",
+      "orders": "订单",
+      "checkin": "报到"
+    },
+    "new": {
+      "title": "新活动",
+      "description": "已保存为草稿。添加工单和问题后，即可发布。"
+    },
+    "overview": {
+      "stats": {
+        "registered": "挂号的",
+        "awaitingApproval": "{count}等待批准",
+        "confirmedAndApproved": "已确认并批准",
+        "revenue": "收入",
+        "afterRefunds": "退款后",
+        "checkedIn": "已办理入住",
+        "percentOfRegistrations": "注册人数{percent} %",
+        "nobodyYet": "门口还没人。",
+        "capacity": "容量",
+        "seatsLeft": "剩余{count}座位",
+        "unlimitedSeats": "座位不限"
+      },
+      "registrationsByDay": "按日统计的注册人数",
+      "noRegistrations": {
+        "title": "目前尚无注册。",
+        "description": "从第一个人注册的那一刻起，曲线就开始波动了。"
+      },
+      "tickets": "门票",
+      "manage": "管理",
+      "noTickets": {
+        "title": "暂无票种",
+        "description": "无需许可即可发表文章，相当于为你获得了一张免费的普通入场券。",
+        "action": "添加票务类型"
+      },
+      "ticketSales": "{hasQuantity, select, true {{quantity} {sold}} other {售出{sold}}}{held, plural, =0 {} other {， #举行}}",
+      "eventPage": "活动页面",
+      "visibility": {
+        "public": "公开：已在 Discover 上列出并被索引。",
+        "unlisted": "未公开：任何拥有该链接的人。",
+        "private": "私密：仅限受邀者。"
+      },
+      "actions": "行动",
+      "publish": "发布活动",
+      "unpublish": "取消发布，返回草稿",
+      "statusNote": {
+        "draft": "只有您自己才能看到此活动，直到它正式发布。",
+        "published": "已上线。取消发布会隐藏页面；已收集的注册信息将保留。",
+        "cancelled": "本次活动取消。"
+      },
+      "irreversible": "不可逆的",
+      "cancelEvent": "取消活动",
+      "cancelConfirm": "取消本次活动？所有已注册的参与者都会收到一封取消邮件（如果选择接收短信，还会收到短信）。已付款的订单仍需在“订单”选项卡中申请退款。",
+      "deleteEvent": "删除事件",
+      "deleteConfirm": "删除此活动？它将从控制面板中消失。与会者记录将被保留。"
+    },
+    "attendees": {
+      "exportCsv": "导出 CSV 文件",
+      "searchPlaceholder": "搜索姓名、电子邮件或电话号码",
+      "filter": "筛选",
+      "allOption": "所有（ {count} ）",
+      "statusOption": "{label} ( {count} )",
+      "pendingNote": "{count, plural, one {#注册} other {#注册}} 等待您的批准。",
+      "review": "审查",
+      "columns": {
+        "ticket": "票",
+        "registered": "挂号的",
+        "files": "文件",
+        "actions": "行动"
+      },
+      "empty": {
+        "noMatch": {
+          "title": "没有与会者匹配",
+          "description": "尝试其他搜索词或清除状态筛选器。"
+        },
+        "none": {
+          "title": "目前还没有人注册。",
+          "description": "注册信息会在有人注册的那一刻立即出现在这里。"
+        }
+      },
+      "guestOf": "{name}的客人",
+      "sms": "短信",
+      "paymentPending": "待付款",
+      "approve": "批准",
+      "reject": "拒绝",
+      "ticket": "票",
+      "cancelConfirm": "取消{name}的注册？他们的机票将失效，座位将被释放。系统不会发送电子邮件。",
+      "export": "出口",
+      "erase": "擦除",
+      "eraseConfirm": "删除{name}的个人数据？姓名、邮箱、电话号码和答案将被替换为占位符，其工单将被撤销，已发送的邮件将被删除。此操作无法撤销。"
+    },
+    "orders": {
+      "collected": "已收取<strong>{amount}</strong> ，扣除退款后",
+      "count": "{count, plural, one {#订单} other {#订单}}",
+      "columns": {
+        "order": "命令",
+        "items": "项目",
+        "total": "全部的",
+        "placed": "放置",
+        "actions": "行动"
+      },
+      "empty": {
+        "title": "目前还没有订单",
+        "description": "所有注册信息，无论是免费的还是付费的，都会在这里显示出来，以及收集到的信息。"
+      },
+      "people": "{count, plural, one {#人} other {#人}}",
+      "refunded": "{amount}已退款"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "description": "你的组织在公众眼中的形象，谁可以在其中工作，以及其他系统如何与它通信。",
+    "tabs": {
+      "organization": "组织",
+      "members": "成员",
+      "developer": "开发者",
+      "payments": "付款"
+    },
+    "organization": {
+      "title": "组织",
+      "description": "名称、公开网址、徽标以及电子邮件和票务页面中使用的强调色。",
+      "publicUrl": "公共网址",
+      "publicUrlHelp": "/o/… 小写字母、数字、连字符。",
+      "website": "网站",
+      "websiteHelp": "输入 example.com，我们会自动添加 https://。",
+      "logo": "标识",
+      "logoHelp": "在活动页面和电子邮件中显示。",
+      "accentColour": "强调色",
+      "accentColourHelp": "电子邮件和票务页面上的按钮。",
+      "pickColour": "选择颜色",
+      "serviceFee": "服务费",
+      "serviceFeeHelp": "新活动的默认设置：将平台费用作为一项单独费用转嫁给买家，或者由买家自行承担。",
+      "buyerPaysFee": "买方支付服务费",
+      "socialLinks": "社交链接",
+      "platform": "平台",
+      "url": "URL",
+      "addLink": "添加链接",
+      "save": "保存组织"
+    },
+    "members": {
+      "title": "成员",
+      "description": "所有者和管理员管理组织；成员创建和举办活动；签到人员只能扫描门票。",
+      "roles": {
+        "owner": "所有者",
+        "admin": "行政",
+        "member": "成员",
+        "checkin": "办理入住手续的工作人员"
+      },
+      "columns": {
+        "member": "成员",
+        "role": "角色",
+        "since": "自从"
+      },
+      "removeConfirm": "从组织中移除{email} ？",
+      "invited": "已邀请 · 有效期至{date}",
+      "revoke": "撤销",
+      "emailPlaceholder": "teammate@example.com",
+      "sendInvite": "发送邀请"
+    },
+    "developer": {
+      "apiKeys": {
+        "title": "API密钥",
+        "description": "服务器到服务器的访问权限，可访问该组织的活动、订单和与会者信息。",
+        "note": "密钥调用<docs>REST API</docs> ，代表此组织。发送密钥的方式为<code>{header}</code> 。读取密钥列表并获取；写入密钥也用于创建。",
+        "newKey": "立即复制您的新密钥。它将不会再次显示。",
+        "saved": "我已经保存了。",
+        "columns": {
+          "key": "钥匙",
+          "scopes": "瞄准镜",
+          "lastUsed": "上次使用"
+        },
+        "never": "绝不",
+        "empty": {
+          "title": "暂无 API 密钥",
+          "description": "每个集成创建一个工具，这样您就可以撤销单个工具而不会影响其他工具。"
+        },
+        "revoked": "撤销",
+        "revokeConfirm": "撤销“ {name} ”？带有此请求将立即停止工作。",
+        "revoke": "撤销",
+        "namePlaceholder": "密钥名称，例如 Zapier",
+        "nameLabel": "键名",
+        "scopeRead": "读",
+        "scopeWrite": "写",
+        "create": "创建密钥"
+      },
+      "webhooks": {
+        "title": "网络钩子",
+        "description": "每当此处发生任何事件时，都会向您自己的端点发送一个带有签名的 JSON POST 请求。",
+        "note": "我们会向您选择的事件的 URL 发送一个 JSON 信封，并使用 HMAC-SHA256 进行签名（ <code>{signature}</code> over <code>{template}</code> ）。如果发送失败，我们会进行大约一天的回退重试。",
+        "addWebhook": "添加 webhook",
+        "count": "{count, plural, one {#端点} other {#端点}}",
+        "signingSecret": "签署秘密",
+        "copyPrompt": "复制这个秘密",
+        "endpointUrl": "端点 URL",
+        "endpointUrlHelp": "仅支持https（开发环境允许使用http://localhost）。",
+        "events": "活动",
+        "create": "创建 webhook",
+        "columns": {
+          "endpoint": "端点",
+          "events": "活动"
+        },
+        "empty": {
+          "title": "暂无 webhook",
+          "description": "第一点是，您需要自行维护 CRM、Slack 频道或电子表格，使其保持同步。"
+        },
+        "hideDeliveries": "隐藏送货",
+        "recentDeliveries": "近期交付（ {count} ）",
+        "nothingDelivered": "尚未收到任何物品。",
+        "attempts": "{count, plural, one {#尝试} other {#尝试}}{hasStatus, select, true {，最后{status}} other {}}",
+        "allEvents": "所有活动",
+        "active": "积极的",
+        "paused": "暂停",
+        "sendTest": "发送测试",
+        "pause": "暂停",
+        "resume": "恢复",
+        "rotateConfirm": "轮换签名密钥？旧的密钥会立即失效。",
+        "rotateSecret": "旋转秘密",
+        "deleteConfirm": "删除此 webhook？"
+      }
+    },
+    "payments": {
+      "title": "付款",
+      "descriptionCloud": "付费门票款项将直接结算到您的 Stripe 账户。",
+      "descriptionSelfHosted": "此实例通过其运营商配置的 Stripe 密钥进行收费。",
+      "connected": "Stripe账户{id}已连接。",
+      "connectPrompt": "连接您的 Stripe 账户即可销售付费门票。此功能包含在 Connect 注册流程中。",
+      "configured": "Stripe 已配置。付费票款将从实例的 Stripe 账户中扣除，不收取平台费用。",
+      "notConfigured": "此实例未配置 Stripe，因此只能出售免费门票。请设置 STRIPE_SECRET_KEY 和 STRIPE_PUBLISHABLE_KEY 以启用支付功能。"
+    },
+    "danger": {
+      "title": "数据和删除",
+      "description": "以 JSON 格式下载此组织的所有数据——包括活动、订单、与会者、签到记录、设置，不包含任何敏感信息。删除组织将取消其所有活动，撤销所有门票，清除所有与会者的个人数据，并禁用 API 密钥和 Webhook。此操作无法撤销。",
+      "download": "下载所有数据",
+      "confirmLabel": "输入{slug}进行确认",
+      "delete": "删除组织",
+      "ownerOnly": "只有所有者才能删除此组织。"
+    }
+  },
+  "imageUpload": {
+    "uploadFailed": "上传失败。",
+    "bucketRejected": "存储桶拒绝了上传请求。请检查其 CORS 和策略设置。",
+    "connectionFailed": "上传失败。请检查您的网络连接并重试。",
+    "noImage": "暂无图片",
+    "uploading": "正在上传…",
+    "replace": "代替",
+    "replaceImage": "替换图片",
+    "upload": "上传",
+    "uploadImage": "上传图片",
+    "urlPlaceholder": "https://…（图片上传需要配置S3）",
+    "urlLabel": "{label} URL",
+    "formats": "JPEG、PNG 或 WebP 格式 · 最大 5 MB"
+  },
+  "imageCrop": {
+    "openFailed": "该图片无法打开。",
+    "renderFailed": "此浏览器无法渲染裁剪后的图片。请直接上传原图。",
+    "dialogLabel": "封面图片",
+    "title": "封面",
+    "description": "拖动调整位置，缩放至填充。保存为 16:7 比例，这是活动页面使用的比例。",
+    "zoom": "飞涨",
+    "use": "使用此作物"
+  },
+  "address": {
+    "unavailable": "地址查询功能暂时无法使用。",
+    "placeholder": "开始输入地址"
+  },
+  "linkTabs": {
+    "label": "章节"
+  },
+  "actions": {
+    "genericError": "出问题了。",
+    "formIssue": "{path}: {message}",
+    "formPath": "形式",
+    "checkForm": "请查看表格。",
+    "saved": "已保存。",
+    "savedNotified": "已保存。我们将通知与会者新的时间或地点。",
+    "deletePublished": "删除活动前，请先取消发布或取消该活动。",
+    "addressRateLimited": "地址搜索次数过多。请稍等片刻后重试。",
+    "addressUnavailable": "地址查询功能暂时无法使用。",
+    "formSaved": "表单已保存。",
+    "refund": {
+      "noPayment": "此订单无需退款。",
+      "nothingToRefund": "订单金额为{status} ；无需退款。",
+      "requested": "已申请退款。Stripe确认后，订单状态将立即更新。"
+    },
+    "invitationSent": "邀请已发送至{email} 。",
+    "apiKeyCreated": "密钥已创建。立即复制；此密钥不会再次显示。",
+    "unknownError": "未知错误",
+    "eventInvite": {
+      "emailFailed": "邀请已创建，但邮件发送失败（ {reason} ）。请自行分享链接。",
+      "emailed": "邀请函已通过电子邮件发送至{email} 。",
+      "linkCreated": "邀请链接已创建。"
+    },
+    "waitlist": {
+      "notFound": "该条目已不存在。",
+      "alreadyOffered": "此人已收到一份正式录用通知。",
+      "registered": "此人已注册。",
+      "noRoom": "该类型门票已满（或活动已满座）。先到先得。",
+      "emailFailed": "名额已预留至{deadline} ，但邮件发送失败（ {reason} ）。请将此链接发送给他们： {url}",
+      "offered": "优惠已通过电子邮件发送至{email} ；名额保留至{deadline} 。"
+    },
+    "discountCreated": "代码{code}已创建。",
+    "webhook": {
+      "created": "Webhook已创建。请复制签名密钥；此密钥仅显示一次。",
+      "notFound": "未找到 Webhook。",
+      "rotated": "新的签名密钥。请更新您的接收器；旧密钥已失效。",
+      "testQueued": "测试投递已排队；大约10秒后投递成功。请查看投递列表。"
+    },
+    "deleteOrg": {
+      "ownerOnly": "只有所有者才能删除组织。",
+      "confirmSlug": "输入组织网址（ {slug} ）进行确认。"
+    }
+  }
+}

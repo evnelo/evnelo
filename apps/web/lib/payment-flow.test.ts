@@ -22,8 +22,8 @@ describe("paid checkout state", () => {
   });
 
   it("does not treat an incomplete PaymentIntent as a completed registration", () => {
-    expect(paymentOutcome("requires_payment_method")).toEqual({ state: "retry", message: "Your payment was not completed. Choose another payment method and try again." });
-    expect(paymentOutcome("requires_action")).toEqual({ state: "pending", message: "Complete the additional payment step to continue." });
+    expect(paymentOutcome("requires_payment_method")).toEqual({ state: "retry", messageKey: "payment.outcome.retry" });
+    expect(paymentOutcome("requires_action")).toEqual({ state: "pending", messageKey: "payment.outcome.pending" });
   });
 
   it("distinguishes processing from successful payment", () => {
@@ -31,10 +31,12 @@ describe("paid checkout state", () => {
     expect(paymentOutcome("succeeded").state).toBe("complete");
   });
 
-  it("builds the final message from approval and party state", () => {
-    expect(registrationSuccessMessage(false, 1, true)).toContain("Payment received");
-    expect(registrationSuccessMessage(false, 3, true)).toContain("all 3");
-    expect(registrationSuccessMessage(true, 1, true)).toContain("host approves");
-    expect(registrationSuccessMessage(false, 1, false)).not.toContain("Payment received");
+  it("picks the final message key from approval and party state", () => {
+    expect(registrationSuccessMessage(false, 1, true)).toEqual({ messageKey: "success.singlePaid", params: { count: 1 } });
+    expect(registrationSuccessMessage(false, 3, true)).toEqual({ messageKey: "success.partyPaid", params: { count: 3 } });
+    expect(registrationSuccessMessage(true, 1, true)).toEqual({ messageKey: "success.approvalPaid", params: { count: 1 } });
+    expect(registrationSuccessMessage(true, 2, false)).toEqual({ messageKey: "success.approval", params: { count: 2 } });
+    expect(registrationSuccessMessage(false, 1, false)).toEqual({ messageKey: "success.single", params: { count: 1 } });
+    expect(registrationSuccessMessage(false, 4, false)).toEqual({ messageKey: "success.party", params: { count: 4 } });
   });
 });

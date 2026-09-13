@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Clock, Lock } from "lucide-react";
@@ -39,6 +40,7 @@ export function PaymentStep(props: Props) {
 }
 
 function PaymentForm({ resumeToken, holdExpiresAt, onComplete }: Props) {
+  const t = useTranslations("event");
   const stripe = useStripe();
   const elements = useElements();
   const submittingRef = useRef(false);
@@ -68,18 +70,18 @@ function PaymentForm({ resumeToken, holdExpiresAt, onComplete }: Props) {
         redirect: "if_required",
       });
       if (result.error) {
-        setMessage(result.error.message ?? "Your payment could not be completed. Try again.");
+        setMessage(result.error.message ?? t("payment.failed"));
         return;
       }
       if (!result.paymentIntent) {
-        setMessage("Complete the additional payment step to continue.");
+        setMessage(t("payment.outcome.pending"));
         return;
       }
       const outcome = paymentOutcome(result.paymentIntent.status);
       if (outcome.state === "complete" || outcome.state === "processing") onComplete(outcome);
-      else setMessage(outcome.message);
+      else setMessage(t(outcome.messageKey));
     } catch {
-      setMessage("Stripe could not be reached. Your reservation is still available; try again.");
+      setMessage(t("payment.stripeUnreachable"));
     } finally {
       submittingRef.current = false;
       setSubmitting(false);
@@ -95,16 +97,16 @@ function PaymentForm({ resumeToken, holdExpiresAt, onComplete }: Props) {
         role={hold.expired ? "alert" : undefined}
       >
         <Clock className="size-4 shrink-0" aria-hidden />
-        <span>{hold.expired ? "This ticket reservation expired. Close this window and register again." : `Tickets reserved for ${minutes}:${seconds}.`}</span>
+        <span>{hold.expired ? t("payment.holdExpired") : t("payment.reservedFor", { time: `${minutes}:${seconds}` })}</span>
       </p>
       <div className="rounded-xl border border-border/80 bg-card p-4 shadow-card"><PaymentElement options={{ layout: "accordion" }} /></div>
       {message && <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">{message}</p>}
       <Button type="submit" variant="event" size="lg" className="w-full" pending={submitting} disabled={!stripe || !elements || hold.expired}>
-        {submitting ? "Processing payment…" : hold.expired ? "Reservation expired" : "Pay and register"}
+        {submitting ? t("payment.submitting") : hold.expired ? t("payment.expiredButton") : t("payment.pay")}
       </Button>
       <p className="flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <Lock className="size-3 shrink-0" aria-hidden />
-        Payments are securely processed by Stripe. Evnelo does not store card details.
+        {t("payment.secure")}
       </p>
     </form>
   );

@@ -14,7 +14,7 @@ export default async function PublicLayout({ children }: { children: React.React
     <>
       <header className="print-hide surface-glass sticky top-0 z-40 border-b border-border/70">
         <nav className="mx-auto grid h-28 max-w-6xl grid-cols-[1fr_auto] grid-rows-2 items-center gap-x-2 px-4 sm:px-6 md:flex md:h-16">
-          <Link href="/" className="press col-start-1 row-start-1 w-fit shrink-0 rounded-md md:mr-auto"><Brand /></Link>
+          <Link href="/" className="press col-start-1 row-start-1 w-fit shrink-0 rounded-md md:me-auto"><Brand /></Link>
           <div className="col-start-1 row-start-2 flex items-center gap-1 text-sm sm:gap-2">
             <Link href="/discover" className="press rounded-full px-3 py-2 hover:bg-muted/80">{t("nav.discover")}</Link>
             <Link href="/#pricing" className="press hidden rounded-full px-3 py-2 hover:bg-muted/80 sm:inline-flex">{t("nav.pricing")}</Link>

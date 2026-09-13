@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { events, registrationFields } from "@evnelo/db";
@@ -19,6 +20,14 @@ import { presignRegistrationUpload, storageConfigured } from "@/lib/storage";
 export const runtime = "nodejs";
 
 const capability = { maxBytes: MAX_REGISTRATION_FILE_BYTES, contentTypes: REGISTRATION_FILE_CONTENT_TYPES };
+
+// planRegistrationUpload (lib/registration-uploads.ts) is pure and reports its reason in English; map it to a message key here.
+const planErrorKey: Record<string, string> = {
+  "Upload a PDF, JPEG, PNG or WebP file.": "errors.uploadType",
+  "Choose a file to upload.": "errors.chooseFile",
+  "Files must be 10 MB or smaller.": "errors.uploadTooLarge",
+  "Unknown event.": "errors.unknownEvent",
+};
 
 /** Lets the registration form render an upload control or a disabled notice without prop drilling. */
 export function GET() {
@@ -41,18 +50,19 @@ const input = z.object({
  * public event page is exactly where this is called from.
  */
 export async function POST(request: Request) {
-  if (!storageConfigured) return NextResponse.json({ error: "File uploads aren't configured on this instance." }, { status: 503 });
+  const t = await getTranslations("event");
+  if (!storageConfigured) return NextResponse.json({ error: t("errors.uploadsNotConfigured") }, { status: 503 });
 
   const parsed = input.safeParse(await readJsonBody(request, 1_024).catch(() => null));
-  if (!parsed.success) return NextResponse.json({ error: "Choose a file to upload." }, { status: 400 });
+  if (!parsed.success) return NextResponse.json({ error: t("errors.chooseFile") }, { status: 400 });
   const plan = planRegistrationUpload(parsed.data);
-  if (!plan.ok) return NextResponse.json({ error: plan.error }, { status: plan.status });
+  if (!plan.ok) return NextResponse.json({ error: planErrorKey[plan.error] ? t(planErrorKey[plan.error]!) : plan.error }, { status: plan.status });
 
   const [event] = await db.select({ id: events.id, status: events.status }).from(events).where(eq(events.id, plan.eventId)).limit(1);
-  if (!event || event.status !== "published") return NextResponse.json({ error: "This event isn't open for registration." }, { status: 404 });
+  if (!event || event.status !== "published") return NextResponse.json({ error: t("errors.notOpenForRegistration") }, { status: 404 });
   const [field] = await db.select({ id: registrationFields.id }).from(registrationFields)
     .where(and(eq(registrationFields.eventId, event.id), eq(registrationFields.type, "file"))).limit(1);
-  if (!field) return NextResponse.json({ error: "This event doesn't ask for a file." }, { status: 404 });
+  if (!field) return NextResponse.json({ error: t("errors.noFileField") }, { status: 404 });
 
   const address = clientAddress(request);
   const identityOk = await consumeSharedRateLimit(
@@ -62,13 +72,13 @@ export async function POST(request: Request) {
     REGISTRATION_UPLOAD_WINDOW_MS,
   );
   const eventOk = await consumeSharedRateLimit("reg-upload:event", event.id, REGISTRATION_UPLOAD_EVENT_LIMIT, REGISTRATION_UPLOAD_WINDOW_MS);
-  if (!identityOk || !eventOk) return NextResponse.json({ error: "Too many uploads right now. Try again later." }, { status: 429 });
+  if (!identityOk || !eventOk) return NextResponse.json({ error: t("errors.tooManyUploads") }, { status: 429 });
 
   try {
     const presigned = await presignRegistrationUpload(event.id, plan.contentType);
     return NextResponse.json({ ...presigned, ...capability }, { status: 201, headers: { "cache-control": "no-store" } });
   } catch (error) {
     captureError("uploads.registration.presign", error, { eventId: event.id });
-    return NextResponse.json({ error: "File storage is unavailable right now." }, { status: 503 });
+    return NextResponse.json({ error: t("errors.storageUnavailable") }, { status: 503 });
   }
 }

@@ -1,0 +1,434 @@
+{
+  "eventForm": {
+    "validation": {
+      "times": "Tetapkan waktu mulai dan waktu berakhir."
+    },
+    "saved": "Tersimpan.",
+    "restore": {
+      "notice": "Melanjutkan dari tempat Anda berhenti: perubahan yang belum disimpan dari {when} kembali ke formulir.",
+      "discard": "Buang saja"
+    },
+    "basics": {
+      "title": "Dasar-dasar",
+      "description": "Hal pertama yang dilihat orang: nama, alamat, cerita, karya seni.",
+      "name": "Nama acara",
+      "url": "URL Acara",
+      "descriptionLabel": "Keterangan",
+      "descriptionHelp": "Markdown didukung.",
+      "tags": "Tag",
+      "tagsHelp": "Dipisahkan dengan koma. Digunakan untuk penemuan.",
+      "tagsPlaceholder": "desain, pertemuan",
+      "cover": "Gambar sampul",
+      "logo": "Logo acara"
+    },
+    "when": {
+      "title": "Kapan",
+      "description": "Waktu disimpan dalam format UTC dan ditampilkan kepada semua orang di zona waktu acara tersebut.",
+      "starts": "Mulai",
+      "ends": "Selesai",
+      "timezone": "Zona waktu",
+      "publishedNote": "Mengubah waktu acara yang telah dipublikasikan akan mengirimkan email ke setiap peserta."
+    },
+    "where": {
+      "title": "Di mana",
+      "description": "Di mana orang-orang datang, atau tautan yang mereka ikuti.",
+      "locationType": {
+        "in_person": "Secara langsung",
+        "online": "On line",
+        "hybrid": "Hibrida"
+      },
+      "venue": "Lokasi",
+      "venuePlaceholder": "Nama tempat",
+      "address": "Alamat",
+      "addressHelp": "Pilih salah satu saran untuk mengisi kota, negara, dan koordinat peta.",
+      "city": "Kota",
+      "country": "Kode negara",
+      "countryHelp": "Kode dua huruf, misalnya BR",
+      "countryPlaceholder": "KITA",
+      "mapPin": "Pin peta diatur dari alamat ( {lat}, {lng} ). Pilih saran lain untuk memindahkannya.",
+      "joinLink": "Gabung melalui tautan",
+      "joinLinkHelp": "Hanya ditampilkan kepada peserta yang telah terkonfirmasi, dalam konfirmasi dan pengingat mereka.",
+      "joinLinkPlaceholder": "https://meet…"
+    },
+    "registration": {
+      "title": "Pendaftaran",
+      "description": "Siapa yang dapat menemukan acara tersebut, dan berapa banyak orang yang dapat hadir.",
+      "visibility": "Visibilitas",
+      "visibilityOptions": {
+        "public": "Publik",
+        "unlisted": "Tidak terdaftar",
+        "private": "Pribadi"
+      },
+      "visibilityHelp": {
+        "public": "Terdaftar di Discover dan diindeks oleh mesin pencari.",
+        "unlisted": "Siapa pun yang memiliki tautan; tidak terdaftar atau terindeks.",
+        "private": "Hanya orang yang memiliki tautan undangan yang diperbolehkan."
+      },
+      "capacity": "Kapasitas",
+      "capacityHelp": "Biarkan kosong untuk tak terbatas."
+    },
+    "options": {
+      "title": "Opsi pendaftaran",
+      "description": "Persetujuan, tamu, pengingat, biaya, dan kebijakan pengembalian dana.",
+      "approval": "Setujui setiap pendaftaran secara manual.",
+      "approvalHelp": "Orang-orang mengajukan permohonan untuk bergabung; setujui atau tolak permohonan mereka dari para Peserta.",
+      "phone": "Mintalah nomor telepon",
+      "phoneHelp": "Kolom opsional dengan opsi persetujuan SMS untuk tiket dan pengingat.",
+      "guests": "Izinkan tamu (+1)",
+      "guestsHelp": "Setiap tamu mendapatkan tiket terpisah.",
+      "maxGuests": "Jumlah tamu maksimal per pendaftaran",
+      "waitlist": "Daftar tunggu jika sudah terjual habis",
+      "waitlistHelp": "Pengunjung dapat mengantre; Anda dapat menawarkan tempat dari tab Daftar Tunggu saat tempat duduk tersedia.",
+      "feePassThrough": "Pembeli membayar biaya layanan.",
+      "feePassThroughHelp": "Edisi cloud: tampilkan 0,99% sebagai item baris.",
+      "refundPolicy": "Kebijakan pengembalian dana",
+      "refundPolicyHelp": "Ditampilkan saat pembayaran untuk tiket berbayar.",
+      "reminders": "Pengingat",
+      "reminder24": "24 jam sebelumnya",
+      "reminder1": "1 jam sebelumnya",
+      "reminderCustom": "Juga <input></input> jam sebelumnya",
+      "reminderCustomLabel": "Jam pengingat khusus",
+      "reminderCustomPlaceholder": "48, 3",
+      "hint": {
+        "joined": "{first} · {second}",
+        "on": "Pada: {items}",
+        "defaults": "Pengaturan default",
+        "reminders": "pengingat {items}",
+        "noReminders": "tidak ada pengingat",
+        "hours": "{hours} jam",
+        "flags": {
+          "approval": "persetujuan",
+          "phone": "telepon",
+          "guests": "tamu",
+          "waitlist": "daftar tunggu",
+          "feePassThrough": "Pembeli membayar biaya"
+        }
+      }
+    },
+    "links": {
+      "title": "Tautan",
+      "description": "Tautan media sosial ditampilkan di halaman acara.",
+      "hint": "{count, plural, =0 {Belum ada tautan} one {tautan #} other {# tautan}}",
+      "platform": "Platform",
+      "url": "URL",
+      "remove": "Hapus tautan",
+      "add": "Tambahkan tautan"
+    },
+    "hosts": {
+      "title": "Tuan rumah",
+      "description": "Orang-orang yang ditampilkan di halaman acara.",
+      "hint": "{count, plural, =0 {Belum ada host} one {tuan rumah #} other {# host}}",
+      "name": "Nama host",
+      "titleField": "Judul",
+      "remove": "Hapus host",
+      "avatar": "Avatar",
+      "add": "Tambahkan host"
+    },
+    "sponsors": {
+      "title": "Sponsor",
+      "description": "Logo-logo tersebut muncul di halaman acara dalam urutan ini.",
+      "hint": "{count, plural, =0 {Belum ada sponsor} one {sponsor #} other {# sponsor}}",
+      "name": "Nama sponsor",
+      "tier": "Tingkat",
+      "website": "Situs web",
+      "remove": "Hapus sponsor",
+      "logo": "Logo",
+      "add": "Tambahkan sponsor"
+    },
+    "bar": {
+      "createNote": "Tidak ada yang bersifat publik sampai Anda mempublikasikannya.",
+      "editNote": "Perubahan akan berlaku segera setelah Anda menyimpan.",
+      "createDraft": "Buat draf",
+      "saveChanges": "Simpan perubahan"
+    }
+  },
+  "fields": {
+    "title": "Formulir pendaftaran",
+    "description": "Nama dan email selalu diminta. Pertanyaan Anda sendiri dapat berlaku untuk pendaftar, seluruh pesanan, atau setiap tamu, dan hanya akan muncul jika jawaban sebelumnya cocok.",
+    "add": "Tambahkan pertanyaan",
+    "empty": {
+      "title": "Cukup nama dan email.",
+      "description": "Tambahkan pertanyaan jika Anda membutuhkan informasi lebih lanjut — catatan tentang diet, nama perusahaan, atau ukuran kaos.",
+      "action": "Tambahkan pertanyaan pertama Anda"
+    },
+    "untitled": "Pertanyaan tanpa judul",
+    "types": {
+      "short_text": "Teks singkat",
+      "long_text": "Teks panjang",
+      "email": "E-mail",
+      "phone": "Telepon",
+      "number": "Nomor",
+      "select": "Pilihan tunggal",
+      "multi_select": "Pilihan ganda",
+      "checkbox": "Kotak centang",
+      "date": "Tanggal",
+      "url": "Link",
+      "file": "Unggah file",
+      "consent": "Persetujuan (harus dicentang)"
+    },
+    "scopes": {
+      "attendee": "Setiap pendaftar",
+      "order": "Satu kali per pesanan",
+      "guest": "Setiap tamu"
+    },
+    "badges": {
+      "required": "diperlukan",
+      "conditional": "bersyarat"
+    },
+    "moveUp": "Naikkan",
+    "moveDown": "Turun ke bawah",
+    "question": "Pertanyaan",
+    "key": "Kunci",
+    "keyHelp": "Nama kolom dalam ekspor dan API. Huruf kecil, garis bawah.",
+    "type": "Jenis",
+    "fileNeedsS3": "Pengunggahan file memerlukan penyimpanan S3 yang dikonfigurasi pada instance ini.",
+    "fileUnavailable": "Penyimpanan S3 belum dikonfigurasi, sehingga pendaftar tidak dapat mengunggah file ini. Formulir menunjukkannya sebagai tidak tersedia.",
+    "asked": "Diminta",
+    "options": "Opsi",
+    "optionsHelp": "Satu per baris. Gunakan “value | Label” untuk menyimpan nilai yang berbeda.",
+    "helpText": "Teks bantuan",
+    "placeholder": "Placeholder",
+    "requiredOnlyWhenShown": "(hanya jika ditampilkan)",
+    "onlyForTicketTypes": "Hanya untuk jenis tiket ini",
+    "noneSelectedIsAll": "(tidak ada yang dipilih = semua)",
+    "condition": "Tampilkan hanya jika jawaban sebelumnya cocok.",
+    "conditionNeedsEarlier": "(tambahkan pertanyaan di atasnya terlebih dahulu)",
+    "showWhen": "Tampilkan saat <select></select> dari ini cocok:",
+    "allOrAny": "Semua atau sebagian",
+    "match": {
+      "and": "semua",
+      "or": "setiap"
+    },
+    "ops": {
+      "eq": "adalah",
+      "neq": "bukan",
+      "contains": "berisi",
+      "empty": "kosong",
+      "not_empty": "tidak kosong"
+    },
+    "rule": {
+      "field": "Bidang",
+      "operator": "Operator",
+      "value": "Nilai",
+      "choose": "Memilih…",
+      "checked": "diperiksa",
+      "unchecked": "tidak terkendali",
+      "remove": "Hapus aturan",
+      "add": "Tambahkan aturan"
+    },
+    "dependNote": "Suatu pertanyaan hanya dapat bergantung pada pertanyaan yang berada di atasnya.",
+    "save": "Simpan formulir"
+  },
+  "ticketTypes": {
+    "title": "Jenis tiket",
+    "descriptionEmpty": "Menerbitkan tiket tanpa menentukan jenis tiket akan secara otomatis membuat tiket masuk umum gratis.",
+    "descriptionGuests": "Apa saja yang dapat dibeli orang, dan berapa banyak masing-masing item. Tamu membayar harga yang sama dengan harga tiket peserta.",
+    "description": "Apa yang bisa dibeli orang, dan berapa banyak masing-masing item. Harga 0 berarti gratis.",
+    "add": "Tambahkan jenis tiket",
+    "saved": "Tersimpan.",
+    "columns": {
+      "price": "Harga",
+      "sold": "Terjual",
+      "salesWindow": "Jendela penjualan"
+    },
+    "empty": {
+      "title": "Belum ada jenis tiket yang tersedia",
+      "description": "Tambahkan satu untuk setiap hal yang dapat dibeli orang — harga early bird, standar, pelajar."
+    },
+    "tax": "+ {rate} % pajak",
+    "soldOfQuantity": "{sold} / {quantity}",
+    "held": "{count} dipegang",
+    "window": "{start} → {end}",
+    "windowNow": "Sekarang",
+    "windowEvent": "peristiwa",
+    "always": "Selalu",
+    "badges": {
+      "hidden": "tersembunyi",
+      "code": "kode"
+    },
+    "confirmDelete": "Hapus \" {name} \"?",
+    "dialog": {
+      "editTitle": "Edit jenis tiket",
+      "newTitle": "Jenis tiket baru",
+      "description": "Harga dalam {currency}. Tetapkan jumlah untuk produksi terbatas."
+    },
+    "form": {
+      "description": "Keterangan",
+      "price": "Harga",
+      "currency": "Mata uang",
+      "tax": "Persentase Pajak",
+      "quantity": "Kuantitas",
+      "quantityHelp": "Kosong = tak terbatas",
+      "minPerOrder": "Minimum pemesanan",
+      "maxPerOrder": "Maksimum per pesanan",
+      "salesStart": "Penjualan dimulai",
+      "salesEnd": "Penjualan berakhir",
+      "hidden": "Disembunyikan dari halaman acara",
+      "accessCode": "Kode akses"
+    }
+  },
+  "discounts": {
+    "title": "Kode diskon",
+    "description": "Potongan harga dalam bentuk persentase atau jumlah tetap untuk pesanan. Pembeli memasukkan kode saat pembayaran; kode tersebut berlaku untuk setiap tiket dalam pesanan.",
+    "add": "Tambahkan kode",
+    "form": {
+      "code": "Kode",
+      "codePlaceholder": "EARLYBIRD",
+      "type": "Jenis",
+      "kind": {
+        "percent": "% mati",
+        "fixed": "{currency} mati"
+      },
+      "percent": "Persen",
+      "amount": "Jumlah ( {currency} )",
+      "maxUses": "Max menggunakan",
+      "unlimited": "tak terbatas",
+      "expires": "Berakhir",
+      "create": "Membuat"
+    },
+    "columns": {
+      "code": "Kode",
+      "discount": "Diskon",
+      "uses": "Kegunaan",
+      "expires": "Berakhir"
+    },
+    "empty": {
+      "title": "Tidak ada kode diskon",
+      "description": "Kode adalah cara termudah untuk menerapkan harga khusus pemesanan awal, harga untuk mitra, atau harga untuk teman dan keluarga."
+    },
+    "percentOff": "Diskon {value} %",
+    "amountOff": "{amount} mati",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Tidak pernah",
+    "status": {
+      "expired": "kedaluwarsa",
+      "usedUp": "terpakai",
+      "active": "aktif"
+    },
+    "confirmDelete": "Hapus kode {code}? Pesanan yang sudah menggunakan kode tersebut tetap mendapatkan diskonnya."
+  },
+  "invites": {
+    "title": "Undangan",
+    "description": "Satu tautan per tamu, atau satu tautan untuk semua orang. Setiap undangan melacak berapa kali telah digunakan.",
+    "privateNote": "Acara ini bersifat privat: hanya orang yang membuka tautan undangan (atau anggota organisasi Anda) yang dapat melihat dan mendaftar. Undangan email hanya berfungsi dengan alamat email yang digunakan untuk mengirimkannya.",
+    "publicNote": "Undangan hanya membatasi akses pada <b>acara pribadi</b>. Acara ini bersifat {visibility}, jadi siapa pun yang memiliki tautan dapat mendaftar; Anda tetap dapat mengirim undangan sebagai bentuk kesopanan.",
+    "visibility": {
+      "public": "publik",
+      "unlisted": "tidak terdaftar",
+      "private": "pribadi"
+    },
+    "form": {
+      "emailPlaceholder": "tamu@contoh.com",
+      "maxUses": "Max menggunakan",
+      "expiresInDays": "Berakhir dalam (hari)",
+      "never": "tidak pernah",
+      "create": "Buat undangan",
+      "help": "Biarkan kolom email kosong untuk tautan yang dapat dibagikan yang dapat digunakan siapa pun."
+    },
+    "copyPrompt": "Salin tautan ini",
+    "newLink": "Tautan baru",
+    "copyLink": "Salin tautan",
+    "columns": {
+      "invite": "Mengundang",
+      "uses": "Kegunaan",
+      "expires": "Berakhir"
+    },
+    "empty": {
+      "title": "Belum ada undangan",
+      "description": "Buat satu di atas untuk membagikan tautan, atau kirimkan ke satu alamat email."
+    },
+    "shareableLink": "Tautan yang dapat dibagikan",
+    "created": "Dibuat {date}",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Tidak pernah",
+    "status": {
+      "expired": "kedaluwarsa",
+      "usedUp": "terpakai",
+      "active": "aktif"
+    },
+    "revoke": "Menarik kembali",
+    "confirmRevoke": "Batalkan undangan ini? Tautan akan langsung berhenti berfungsi."
+  },
+  "waitlist": {
+    "title": "Daftar Tunggu",
+    "summary": "{waiting} menunggu, {offered} ditawarkan, {registered} terdaftar.",
+    "description": "Antrean yang terbentuk setelah tiket acara terjual habis.",
+    "enabledNote": "Saat tiket acara terjual habis, pengunjung dapat bergabung dalam daftar ini. Dengan mempromosikan seseorang, satu kursi akan dipesan untuk mereka selama 24 jam dan tautan klaim akan dikirimkan melalui email; kursi yang tidak diklaim akan dikembalikan ke daftar tunggu.",
+    "disabledNote": "Daftar tunggu untuk acara ini sudah dinonaktifkan (Edit → Opsi pendaftaran). Peserta yang bergabung lebih awal masih tercantum di sini.",
+    "columns": {
+      "person": "Orang",
+      "joined": "Bergabung",
+      "actions": "Tindakan"
+    },
+    "empty": {
+      "title": "Tidak ada seorang pun di daftar tunggu",
+      "description": "Orang-orang mengantre di sini setelah semua tiket habis terjual. Anda yang menentukan siapa yang mendapat tempat duduk kosong berikutnya."
+    },
+    "status": {
+      "waiting": "menunggu",
+      "offered": "ditawarkan",
+      "registered": "terdaftar",
+      "expired": "kedaluwarsa"
+    },
+    "heldUntil": "{ticketType} sampai {time}",
+    "lapsed": "Penawaran telah berakhir; dapat dipromosikan kembali.",
+    "ticketType": "Jenis tiket",
+    "option": "{name} · {price}",
+    "optionWithRoom": "{name} · {price} · {room} tersisa",
+    "offer": "Tawarkan tempat",
+    "confirmRemove": "Hapus {email} dari daftar tunggu?",
+    "confirmRemoveOffered": "Hapus {email} dari daftar tunggu? Kursi yang mereka pesan akan dibebaskan."
+  },
+  "refund": {
+    "confirm": "Pengembalian dana {amount} penuh? Tiket pada pesanan ini berhenti berfungsi dan kursi akan dilepaskan setelah Stripe mengkonfirmasi.",
+    "requested": "Pengembalian dana diminta.",
+    "button": "Pengembalian dana {amount}"
+  },
+  "chart": {
+    "peak": "Puncak {max} /hari",
+    "summary": "{total, plural, one {pendaftaran #} other {# pendaftaran}} lebih {days, plural, one {hari #} other {# hari}}",
+    "aria": "Pendaftaran per hari. Puncak {max} dalam satu hari, {total} secara total.",
+    "tooltip": "{date}: {count}"
+  },
+  "scanner": {
+    "outcome": {
+      "ok": "Sudah check-in",
+      "offline_ok": "Sudah check-in (offline, akan disinkronkan)",
+      "already": "Sudah check-in",
+      "not_confirmed": "Pendaftaran belum dikonfirmasi",
+      "revoked": "Tiket dibatalkan atau dikembalikan dananya",
+      "wrong_event": "Tiket ini untuk acara lain.",
+      "not_found": "Bukan tiket yang valid",
+      "offline_unknown": "Tiket tidak dikenal (offline)",
+      "error": "Tidak dapat melakukan check-in"
+    },
+    "checkedIn": "Sudah check-in",
+    "ofConfirmed": "/ {confirmed}",
+    "mode": "Mode check-in",
+    "scan": "Pindai",
+    "progress": "{pct} % dari tiket yang dikonfirmasi · diperbarui {time}",
+    "progressQueued": "{pct} % dari tiket yang dikonfirmasi · diperbarui {time} · {count} menunggu sinkronisasi",
+    "offline": "Offline: hasil pemindaian disimpan dan disinkronkan nanti.",
+    "guestOf": "Tamu dari {name}",
+    "ticketTypeInAt": "{ticketType} · masuk pada {time}",
+    "undo": "Membuka",
+    "camera": {
+      "denied": "Akses kamera diblokir. Izinkan akses kamera untuk situs ini, atau gunakan Pencarian untuk mencatat kehadiran orang berdasarkan nama.",
+      "unsupported": "Browser ini tidak dapat menggunakan kamera. Gunakan Pencarian, atau tempel tautan tiket di bawah ini.",
+      "starting": "Menyalakan kamera…",
+      "point": "Arahkan kursor ke kode QR pada tiket."
+    },
+    "manualPlaceholder": "Atau tempel tautan/kode tiket.",
+    "manualLabel": "Tautan atau kode tiket",
+    "checkIn": "Check-in",
+    "searchPlaceholder": "Cari berdasarkan nama atau email",
+    "searchLabel": "Cari peserta",
+    "noMatches": "Tidak ada peserta yang terkonfirmasi yang cocok.",
+    "listGuestOf": "· tamu dari {name}",
+    "listDetail": "{ticketType} · {email}",
+    "listDetailInAt": "{ticketType} · {email} · di {time}",
+    "recent": "Terkini",
+    "recentDetail": "· {ticketType} · {time}",
+    "recentDetailManual": "· {ticketType} · {time} · manual"
+  }
+}

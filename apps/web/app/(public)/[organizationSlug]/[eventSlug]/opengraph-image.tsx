@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { getLocale, getTranslations } from "next-intl/server";
 import { canView } from "@evnelo/core";
 import { getPublicEvent } from "@/lib/queries/events";
 import { OG_SIZE, SYMBOL_PATH, og, ogFontList } from "@/lib/og";
@@ -27,13 +28,14 @@ export default async function EventOgImage({ params }: { params: Promise<{ organ
     );
   }
   const { event, org, ticketTypes } = data;
-  const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: event.timezone }).format(event.startsAt);
-  const day = new Intl.DateTimeFormat("en-US", { day: "numeric", timeZone: event.timezone }).format(event.startsAt);
-  const when = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: event.timezone }).format(event.startsAt);
-  const prices = ticketTypes.map((t) => t.priceMinor);
+  const [t, locale] = await Promise.all([getTranslations("event"), getLocale()]);
+  const month = new Intl.DateTimeFormat(locale, { month: "short", timeZone: event.timezone }).format(event.startsAt);
+  const day = new Intl.DateTimeFormat(locale, { day: "numeric", timeZone: event.timezone }).format(event.startsAt);
+  const when = new Intl.DateTimeFormat(locale, { weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: event.timezone }).format(event.startsAt);
+  const prices = ticketTypes.map((tt) => tt.priceMinor);
   const min = prices.length ? Math.min(...prices) : null;
-  const price = min == null ? null : min === 0 ? "Free" : `from ${formatMoney(min, ticketTypes[0]!.currency)}`;
-  const where = event.locationType === "online" ? "Online" : [event.venueName, event.city].filter(Boolean).join(", ");
+  const price = min == null ? null : min === 0 ? t("og.free") : t("og.from", { price: formatMoney(min, ticketTypes[0]!.currency, locale) });
+  const where = event.locationType === "online" ? t("og.online") : [event.venueName, event.city].filter(Boolean).join(", ");
   const hasCover = Boolean(event.coverImageUrl);
   const fg = hasCover ? "#ffffff" : og.ink;
   const fgMuted = hasCover ? "rgba(255,255,255,0.82)" : og.muted;

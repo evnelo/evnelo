@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "title": "Tableau de bord",
+    "checkin": "Enregistrement"
+  },
+  "shell": {
+    "organization": "Organisation",
+    "switchOrganization": "Organisation Switch"
+  },
+  "nav": {
+    "events": "Événements",
+    "checkin": "Enregistrement",
+    "settings": "Paramètres"
+  },
+  "status": {
+    "event": {
+      "draft": "brouillon",
+      "published": "publié",
+      "cancelled": "annulé",
+      "ended": "fin"
+    },
+    "attendee": {
+      "confirmed": "confirmé",
+      "pending_approval": "en attente d'approbation",
+      "waitlisted": "liste d'attente",
+      "rejected": "rejeté",
+      "cancelled": "annulé"
+    },
+    "order": {
+      "pending": "en attente",
+      "processing": "traitement",
+      "paid": "payé",
+      "free": "gratuit",
+      "refunded": "remboursé",
+      "partially_refunded": "remboursement partiel",
+      "failed": "échoué",
+      "expired": "expiré"
+    },
+    "delivery": {
+      "delivered": "livré",
+      "retrying": "nouvelle tentative",
+      "pending": "en attente",
+      "failed": "échoué"
+    }
+  },
+  "noAccess": {
+    "title": "Aucun accès",
+    "description": "Les rôles déterminent ce que chaque personne au sein d'une organisation peut ouvrir.",
+    "empty": {
+      "title": "Vous n'avez pas le droit d'ouvrir cette zone.",
+      "description": "Votre rôle au sein de cette organisation ne vous le permet pas. Veuillez demander à un propriétaire ou à un administrateur de le modifier."
+    }
+  },
+  "events": {
+    "title": "Événements",
+    "description": "Tout fonctionne {org} plein régime, avec les inscriptions, les recettes et le nombre de portes en un coup d'œil.",
+    "newEvent": "Nouvel événement",
+    "groups": {
+      "upcoming": "Prochain",
+      "drafts": "Brouillons",
+      "past": "Passé"
+    },
+    "empty": {
+      "title": "Aucun événement pour le moment",
+      "description": "Votre premier événement reste à l'état de brouillon jusqu'à sa publication, il n'y a donc pas d'urgence à tout faire correctement.",
+      "action": "Créez votre premier événement"
+    },
+    "row": {
+      "online": "En ligne",
+      "inPerson": "En personne",
+      "registered": "Inscrit",
+      "pending": "{count} en attente",
+      "revenue": "Revenu",
+      "checkedIn": "Enregistrement effectué"
+    }
+  },
+  "checkin": {
+    "title": "Enregistrement",
+    "description": "{org}. Ouvrez un événement sur votre téléphone à l'entrée; la numérisation nécessite un accès à la caméra.",
+    "in": "Dans",
+    "empty": {
+      "title": "Rien à scanner aujourd'hui",
+      "description": "Les événements publiés apparaissent ici dès leur mise en ligne et jusqu'au lendemain de leur fin."
+    },
+    "event": {
+      "allCheckin": "Tous les enregistrements",
+      "eventDashboard": "Tableau de bord des événements"
+    }
+  },
+  "event": {
+    "allEvents": "Tous les événements",
+    "viewPage": "Afficher la page",
+    "nav": {
+      "overview": "Aperçu",
+      "tickets": "Billets",
+      "form": "Formulaire",
+      "invites": "Invitations",
+      "attendees": "Participants",
+      "waitlist": "Liste d'attente",
+      "orders": "Ordres",
+      "checkin": "Enregistrement"
+    },
+    "new": {
+      "title": "Nouvel événement",
+      "description": "Enregistré comme brouillon. Ajoutez les tickets et les questions, puis publiez-le une fois prêt."
+    },
+    "overview": {
+      "stats": {
+        "registered": "Inscrit",
+        "awaitingApproval": "{count} en attente d'approbation",
+        "confirmedAndApproved": "confirmé et approuvé",
+        "revenue": "Revenu",
+        "afterRefunds": "après remboursement",
+        "checkedIn": "Enregistrement effectué",
+        "percentOfRegistrations": "{percent} % des inscriptions",
+        "nobodyYet": "Personne à la porte pour l'instant",
+        "capacity": "Capacité",
+        "seatsLeft": "{count} places restantes",
+        "unlimitedSeats": "places illimitées"
+      },
+      "registrationsByDay": "Inscriptions par jour",
+      "noRegistrations": {
+        "title": "Aucune inscription pour le moment",
+        "description": "La courbe d'évolution commence dès l'inscription de votre premier collaborateur."
+      },
+      "tickets": "Billets",
+      "manage": "Gérer",
+      "noTickets": {
+        "title": "Aucun type de billet pour le moment",
+        "description": "Publier sans cela vous donne droit à un billet d'entrée générale gratuit.",
+        "action": "Ajouter un type de billet"
+      },
+      "ticketSales": "{hasQuantity, select, true {{sold} / {quantity} vendu} other {{sold} vendu}}{held, plural, =0 {} other {, # tenu}}",
+      "eventPage": "page de l'événement",
+      "visibility": {
+        "public": "Public: référencé sur Discover et indexé.",
+        "unlisted": "Non répertorié: toute personne possédant le lien.",
+        "private": "Privé: sur invitation uniquement."
+      },
+      "actions": "Actes",
+      "publish": "Publier l'événement",
+      "unpublish": "Annuler la publication, retour au brouillon",
+      "statusNote": {
+        "draft": "Vous seul pouvez voir cet événement jusqu'à sa publication.",
+        "published": "En direct. La dépublication masque la page; les inscriptions déjà effectuées sont conservées.",
+        "cancelled": "Cet événement est annulé."
+      },
+      "irreversible": "Irréversible",
+      "cancelEvent": "Annulation de l'événement",
+      "cancelConfirm": "Annulation de cet événement? Chaque participant inscrit recevra un courriel d’annulation (et un SMS s’il a choisi cette option). Les commandes payées doivent toujours être remboursées via l’onglet « Commandes ».",
+      "deleteEvent": "Supprimer l'événement",
+      "deleteConfirm": "Supprimer cet événement? Il disparaît du tableau de bord. Les informations concernant les participants sont conservées."
+    },
+    "attendees": {
+      "exportCsv": "Exporter au format CSV",
+      "searchPlaceholder": "Rechercher par nom, courriel ou numéro de téléphone",
+      "filter": "Filtre",
+      "allOption": "Tous ( {count} )",
+      "statusOption": "{label} ( {count} )",
+      "pendingNote": "{count, plural, one {# inscription} other {# inscriptions}} En attente de votre approbation.",
+      "review": "Revoir",
+      "columns": {
+        "ticket": "Billet",
+        "registered": "Inscrit",
+        "files": "Fichiers",
+        "actions": "Actes"
+      },
+      "empty": {
+        "noMatch": {
+          "title": "Aucun participant ne correspond",
+          "description": "Essayez une autre recherche ou effacez le filtre d'état."
+        },
+        "none": {
+          "title": "Personne ne s'est encore inscrit.",
+          "description": "Les inscriptions arrivent ici dès qu'une personne s'inscrit."
+        }
+      },
+      "guestOf": "Invité de {name}",
+      "sms": "SMS",
+      "paymentPending": "paiement en attente",
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "ticket": "Billet",
+      "cancelConfirm": "Annulation de l'inscription de {name}? Son billet est désactivé et la place est libérée. Aucun courriel n'est envoyé.",
+      "export": "Exporter",
+      "erase": "Effacer",
+      "eraseConfirm": "Effacer les données personnelles de {name}? Son nom, son adresse e-mail, son numéro de téléphone et ses réponses seront remplacés par des valeurs fictives, son ticket sera annulé et les e-mails en attente seront supprimés. Cette action est irréversible."
+    },
+    "orders": {
+      "collected": "<strong>{amount}</strong> collectés, nets de remboursements",
+      "count": "{count, plural, one {# commande} other {# commandes}}",
+      "columns": {
+        "order": "Commande",
+        "items": "Articles",
+        "total": "Total",
+        "placed": "Mis",
+        "actions": "Actes"
+      },
+      "empty": {
+        "title": "Aucune commande pour le moment",
+        "description": "Chaque inscription, gratuite ou payante, apparaît ici avec les sommes collectées."
+      },
+      "people": "{count, plural, one {# personne} other {# personnes}}",
+      "refunded": "{amount} remboursé"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "description": "L’image publique de votre organisation, les personnes autorisées à y travailler et la manière dont les autres systèmes interagissent avec elle.",
+    "tabs": {
+      "organization": "Organisation",
+      "members": "Membres",
+      "developer": "Promoteur",
+      "payments": "Paiements"
+    },
+    "organization": {
+      "title": "Organisation",
+      "description": "Nom, URL publique, logo et couleur d'accentuation utilisés dans les courriels et sur les pages de billetterie.",
+      "publicUrl": "URL publique",
+      "publicUrlHelp": "/o/… Lettres minuscules, chiffres, traits d'union.",
+      "website": "Site web",
+      "websiteHelp": "Saisissez example.com et nous ajouterons automatiquement https://.",
+      "logo": "Logo",
+      "logoHelp": "Affiché sur les pages d'événements et dans les courriels.",
+      "accentColour": "Couleur d'accent",
+      "accentColourHelp": "Des boutons dans les e-mails et sur les pages de billetterie.",
+      "pickColour": "Choisissez une couleur",
+      "serviceFee": "Frais de service",
+      "serviceFeeHelp": "Par défaut pour les nouveaux événements: facturer les frais de plateforme à l’acheteur en tant que ligne de commande, ou les prendre en charge.",
+      "buyerPaysFee": "L'acheteur paie les frais de service",
+      "socialLinks": "Liens sociaux",
+      "platform": "Plate-forme",
+      "url": "URL",
+      "addLink": "Ajouter un lien",
+      "save": "Sauvegarder l'organisation"
+    },
+    "members": {
+      "title": "Membres",
+      "description": "Les propriétaires et les administrateurs gèrent l'organisation; les membres créent et organisent des événements; le personnel d'accueil peut uniquement scanner les billets.",
+      "roles": {
+        "owner": "Propriétaire",
+        "admin": "Administrateur",
+        "member": "Membre",
+        "checkin": "Personnel d'accueil"
+      },
+      "columns": {
+        "member": "Membre",
+        "role": "Rôle",
+        "since": "Depuis"
+      },
+      "removeConfirm": "Supprimer {email} de l'organisation?",
+      "invited": "Invité· expire {date}",
+      "revoke": "Révoquer",
+      "emailPlaceholder": "coéquipier@exemple.com",
+      "sendInvite": "Envoyer une invitation"
+    },
+    "developer": {
+      "apiKeys": {
+        "title": "Clés API",
+        "description": "Accès serveur à serveur aux événements, commandes et participants de cette organisation.",
+        "note": "Les clés appellent l'API REST <docs></docs> en tant que cette organisation. Elles sont envoyées comme <code>{header}</code>. Lire la liste des clés et les récupérer; écrire et créer des clés.",
+        "newKey": "Copiez votre nouvelle clé maintenant. Elle ne sera plus affichée.",
+        "saved": "Je l'ai sauvegardé",
+        "columns": {
+          "key": "Clé",
+          "scopes": "Lunettes de visée",
+          "lastUsed": "Dernière utilisation"
+        },
+        "never": "jamais",
+        "empty": {
+          "title": "Aucune clé API pour le moment",
+          "description": "Créez-en une par intégration afin de pouvoir révoquer un seul outil sans perturber les autres."
+        },
+        "revoked": "révoqué",
+        "revokeConfirm": "Révoquer « {name} »? Les requêtes contenant cette valeur cessent immédiatement de fonctionner.",
+        "revoke": "Révoquer",
+        "namePlaceholder": "Nom de la clé, par exemple Zapier",
+        "nameLabel": "Nom de la clé",
+        "scopeRead": "lire",
+        "scopeWrite": "écrire",
+        "create": "Créer une clé"
+      },
+      "webhooks": {
+        "title": "Webhooks",
+        "description": "Une requête POST JSON signée est envoyée à votre propre point de terminaison à chaque fois qu'un événement se produit ici.",
+        "note": "Nous envoyons par SMS une enveloppe JSON à votre URL pour les événements que vous sélectionnez, signée avec HMAC-SHA256 ( <code>{signature}</code> sur <code>{template}</code> ). En cas d'échec de livraison, une nouvelle tentative est effectuée après un délai d'environ 24 heures.",
+        "addWebhook": "Ajouter un webhook",
+        "count": "{count, plural, one {# point de terminaison} other {# points d'extrémité}}",
+        "signingSecret": "Signature secrète",
+        "copyPrompt": "Copiez ce secret",
+        "endpointUrl": "URL du point de terminaison",
+        "endpointUrlHelp": "Seul le protocole HTTPS est autorisé (http://localhost est autorisé pour le développement).",
+        "events": "Événements",
+        "create": "Créer un webhook",
+        "columns": {
+          "endpoint": "Point de terminaison",
+          "events": "Événements"
+        },
+        "empty": {
+          "title": "Aucun webhook pour le moment",
+          "description": "Commencez par utiliser votre propre service pour maintenir à jour un CRM, un canal Slack ou une feuille de calcul."
+        },
+        "hideDeliveries": "Masquer les livraisons",
+        "recentDeliveries": "Livraisons récentes ( {count} )",
+        "nothingDelivered": "Rien n'a encore été livré.",
+        "attempts": "{count, plural, one {# tentative} other {# tentatives}}{hasStatus, select, true {, dernier {status}} other {}}",
+        "allEvents": "Tous les événements",
+        "active": "actif",
+        "paused": "pause",
+        "sendTest": "Envoyer un test",
+        "pause": "Pause",
+        "resume": "CV",
+        "rotateConfirm": "Changer le code secret de signature? L’ancien cesse immédiatement de fonctionner.",
+        "rotateSecret": "Rotation secrète",
+        "deleteConfirm": "Supprimer ce webhook?"
+      }
+    },
+    "payments": {
+      "title": "Paiements",
+      "descriptionCloud": "Les billets payés sont directement crédités sur votre compte Stripe.",
+      "descriptionSelfHosted": "Ce cas de facturation utilise les clés Stripe configurées par son opérateur.",
+      "connected": "Compte Stripe {id} connecté.",
+      "connectPrompt": "Connectez votre compte Stripe pour vendre des billets payants. L'intégration se fait via le processus Connect.",
+      "configured": "Stripe est configuré. Les billets payants sont débités du compte Stripe de l'instance sans frais de plateforme.",
+      "notConfigured": "Stripe n'est pas configuré sur cette instance; par conséquent, seuls les billets gratuits peuvent être vendus. Pour activer les paiements, veuillez définir les variables d'environnement STRIPE_SECRET_KEY et STRIPE_PUBLISHABLE_KEY."
+    },
+    "danger": {
+      "title": "Données et suppression",
+      "description": "Téléchargez toutes les données de cette organisation au format JSON: événements, commandes, participants, enregistrements, paramètres, sans données confidentielles. La suppression de l’organisation entraîne l’annulation de ses événements, la révocation de tous les billets, la suppression de toutes les données personnelles des participants et la désactivation des clés API et des webhooks. Cette action est irréversible.",
+      "download": "Télécharger toutes les données",
+      "confirmLabel": "Tapez {slug} pour confirmer",
+      "delete": "Supprimer l'organisation",
+      "ownerOnly": "Seul le propriétaire peut supprimer cette organisation."
+    }
+  },
+  "imageUpload": {
+    "uploadFailed": "Échec du chargement.",
+    "bucketRejected": "Le compartiment de stockage a refusé le chargement. Vérifiez ses paramètres CORS et ses règles de sécurité.",
+    "connectionFailed": "Échec du chargement. Vérifiez votre connexion et réessayez.",
+    "noImage": "Aucune image pour le moment",
+    "uploading": "Chargement en cours…",
+    "replace": "Remplacer",
+    "replaceImage": "Remplacer l'image",
+    "upload": "Télécharger",
+    "uploadImage": "Télécharger une image",
+    "urlPlaceholder": "https://… (le chargement des images nécessite la configuration de S3)",
+    "urlLabel": "{label} URL",
+    "formats": "JPEG, PNG ou WebP · max 5 Mo"
+  },
+  "imageCrop": {
+    "openFailed": "Impossible d'ouvrir cette image.",
+    "renderFailed": "Ce navigateur n'a pas pu afficher l'image recadrée. Veuillez plutôt télécharger l'image telle quelle.",
+    "dialogLabel": "Encadrez l'image de couverture",
+    "title": "Encadrez la couverture",
+    "description": "Faites glisser pour positionner et zoomez pour remplir. Enregistré au format 16:7, le format utilisé par les pages d'événements.",
+    "zoom": "Zoom",
+    "use": "Utilisez cette culture"
+  },
+  "address": {
+    "unavailable": "La recherche d'adresses est temporairement indisponible.",
+    "placeholder": "Commencez à saisir une adresse"
+  },
+  "linkTabs": {
+    "label": "Sections"
+  },
+  "actions": {
+    "genericError": "Quelque chose a mal fonctionné.",
+    "formIssue": "{path}: {message}",
+    "formPath": "formulaire",
+    "checkForm": "Vérifiez le formulaire.",
+    "saved": "Enregistré.",
+    "savedNotified": "Enregistré. Les participants seront informés du nouvel horaire ou lieu.",
+    "deletePublished": "Annulez ou dépubliez l'événement avant de le supprimer.",
+    "addressRateLimited": "Trop de recherches d'adresses. Veuillez patienter une minute et réessayer.",
+    "addressUnavailable": "La recherche d'adresses est temporairement indisponible.",
+    "formSaved": "Formulaire enregistré.",
+    "refund": {
+      "noPayment": "Cette commande n'est pas remboursable.",
+      "nothingToRefund": "Commande {status}; aucun remboursement.",
+      "requested": "Demande de remboursement. La commande sera mise à jour dès confirmation par Stripe."
+    },
+    "invitationSent": "Invitation envoyée à {email}.",
+    "apiKeyCreated": "Clé créée. Copiez-la maintenant; elle ne sera plus affichée.",
+    "unknownError": "erreur inconnue",
+    "eventInvite": {
+      "emailFailed": "Invitation créée, mais l'e-mail n'a pas pu être envoyé ( {reason} ). Partagez le lien vous-même.",
+      "emailed": "Invitation envoyée par courriel à {email}.",
+      "linkCreated": "Lien d'invitation créé."
+    },
+    "waitlist": {
+      "notFound": "Cette entrée n'existe plus.",
+      "alreadyOffered": "Cette personne a déjà une offre en cours.",
+      "registered": "Cette personne est déjà inscrite.",
+      "noRoom": "Aucun siège n'est gratuit pour ce type de billet (ou l'événement affiche complet). Premier arrivé, premier servi.",
+      "emailFailed": "Place réservée jusqu'au {deadline}, mais l'e-mail n'a pas pu être envoyé ( {reason} ). Envoyez-leur ce lien: {url}",
+      "offered": "Offre envoyée par courriel à {email}; la place est réservée jusqu'au {deadline}."
+    },
+    "discountCreated": "Code {code} créé.",
+    "webhook": {
+      "created": "Webhook créé. Copiez le secret de signature maintenant; il n’est affiché qu’une seule fois.",
+      "notFound": "Webhook introuvable.",
+      "rotated": "Nouvelle technique de signature. Mettez à jour votre récepteur; l’ancienne technique ne fonctionne plus.",
+      "testQueued": "Test de livraison en attente; l’envoi aura lieu dans environ 10 secondes. Consultez la liste des livraisons."
+    },
+    "deleteOrg": {
+      "ownerOnly": "Seul le propriétaire peut supprimer l'organisation.",
+      "confirmSlug": "Saisissez l'URL de l'organisation ( {slug} ) pour confirmer."
+    }
+  }
+}

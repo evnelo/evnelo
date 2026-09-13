@@ -1,9 +1,23 @@
 /**
- * Pure helpers for the translation script. ICU message syntax must survive machine translation:
- * `{name}` arguments, `{count, plural, one {…} other {…}}` branches (only the branch text is
- * translated, `#` and the keywords stay), and `<tag>…</tag>` rich-text markers. Each protected
- * piece becomes an HTML span Google is told not to translate, then is swapped back.
+ * Pure helpers for the translation script.
+ *
+ * ICU message syntax must survive machine translation. Two things can go wrong:
+ * a translator may drop or reorder `{name}` arguments, and — worse — it may reorder the pieces
+ * of a `{count, plural, one {…} other {…}}` frame, which produces a message that no longer parses.
+ *
+ * So the structure is never sent to the translator at all. `segmentsOf` parses the message into a
+ * tree and hands back only the human-readable runs of text; the caller translates those, and
+ * `rebuild` puts the original frame back around them. Inside a run, `{arguments}` and `#` are
+ * wrapped in `notranslate` spans (they may move within the sentence, which is what other word
+ * orders need).
+ *
+ * `<tag>…</tag>` rich-text markers are left inline by default, because the engine's HTML mode
+ * moves them with the words and that reads better. It does sometimes unbalance them when it
+ * reverses a sentence for a right-to-left script, so `planMessage(msg, { splitTags: true })`
+ * treats them as structure too; the script retries with that whenever a result fails validation.
  */
+import { parse as parseIcu, type MessageFormatElement } from "@formatjs/icu-messageformat-parser";
+
 export type Token = { placeholder: string; original: string };
 
 export function flatten(obj: Record<string, unknown>, prefix = ""): Record<string, string> {
@@ -49,71 +63,186 @@ function closing(text: string, start: number): number {
 }
 
 const PLURAL_LIKE = /^\s*([\w]+)\s*,\s*(plural|select|selectordinal)\s*,/;
+/** A run worth translating has at least one letter; `{name}` or ` — ` on its own does not. */
+const HAS_WORDS = /\p{L}/u;
 
-/**
- * Replaces every non-translatable piece with `<span class="notranslate">…</span>` carrying a
- * numbered placeholder, recursing into plural/select branches so their text still gets translated.
- */
-export function protectMessage(message: string): { text: string; tokens: Token[] } {
+type Node =
+  | { kind: "run"; text: string }
+  | { kind: "choice"; head: string; branches: { key: string; nodes: Node[] }[] }
+  | { kind: "tag"; name: string; nodes: Node[] };
+
+/** End index (exclusive) of the `</name>` that closes the `<name>` opening at `from`, or -1. */
+function closingTag(text: string, name: string, from: number): number {
+  const open = `<${name}>`;
+  const close = `</${name}>`;
+  let depth = 1;
+  let i = from;
+  while (i < text.length) {
+    const nextOpen = text.indexOf(open, i);
+    const nextClose = text.indexOf(close, i);
+    if (nextClose === -1) return -1;
+    if (nextOpen !== -1 && nextOpen < nextClose) { depth++; i = nextOpen + open.length; continue; }
+    depth--;
+    if (depth === 0) return nextClose;
+    i = nextClose + close.length;
+  }
+  return -1;
+}
+
+/** Splits a message into translatable runs and the frames that hold them. */
+function parse(message: string, splitTags = false): Node[] {
+  const nodes: Node[] = [];
+  let run = "";
+  const flush = () => { if (run) { nodes.push({ kind: "run", text: run }); run = ""; } };
+  let i = 0;
+  while (i < message.length) {
+    const ch = message[i];
+    if (ch === "{") {
+      const end = closing(message, i);
+      if (end === -1) { run += message.slice(i); break; }
+      const inner = message.slice(i + 1, end);
+      const m = inner.match(PLURAL_LIKE);
+      if (m) {
+        flush();
+        const head = inner.slice(0, m[0].length);
+        let rest = inner.slice(m[0].length);
+        const branches: { key: string; nodes: Node[] }[] = [];
+        while (rest.trim()) {
+          const bm = rest.match(/^\s*([^\s{]+)\s*\{/);
+          if (!bm) break;
+          const bodyStart = bm[0].length - 1;
+          const bodyEnd = closing(rest, bodyStart);
+          if (bodyEnd === -1) break;
+          branches.push({ key: bm[1] ?? "other", nodes: parse(rest.slice(bodyStart + 1, bodyEnd), splitTags) });
+          rest = rest.slice(bodyEnd + 1);
+        }
+        nodes.push({ kind: "choice", head, branches });
+      } else {
+        run += message.slice(i, end + 1); // a plain {argument}: part of the run, protected later
+      }
+      i = end + 1;
+    } else if (splitTags && ch === "<" && /^<[a-zA-Z][\w-]*>/.test(message.slice(i))) {
+      const open = message.slice(i, message.indexOf(">", i) + 1);
+      const name = open.slice(1, -1);
+      const bodyStart = i + open.length;
+      const bodyEnd = closingTag(message, name, bodyStart);
+      if (bodyEnd === -1) { run += ch; i++; continue; }
+      flush();
+      nodes.push({ kind: "tag", name, nodes: parse(message.slice(bodyStart, bodyEnd), true) });
+      i = bodyEnd + name.length + 3;
+    } else {
+      run += ch;
+      i++;
+    }
+  }
+  flush();
+  return nodes;
+}
+
+/** Wraps `{arguments}` and `#` so the engine moves them without translating them. */
+function protectRun(text: string): { text: string; tokens: Token[] } {
   const tokens: Token[] = [];
   const mark = (original: string) => {
     const placeholder = `__${tokens.length}__`;
     tokens.push({ placeholder, original });
     return `<span class="notranslate">${placeholder}</span>`;
   };
-  const walk = (text: string): string => {
-    let out = "";
-    let i = 0;
-    while (i < text.length) {
-      const ch = text[i];
-      if (ch === "{") {
-        const end = closing(text, i);
-        if (end === -1) { out += text.slice(i); break; }
-        const inner = text.slice(i + 1, end);
-        const m = inner.match(PLURAL_LIKE);
-        if (m) {
-          // {count, plural, one {text} other {text}} → keep the frame, translate each branch body
-          const head = inner.slice(0, m[0].length);
-          let rest = inner.slice(m[0].length);
-          let branches = "";
-          while (rest.trim()) {
-            const bm = rest.match(/^\s*([^\s{]+)\s*\{/);
-            if (!bm) { branches += rest; break; }
-            const bodyStart = bm[0].length - 1;
-            const bodyEnd = closing(rest, bodyStart);
-            if (bodyEnd === -1) { branches += rest; break; }
-            branches += mark(` ${bm[1]} {`) + walk(rest.slice(bodyStart + 1, bodyEnd)) + mark("}");
-            rest = rest.slice(bodyEnd + 1);
-          }
-          out += mark(`{${head}`) + branches + mark("}");
-        } else {
-          out += mark(`{${inner}}`);
-        }
-        i = end + 1;
-      } else if (ch === "<") {
-        const end = text.indexOf(">", i);
-        if (end === -1) { out += text.slice(i); break; }
-        out += mark(text.slice(i, end + 1));
-        i = end + 1;
-      } else if (ch === "#") {
-        out += mark("#");
-        i++;
-      } else {
-        out += ch;
-        i++;
-      }
+  let out = "";
+  let i = 0;
+  while (i < text.length) {
+    const ch = text[i];
+    if (ch === "{") {
+      const end = closing(text, i);
+      if (end === -1) { out += text.slice(i); break; }
+      out += mark(text.slice(i, end + 1));
+      i = end + 1;
+    } else if (ch === "#") {
+      out += mark("#");
+      i++;
+    } else {
+      out += ch;
+      i++;
     }
-    return out;
-  };
-  return { text: walk(message), tokens };
+  }
+  return { text: out, tokens };
 }
 
 const ENTITIES: Record<string, string> = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&#39;": "'", "&apos;": "'", "&nbsp;": " " };
 
-/** Puts the protected pieces back and undoes the HTML encoding Google applies in html mode. */
-export function restoreMessage(translated: string, tokens: Token[]): string {
-  let out = translated.replace(/<span class="notranslate">\s*(__\d+__)\s*<\/span>/g, (_, p) => p);
+function restoreRun(translated: string, tokens: Token[]): string {
+  let out = translated.replace(/<span[^>]*>\s*(__\d+__)\s*<\/span>/g, (_, p) => String(p));
   for (const { placeholder, original } of tokens) out = out.split(placeholder).join(original);
-  out = out.replace(/&(amp|lt|gt|quot|#39|apos|nbsp);/g, (m) => ENTITIES[m] ?? m).replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)));
-  return out.replace(/\s+([,.;:!?])/g, "$1").trim();
+  return out
+    .replace(/&(amp|lt|gt|quot|#39|apos|nbsp);/g, (m) => ENTITIES[m] ?? m)
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/ {2,}/g, " ")
+    .replace(/(<[a-z][^>]*>) /gi, "$1").replace(/ (<\/[a-z]+>)/gi, "$1")
+    .replace(/\s+([,.;:!?])/g, "$1");
+}
+
+export type Plan = {
+  /** The runs to translate, in order. Empty when the message is only placeholders. */
+  texts: string[];
+  /** Rebuilds the message from the translated runs (same length and order as `texts`). */
+  rebuild: (translated: string[]) => string;
+};
+
+/**
+ * Prepares one message for translation: the text runs to send, and how to put the message back
+ * together afterwards. Plural and select frames are rebuilt here, so the engine cannot break them.
+ */
+export function planMessage(message: string, { splitTags = false }: { splitTags?: boolean } = {}): Plan {
+  const texts: string[] = [];
+  const tokensFor: Token[][] = [];
+
+  type Rebuilder = (translated: string[]) => string;
+  const walk = (nodes: Node[]): Rebuilder => {
+    const parts: Rebuilder[] = nodes.map((node) => {
+      if (node.kind === "run") {
+        const { text, tokens } = protectRun(node.text);
+        // letters must be outside the placeholders: "{name}" is nothing to translate, "Hi {name}" is
+        if (!HAS_WORDS.test(text.replace(/<span[^>]*>__\d+__<\/span>/g, ""))) return () => node.text;
+        const index = texts.length;
+        texts.push(text);
+        tokensFor.push(tokens);
+        const leading = node.text.match(/^\s*/)?.[0] ?? "";
+        const trailing = node.text.match(/\s*$/)?.[0] ?? "";
+        return (out) => leading + restoreRun(out[index] ?? "", tokensFor[index] ?? []).trim() + trailing;
+      }
+      if (node.kind === "tag") {
+        const inner = walk(node.nodes);
+        return (out) => `<${node.name}>${inner(out)}</${node.name}>`;
+      }
+      const branches = node.branches.map((b) => ({ key: b.key, rebuild: walk(b.nodes) }));
+      return (out) => `{${node.head}${branches.map((b) => ` ${b.key} {${b.rebuild(out)}}`).join("")}}`;
+    });
+    return (out) => parts.map((p) => p(out)).join("");
+  };
+
+  const rebuild = walk(parse(message, splitTags));
+  return { texts, rebuild };
+}
+
+/**
+ * Is a translation safe to ship? It must parse as ICU and declare exactly the arguments its
+ * English source does; anything else would throw when the page renders in that language.
+ */
+export function isFaithful(source: string, translated: string): boolean {
+  const names = (message: string): string => {
+    const found = new Set<string>();
+    const visit = (elements: MessageFormatElement[]) => {
+      for (const node of elements) {
+        if ("value" in node && typeof node.value === "string" && node.type !== 0) found.add(node.value);
+        if ("options" in node && node.options) for (const option of Object.values(node.options)) visit(option.value);
+        if ("children" in node && node.children) visit(node.children);
+      }
+    };
+    visit(parseIcu(message));
+    return [...found].sort().join(",");
+  };
+  try {
+    return names(source) === names(translated);
+  } catch {
+    return false;
+  }
 }

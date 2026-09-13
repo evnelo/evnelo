@@ -1,0 +1,57 @@
+{
+  "language": "言語",
+  "brand": "エヴネロ",
+  "tagline": "出来事は刻々と進行している。",
+  "actions": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "close": "近い",
+    "delete": "消去",
+    "remove": "取り除く",
+    "edit": "編集",
+    "add": "追加",
+    "back": "戻る",
+    "continue": "続く",
+    "confirm": "確認する",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "search": "検索",
+    "retry": "もう一度やり直してください",
+    "ok": "わかりました",
+    "discard": "破棄",
+    "restore": "復元する",
+    "signIn": "サインイン",
+    "signOut": "サインアウト",
+    "loading": "読み込み中…"
+  },
+  "labels": {
+    "optional": "オプション",
+    "required": "必須",
+    "free": "無料",
+    "soldOut": "完売",
+    "cancelled": "キャンセル",
+    "draft": "下書き",
+    "published": "公開済み",
+    "yes": "はい",
+    "no": "いいえ",
+    "name": "名前",
+    "email": "メール",
+    "phone": "電話",
+    "status": "状態",
+    "date": "日付",
+    "created": "作成済み",
+    "unknown": "未知"
+  },
+  "errors": {
+    "generic": "エラーが発生しました。もう一度お試しください。",
+    "network": "ネットワークエラーが発生しました。もう一度お試しください。",
+    "notFound": "見つかりません",
+    "rateLimited": "試行回数が多すぎます。数分待ってからもう一度お試しください。",
+    "captcha": "お客様がボットではないことを確認できませんでした。ページを再読み込みして、もう一度お試しください。"
+  },
+  "time": {
+    "momentAgo": "少し前",
+    "minutesAgo": "{minutes}分前",
+    "hoursAgo": "{hours, plural, one {#時間前} other {#時間前}}"
+  }
+}

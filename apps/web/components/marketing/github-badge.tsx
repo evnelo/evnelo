@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 export const GITHUB_REPO_URL = "https://github.com/evnelo/evnelo";
@@ -13,12 +14,13 @@ function GithubMark({ className }: { className?: string }) {
 
 /** Repository link shared by every public page and viewport. */
 export function GithubBadge({ className }: { className?: string }) {
+  const t = useTranslations("public");
   return (
     <a
       href={GITHUB_REPO_URL}
       rel="noopener noreferrer"
       target="_blank"
-      aria-label="evnelo/evnelo on GitHub"
+      aria-label={t("github.label")}
       className={cn("press inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-sm hover:bg-muted/80", className)}
     >
       <GithubMark className="size-4 shrink-0" />

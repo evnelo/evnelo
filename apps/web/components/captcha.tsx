@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { CAPTCHA_FIELD, type CaptchaAction, type CaptchaPublicConfig } from "@/lib/captcha-shared";
 
 const CaptchaContext = createContext<CaptchaPublicConfig | null>(null);
@@ -51,6 +52,7 @@ export function captchaTokenFrom(form: EventTarget | HTMLFormElement | null | un
  */
 export function CaptchaField({ action, className }: { action: CaptchaAction; className?: string }) {
   const config = useContext(CaptchaContext);
+  const t = useTranslations("public");
   const input = useRef<HTMLInputElement>(null);
   const mount = useRef<HTMLDivElement>(null);
   const widget = useRef<string | null>(null);
@@ -118,7 +120,10 @@ export function CaptchaField({ action, className }: { action: CaptchaAction; cla
       <div ref={mount} className={className} />
       {config.provider === "recaptcha" && (
         <p className="text-xs text-muted-foreground">
-          This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" className="underline underline-offset-2">Privacy Policy</a> and <a href="https://policies.google.com/terms" className="underline underline-offset-2">Terms of Service</a> apply.
+          {t.rich("captcha.notice", {
+            privacy: (chunks) => <a href="https://policies.google.com/privacy" className="underline underline-offset-2">{chunks}</a>,
+            terms: (chunks) => <a href="https://policies.google.com/terms" className="underline underline-offset-2">{chunks}</a>,
+          })}
         </p>
       )}
     </>

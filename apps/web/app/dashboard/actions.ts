@@ -4,6 +4,7 @@ import * as React from "react";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 import * as svc from "@evnelo/core/services";
 import { ROLE_LABELS, type Role } from "@evnelo/core";
@@ -12,7 +13,7 @@ import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { ORG_COOKIE, requireOrg } from "@/lib/auth/session";
 import { requireEvent } from "@/lib/dashboard";
-import { renderEmail, sendEmail } from "@/lib/email";
+import { emailLocale, emailTranslator, renderEmail, sendEmail } from "@/lib/email";
 import { searchAddresses, type AddressSuggestion } from "@/lib/geocoding";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { stripe } from "@/lib/stripe";
@@ -25,8 +26,18 @@ import { calendarPath } from "@/lib/calendar";
 
 export type ActionResult = { ok: true; message?: string; id?: string } | { ok: false; error: string; issues?: { path: (string | number)[]; message: string }[] };
 
-const fail = (e: unknown): ActionResult => ({ ok: false, error: e instanceof Error ? e.message : "Something went wrong." });
-const zodFail = (e: z.ZodError): ActionResult => ({ ok: false, error: e.issues[0] ? `${e.issues[0].path.join(".") || "form"}: ${e.issues[0].message}` : "Check the form.", issues: e.issues.map((i) => ({ path: i.path, message: i.message })) });
+/** Messages shown in the dashboard come from the `dashboard.actions` keys in the viewer's language. */
+const messages = () => getTranslations("dashboard");
+
+const fail = async (e: unknown): Promise<ActionResult> => ({ ok: false, error: e instanceof Error ? e.message : (await messages())("actions.genericError") });
+const zodFail = async (e: z.ZodError): Promise<ActionResult> => {
+  const t = await messages();
+  return {
+    ok: false,
+    error: e.issues[0] ? t("actions.formIssue", { path: e.issues[0].path.join(".") || t("actions.formPath"), message: e.issues[0].message }) : t("actions.checkForm"),
+    issues: e.issues.map((i) => ({ path: i.path, message: i.message })),
+  };
+};
 
 /* ---------- session ---------- */
 
@@ -51,8 +62,8 @@ export async function saveEventAction(input: unknown, eventId?: string): Promise
       await requireEvent(eventId, "edit_events");
       const { changes } = await svc.updateEvent(db, eventId, parsed.data);
       revalidatePath(`/dashboard/events/${eventId}`);
-      const notified = changes.schedule || changes.venue ? " Attendees will be told about the new time or place." : "";
-      return { ok: true, id: eventId, message: `Saved.${notified}` };
+      const t = await messages();
+      return { ok: true, id: eventId, message: changes.schedule || changes.venue ? t("actions.savedNotified") : t("actions.saved") };
     }
     const ctx = await requireOrg("edit_events");
     const event = await svc.createEvent(db, ctx.org.id, parsed.data);
@@ -79,7 +90,7 @@ export async function cancelEventAction(eventId: string) {
 }
 export async function deleteEventAction(eventId: string) {
   const { event } = await requireEvent(eventId, "edit_events");
-  if (event.status === "published") throw new Error("Unpublish or cancel the event before deleting it.");
+  if (event.status === "published") throw new Error((await messages())("actions.deletePublished"));
   await svc.deleteEvent(db, eventId);
   redirect("/dashboard");
 }
@@ -88,11 +99,11 @@ export async function searchAddressesAction(query: string): Promise<{ ok: true; 
   const { user } = await requireOrg("edit_events");
   const normalized = query.trim().slice(0, 160);
   if (normalized.length < 3) return { ok: true, data: [] };
-  if (!(await consumeSharedRateLimit("geocode", user.id, 30, 60_000))) return { ok: false, error: "Too many address searches. Wait a minute and try again." };
+  if (!(await consumeSharedRateLimit("geocode", user.id, 30, 60_000))) return { ok: false, error: (await messages())("actions.addressRateLimited") };
   try {
     return { ok: true, data: await searchAddresses(normalized, fetch, { provider: env.GEOCODER, photonUrl: env.PHOTON_URL, mapboxToken: env.MAPBOX_TOKEN }) };
   } catch (error) {
-    return { ok: false, error: error instanceof Error ? error.message : "Address search is temporarily unavailable." };
+    return { ok: false, error: error instanceof Error ? error.message : (await messages())("actions.addressUnavailable") };
   }
 }
 
@@ -130,7 +141,7 @@ export async function saveFieldsAction(eventId: string, input: unknown): Promise
     await requireEvent(eventId, "edit_events");
     await svc.saveRegistrationFields(db, eventId, parsed.data);
     revalidatePath(`/dashboard/events/${eventId}/form`);
-    return { ok: true, message: "Form saved." };
+    return { ok: true, message: (await messages())("actions.formSaved") };
   } catch (e) {
     return fail(e);
   }
@@ -161,15 +172,16 @@ export async function cancelAttendeesAction(eventId: string, formData: FormData)
 export async function refundOrderAction(eventId: string, orderId: string): Promise<ActionResult> {
   try {
     await requireEvent(eventId, "refund");
+    const t = await messages();
     const order = await svc.getOrder(db, eventId, orderId);
-    if (!order?.stripePaymentIntentId) return { ok: false, error: "This order has no payment to refund." };
-    if (order.status !== "paid" && order.status !== "partially_refunded") return { ok: false, error: `Order is ${order.status}; nothing to refund.` };
+    if (!order?.stripePaymentIntentId) return { ok: false, error: t("actions.refund.noPayment") };
+    if (order.status !== "paid" && order.status !== "partially_refunded") return { ok: false, error: t("actions.refund.nothingToRefund", { status: t(`status.order.${order.status}`) }) };
     await stripe.refunds.create(
       { payment_intent: order.stripePaymentIntentId },
       env.EDITION === "cloud" && order.stripeAccountId ? { stripeAccount: order.stripeAccountId } : undefined,
     );
     revalidatePath(`/dashboard/events/${eventId}/orders`);
-    return { ok: true, message: "Refund requested. The order updates as soon as Stripe confirms it." };
+    return { ok: true, message: t("actions.refund.requested") };
   } catch (e) {
     return fail(e);
   }
@@ -184,7 +196,7 @@ export async function updateOrgAction(input: unknown): Promise<ActionResult> {
     const { org } = await requireOrg("manage_org");
     await svc.updateOrganization(db, org.id, parsed.data);
     revalidatePath("/dashboard/settings");
-    return { ok: true, message: "Saved." };
+    return { ok: true, message: (await messages())("actions.saved") };
   } catch (e) {
     return fail(e);
   }
@@ -196,7 +208,9 @@ export async function inviteMemberAction(formData: FormData): Promise<ActionResu
   try {
     const { org, user } = await requireOrg("manage_members");
     const invite = await svc.inviteMember(db, { orgId: org.id, ...parsed.data });
-    const props = { brand: { orgName: "Evnelo", appUrl: env.APP_URL }, url: `${env.APP_URL}/invite/${invite.token}`, orgName: org.name, role: ROLE_LABELS[invite.role], invitedBy: user.name ?? user.email };
+    // the invitee has no stored language yet, so the invitation follows the inviter's
+    const i18n = await emailTranslator(emailLocale(await getLocale()));
+    const props = { ...i18n, brand: { orgName: "Evnelo", appUrl: env.APP_URL }, url: `${env.APP_URL}/invite/${invite.token}`, orgName: org.name, role: (await messages())(`settings.members.roles.${invite.role}`), invitedBy: user.name ?? user.email };
     try {
       const { html, text } = await renderEmail(React.createElement(OrgInvite, props));
       await sendEmail({ to: invite.email, subject: orgInviteSubject(props), html, text });
@@ -205,7 +219,7 @@ export async function inviteMemberAction(formData: FormData): Promise<ActionResu
       throw e;
     }
     revalidatePath("/dashboard/settings");
-    return { ok: true, message: `Invitation sent to ${invite.email}.` };
+    return { ok: true, message: (await messages())("actions.invitationSent", { email: invite.email }) };
   } catch (e) {
     return fail(e);
   }
@@ -246,7 +260,7 @@ export async function createApiKeyAction(formData: FormData): Promise<ActionResu
     const { org } = await requireOrg("manage_org");
     const key = await svc.createApiKey(db, { organizationId: org.id, ...parsed.data });
     revalidatePath("/dashboard/settings");
-    return { ok: true, id: key.id, secret: key.secret, message: "Key created. Copy it now; it won't be shown again." };
+    return { ok: true, id: key.id, secret: key.secret, message: (await messages())("actions.apiKeyCreated") };
   } catch (e) {
     return fail(e);
   }
@@ -270,26 +284,28 @@ export async function createEventInviteAction(eventId: string, formData: FormDat
   if (!parsed.success) return zodFail(parsed.error);
   try {
     const { event, org } = await requireEvent(eventId, "edit_events");
+    const t = await messages();
     const invite = await svc.createEventInvite(db, eventId, parsed.data);
     const url = `${env.APP_URL}/i/${invite.token}`;
     if (invite.email) {
       const brand = { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL };
+      const i18n = await emailTranslator(emailLocale(await getLocale())); // invitee unknown: the host's language
       const emailEvent = {
-        name: event.name, url: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, when: formatDateRange(event.startsAt, event.endsAt, event.timezone),
-        where: event.locationType === "online" ? "Online" : [event.venueName, event.city].filter(Boolean).join(", "), calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}`,
+        name: event.name, url: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, when: formatDateRange(event.startsAt, event.endsAt, event.timezone, i18n.locale),
+        where: event.locationType === "online" ? i18n.t("layout.online") : [event.venueName, event.city].filter(Boolean).join(", "), calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}`,
       };
-      const expires = invite.expiresAt ? new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric" }).format(invite.expiresAt) : null;
-      const props = { brand, event: emailEvent, url, expires };
+      const expires = invite.expiresAt ? new Intl.DateTimeFormat(i18n.locale, { month: "long", day: "numeric" }).format(invite.expiresAt) : null;
+      const props = { ...i18n, brand, event: emailEvent, url, expires };
       try {
         const { html, text } = await renderEmail(React.createElement(EventInvite, props));
         await sendEmail({ to: invite.email, subject: eventInviteSubject(props), html, text });
       } catch (e) {
         revalidatePath(`/dashboard/events/${eventId}/invites`);
-        return { ok: true, id: invite.id, url, message: `Invite created, but the email could not be sent (${e instanceof Error ? e.message : "unknown error"}). Share the link yourself.` };
+        return { ok: true, id: invite.id, url, message: t("actions.eventInvite.emailFailed", { reason: e instanceof Error ? e.message : t("actions.unknownError") }) };
       }
     }
     revalidatePath(`/dashboard/events/${eventId}/invites`);
-    return { ok: true, id: invite.id, url, message: invite.email ? `Invitation emailed to ${invite.email}.` : "Invite link created." };
+    return { ok: true, id: invite.id, url, message: invite.email ? t("actions.eventInvite.emailed", { email: invite.email }) : t("actions.eventInvite.linkCreated") };
   } catch (e) {
     return fail(e);
   }
@@ -311,18 +327,24 @@ export async function deleteEventInviteAction(eventId: string, id: string): Prom
 export async function promoteWaitlistAction(eventId: string, entryId: string, ticketTypeId: string): Promise<ActionResult> {
   try {
     const { event, org } = await requireEvent(eventId, "manage_attendees");
+    const [t, locale] = await Promise.all([messages(), getLocale()]);
     const result = await svc.promoteWaitlistEntry(db, eventId, entryId, ticketTypeId);
     if (!result.ok) {
-      const why = { not_found: "That entry no longer exists.", already_offered: "This person already has an open offer.", registered: "This person already registered.", no_room: "No seat is free on that ticket type (or the event is at capacity). Free one first." }[result.reason];
+      const why = { not_found: t("actions.waitlist.notFound"), already_offered: t("actions.waitlist.alreadyOffered"), registered: t("actions.waitlist.registered"), no_room: t("actions.waitlist.noRoom") }[result.reason];
       return { ok: false, error: why };
     }
     const entry = result.entry;
     const url = `${env.APP_URL}/w/${entry.token}`;
-    const [tt] = await svc.promotableTicketTypes(db, eventId).then((ts) => ts.filter((t) => t.id === ticketTypeId));
-    const deadline = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: event.timezone, timeZoneName: "short" }).format(entry.holdExpiresAt!);
+    const [tt] = await svc.promotableTicketTypes(db, eventId).then((ts) => ts.filter((x) => x.id === ticketTypeId));
+    const deadlineFormat = { month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: event.timezone, timeZoneName: "short" } as const;
+    const i18n = await emailTranslator(emailLocale(entry.locale)); // they joined the waitlist in this language
+    const deadline = new Intl.DateTimeFormat(i18n.locale, deadlineFormat).format(entry.holdExpiresAt!);
+    // the host reads the confirmation in their own language; the email keeps the attendee-facing format
+    const deadlineForHost = new Intl.DateTimeFormat(locale, deadlineFormat).format(entry.holdExpiresAt!);
     const props = {
+      ...i18n,
       brand: { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL },
-      event: { name: event.name, url: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, when: formatDateRange(event.startsAt, event.endsAt, event.timezone), where: event.locationType === "online" ? "Online" : [event.venueName, event.city].filter(Boolean).join(", "), calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}` },
+      event: { name: event.name, url: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, when: formatDateRange(event.startsAt, event.endsAt, event.timezone, i18n.locale), where: event.locationType === "online" ? i18n.t("layout.online") : [event.venueName, event.city].filter(Boolean).join(", "), calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}` },
       url, ticketTypeName: tt?.name ?? "General admission", deadline,
     };
     revalidatePath(`/dashboard/events/${eventId}/waitlist`);
@@ -330,9 +352,9 @@ export async function promoteWaitlistAction(eventId: string, entryId: string, ti
       const { html, text } = await renderEmail(React.createElement(WaitlistOffer, props));
       await sendEmail({ to: entry.email, subject: waitlistOfferSubject(props), html, text });
     } catch (e) {
-      return { ok: true, message: `Spot reserved until ${deadline}, but the email could not be sent (${e instanceof Error ? e.message : "unknown error"}). Send them this link: ${url}` };
+      return { ok: true, message: t("actions.waitlist.emailFailed", { deadline: deadlineForHost, reason: e instanceof Error ? e.message : t("actions.unknownError"), url }) };
     }
-    return { ok: true, message: `Offer emailed to ${entry.email}; the spot is held until ${deadline}.` };
+    return { ok: true, message: t("actions.waitlist.offered", { email: entry.email, deadline: deadlineForHost }) };
   } catch (e) {
     return fail(e);
   }
@@ -358,7 +380,7 @@ export async function createDiscountCodeAction(eventId: string, input: unknown):
     await requireEvent(eventId, "edit_events");
     const row = await svc.createDiscountCode(db, eventId, parsed.data);
     revalidatePath(`/dashboard/events/${eventId}/tickets`);
-    return { ok: true, id: row.id, message: `Code ${row.code} created.` };
+    return { ok: true, id: row.id, message: (await messages())("actions.discountCreated", { code: row.code }) };
   } catch (e) {
     return fail(e);
   }
@@ -384,7 +406,7 @@ export async function createWebhookAction(input: unknown): Promise<ActionResult 
     const { org } = await requireOrg("manage_org");
     const row = await svc.createWebhook(db, org.id, parsed.data);
     revalidatePath("/dashboard/settings");
-    return { ok: true, id: row.id, secret: row.secret, message: "Webhook created. Copy the signing secret now; it is shown once." };
+    return { ok: true, id: row.id, secret: row.secret, message: (await messages())("actions.webhook.created") };
   } catch (e) {
     return fail(e);
   }
@@ -397,7 +419,7 @@ export async function updateWebhookAction(id: string, input: unknown): Promise<A
     const { org } = await requireOrg("manage_org");
     const row = await svc.updateWebhook(db, org.id, id, parsed.data);
     revalidatePath("/dashboard/settings");
-    return row ? { ok: true } : { ok: false, error: "Webhook not found." };
+    return row ? { ok: true } : { ok: false, error: (await messages())("actions.webhook.notFound") };
   } catch (e) {
     return fail(e);
   }
@@ -406,8 +428,9 @@ export async function updateWebhookAction(id: string, input: unknown): Promise<A
 export async function rotateWebhookSecretAction(id: string): Promise<ActionResult & { secret?: string }> {
   try {
     const { org } = await requireOrg("manage_org");
+    const t = await messages();
     const secret = await svc.rotateWebhookSecret(db, org.id, id);
-    return secret ? { ok: true, secret, message: "New signing secret. Update your receiver; the old secret stops working now." } : { ok: false, error: "Webhook not found." };
+    return secret ? { ok: true, secret, message: t("actions.webhook.rotated") } : { ok: false, error: t("actions.webhook.notFound") };
   } catch (e) {
     return fail(e);
   }
@@ -428,13 +451,14 @@ export async function deleteWebhookAction(id: string): Promise<ActionResult> {
 export async function testWebhookAction(id: string): Promise<ActionResult> {
   try {
     const { org } = await requireOrg("manage_org");
+    const t = await messages();
     const hook = await svc.getWebhook(db, org.id, id);
-    if (!hook) return { ok: false, error: "Webhook not found." };
+    if (!hook) return { ok: false, error: t("actions.webhook.notFound") };
     const { webhookDeliveries } = await import("@evnelo/db");
     const { newId } = await import("@evnelo/core");
     const now = new Date();
     await db.insert(webhookDeliveries).values({ id: newId(), webhookId: hook.id, event: "test.ping", payload: { id: newId(), type: "test.ping", createdAt: now.toISOString(), organizationId: org.id, data: { message: "Hello from Evnelo. Your receiver works." } }, nextAttemptAt: now });
-    return { ok: true, message: "Test delivery queued; it goes out within about 10 seconds. Check the deliveries list." };
+    return { ok: true, message: t("actions.webhook.testQueued") };
   } catch (e) {
     return fail(e);
   }
@@ -452,8 +476,9 @@ export async function eraseAttendeeAction(eventId: string, formData: FormData) {
 export async function deleteOrganizationAction(formData: FormData): Promise<ActionResult> {
   try {
     const { org, role } = await requireOrg("manage_org");
-    if (role !== "owner") return { ok: false, error: "Only an owner can delete the organization." };
-    if (String(formData.get("confirm") ?? "").trim() !== org.slug) return { ok: false, error: `Type the organization URL (${org.slug}) to confirm.` };
+    const t = await messages();
+    if (role !== "owner") return { ok: false, error: t("actions.deleteOrg.ownerOnly") };
+    if (String(formData.get("confirm") ?? "").trim() !== org.slug) return { ok: false, error: t("actions.deleteOrg.confirmSlug", { slug: org.slug }) };
     await svc.deleteOrganization(db, org.id);
   } catch (e) {
     return fail(e);

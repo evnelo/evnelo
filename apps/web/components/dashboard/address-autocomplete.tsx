@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Loader2, MapPin } from "lucide-react";
 import { searchAddressesAction } from "@/app/dashboard/actions";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ export function AddressAutocomplete({ value, onChange, onSelect }: {
   onChange: (value: string) => void;
   onSelect: (suggestion: AddressSuggestion) => void;
 }) {
+  const t = useTranslations("dashboard");
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -39,11 +41,11 @@ export function AddressAutocomplete({ value, onChange, onSelect }: {
         if (id !== requestId.current) return;
         setLoading(false);
         setSuggestions([]);
-        setError("Address search is temporarily unavailable.");
+        setError(t("address.unavailable"));
       }
     }, 300);
     return () => clearTimeout(timeout);
-  }, [focused, value]);
+  }, [focused, value, t]);
 
   useEffect(() => () => {
     if (blurTimer.current) clearTimeout(blurTimer.current);
@@ -63,10 +65,10 @@ export function AddressAutocomplete({ value, onChange, onSelect }: {
         onBlur={() => {
           blurTimer.current = setTimeout(() => setFocused(false), 150);
         }}
-        placeholder="Start typing an address"
+        placeholder={t("address.placeholder")}
         autoComplete="off"
       />
-      {loading && <Loader2 className="pointer-events-none absolute right-3 top-2.5 size-4 animate-spin text-muted-foreground" />}
+      {loading && <Loader2 className="pointer-events-none absolute end-3 top-2.5 size-4 animate-spin text-muted-foreground" />}
       {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
       {focused && suggestions.length > 0 && (
         <ul className="absolute z-20 mt-1 max-h-64 w-full overflow-auto rounded-md border bg-popover p-1 shadow-lg">
@@ -74,7 +76,7 @@ export function AddressAutocomplete({ value, onChange, onSelect }: {
             <li key={`${suggestion.lat}-${suggestion.lng}-${suggestion.label}`}>
               <button
                 type="button"
-                className="flex w-full items-start gap-2 rounded px-2 py-2 text-left text-sm hover:bg-muted"
+                className="flex w-full items-start gap-2 rounded px-2 py-2 text-start text-sm hover:bg-muted"
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => { onSelect(suggestion); setSuggestions([]); setFocused(false); }}
               >

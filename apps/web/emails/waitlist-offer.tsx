@@ -1,17 +1,24 @@
 import * as React from "react";
-import { ButtonLink, EmailLayout, EventBlock, Para, Title, type EmailBrand, type EmailEvent } from "./layout";
+import { ButtonLink, EmailLayout, EventBlock, Para, Title, emailI18n, strong, type EmailBrand, type EmailEvent, type EmailI18n } from "./layout";
 
-export type WaitlistOfferProps = { brand: EmailBrand; event: EmailEvent; url: string; ticketTypeName: string; deadline: string };
-export const waitlistOfferSubject = (p: WaitlistOfferProps) => `A spot opened up: ${p.event.name}`;
+/**
+ * `locale`/`t`: the language the person joined the waitlist in (waitlist_entries.locale); the
+ * sender (promoteWaitlistAction in app/dashboard/actions.ts) passes them and formats `deadline`
+ * and `event.when` in that locale.
+ */
+export type WaitlistOfferProps = EmailI18n & { brand: EmailBrand; event: EmailEvent; url: string; ticketTypeName: string; deadline: string };
+export const waitlistOfferSubject = (p: WaitlistOfferProps) => emailI18n(p).t("waitlistOffer.subject", { eventName: p.event.name });
 
-export default function WaitlistOffer({ brand, event, url, ticketTypeName, deadline }: WaitlistOfferProps) {
+export default function WaitlistOffer(props: WaitlistOfferProps) {
+  const { brand, event, url, ticketTypeName, deadline } = props;
+  const { locale, t } = emailI18n(props);
   return (
-    <EmailLayout brand={brand} preview={`Claim your spot before ${deadline}.`}>
-      <Title>A spot opened up</Title>
-      <Para>Good news: a <strong>{ticketTypeName}</strong> spot for <strong>{event.name}</strong> is reserved for you. Claim it before <strong>{deadline}</strong>, after that it goes to the next person in line.</Para>
-      <EventBlock event={{ ...event, onlineUrl: null }} />
-      <ButtonLink href={url} accent={brand.accent}>Claim my spot</ButtonLink>
-      <Para muted style={{ margin: "20px 0 0", fontSize: 13 }}>Register with this email address. The link is personal to you.</Para>
+    <EmailLayout brand={brand} locale={locale} t={t} preview={t("waitlistOffer.preview", { deadline })}>
+      <Title>{t("waitlistOffer.title")}</Title>
+      <Para>{t.rich("waitlistOffer.reserved", { ticketType: ticketTypeName, eventName: event.name, strong })} {t.rich("waitlistOffer.claimBefore", { deadline, strong })}</Para>
+      <EventBlock event={{ ...event, onlineUrl: null }} t={t} />
+      <ButtonLink href={url} accent={brand.accent}>{t("waitlistOffer.cta")}</ButtonLink>
+      <Para muted style={{ margin: "20px 0 0", fontSize: 13 }}>{t("waitlistOffer.registerWith")} {t("waitlistOffer.personal")}</Para>
     </EmailLayout>
   );
 }

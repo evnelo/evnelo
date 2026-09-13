@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { Crosshair, LoaderCircle } from "lucide-react";
 import { DEFAULT_RADIUS_KM } from "@evnelo/core";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { Button } from "@/components/ui/button";
  * which keeps the result shareable. Denial is not a dead end: the city filter still works.
  */
 export function NearMeButton({ query, active }: { query: string; active: boolean }) {
+  const t = useTranslations("public.discover.search");
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [locating, setLocating] = useState(false);
@@ -19,7 +21,7 @@ export function NearMeButton({ query, active }: { query: string; active: boolean
 
   function locate() {
     if (typeof navigator === "undefined" || !navigator.geolocation) {
-      setError("This browser can't share your location. Try a city instead.");
+      setError(t("unsupported"));
       return;
     }
     setError(null);
@@ -37,7 +39,7 @@ export function NearMeButton({ query, active }: { query: string; active: boolean
       },
       () => {
         setLocating(false);
-        setError("Location is blocked. Filter by city instead.");
+        setError(t("blocked"));
       },
       { enableHighAccuracy: false, timeout: 10_000, maximumAge: 300_000 },
     );
@@ -48,7 +50,7 @@ export function NearMeButton({ query, active }: { query: string; active: boolean
     <div className="flex flex-col items-center gap-1">
       <Button type="button" variant={active ? "default" : "outline"} size="pill" className="h-11 px-5" onClick={locate} disabled={busy} aria-pressed={active}>
         {busy ? <LoaderCircle className="animate-spin" /> : <Crosshair />}
-        {active ? "Near you" : "Near me"}
+        {active ? t("nearYou") : t("nearMe")}
       </Button>
       {error && <p className="text-xs text-destructive">{error}</p>}
     </div>

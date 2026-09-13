@@ -2,6 +2,7 @@ import { Vonage } from "@vonage/server-sdk";
 import { Auth } from "@vonage/auth";
 import { readFileSync } from "node:fs";
 import { env, smsConfigured, smsAuthMode } from "./env";
+import type { EmailTranslator } from "@/emails/layout";
 
 export interface SmsProvider {
   send(to: string, text: string): Promise<{ providerMessageId: string }>;
@@ -47,10 +48,14 @@ class VonageSms implements SmsProvider {
 
 export const sms: SmsProvider | null = smsConfigured ? new VonageSms() : null;
 
-/** Fixed transactional templates: variables only, no marketing copy. */
+/**
+ * Fixed transactional templates: variables only, no marketing copy. Copy lives under
+ * emails.sms.* so each attendee gets the language they registered in; `t` comes from
+ * `emailTranslator(locale)` in lib/email.ts.
+ */
 export const smsTemplates = {
-  confirmation: (v: { event: string; ticketUrl: string }) => `You're in for ${v.event}. Your ticket: ${v.ticketUrl}`,
-  reminder: (v: { event: string; when: string; ticketUrl: string }) => `${v.event} is ${v.when}. Ticket: ${v.ticketUrl}`,
-  updated: (v: { event: string; url: string }) => `${v.event} has changed its time or venue. Details: ${v.url}`,
-  cancelled: (v: { event: string }) => `${v.event} has been cancelled. Any payment will be refunded.`,
+  confirmation: (t: EmailTranslator, v: { event: string; ticketUrl: string }) => t("sms.confirmation", v),
+  reminder: (t: EmailTranslator, v: { event: string; when: string; ticketUrl: string }) => t("sms.reminder", v),
+  updated: (t: EmailTranslator, v: { event: string; url: string }) => t("sms.updated", v),
+  cancelled: (t: EmailTranslator, v: { event: string }) => t("sms.cancelled", v),
 } as const;

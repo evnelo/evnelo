@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Check, Clock } from "lucide-react";
 import type { RegistrationField, TicketType } from "@evnelo/db";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +26,7 @@ type PaymentState = ResumeCredentials & {
 
 /** Details → Payment, shown at the top of the dialog whenever a paid ticket is on offer. */
 function Steps({ current }: { current: 1 | 2 }) {
+  const t = useTranslations("event");
   const step = (n: 1 | 2, label: string) => {
     const done = n < current, active = n === current;
     return (
@@ -37,15 +39,18 @@ function Steps({ current }: { current: 1 | 2 }) {
     );
   };
   return (
-    <ol className="mb-4 flex items-center gap-3 pr-8" aria-label="Steps">
-      {step(1, "Details")}
+    <ol className="mb-4 flex items-center gap-3 pe-8" aria-label={t("register.steps")}>
+      {step(1, t("register.stepDetails"))}
       <span aria-hidden className="h-px w-8 bg-border" />
-      {step(2, "Payment")}
+      {step(2, t("register.stepPayment"))}
     </ol>
   );
 }
 
 export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectPhone, requiresApproval, soldOut, guestsEnabled, maxGuests, stripePublishableKey, waitlist }: Props) {
+  const t = useTranslations("event");
+  const tc = useTranslations("common");
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState<string>();
   const [payment, setPayment] = useState<PaymentState>();
@@ -58,7 +63,8 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
   const storageKey = `ev_payment_resume:${eventId}`;
   const prices = ticketTypes.map((t) => t.priceMinor);
   const min = Math.min(...prices), max = Math.max(...prices);
-  const priceLabel = !ticketTypes.length ? null : max === 0 ? "Free" : min === max ? formatMoney(min, ticketTypes[0]!.currency) : `${min === 0 ? "Free" : formatMoney(min, ticketTypes[0]!.currency)} to ${formatMoney(max, ticketTypes[0]!.currency)}`;
+  const free = ticketTypes.length > 0 && max === 0;
+  const priceLabel = !ticketTypes.length || free ? null : min === max ? formatMoney(min, ticketTypes[0]!.currency, locale) : t("register.priceRange", { min: min === 0 ? tc("labels.free") : formatMoney(min, ticketTypes[0]!.currency, locale), max: formatMoney(max, ticketTypes[0]!.currency, locale) });
   const paidPossible = Boolean(stripePublishableKey) && ticketTypes.some((t) => t.priceMinor > 0);
 
   const clearPaymentQuery = useCallback(() => {
@@ -86,11 +92,12 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
         body: JSON.stringify({ token: credentials.token, clientSecret: credentials.clientSecret, eventId }),
       });
       const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(result.error ?? "Payment session could not be verified.");
+      if (!response.ok) throw new Error(result.error ?? t("errors.paymentNotVerified"));
       const outcome = paymentOutcome(result.paymentStatus);
       if (outcome.state === "complete" && result.orderStatus === "paid") {
         setProcessing(false);
-        setDone(registrationSuccessMessage(result.requiresApproval, result.partySize, true));
+        const success = registrationSuccessMessage(result.requiresApproval, result.partySize, true);
+        setDone(t(success.messageKey, success.params));
         clearResume();
         return;
       }
@@ -104,9 +111,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
         setPayment(undefined);
         setProcessing(false);
         setCanRegisterAgain(true);
-        setResumeError(result.refunded
-          ? "Your payment arrived after the reservation had lapsed, so it has been refunded; it will show on your statement within 5 to 10 days. Register again to get a ticket."
-          : "This ticket reservation expired or closed. Register again to continue.");
+        setResumeError(result.refunded ? t("payment.refundedLapsed") : t("payment.reservationClosed"));
         clearResume();
         return;
       }
@@ -117,11 +122,11 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
       });
       setOpen(true);
     } catch (error) {
-      setResumeError(error instanceof Error ? error.message : "Payment session could not be verified.");
+      setResumeError(error instanceof Error ? error.message : t("errors.paymentNotVerified"));
     } finally {
       setResuming(false);
     }
-  }, [clearResume, eventId]);
+  }, [clearResume, eventId, t]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -165,23 +170,22 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
     setOpen(true);
   }
 
-  const free = priceLabel === "Free";
   return (
     <div className="rounded-xl border border-border/80 bg-card p-6 shadow-lift">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="eyebrow">{requiresApproval ? "Registration, approval required" : guestsEnabled ? "Registration, guests welcome" : "Registration"}</p>
-          {priceLabel && !free && (
+          <p className="eyebrow">{requiresApproval ? t("register.eyebrowApproval") : guestsEnabled ? t("register.eyebrowGuests") : t("register.eyebrow")}</p>
+          {priceLabel && (
             <p className="display mt-2 text-4xl tabular-nums">{priceLabel}</p>
           )}
-          {free && <p className="mt-2"><Badge variant="stamp" className="text-primary">Free</Badge></p>}
+          {free && <p className="mt-2"><Badge variant="stamp" className="text-primary">{tc("labels.free")}</Badge></p>}
         </div>
-        {soldOut && <Badge variant="stamp" className="mt-1 shrink-0">Sold out</Badge>}
+        {soldOut && <Badge variant="stamp" className="mt-1 shrink-0">{tc("labels.soldOut")}</Badge>}
       </div>
       {waitlist?.offer && !done && (
         <p className="mt-4 flex items-start gap-2 rounded-lg bg-accent/70 px-3 py-2.5 text-xs text-accent-foreground">
           <Clock className="mt-0.5 size-3.5 shrink-0" aria-hidden />
-          <span>A <strong>{waitlist.offer.ticketTypeName}</strong> spot is reserved for {waitlist.offer.email} until {new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(waitlist.offer.expiresAt))}. Register with that email.</span>
+          <span>{t.rich("register.offerReserved", { ticketType: waitlist.offer.ticketTypeName, email: waitlist.offer.email, time: new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(waitlist.offer.expiresAt)), b: (chunks) => <strong>{chunks}</strong> })}</span>
         </p>
       )}
       {done ? (
@@ -193,31 +197,31 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
         <WaitlistJoin eventId={eventId} eventName={eventName} />
       ) : processing ? (
         <div className="mt-4 space-y-2" aria-live="polite">
-          <p className="text-sm">Payment processing. We’ll email your ticket when Stripe confirms it.</p>
+          <p className="text-sm">{t("payment.processingNotice")}</p>
           {resumeError && <p className="text-sm text-destructive">{resumeError}</p>}
-          {resumeCredentials && <Button type="button" size="sm" variant="outline" pending={resuming} onClick={() => void restorePayment(resumeCredentials)}>{"Check payment"}</Button>}
+          {resumeCredentials && <Button type="button" size="sm" variant="outline" pending={resuming} onClick={() => void restorePayment(resumeCredentials)}>{t("payment.check")}</Button>}
         </div>
       ) : resuming ? (
-        <p className="mt-4 text-sm text-muted-foreground" aria-live="polite">Verifying your payment…</p>
+        <p className="mt-4 text-sm text-muted-foreground" aria-live="polite">{t("payment.verifying")}</p>
       ) : resumeError ? (
         <div className="mt-4 space-y-2" role="alert">
           <p className="text-sm text-destructive">{resumeError}</p>
           <div className="flex flex-wrap gap-2">
-            {!canRegisterAgain && resumeCredentials && <Button type="button" size="sm" variant="outline" onClick={() => void restorePayment(resumeCredentials)}>Check again</Button>}
-            <Button type="button" size="sm" variant={canRegisterAgain ? "default" : "ghost"} onClick={() => { clearResume(); startAgain(); }}>Register again</Button>
+            {!canRegisterAgain && resumeCredentials && <Button type="button" size="sm" variant="outline" onClick={() => void restorePayment(resumeCredentials)}>{t("payment.checkAgain")}</Button>}
+            <Button type="button" size="sm" variant={canRegisterAgain ? "default" : "ghost"} onClick={() => { clearResume(); startAgain(); }}>{t("payment.registerAgain")}</Button>
           </div>
         </div>
       ) : (
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="event" size="lg" className="mt-5 w-full" disabled={soldOut || !ticketTypes.length}>
-              {soldOut ? "Sold out" : requiresApproval ? "Request to join" : "Register"}
+              {soldOut ? tc("labels.soldOut") : requiresApproval ? t("register.buttonApproval") : t("register.button")}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-h-[90dvh] overflow-y-auto">
             {paidPossible && <Steps current={payment ? 2 : 1} />}
-            <DialogTitle>{payment ? "Complete payment" : eventName}</DialogTitle>
-            <DialogDescription>{payment ? "Complete payment before the reservation timer expires." : "Fill in your details to get your ticket."}</DialogDescription>
+            <DialogTitle>{payment ? t("register.dialogPayTitle") : eventName}</DialogTitle>
+            <DialogDescription>{payment ? t("register.dialogPayDescription") : t("register.dialogDescription")}</DialogDescription>
             <div className="mt-5">
               {payment && stripePublishableKey ? (
                 <PaymentStep clientSecret={payment.clientSecret} stripeAccountId={payment.stripeAccountId} resumeToken={payment.token} holdExpiresAt={payment.holdExpiresAt} publishableKey={stripePublishableKey} onComplete={completePayment} />
@@ -230,10 +234,11 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
                       persistResume(credentials);
                       setPayment({ ...credentials, orderId: result.orderId, stripeAccountId: result.stripeAccountId, holdExpiresAt: result.holdExpiresAt, partySize: result.partySize, requiresApproval });
                     } else if (!result.clientSecret) {
-                      setDone(registrationSuccessMessage(requiresApproval, result.partySize, false));
+                      const success = registrationSuccessMessage(requiresApproval, result.partySize, false);
+                      setDone(t(success.messageKey, success.params));
                       setOpen(false);
                     } else {
-                      setResumeError("Payment could not be started. Your reservation will be released automatically.");
+                      setResumeError(t("payment.couldNotStart"));
                       setOpen(false);
                     }
                   }} />

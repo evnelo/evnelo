@@ -1,16 +1,16 @@
 import * as React from "react";
 import { and, eq, inArray, isNull, sql } from "drizzle-orm";
 import { attendees, events, notifications, orders, organizations, smsUnlocks, ticketTypes, tickets, type Notification } from "@evnelo/db";
-import { currentEdition, reminderWhen, smsGate } from "@evnelo/core";
+import { currentEdition, smsGate } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { appleWalletConfigured, env, googleWalletConfigured, smsConfigured } from "@/lib/env";
-import { renderEmail, sendEmail } from "@/lib/email";
+import { emailLocale, emailTranslator, renderEmail, sendEmail } from "@/lib/email";
 import { sms, smsTemplates } from "@/lib/sms";
 import { formatDateRange, formatMoney } from "@/lib/utils";
 import { publicEventPath } from "@/lib/urls";
 import { calendarPath } from "@/lib/calendar";
 import { unsubscribeUrl } from "./unsubscribe";
-import type { EmailBrand, EmailEvent, EmailTicket } from "@/emails/layout";
+import type { EmailBrand, EmailEvent, EmailTicket, EmailTranslator } from "@/emails/layout";
 import RegistrationConfirmation, { registrationConfirmationSubject } from "@/emails/registration-confirmation";
 import ApprovalPending, { approvalPendingSubject } from "@/emails/approval-pending";
 import RefundIssued, { refundIssuedSubject } from "@/emails/refund-issued";
@@ -20,6 +20,16 @@ import EventUpdated, { eventUpdatedSubject } from "@/emails/event-updated";
 import EventCancelled, { eventCancelledSubject } from "@/emails/event-cancelled";
 
 export type DeliveryResult = { providerMessageId: string } | { skipped: true; reason: string };
+
+/**
+ * "tomorrow", "in 2 days", "in 1 hour": the same buckets as `reminderWhen` in @evnelo/core,
+ * translated (emails.reminderWhen.*) instead of hard-coded English.
+ */
+export function reminderPhrase(t: EmailTranslator, hours: number): string {
+  if (hours >= 20 && hours <= 28) return t("reminderWhen.tomorrow");
+  if (hours >= 24) return t("reminderWhen.days", { count: Math.round(hours / 24) });
+  return t("reminderWhen.hours", { count: hours });
+}
 
 /** Everything a template needs, loaded once per notification. */
 async function loadContext(n: Notification) {
@@ -44,11 +54,14 @@ async function loadContext(n: Notification) {
     .where(and(eq(attendees.orderId, order.id), eq(attendees.email, attendee.email), isNull(attendees.deletedAt)));
   const hostNames = new Map(party.filter((p) => !p.attendee.guestOfAttendeeId).map((p) => [p.attendee.id, p.attendee.name]));
 
+  // the language the attendee registered in (null on old rows: English)
+  const i18n = await emailTranslator(emailLocale(attendee.locale));
+  const { locale, t } = i18n;
   const brand: EmailBrand = { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL };
   const eventUrl = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
   const emailEvent: EmailEvent = {
-    name: event.name, url: eventUrl, when: formatDateRange(event.startsAt, event.endsAt, event.timezone),
-    where: event.locationType === "online" ? "Online" : [event.venueName, event.address, event.city].filter(Boolean).join(", "),
+    name: event.name, url: eventUrl, when: formatDateRange(event.startsAt, event.endsAt, event.timezone, locale),
+    where: event.locationType === "online" ? t("layout.online") : [event.venueName, event.address, event.city].filter(Boolean).join(", "),
     onlineUrl: event.locationType !== "in_person" && attendee.status === "confirmed" ? event.onlineUrl : null,
     calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}`,
   };
@@ -63,28 +76,28 @@ async function loadContext(n: Notification) {
   const wallet = first
     ? { apple: appleWalletConfigured ? `${env.APP_URL}/t/${first.token}/wallet/apple` : undefined, google: googleWalletConfigured ? `${env.APP_URL}/t/${first.token}/wallet/google` : undefined }
     : null;
-  return { attendee, event, org, order, party, brand, emailEvent, emailTickets, wallet };
+  return { attendee, event, org, order, party, brand, emailEvent, emailTickets, wallet, i18n, locale, t };
 }
 
 async function deliverEmail(n: Notification): Promise<DeliveryResult> {
   const ctx = await loadContext(n);
-  const { attendee, event, order, brand, emailEvent, emailTickets, wallet } = ctx;
+  const { attendee, event, order, brand, emailEvent, emailTickets, wallet, i18n, locale, t } = ctx;
   let element: React.ReactElement;
   let subject: string;
   switch (n.template) {
     case "registration_confirmation": {
       if (!emailTickets.length) return { skipped: true, reason: "no live tickets for this email" };
-      const props = { brand, event: emailEvent, tickets: emailTickets, wallet };
+      const props = { ...i18n, brand, event: emailEvent, tickets: emailTickets, wallet };
       element = React.createElement(RegistrationConfirmation, props); subject = registrationConfirmationSubject(props); break;
     }
     case "approval_pending": {
       const [c] = await db.select({ count: sql<number>`count(*)` }).from(attendees).where(eq(attendees.orderId, order.id));
-      const props = { brand, event: emailEvent, attendeeName: attendee.name, partySize: Number(c?.count ?? 1) };
+      const props = { ...i18n, brand, event: emailEvent, attendeeName: attendee.name, partySize: Number(c?.count ?? 1) };
       element = React.createElement(ApprovalPending, props); subject = approvalPendingSubject(props); break;
     }
     case "refund_issued": {
       const [c] = await db.select({ count: sql<number>`count(*)` }).from(attendees).where(eq(attendees.orderId, order.id));
-      const props = { brand, event: emailEvent, attendeeName: attendee.name, amount: formatMoney(order.refundedMinor, order.currency), ticketCount: Number(c?.count ?? 1) };
+      const props = { ...i18n, brand, event: emailEvent, attendeeName: attendee.name, amount: formatMoney(order.refundedMinor, order.currency, locale), ticketCount: Number(c?.count ?? 1) };
       element = React.createElement(RefundIssued, props); subject = refundIssuedSubject(props); break;
     }
     case "reminder": {
@@ -92,20 +105,20 @@ async function deliverEmail(n: Notification): Promise<DeliveryResult> {
       if (attendee.remindersOptOut) return { skipped: true, reason: "attendee opted out of reminders" };
       if (event.status !== "published") return { skipped: true, reason: `event is ${event.status}` };
       const hours = Number((n.data as { hours?: number } | null)?.hours ?? 24);
-      const props = { brand, event: emailEvent, when: reminderWhen(hours), tickets: emailTickets, unsubscribeUrl: unsubscribeUrl(attendee.id) };
+      const props = { ...i18n, brand, event: emailEvent, when: reminderPhrase(t, hours), tickets: emailTickets, unsubscribeUrl: unsubscribeUrl(attendee.id) };
       element = React.createElement(EventReminder, props); subject = eventReminderSubject(props); break;
     }
     case "registration_rejected": {
-      const props = { brand, event: emailEvent, attendeeName: attendee.name, paid: order.status === "paid" || order.status === "partially_refunded" };
+      const props = { ...i18n, brand, event: emailEvent, attendeeName: attendee.name, paid: order.status === "paid" || order.status === "partially_refunded" };
       element = React.createElement(RegistrationRejected, props); subject = registrationRejectedSubject(props); break;
     }
     case "event_updated": {
       const changes = ((n.data as { changes?: { schedule: boolean; venue: boolean } } | null)?.changes) ?? { schedule: true, venue: true };
-      const props = { brand, event: emailEvent, attendeeName: attendee.name, changes };
+      const props = { ...i18n, brand, event: emailEvent, attendeeName: attendee.name, changes };
       element = React.createElement(EventUpdated, props); subject = eventUpdatedSubject(props); break;
     }
     case "event_cancelled": {
-      const props = { brand, event: emailEvent, attendeeName: attendee.name, paid: order.status === "paid" || order.status === "partially_refunded" };
+      const props = { ...i18n, brand, event: emailEvent, attendeeName: attendee.name, paid: order.status === "paid" || order.status === "partially_refunded" };
       element = React.createElement(EventCancelled, props); subject = eventCancelledSubject(props); break;
     }
     default:
@@ -117,7 +130,7 @@ async function deliverEmail(n: Notification): Promise<DeliveryResult> {
 
 async function deliverSms(n: Notification): Promise<DeliveryResult> {
   const ctx = await loadContext(n);
-  const { attendee, event, org, party } = ctx;
+  const { attendee, event, org, party, t } = ctx;
   if (!attendee.smsOptIn || !attendee.phone) return { skipped: true, reason: "attendee has not opted in to SMS" };
 
   // the gate: edition rules, the $5 unlock on cloud free events, fair use per attendee
@@ -132,18 +145,18 @@ async function deliverSms(n: Notification): Promise<DeliveryResult> {
   const ticket = party.find((p) => p.attendee.id === attendee.id)?.ticket ?? party[0]?.ticket;
   const eventUrl = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
   let text: string;
-  if (n.template === "updated") text = smsTemplates.updated({ event: event.name, url: eventUrl });
-  else if (n.template === "cancelled") text = smsTemplates.cancelled({ event: event.name });
+  if (n.template === "updated") text = smsTemplates.updated(t, { event: event.name, url: eventUrl });
+  else if (n.template === "cancelled") text = smsTemplates.cancelled(t, { event: event.name });
   else {
   if (!ticket) return { skipped: true, reason: "no live ticket" };
   const ticketUrl = `${env.APP_URL}/t/${ticket.token}`;
   switch (n.template) {
-    case "confirmation": text = smsTemplates.confirmation({ event: event.name, ticketUrl }); break;
+    case "confirmation": text = smsTemplates.confirmation(t, { event: event.name, ticketUrl }); break;
     case "reminder": {
       if (attendee.remindersOptOut) return { skipped: true, reason: "attendee opted out of reminders" };
       if (event.status !== "published") return { skipped: true, reason: `event is ${event.status}` };
       const hours = Number((n.data as { hours?: number } | null)?.hours ?? 24);
-      text = smsTemplates.reminder({ event: event.name, when: reminderWhen(hours), ticketUrl }); break;
+      text = smsTemplates.reminder(t, { event: event.name, when: reminderPhrase(t, hours), ticketUrl }); break;
     }
     default: return { skipped: true, reason: `unknown sms template ${n.template}` };
   }

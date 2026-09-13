@@ -1,0 +1,57 @@
+{
+  "language": "Lingua",
+  "brand": "Evnello",
+  "tagline": "Eventi in movimento.",
+  "actions": {
+    "save": "Salva",
+    "cancel": "Cancellare",
+    "close": "Vicino",
+    "delete": "Eliminare",
+    "remove": "Rimuovere",
+    "edit": "Modificare",
+    "add": "Aggiungere",
+    "back": "Indietro",
+    "continue": "Continuare",
+    "confirm": "Confermare",
+    "copy": "Copia",
+    "copied": "Copiato",
+    "search": "Ricerca",
+    "retry": "Riprova",
+    "ok": "OK",
+    "discard": "Scartare",
+    "restore": "Ripristinare",
+    "signIn": "Registrazione",
+    "signOut": "disconnessione",
+    "loading": "Caricamento…"
+  },
+  "labels": {
+    "optional": "opzionale",
+    "required": "Necessario",
+    "free": "Gratuito",
+    "soldOut": "Esaurito",
+    "cancelled": "Annullato",
+    "draft": "Bozza",
+    "published": "Pubblicato",
+    "yes": "SÌ",
+    "no": "NO",
+    "name": "Nome",
+    "email": "E-mail",
+    "phone": "Telefono",
+    "status": "Stato",
+    "date": "Data",
+    "created": "Creato",
+    "unknown": "Sconosciuto"
+  },
+  "errors": {
+    "generic": "Si è verificato un errore. Riprova.",
+    "network": "Errore di rete. Riprova.",
+    "notFound": "Non trovato",
+    "rateLimited": "Troppi tentativi. Attendi qualche minuto e riprova.",
+    "captcha": "Non siamo riusciti a confermare che tu non sia un bot. Ricarica la pagina e riprova."
+  },
+  "time": {
+    "momentAgo": "un attimo fa",
+    "minutesAgo": "{minutes} minuti fa",
+    "hoursAgo": "{hours, plural, one {# ore fa} other {# ore fa}}"
+  }
+}

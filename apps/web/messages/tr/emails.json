@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "{orgName} tarafından <link>Evnelo</link> aracılığıyla gönderildi. Bu, kaydolduğunuz bir etkinlik hakkında işlemsel bir mesajdır.",
+    "when": "Ne zaman",
+    "where": "Nerede",
+    "online": "Çevrimiçi",
+    "joinOnline": "Çevrimiçi katılın →",
+    "admitOne": "Bir kişiyi kabul edin",
+    "ticketTypeGuestOf": "{ticketType}, {host} in misafiri",
+    "openTicket": "Açık bilet",
+    "qrAlt": "Bilet QR kodu",
+    "scanAtDoor": "Kapıda tarama yapın"
+  },
+  "reminderWhen": {
+    "tomorrow": "Yarın",
+    "days": "içinde {count, plural, one {# gün} other {# gün}}",
+    "hours": "içinde {count, plural, one {# saat} other {# saat}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {{eventName} için biletiniz} other {{eventName} için # biletiniz}}",
+    "preview": "{eventName} için buradasınız. {count, plural, one {Biletiniz} other {Biletleriniz}} içeri.",
+    "title": "İçeri girdiniz.",
+    "intro": "{count, plural, one {İşte biletiniz<link>{eventName}</link>.} other {İşte # biletiniz<link>{eventName}</link>.}}",
+    "showQr": "QR kodunu kapıda, telefonunuzda veya çıktısını alarak gösterin.",
+    "addToCalendar": "Takvime ekle",
+    "questions": "Etkinlikle ilgili sorularınız mı var? {orgName} adresine ulaşmak için bu e-postaya yanıt verin.",
+    "cta": "Etkinlik detaylarına bakın."
+  },
+  "approvalPending": {
+    "subject": "{eventName} için istek alındı.",
+    "preview": "{orgName} {eventName} e katılma isteğinizi inceliyor.",
+    "title": "Talep alındı.",
+    "intro": "Merhaba {name}, {orgName} <link>{eventName}</link> için yapılan her kaydı inceliyor.",
+    "partySize": "İsteğiniz {count} kişiyi kapsıyor.",
+    "approved": "{count, plural, one {Onaylandıktan hemen sonra biletinizi e-posta ile alacaksınız.} other {Başvurunuz onaylanır onaylanmaz biletlerinizi e-posta yoluyla alacaksınız.}}",
+    "nothingToDo": "Şimdilik yapacak bir şey yok. Planlarınız değişirse, bu e-postayı dikkate almayın."
+  },
+  "registrationRejected": {
+    "subject": "{eventName} talebinize ilişkin güncelleme",
+    "preview": "{orgName} {eventName} için kaydınızı onaylayamadı.",
+    "title": "Sizi programa dahil edemedik.",
+    "intro": "Merhaba {name}, {orgName} <link>{eventName}</link> için kaydınızı onaylayamadı.",
+    "refund": "Ödediğiniz tutar kartınıza iade edilecektir.",
+    "noPayment": "Herhangi bir ödeme alınmadı.",
+    "questions": "Sorularınız mı var? Organizatöre ulaşmak için bu e-postaya yanıt verin."
+  },
+  "refundIssued": {
+    "subject": "{eventName} için {amount} iade",
+    "preview": "{amount} kartınıza geri gönderiliyor.",
+    "title": "Para iadesi yapıldı.",
+    "intro": "Merhaba {name}, {orgName} <link>{eventName}</link> numaralı siparişiniz için <strong>{amount}</strong> tutarında para iadesi yaptı.",
+    "cancelled": "{count, plural, one {Biletiniz iptal edildi ve artık taranmayacak.} other {Siparişteki tüm # bilet iptal edildi ve artık taranmayacak.}}",
+    "timing": "Geri ödemeler, bankanıza bağlı olarak genellikle 5 ila 10 iş günü içinde kartınıza ulaşır.",
+    "receipt": "Bu e-posta, makbuzunuzdur."
+  },
+  "eventReminder": {
+    "subject": "{eventName}, {when} dir.",
+    "preview": "{eventName}, {when} dir. {where}.",
+    "title": "{eventName}, {when} dir.",
+    "tickets": "{count, plural, one {Biletiniz, taranmaya hazır:} other {Biletleriniz, taranmaya hazır:}}",
+    "cta": "Etkinlik detayları ve yol tarifi",
+    "stopPrompt": "Bu etkinlik için hatırlatıcı istemiyor musunuz? <link>Hatırlatıcıları durdur</link>.",
+    "stillGetThrough": "Onaylar ve değişiklikler yine de iletilmektedir."
+  },
+  "eventUpdated": {
+    "subjectBoth": "{eventName} için yeni zaman ve yer",
+    "subjectSchedule": "{eventName} için yeni süre",
+    "subjectVenue": "{eventName} için yeni konum",
+    "previewBoth": "{eventName} zamanı ve yeri değiştirdi.",
+    "previewSchedule": "{eventName} zamanı değiştirdi.",
+    "previewVenue": "{eventName} yer değiştirdi.",
+    "title": "{eventName} değişti",
+    "introBoth": "Merhaba {name}, {orgName} <link>{eventName}</link> için zaman ve yeri güncelledi.",
+    "introSchedule": "Merhaba {name}, {orgName} <link>{eventName}</link> için zamanı güncelledi.",
+    "introVenue": "Merhaba {name}, {orgName} <link>{eventName}</link> için yeri güncelledi.",
+    "newDetails": "İşte yeni detaylar.",
+    "staysValid": "Biletiniz geçerliliğini koruyor.",
+    "cta": "Takvimimi güncelle"
+  },
+  "eventCancelled": {
+    "subject": "{eventName} iptal edildi",
+    "preview": "{eventName} devam etmiyor.",
+    "title": "{eventName} iptal edildi",
+    "intro": "Merhaba {name}, {orgName} <strong>{eventName}</strong> etkinliğini iptal etti, bu etkinlik {when} tarihinde planlanmıştı.",
+    "noLongerValid": "Biletiniz artık geçerli değil.",
+    "refund": "Ödemeniz, kullandığınız karta iade edilecektir; işlem tamamlandığında ayrı bir e-posta alacaksınız.",
+    "noPayment": "Herhangi bir ödeme alınmadı, bu nedenle iade edilecek bir şey yok.",
+    "questions": "Sorularınız mı var? Organizatöre ulaşmak için bu e-postaya yanıt verin."
+  },
+  "eventInvite": {
+    "subject": "Davetlisiniz: {eventName}",
+    "preview": "{orgName} sizi {eventName} e davet etti.",
+    "title": "Davetlisiniz",
+    "intro": "<strong>{orgName}</strong> sizi özel bir etkinliğe davet ediyor.",
+    "cta": "Etkinliği görüntüle ve kayıt ol",
+    "personal": "Bu bağlantı size özeldir.",
+    "personalExpires": "Bu bağlantı size özeldir ve {expires} tarihinde sona erecektir.",
+    "registerWith": "Bu e-posta adresiyle kayıt olun."
+  },
+  "orgInvite": {
+    "subject": "Evnelo'da {orgName} etkinliğine davetlisiniz.",
+    "preview": "{orgName} {role} olarak birleştirin.",
+    "title": "{orgName} a katılın",
+    "invitedBy": "{invitedBy} sizi <strong>{orgName}</strong> için etkinliklerin düzenlenmesine yardımcı olmak üzere <strong>{role}</strong> olarak davet etti.",
+    "invited": "<strong>{orgName}</strong> için etkinliklerin düzenlenmesine yardımcı olmak üzere <strong>{role}</strong> olarak davet edildiniz.",
+    "cta": "Daveti kabul et",
+    "validity": "Bağlantı 14 gün geçerlidir ve yalnızca gönderildiği e-posta adresiyle çalışır."
+  },
+  "magicLink": {
+    "subject": "{host} hesabına giriş yapın",
+    "preview": "{host} için giriş bağlantınız",
+    "title": "Giriş yap",
+    "intro": "{host} adresine giriş yapmak için düğmeye tıklayın.",
+    "expiry": "Bağlantı bir kez çalışır ve 15 dakika sonra geçerliliğini yitirir.",
+    "cta": "{host} hesabına giriş yapın",
+    "ignore": "Bunu talep etmediyseniz, bu e-postayı dikkate almayabilirsiniz.",
+    "nobody": "Bağlantı olmadan kimse giriş yapamaz."
+  },
+  "waitlistJoined": {
+    "subject": "{eventName} için bekleme listesindesiniz.",
+    "preview": "Bekleme listesinde {position} numarasınız.",
+    "title": "Bekleme listesindesiniz.",
+    "full": "Şu anda <strong>{eventName}</strong> dolu.",
+    "position": "Sırada <strong>{position}</strong> numarasınız.",
+    "offer": "Boş bir yer açılırsa, size yerinizi ayırtmanız için bir bağlantı içeren bir e-posta göndereceğiz; bağlantı 24 saat boyunca geçerli olacaktır.",
+    "cta": "Etkinliği görüntüle"
+  },
+  "waitlistOffer": {
+    "subject": "Bir yer açıldı: {eventName}",
+    "preview": "{deadline} tarihinden önce yerinizi ayırtın.",
+    "title": "Bir yer açıldı.",
+    "reserved": "İyi haber: <strong>{eventName}</strong> için <strong>{ticketType}</strong> kişilik bir yer sizin için ayrıldı.",
+    "claimBefore": "<strong>{deadline}</strong> tarihinden önce talep edin, ondan sonra sıradaki kişiye geçer.",
+    "cta": "Yerimi ayırtın",
+    "registerWith": "Bu e-posta adresiyle kayıt olun.",
+    "personal": "Bu bağlantı size özeldir."
+  },
+  "abuseReport": {
+    "subject": "[Rapor] {reason}: {eventName}",
+    "preview": "Birisi {eventName} bildirdi.",
+    "title": "Olay bildirildi",
+    "intro": "<strong>{eventName}</strong> tarafından {orgName} için <strong>{reason}</strong> rapor edildi.",
+    "reporter": "Muhabir: {email}",
+    "noReporter": "Muhabir e-posta bırakmadı.",
+    "cta": "Etkinliği açın"
+  },
+  "sms": {
+    "confirmation": "{event} için giriş ücretiniz var. Biletiniz: {ticketUrl}",
+    "reminder": "{event}, {when} dir. Bilet: {ticketUrl}",
+    "updated": "{event} ın zamanı veya yeri değişti. Ayrıntılar: {url}",
+    "cancelled": "{event} iptal edildi. Yapılan tüm ödemeler iade edilecektir."
+  }
+}

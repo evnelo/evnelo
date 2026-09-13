@@ -1,5 +1,7 @@
 "use client";
+
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,9 +32,9 @@ const DialogContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.C
       >
         <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full bg-border sm:hidden" />
         {children}
-        <DialogPrimitive.Close className="press absolute right-4 top-4 rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground">
+        <DialogPrimitive.Close className="press absolute end-4 top-4 rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground">
           <X className="size-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{useTranslations("common")("actions.close")}</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>
@@ -41,7 +43,7 @@ const DialogContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.C
 DialogContent.displayName = "DialogContent";
 
 const DialogTitle = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Title>, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>>(
-  ({ className, ...props }, ref) => <DialogPrimitive.Title ref={ref} className={cn("display pr-8 text-2xl", className)} {...props} />,
+  ({ className, ...props }, ref) => <DialogPrimitive.Title ref={ref} className={cn("display pe-8 text-2xl", className)} {...props} />,
 );
 DialogTitle.displayName = "DialogTitle";
 

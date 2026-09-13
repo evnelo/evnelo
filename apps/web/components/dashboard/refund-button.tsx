@@ -2,10 +2,12 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { refundOrderAction } from "@/app/dashboard/actions";
 
 export function RefundButton({ eventId, orderId, amount }: { eventId: string; orderId: string; amount: string }) {
+  const t = useTranslations("manage");
   const [pending, start] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
   const router = useRouter();
@@ -14,17 +16,17 @@ export function RefundButton({ eventId, orderId, amount }: { eventId: string; or
       <Button
         size="sm" variant="outline" pending={pending}
         onClick={() => {
-          if (!window.confirm(`Refund ${amount} in full? Tickets on this order stop working and the seats are released once Stripe confirms.`)) return;
+          if (!window.confirm(t("refund.confirm", { amount }))) return;
           start(async () => {
             const r = await refundOrderAction(eventId, orderId);
-            setMsg(r.ok ? r.message ?? "Refund requested." : r.error);
+            setMsg(r.ok ? r.message ?? t("refund.requested") : r.error);
             if (r.ok) router.refresh();
           });
         }}
       >
-        Refund {amount}
+        {t("refund.button", { amount })}
       </Button>
-      {msg && <span className="max-w-56 text-right text-xs text-muted-foreground">{msg}</span>}
+      {msg && <span className="max-w-56 text-end text-xs text-muted-foreground">{msg}</span>}
     </div>
   );
 }

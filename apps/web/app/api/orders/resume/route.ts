@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 import { and, count, eq, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { attendees, orders } from "@evnelo/db";
@@ -19,28 +20,29 @@ const input = z.object({ token: z.string().min(1).max(1_000), clientSecret: z.st
  * status, and the order is settled server-side before the state is returned.
  */
 export async function POST(request: Request) {
+  const t = await getTranslations("event");
   let data: unknown;
   try {
     data = await readJsonBody(request, 2_048);
   } catch (error) {
-    return NextResponse.json({ error: "Invalid payment-resume request." }, { status: error instanceof ApiHttpError ? error.status : 400 });
+    return NextResponse.json({ error: t("errors.invalidResume") }, { status: error instanceof ApiHttpError ? error.status : 400 });
   }
   const parsed = input.safeParse(data);
-  if (!parsed.success) return NextResponse.json({ error: "Invalid payment-resume request." }, { status: 400 });
+  if (!parsed.success) return NextResponse.json({ error: t("errors.invalidResume") }, { status: 400 });
 
   try {
     const resume = await verifyPaymentResume(parsed.data.token, env.AUTH_SECRET);
     if (!(await consumeSharedRateLimit("payment-resume", resume.orderId, 30, 60_000))) {
-      return NextResponse.json({ error: "Too many payment checks. Wait a minute and try again." }, { status: 429 });
+      return NextResponse.json({ error: t("errors.tooManyPaymentChecks") }, { status: 429 });
     }
-    if (resume.eventId !== parsed.data.eventId) return NextResponse.json({ error: "Payment session not found." }, { status: 404 });
+    if (resume.eventId !== parsed.data.eventId) return NextResponse.json({ error: t("errors.paymentSessionNotFound") }, { status: 404 });
     const [order] = await db.select().from(orders).where(and(eq(orders.id, resume.orderId), eq(orders.eventId, resume.eventId))).limit(1);
     if (!order || !paymentResumeMatches(resume, order, parsed.data.clientSecret) || !order.stripePaymentIntentId) {
-      return NextResponse.json({ error: "Payment session not found." }, { status: 404 });
+      return NextResponse.json({ error: t("errors.paymentSessionNotFound") }, { status: 404 });
     }
     const paymentIntent = await stripe.paymentIntents.retrieve(order.stripePaymentIntentId, {}, order.stripeAccountId ? { stripeAccount: order.stripeAccountId } : undefined);
     if (paymentIntent.client_secret !== parsed.data.clientSecret || paymentIntent.metadata.orderId !== order.id) {
-      return NextResponse.json({ error: "Payment session not found." }, { status: 404 });
+      return NextResponse.json({ error: t("errors.paymentSessionNotFound") }, { status: 404 });
     }
 
     await settlePaymentIntent(paymentIntent, order.stripeAccountId);
@@ -63,6 +65,6 @@ export async function POST(request: Request) {
       refunded: paymentIntent.status === "succeeded" && orderStatus !== "paid",
     });
   } catch {
-    return NextResponse.json({ error: "Payment session could not be verified." }, { status: 400 });
+    return NextResponse.json({ error: t("errors.paymentNotVerified") }, { status: 400 });
   }
 }

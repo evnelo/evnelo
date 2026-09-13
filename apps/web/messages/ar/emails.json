@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "تم الإرسال بواسطة {orgName} عبر <link>Evnelo</link>. هذه رسالة معاملة تتعلق بحدث قمت بالتسجيل فيه.",
+    "when": "متى",
+    "where": "أين",
+    "online": "متصل",
+    "joinOnline": "انضم عبر الإنترنت →",
+    "admitOne": "اسمح بدخول شخص واحد",
+    "ticketTypeGuestOf": "{ticketType} ، ضيف {host}",
+    "openTicket": "تذكرة مفتوحة",
+    "qrAlt": "رمز الاستجابة السريعة للتذكرة",
+    "scanAtDoor": "امسح ضوئيًا عند الباب"
+  },
+  "reminderWhen": {
+    "tomorrow": "غداً",
+    "days": "في {count, plural, one {اليوم #} other {# أيام}}",
+    "hours": "في {count, plural, one {الساعة #} other {# ساعة}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {تذكرتك لـ {eventName}} other {تذاكرك # لـ {eventName}}}",
+    "preview": "أنت مقبل على {eventName}. {count, plural, one {تذكرتك هي} other {تذاكركم هي}} داخل.",
+    "title": "أنت مقبول.",
+    "intro": "{count, plural, one {إليك تذكرتك لـ<link>{eventName}</link>.} other {إليكم تذاكركم # لـ<link>{eventName}</link>.}}",
+    "showQr": "أظهر رمز الاستجابة السريعة (QR code) عند الباب، على هاتفك أو مطبوعاً.",
+    "addToCalendar": "أضف إلى التقويم",
+    "questions": "هل لديك أسئلة حول الفعالية؟ يرجى الرد على هذه الرسالة الإلكترونية للتواصل مع {orgName}.",
+    "cta": "اطلع على تفاصيل الفعالية"
+  },
+  "approvalPending": {
+    "subject": "تم استلام الطلب رقم {eventName}",
+    "preview": "{orgName} يقوم بمراجعة طلبك للانضمام إلى {eventName}.",
+    "title": "تم استلام الطلب",
+    "intro": "مرحباً {name} ، {orgName} يراجع كل تسجيل لـ <link>{eventName}</link>.",
+    "partySize": "يشمل طلبك {count} شخصًا.",
+    "approved": "{count, plural, one {ستتلقى تذكرتك عبر البريد الإلكتروني بمجرد الموافقة عليها.} other {ستتلقى تذاكرك عبر البريد الإلكتروني بمجرد الموافقة عليها.}}",
+    "nothingToDo": "لا يوجد ما يجب فعله الآن. إذا تغيرت خططك، فتجاهل هذه الرسالة الإلكترونية."
+  },
+  "registrationRejected": {
+    "subject": "تحديث بشأن طلبك لـ {eventName}",
+    "preview": "لم يتمكن {orgName} من الموافقة على تسجيلك في {eventName}.",
+    "title": "لم نتمكن من إدخالك",
+    "intro": "مرحباً {name} ، لم يتمكن {orgName} من الموافقة على تسجيلك لـ <link>{eventName}</link>.",
+    "refund": "سيتم رد أي مبلغ مدفوع إلى بطاقتك.",
+    "noPayment": "لم يتم تحصيل أي مبلغ.",
+    "questions": "هل لديك أسئلة؟ يرجى الرد على هذه الرسالة الإلكترونية للتواصل مع المنظم."
+  },
+  "refundIssued": {
+    "subject": "استرداد مبلغ {amount} مقابل {eventName}",
+    "preview": "{amount} في طريقه للعودة إلى بطاقتك.",
+    "title": "تم استرداد المبلغ",
+    "intro": "مرحباً {name}, {orgName} تم رد المبلغ <strong>{amount}</strong> لطلبك إلى <link>{eventName}</link>.",
+    "cancelled": "{count, plural, one {تم إلغاء تذكرتك ولن يتم مسحها ضوئيًا بعد الآن.} other {تم إلغاء جميع التذاكر # الموجودة في الطلب ولن يتم مسحها ضوئيًا بعد الآن.}}",
+    "timing": "عادةً ما تصل المبالغ المستردة إلى بطاقتك في غضون 5 إلى 10 أيام عمل، وذلك حسب البنك الذي تتعامل معه.",
+    "receipt": "هذه الرسالة الإلكترونية هي إيصالك."
+  },
+  "eventReminder": {
+    "subject": "{eventName} هو {when}",
+    "preview": "{eventName} هو {when}. {where}.",
+    "title": "{eventName} هو {when}",
+    "tickets": "{count, plural, one {تذكرتك جاهزة للمسح الضوئي:} other {تذاكركم جاهزة للمسح الضوئي:}}",
+    "cta": "تفاصيل الفعالية والاتجاهات",
+    "stopPrompt": "لا تريد تذكيرات بهذا الحدث؟ <link>إيقاف التذكيرات</link>.",
+    "stillGetThrough": "لا تزال التأكيدات والتغييرات تتم بنجاح."
+  },
+  "eventUpdated": {
+    "subjectBoth": "وقت ومكان جديدان لـ {eventName}",
+    "subjectSchedule": "وقت جديد لـ {eventName}",
+    "subjectVenue": "موقع جديد لـ {eventName}",
+    "previewBoth": "لقد غيّر {eventName} الزمان والمكان.",
+    "previewSchedule": "لقد غيّر {eventName} الوقت.",
+    "previewVenue": "لقد غيّر {eventName} المكان.",
+    "title": "لقد تغير {eventName}",
+    "introBoth": "مرحباً {name} ، {orgName} بتحديث الوقت والمكان لـ <link>{eventName}</link>.",
+    "introSchedule": "مرحباً {name} ، {orgName} بتحديث الوقت لـ <link>{eventName}</link>.",
+    "introVenue": "مرحباً {name} ، {orgName} بتحديث المكان لـ <link>{eventName}</link>.",
+    "newDetails": "إليكم التفاصيل الجديدة.",
+    "staysValid": "تذكرتك لا تزال سارية المفعول.",
+    "cta": "تحديث التقويم الخاص بي"
+  },
+  "eventCancelled": {
+    "subject": "تم إلغاء {eventName}",
+    "preview": "لن يتم المضي قدماً في {eventName}.",
+    "title": "تم إلغاء {eventName}",
+    "intro": "مرحباً {name}, {orgName} ألغى <strong>{eventName}</strong> ، والذي كان مقرراً في {when}.",
+    "noLongerValid": "تذكرتك لم تعد صالحة.",
+    "refund": "سيتم رد المبلغ المدفوع إلى البطاقة التي استخدمتها؛ توقع استلام بريد إلكتروني منفصل عند إتمام العملية.",
+    "noPayment": "لم يتم تحصيل أي مبلغ، لذا لا يوجد شيء يمكن استرداده.",
+    "questions": "هل لديك أسئلة؟ يرجى الرد على هذه الرسالة الإلكترونية للتواصل مع المنظم."
+  },
+  "eventInvite": {
+    "subject": "أنت مدعو: {eventName}",
+    "preview": "{orgName} دعاك إلى {eventName}.",
+    "title": "أنت مدعو",
+    "intro": "<strong>{orgName}</strong> يدعوك إلى فعالية خاصة.",
+    "cta": "عرض الحدث والتسجيل",
+    "personal": "هذا الرابط خاص بك.",
+    "personalExpires": "هذا الرابط خاص بك وينتهي بتاريخ {expires}.",
+    "registerWith": "سجل باستخدام عنوان البريد الإلكتروني هذا."
+  },
+  "orgInvite": {
+    "subject": "أنت مدعو إلى {orgName} على إيفنيلو",
+    "preview": "انضم إلى {orgName} كـ {role}.",
+    "title": "انضم {orgName}",
+    "invitedBy": "{invitedBy} دعاك للمساعدة في تنظيم الفعاليات لـ <strong>{orgName}</strong> كـ <strong>{role}</strong>.",
+    "invited": "لقد تمت دعوتك للمساعدة في تنظيم الفعاليات لـ <strong>{orgName}</strong> كـ <strong>{role}</strong>.",
+    "cta": "قبول الدعوة",
+    "validity": "الرابط صالح لمدة 14 يومًا ويعمل فقط مع عنوان البريد الإلكتروني الذي تم إرساله إليه."
+  },
+  "magicLink": {
+    "subject": "سجّل الدخول إلى {host}",
+    "preview": "رابط تسجيل الدخول الخاص بك لـ {host}",
+    "title": "تسجيل الدخول",
+    "intro": "انقر على الزر لتسجيل الدخول إلى {host}.",
+    "expiry": "يعمل الرابط مرة واحدة وينتهي بعد 15 دقيقة.",
+    "cta": "سجّل الدخول إلى {host}",
+    "ignore": "إذا لم تطلب هذا، يمكنك تجاهل هذه الرسالة الإلكترونية.",
+    "nobody": "لا يمكن لأحد تسجيل الدخول بدون الرابط."
+  },
+  "waitlistJoined": {
+    "subject": "أنت على قائمة الانتظار لـ {eventName}",
+    "preview": "أنت رقم {position} في قائمة الانتظار.",
+    "title": "أنت على قائمة الانتظار",
+    "full": "<strong>{eventName}</strong> ممتلئ الآن.",
+    "position": "أنت رقم <strong>{position}</strong> في الصف.",
+    "offer": "إذا توفر مكان شاغر، فسنرسل إليك رابطًا عبر البريد الإلكتروني لحجزه؛ ويبقى الرابط صالحًا لمدة 24 ساعة.",
+    "cta": "عرض الحدث"
+  },
+  "waitlistOffer": {
+    "subject": "أصبح هناك مكان شاغر: {eventName}",
+    "preview": "احجز مكانك قبل {deadline}.",
+    "title": "أصبح هناك مكان شاغر",
+    "reserved": "خبر سار: تم حجز مكان لك من أجل <strong>{ticketType}</strong> <strong>{eventName}</strong>",
+    "claimBefore": "اطلبها قبل <strong>{deadline}</strong> ، وبعد ذلك تنتقل إلى الشخص التالي في الصف.",
+    "cta": "احجز مكاني",
+    "registerWith": "سجل باستخدام عنوان البريد الإلكتروني هذا.",
+    "personal": "الرابط خاص بك."
+  },
+  "abuseReport": {
+    "subject": "[تقرير] {reason}: {eventName}",
+    "preview": "أبلغ أحدهم عن {eventName}.",
+    "title": "تم الإبلاغ عن الحدث",
+    "intro": "تم الإبلاغ عن <strong>{eventName}</strong> بواسطة {orgName} لـ <strong>{reason}</strong>.",
+    "reporter": "المراسل: {email}",
+    "noReporter": "لم يترك المراسل بريداً إلكترونياً.",
+    "cta": "افتح الحدث"
+  },
+  "sms": {
+    "confirmation": "أنت مشارك في {event}. تذكرتك: {ticketUrl}",
+    "reminder": "{event} هو {when}. التذكرة: {ticketUrl}",
+    "updated": "تم تغيير موعد أو مكان انعقاد {event}. التفاصيل: {url}",
+    "cancelled": "تم إلغاء {event}. سيتم رد أي مبلغ مدفوع."
+  }
+}

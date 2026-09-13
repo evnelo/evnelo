@@ -1,0 +1,153 @@
+{
+  "layout": {
+    "footer": "Enviado por {orgName} a través de <link>Evnelo</link>. Este es un mensaje transaccional sobre un evento en el que te registraste.",
+    "when": "Cuando",
+    "where": "Dónde",
+    "online": "En línea",
+    "joinOnline": "Regístrate en línea →",
+    "admitOne": "Admitir uno",
+    "ticketTypeGuestOf": "{ticketType}, invitado de {host}",
+    "openTicket": "Entrada abierta",
+    "qrAlt": "Código QR del boleto",
+    "scanAtDoor": "Escanee en la puerta"
+  },
+  "reminderWhen": {
+    "tomorrow": "mañana",
+    "days": "en {count, plural, one {# día} other {# días}}",
+    "hours": "en {count, plural, one {# hora} other {# horas}}"
+  },
+  "registrationConfirmation": {
+    "subject": "{count, plural, one {Tu boleto para {eventName}} other {Tus # entradas para {eventName}}}",
+    "preview": "Te espera {eventName}. {count, plural, one {Su boleto es} other {Sus entradas son}} adentro.",
+    "title": "Estás dentro.",
+    "intro": "{count, plural, one {Aquí está su boleto para<link>{eventName}</link>.} other {Aquí están sus # entradas para<link>{eventName}</link>.}}",
+    "showQr": "Muestra el código QR en la puerta, en tu teléfono o impreso.",
+    "addToCalendar": "Añadir al calendario",
+    "questions": "¿Preguntas sobre el evento? Responda a este correo electrónico para contactar con {orgName}.",
+    "cta": "Ver detalles del evento"
+  },
+  "approvalPending": {
+    "subject": "Solicitud recibida para {eventName}",
+    "preview": "{orgName} está revisando tu solicitud para unirte {eventName}.",
+    "title": "Solicitud recibida",
+    "intro": "Hola {name}, {orgName} revisa cada registro para <link>{eventName}</link>.",
+    "partySize": "Tu solicitud cubre a {count} personas.",
+    "approved": "{count, plural, one {Recibirás tu entrada por correo electrónico en cuanto sea aprobada.} other {Recibirás tus entradas por correo electrónico en cuanto se apruebe tu solicitud.}}",
+    "nothingToDo": "Por ahora no hay nada que hacer. Si tus planes cambian, simplemente ignora este correo electrónico."
+  },
+  "registrationRejected": {
+    "subject": "Actualización sobre su solicitud de {eventName}",
+    "preview": "{orgName} no pudo aprobar su registro para {eventName}.",
+    "title": "No pudimos hacerte un hueco",
+    "intro": "Hola {name}, {orgName} no pudo aprobar tu registro para <link>{eventName}</link>.",
+    "refund": "Cualquier pago realizado será reembolsado a su tarjeta.",
+    "noPayment": "No se realizó ningún cobro.",
+    "questions": "¿Preguntas? Responda a este correo electrónico para contactar con el organizador."
+  },
+  "refundIssued": {
+    "subject": "Reembolso de {amount} por {eventName}",
+    "preview": "{amount} está de regreso a tu tarjeta.",
+    "title": "Reembolso emitido",
+    "intro": "Hola {name}, {orgName} reembolsado <strong>{amount}</strong> por su pedido a <link>{eventName}</link>.",
+    "cancelled": "{count, plural, one {Su boleto ha sido cancelado y ya no se podrá escanear.} other {Todos los boletos # del pedido están cancelados y ya no se podrán escanear.}}",
+    "timing": "Los reembolsos suelen llegar a su tarjeta en un plazo de 5 a 10 días hábiles, dependiendo de su banco.",
+    "receipt": "Este correo electrónico es su recibo."
+  },
+  "eventReminder": {
+    "subject": "{eventName} es {when}",
+    "preview": "{eventName} es {when}. {where}.",
+    "title": "{eventName} es {when}",
+    "tickets": "{count, plural, one {Tu boleto, listo para escanear:} other {Tus entradas, listas para escanear:}}",
+    "cta": "Detalles del evento e indicaciones",
+    "stopPrompt": "¿No quieres recibir recordatorios para este evento? <link>Detener recordatorios</link>.",
+    "stillGetThrough": "Las confirmaciones y los cambios siguen llegando."
+  },
+  "eventUpdated": {
+    "subjectBoth": "Nueva hora y lugar para {eventName}",
+    "subjectSchedule": "Nueva hora para {eventName}",
+    "subjectVenue": "Nueva ubicación para {eventName}",
+    "previewBoth": "{eventName} ha cambiado la hora y el lugar.",
+    "previewSchedule": "{eventName} ha cambiado la hora.",
+    "previewVenue": "{eventName} ha cambiado de lugar.",
+    "title": "{eventName} ha cambiado",
+    "introBoth": "Hola {name}, {orgName} actualizó la hora y el lugar para <link>{eventName}</link>.",
+    "introSchedule": "Hola {name}, {orgName} actualizó la hora para <link>{eventName}</link>.",
+    "introVenue": "Hola {name}, {orgName} actualizó el lugar para <link>{eventName}</link>.",
+    "newDetails": "Aquí están los nuevos detalles.",
+    "staysValid": "Su boleto sigue siendo válido.",
+    "cta": "Actualizar mi calendario"
+  },
+  "eventCancelled": {
+    "subject": "{eventName} ha sido cancelado",
+    "preview": "{eventName} no va a seguir adelante.",
+    "title": "{eventName} se cancela",
+    "intro": "Hola {name}, {orgName} ha cancelado <strong>{eventName}</strong>, que estaba programado para {when}.",
+    "noLongerValid": "Su boleto ya no es válido.",
+    "refund": "Se le reembolsará el pago a la tarjeta que utilizó; recibirá un correo electrónico aparte cuando se haya procesado.",
+    "noPayment": "No se realizó ningún pago, por lo que no hay nada que reembolsar.",
+    "questions": "¿Preguntas? Responda a este correo electrónico para contactar con el organizador."
+  },
+  "eventInvite": {
+    "subject": "Estás invitado: {eventName}",
+    "preview": "{orgName} te invitó a {eventName}.",
+    "title": "Estás invitado",
+    "intro": "<strong>{orgName}</strong> te invita a un evento privado.",
+    "cta": "Ver evento y registrarse",
+    "personal": "Este enlace es personal para usted.",
+    "personalExpires": "Este enlace es personal e intransferible y caduca {expires}.",
+    "registerWith": "Regístrate con esta dirección de correo electrónico."
+  },
+  "orgInvite": {
+    "subject": "Estás invitado a {orgName} en Evnelo",
+    "preview": "Unir {orgName} como {role}.",
+    "title": "Unirse {orgName}",
+    "invitedBy": "{invitedBy} te invitó a ayudar a organizar eventos para <strong>{orgName}</strong> como <strong>{role}</strong>.",
+    "invited": "Te han invitado a ayudar a organizar eventos para <strong>{orgName}</strong> como <strong>{role}</strong>.",
+    "cta": "Aceptar invitación",
+    "validity": "El enlace es válido durante 14 días y solo funciona con la dirección de correo electrónico a la que se envió."
+  },
+  "magicLink": {
+    "subject": "Iniciar sesión en {host}",
+    "preview": "Tu enlace de inicio de sesión para {host}",
+    "title": "Iniciar sesión",
+    "intro": "Haz clic en el botón para iniciar sesión en {host}.",
+    "expiry": "El enlace funciona una sola vez y caduca en 15 minutos.",
+    "cta": "Iniciar sesión en {host}",
+    "ignore": "Si no lo solicitaste, puedes ignorar este correo electrónico.",
+    "nobody": "Nadie puede iniciar sesión sin el enlace."
+  },
+  "waitlistJoined": {
+    "subject": "Estás en la lista de espera para {eventName}",
+    "preview": "Eres el número {position} en la lista de espera.",
+    "title": "Estás en la lista de espera.",
+    "full": "<strong>{eventName}</strong> está lleno ahora mismo.",
+    "position": "Eres el número <strong>{position}</strong> en la fila.",
+    "offer": "Si se libera un cupo, le enviaremos un enlace por correo electrónico para que pueda reservarlo; el enlace será válido durante 24 horas.",
+    "cta": "Ver evento"
+  },
+  "waitlistOffer": {
+    "subject": "Se ha abierto un hueco: {eventName}",
+    "preview": "Reserva tu plaza antes {deadline}.",
+    "title": "Se abrió un puesto",
+    "reserved": "Buenas noticias: un lugar <strong>{ticketType}</strong> para <strong>{eventName}</strong> está reservado para ti.",
+    "claimBefore": "Reclámalo antes de <strong>{deadline}</strong>, después de eso pasa a la siguiente persona en la fila.",
+    "cta": "Reclama mi lugar",
+    "registerWith": "Regístrate con esta dirección de correo electrónico.",
+    "personal": "El enlace es personal e intransferible."
+  },
+  "abuseReport": {
+    "subject": "[Informe] {reason}: {eventName}",
+    "preview": "Alguien reportó {eventName}.",
+    "title": "Evento reportado",
+    "intro": "<strong>{eventName}</strong> por {orgName} fue reportado para <strong>{reason}</strong>.",
+    "reporter": "Reportero: {email}",
+    "noReporter": "El reportero no dejó un correo electrónico.",
+    "cta": "Abrir el evento"
+  },
+  "sms": {
+    "confirmation": "Estás dentro por {event}. Tu boleto: {ticketUrl}",
+    "reminder": "{event} es {when}. Boleto: {ticketUrl}",
+    "updated": "{event} ha cambiado de hora o lugar. Detalles: {url}",
+    "cancelled": "{event} ha sido cancelado. Cualquier pago será reembolsado."
+  }
+}

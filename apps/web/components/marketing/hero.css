@@ -75,8 +75,8 @@
 }
 /* Compact layouts share card sizing and normal-flow positioning. */
 @media (max-width: 1023px) {
-  .hero-scene { position: relative; inset: auto; margin-top: 2.5rem; padding-left: 1.5rem; }
-  .hero-scene::before { content: ""; position: absolute; left: 0.25rem; top: 3rem; bottom: 3rem; width: 2px; background: var(--evnelo-mist); }
+  .hero-scene { position: relative; inset: auto; margin-top: 2.5rem; padding-inline-start: 1.5rem; }
+  .hero-scene::before { content: ""; position: absolute; inset-inline-start: 0.25rem; top: 3rem; bottom: 3rem; width: 2px; background: var(--evnelo-mist); }
   .hero-ribbon, .hero-sparkle, .hero-note { display: none; }
   .hero-step { position: relative; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); grid-template-rows: min-content auto; align-items: center; column-gap: 1rem; min-height: 8.2rem; }
   .hero-step + .hero-step { margin-top: 1.5rem; }
@@ -127,7 +127,7 @@
 
 /* Tablet: larger previews in a three-then-two journey instead of a mini desktop canvas. */
 @media (min-width: 641px) and (max-width: 1023px) {
-  .hero-scene { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1.5rem; padding-left: 0; }
+  .hero-scene { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1.5rem; padding-inline-start: 0; }
   .hero-scene::before { display: none; }
   .hero-step { grid-column: span 2; grid-template-columns: minmax(0, 1fr); grid-template-rows: 0 8.75rem 1rem auto; row-gap: 0.5rem; justify-items: center; min-height: 0; }
   .hero-step + .hero-step { margin-top: 0; }
@@ -140,3 +140,18 @@
   .hero-adornment { width: min(100%, 10rem); grid-column: 1; grid-row: 2; align-self: end; margin-bottom: 5.75rem; }
   .hero-step-discover::after, .hero-step-register::after, .hero-step-checkin::after { content: ""; position: absolute; left: calc(50% + 1.25rem); top: calc(10.25rem - 1px); width: calc(100% - 1rem); height: 2px; background: var(--evnelo-mist); }
 }
+
+/* Right to left: the journey should run the way the language reads, so the whole canvas is
+   mirrored and every piece that carries words or a picture is flipped back on itself. Positions
+   come from `translate`, which applies before `transform`, so the counter-flip costs no offset.
+   The 1000 × 620 coordinates below stay as they are — one geometry, read from either side. */
+[dir="rtl"] .hero-scene { transform: scaleX(-1); }
+/* The wrappers carry the entrance animation's inline transform, so the counter-flip goes on the
+   content inside them, where nothing else writes to `transform`. */
+[dir="rtl"] .hero-card,
+[dir="rtl"] .hero-label,
+[dir="rtl"] .hero-sub,
+[dir="rtl"] .hero-avatars,
+[dir="rtl"] .hero-note,
+[dir="rtl"] .hero-sparkle { transform: scaleX(-1); }
+[dir="rtl"] .hero-note { direction: rtl; }

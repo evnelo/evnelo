@@ -1,0 +1,57 @@
+{
+  "language": "Ngôn ngữ",
+  "brand": "Evnelo",
+  "tagline": "Các sự kiện đang diễn ra.",
+  "actions": {
+    "save": "Cứu",
+    "cancel": "Hủy bỏ",
+    "close": "Đóng",
+    "delete": "Xóa bỏ",
+    "remove": "Di dời",
+    "edit": "Biên tập",
+    "add": "Thêm vào",
+    "back": "Mặt sau",
+    "continue": "Tiếp tục",
+    "confirm": "Xác nhận",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "search": "Tìm kiếm",
+    "retry": "Hãy thử lại",
+    "ok": "ĐƯỢC RỒI",
+    "discard": "Loại bỏ",
+    "restore": "Khôi phục",
+    "signIn": "Đăng nhập",
+    "signOut": "Đăng xuất",
+    "loading": "Đang tải…"
+  },
+  "labels": {
+    "optional": "không bắt buộc",
+    "required": "Yêu cầu",
+    "free": "Miễn phí",
+    "soldOut": "Bán hết",
+    "cancelled": "Đã hủy",
+    "draft": "Bản nháp",
+    "published": "Đã xuất bản",
+    "yes": "Đúng",
+    "no": "KHÔNG",
+    "name": "Tên",
+    "email": "E-mail",
+    "phone": "Điện thoại",
+    "status": "Trạng thái",
+    "date": "Ngày",
+    "created": "Tạo",
+    "unknown": "Không rõ"
+  },
+  "errors": {
+    "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "network": "Lỗi mạng. Vui lòng thử lại.",
+    "notFound": "Không tìm thấy",
+    "rateLimited": "Đã thử quá nhiều lần. Hãy đợi vài phút và thử lại.",
+    "captcha": "Chúng tôi không thể xác nhận bạn không phải là bot. Vui lòng tải lại trang và thử lại."
+  },
+  "time": {
+    "momentAgo": "vừa nãy",
+    "minutesAgo": "{minutes} phút trước",
+    "hoursAgo": "{hours, plural, one {# giờ trước} other {# giờ trước}}"
+  }
+}

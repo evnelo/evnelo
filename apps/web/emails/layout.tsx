@@ -1,8 +1,27 @@
 import * as React from "react";
+import { createTranslator } from "next-intl";
 import { Body, Container, Head, Hr, Html, Img, Link, Preview, Section, Text } from "@react-email/components";
+import { DEFAULT_LOCALE, dirFor, type Locale } from "@/i18n/locales";
+import en from "@/messages/en/emails.json";
 
 /** Shared brand for every transactional email. Colours mirror globals.css; type falls back to email-safe faces. */
 export type EmailBrand = { orgName: string; orgLogoUrl?: string | null; accent?: string | null; appUrl: string };
+
+/**
+ * Every template takes the recipient's `locale` and a translator `t` bound to the "emails"
+ * namespace (`emailTranslator(locale)` in lib/email.ts builds both). Both are optional so a
+ * caller that has not been localised yet still compiles and gets English.
+ */
+export type EmailMessages = { emails: typeof en };
+export type EmailTranslator = ReturnType<typeof createTranslator<EmailMessages, "emails">>;
+export type EmailI18n = { locale?: Locale; t?: EmailTranslator };
+
+const english: EmailTranslator = createTranslator({ locale: DEFAULT_LOCALE, messages: { emails: en } as EmailMessages, namespace: "emails" });
+
+/** Resolve the i18n props of a template: what was passed, else English. */
+export function emailI18n(p: EmailI18n): { locale: Locale; t: EmailTranslator } {
+  return { locale: p.locale ?? DEFAULT_LOCALE, t: p.t ?? english };
+}
 
 export const colors = {
   background: "#F7F7F2", card: "#FFFFFF", border: "#E9EAE4", ink: "#14151A", muted: "#6C6E73", accent: "#FF5A3C",
@@ -13,12 +32,17 @@ export const fonts = {
   display: "'Instrument Sans', Inter, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
 };
 
-export function EmailLayout({ brand, preview, children, footer }: { brand: EmailBrand; preview: string; children: React.ReactNode; footer?: React.ReactNode }) {
+/** Rich-text tag renderers shared by the templates: `<strong>` and `<link>` markers in the messages. */
+export const strong = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
+export const linkTo = (href: string, style: React.CSSProperties = { color: colors.accent }) => (chunks: React.ReactNode) => <Link href={href} style={style}>{chunks}</Link>;
+
+export function EmailLayout({ brand, preview, children, footer, locale, t }: EmailI18n & { brand: EmailBrand; preview: string; children: React.ReactNode; footer?: React.ReactNode }) {
+  const i18n = emailI18n({ locale, t });
   return (
-    <Html lang="en">
+    <Html lang={i18n.locale} dir={dirFor(i18n.locale)}>
       <Head />
       <Preview>{preview}</Preview>
-      <Body style={{ margin: 0, backgroundColor: colors.background, fontFamily: fonts.sans, color: colors.ink }}>
+      <Body style={{ margin: 0, backgroundColor: colors.background, fontFamily: fonts.sans, color: colors.ink, textAlign: "start" }}>
         <Container style={{ maxWidth: 560, margin: "0 auto", padding: "32px 16px" }}>
           <Section style={{ marginBottom: 16 }}>
             {brand.orgLogoUrl ? (
@@ -33,7 +57,7 @@ export function EmailLayout({ brand, preview, children, footer }: { brand: Email
           <Section style={{ padding: "20px 4px 0" }}>
             {footer}
             <Text style={{ margin: "8px 0 0", fontSize: 12, lineHeight: "18px", color: colors.muted }}>
-              Sent by {brand.orgName} through <Link href={brand.appUrl} style={{ color: colors.muted }}>Evnelo</Link>. This is a transactional message about an event you registered for.
+              {i18n.t.rich("layout.footer", { orgName: brand.orgName, link: linkTo(brand.appUrl, { color: colors.muted }) })}
             </Text>
           </Section>
         </Container>
@@ -59,20 +83,20 @@ export function Divider() {
   return <Hr style={{ border: 0, borderTop: `1px solid ${colors.border}`, margin: "20px 0" }} />;
 }
 
-/** What every ticket-bearing email shows about the event. */
+/** What every ticket-bearing email shows about the event. `when` and `where` arrive pre-formatted in the recipient's locale. */
 export type EmailEvent = { name: string; url: string; when: string; where: string; onlineUrl?: string | null; calendarUrl: string };
 
 const eyebrow: React.CSSProperties = { margin: 0, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: colors.muted };
 
-export function EventBlock({ event }: { event: EmailEvent }) {
+export function EventBlock({ event, t }: { event: EmailEvent; t: EmailTranslator }) {
   return (
     <Section style={{ margin: "4px 0 20px", padding: "14px 16px", borderLeft: `3px solid ${colors.accent}`, backgroundColor: colors.background, borderRadius: "0 10px 10px 0" }}>
-      <Text style={eyebrow}>When</Text>
+      <Text style={eyebrow}>{t("layout.when")}</Text>
       <Para style={{ margin: "2px 0 10px" }}><strong>{event.when}</strong></Para>
-      <Text style={eyebrow}>Where</Text>
+      <Text style={eyebrow}>{t("layout.where")}</Text>
       <Para style={{ margin: "2px 0 0" }}>{event.where}</Para>
       {event.onlineUrl && (
-        <Para style={{ margin: "10px 0 0" }}><Link href={event.onlineUrl} style={{ color: colors.accent, fontWeight: 500 }}>Join online →</Link></Para>
+        <Para style={{ margin: "10px 0 0" }}><Link href={event.onlineUrl} style={{ color: colors.accent, fontWeight: 500 }}>{t("layout.joinOnline")}</Link></Para>
       )}
     </Section>
   );
@@ -90,25 +114,25 @@ export function PillLink({ href, children }: { href: string; children: React.Rea
 /** The ticket as an object: paper stub with name, type and a scannable QR. */
 export type EmailTicket = { attendeeName: string; ticketTypeName: string; url: string; qrUrl: string; guestOf?: string | null };
 
-export function TicketCard({ ticket, accent }: { ticket: EmailTicket; accent?: string | null }) {
+export function TicketCard({ ticket, accent, t }: { ticket: EmailTicket; accent?: string | null; t: EmailTranslator }) {
   return (
     <Section style={{ backgroundColor: colors.paper, color: colors.paperInk, borderRadius: 12, marginBottom: 12 }}>
       <table role="presentation" width="100%" cellPadding={0} cellSpacing={0} style={{ borderCollapse: "collapse" }}>
         <tbody>
           <tr>
             <td style={{ verticalAlign: "top", padding: "18px 16px 18px 20px" }}>
-              <Text style={{ margin: 0, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: colors.accent }}>Admit one</Text>
+              <Text style={{ margin: 0, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: colors.accent }}>{t("layout.admitOne")}</Text>
               <Text style={{ margin: "4px 0 0", fontFamily: fonts.display, fontSize: 22, lineHeight: "26px", fontWeight: 700, letterSpacing: "-0.02em", color: colors.paperInk }}>{ticket.attendeeName}</Text>
               <Text style={{ margin: "2px 0 0", fontSize: 13, color: colors.paperInk, opacity: 0.75 }}>
-                {ticket.ticketTypeName}{ticket.guestOf ? `, guest of ${ticket.guestOf}` : ""}
+                {ticket.guestOf ? t("layout.ticketTypeGuestOf", { ticketType: ticket.ticketTypeName, host: ticket.guestOf }) : ticket.ticketTypeName}
               </Text>
               <Text style={{ margin: "16px 0 0" }}>
-                <ButtonLink href={ticket.url} accent={accent}>Open ticket</ButtonLink>
+                <ButtonLink href={ticket.url} accent={accent}>{t("layout.openTicket")}</ButtonLink>
               </Text>
             </td>
             <td width={144} style={{ verticalAlign: "middle", textAlign: "center", padding: "16px 16px 16px 12px", borderLeft: `2px dashed ${colors.perforation}` }}>
-              <Img src={ticket.qrUrl} alt="Ticket QR code" width={112} height={112} style={{ width: 112, height: 112, backgroundColor: "#ffffff", borderRadius: 8, padding: 6, display: "inline-block" }} />
-              <Text style={{ margin: "6px 0 0", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: colors.paperInk, opacity: 0.7 }}>Scan at the door</Text>
+              <Img src={ticket.qrUrl} alt={t("layout.qrAlt")} width={112} height={112} style={{ width: 112, height: 112, backgroundColor: "#ffffff", borderRadius: 8, padding: 6, display: "inline-block" }} />
+              <Text style={{ margin: "6px 0 0", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: colors.paperInk, opacity: 0.7 }}>{t("layout.scanAtDoor")}</Text>
             </td>
           </tr>
         </tbody>

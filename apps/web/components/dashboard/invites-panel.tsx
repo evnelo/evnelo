@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { Check, Copy, Mail, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,10 +14,14 @@ import { createEventInviteAction, deleteEventInviteAction } from "@/app/dashboar
 
 export type InviteRow = { id: string; token: string; email: string | null; maxUses: number; uses: number; expiresAt: string | null; createdAt: string };
 
-const fmt = (iso: string) => new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(iso));
-const status = (i: InviteRow) => (i.expiresAt && new Date(i.expiresAt) <= new Date() ? "expired" : i.uses >= i.maxUses ? "used up" : "active");
+const fmt = (iso: string, locale: string) => new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", year: "numeric" }).format(new Date(iso));
+const status = (i: InviteRow): "expired" | "usedUp" | "active" => (i.expiresAt && new Date(i.expiresAt) <= new Date() ? "expired" : i.uses >= i.maxUses ? "usedUp" : "active");
+const isVisibility = (v: string): v is "public" | "unlisted" | "private" => v === "public" || v === "unlisted" || v === "private";
 
 export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }: { eventId: string; invites: InviteRow[]; editable: boolean; visibility: string; appUrl: string }) {
+  const t = useTranslations("manage");
+  const tc = useTranslations("common");
+  const locale = useLocale();
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
   const [created, setCreated] = useState<string>();
   const [copied, setCopied] = useState<string>();
@@ -24,19 +29,19 @@ export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }:
   const router = useRouter();
 
   const copy = async (url: string) => {
-    try { await navigator.clipboard.writeText(url); setCopied(url); setTimeout(() => setCopied(undefined), 1500); } catch { window.prompt("Copy this link", url); }
+    try { await navigator.clipboard.writeText(url); setCopied(url); setTimeout(() => setCopied(undefined), 1500); } catch { window.prompt(t("invites.copyPrompt"), url); }
   };
 
   return (
     <div className="space-y-5">
       <PanelHeader
-        title="Invitations"
-        description="One link per guest, or one link for everyone. Each invite tracks how many times it has been used."
+        title={t("invites.title")}
+        description={t("invites.description")}
       />
       <Note tone={visibility === "private" ? "muted" : "warning"}>
         {visibility === "private"
-          ? "This event is private: only people who open an invitation link (or members of your organization) can see it and register. Email invites only work with the address they were sent to."
-          : <>Invitations only restrict access on <strong>private</strong> events. This event is {visibility}, so anyone with the link can register; you can still send invites as a courtesy.</>}
+          ? t("invites.privateNote")
+          : t.rich("invites.publicNote", { b: (chunks) => <strong>{chunks}</strong>, visibility: isVisibility(visibility) ? t(`invites.visibility.${visibility}`) : visibility })}
       </Note>
 
       {editable && (
@@ -49,30 +54,30 @@ export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }:
           })}
         >
           <div className="grid gap-3 sm:grid-cols-[1fr_8rem_8rem_auto] sm:items-end">
-            <Field label="Email" htmlFor="inv-email"><Input id="inv-email" name="email" type="email" placeholder="guest@example.com" /></Field>
-            <Field label="Max uses" htmlFor="inv-max"><Input id="inv-max" name="maxUses" type="number" min={1} max={10000} defaultValue={1} /></Field>
-            <Field label="Expires in (days)" htmlFor="inv-exp"><Input id="inv-exp" name="expiresInDays" type="number" min={1} max={365} placeholder="never" /></Field>
-            <Button type="submit" pending={pending}><Plus className="size-4" /> Create invite</Button>
+            <Field label={tc("labels.email")} htmlFor="inv-email"><Input id="inv-email" name="email" type="email" placeholder={t("invites.form.emailPlaceholder")} /></Field>
+            <Field label={t("invites.form.maxUses")} htmlFor="inv-max"><Input id="inv-max" name="maxUses" type="number" min={1} max={10000} defaultValue={1} /></Field>
+            <Field label={t("invites.form.expiresInDays")} htmlFor="inv-exp"><Input id="inv-exp" name="expiresInDays" type="number" min={1} max={365} placeholder={t("invites.form.never")} /></Field>
+            <Button type="submit" pending={pending}><Plus className="size-4" /> {t("invites.form.create")}</Button>
           </div>
-          <p className="mt-2.5 text-xs text-muted-foreground">Leave the email empty for a shareable link anyone can use.</p>
+          <p className="mt-2.5 text-xs text-muted-foreground">{t("invites.form.help")}</p>
         </form>
       )}
       <FormMessage error={msg.error} success={msg.success} />
       {created && (
         <div className="animate-rise flex flex-wrap items-center gap-2 rounded-xl border border-primary/30 bg-accent px-3 py-2.5 text-sm">
-          <span className="eyebrow shrink-0 text-accent-foreground/70">New link</span>
+          <span className="eyebrow shrink-0 text-accent-foreground/70">{t("invites.newLink")}</span>
           <code className="min-w-0 flex-1 truncate font-mono text-xs">{created}</code>
-          <Button size="sm" variant="outline" onClick={() => copy(created)}>{copied === created ? <Check className="size-4" /> : <Copy className="size-4" />} Copy link</Button>
+          <Button size="sm" variant="outline" onClick={() => copy(created)}>{copied === created ? <Check className="size-4" /> : <Copy className="size-4" />} {t("invites.copyLink")}</Button>
         </div>
       )}
 
       <Table>
-        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>Invite</TH><TH>Uses</TH><TH>Expires</TH><TH>Status</TH><TH className="text-right"></TH></TR></THead>
+        <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>{t("invites.columns.invite")}</TH><TH>{t("invites.columns.uses")}</TH><TH>{t("invites.columns.expires")}</TH><TH>{tc("labels.status")}</TH><TH className="text-end"></TH></TR></THead>
         <TBody>
           {invites.length === 0 && (
             <TR className="hover:bg-transparent">
               <TD colSpan={5}>
-                <EmptyCell icon={Mail} title="No invitations yet" description="Create one above to hand out a link, or address it to a single email." />
+                <EmptyCell icon={Mail} title={t("invites.empty.title")} description={t("invites.empty.description")} />
               </TD>
             </TR>
           )}
@@ -81,14 +86,14 @@ export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }:
             const st = status(i);
             return (
               <TR key={i.id}>
-                <TD><div className="font-medium">{i.email ?? "Shareable link"}</div><div className="text-xs text-muted-foreground">Created {fmt(i.createdAt)}</div></TD>
-                <TD className="tabular-nums text-muted-foreground">{i.uses} / {i.maxUses}</TD>
-                <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{i.expiresAt ? fmt(i.expiresAt) : "Never"}</TD>
-                <TD><Badge variant={st === "active" ? "success" : "muted"}>{st}</Badge></TD>
-                <TD className="text-right">
+                <TD><div className="font-medium">{i.email ?? t("invites.shareableLink")}</div><div className="text-xs text-muted-foreground">{t("invites.created", { date: fmt(i.createdAt, locale) })}</div></TD>
+                <TD className="tabular-nums text-muted-foreground">{t("invites.usesOfMax", { uses: i.uses, max: i.maxUses })}</TD>
+                <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{i.expiresAt ? fmt(i.expiresAt, locale) : t("invites.never")}</TD>
+                <TD><Badge variant={st === "active" ? "success" : "muted"}>{t(`invites.status.${st}`)}</Badge></TD>
+                <TD className="text-end">
                   <div className="flex justify-end gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => copy(url)}>{copied === url ? <Check className="size-4" /> : <Copy className="size-4" />} Copy</Button>
-                    {editable && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm("Revoke this invitation? The link stops working immediately.")) start(async () => { const r = await deleteEventInviteAction(eventId, i.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>Revoke</Button>}
+                    <Button size="sm" variant="ghost" onClick={() => copy(url)}>{copied === url ? <Check className="size-4" /> : <Copy className="size-4" />} {tc("actions.copy")}</Button>
+                    {editable && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(t("invites.confirmRevoke"))) start(async () => { const r = await deleteEventInviteAction(eventId, i.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{t("invites.revoke")}</Button>}
                   </div>
                 </TD>
               </TR>

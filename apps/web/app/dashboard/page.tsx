@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 import { CalendarPlus, ChevronRight, Globe, MapPin, Plus } from "lucide-react";
 import { listOrgEvents } from "@evnelo/core/services";
 import { can } from "@evnelo/core";
@@ -16,7 +17,7 @@ type Row = Awaited<ReturnType<typeof listOrgEvents>>[number];
 export default async function EventsPage() {
   const { org, role } = await requireOrg(undefined, "/dashboard");
   if (!can(role, "view_events")) redirect(can(role, "check_in") ? "/dashboard/checkin" : "/dashboard/no-access");
-  const rows = await listOrgEvents(db, org.id);
+  const [rows, t] = await Promise.all([listOrgEvents(db, org.id), getTranslations("dashboard")]);
   const now = Date.now();
 
   // listOrgEvents comes back newest-first; upcoming reads better soonest-first
@@ -24,26 +25,26 @@ export default async function EventsPage() {
   const upcoming = rows.filter((r) => r.event.status !== "draft" && r.event.endsAt.getTime() >= now).reverse();
   const past = rows.filter((r) => r.event.status !== "draft" && r.event.endsAt.getTime() < now);
   const groups = [
-    { key: "upcoming", title: "Upcoming", rows: upcoming },
-    { key: "drafts", title: "Drafts", rows: drafts },
-    { key: "past", title: "Past", rows: past },
+    { key: "upcoming", title: t("events.groups.upcoming"), rows: upcoming },
+    { key: "drafts", title: t("events.groups.drafts"), rows: drafts },
+    { key: "past", title: t("events.groups.past"), rows: past },
   ].filter((g) => g.rows.length > 0);
 
   return (
     <div>
       <PageHeader
-        title="Events"
-        description={`Everything ${org.name} is running, with registrations, revenue and door numbers at a glance.`}
-        actions={can(role, "edit_events") && <Button asChild><Link href="/dashboard/events/new"><Plus className="size-4" /> New event</Link></Button>}
+        title={t("events.title")}
+        description={t("events.description", { org: org.name })}
+        actions={can(role, "edit_events") && <Button asChild><Link href="/dashboard/events/new"><Plus className="size-4" /> {t("events.newEvent")}</Link></Button>}
       />
 
       {rows.length === 0 ? (
         <EmptyState
           className="mt-10"
           icon={CalendarPlus}
-          title="No events yet"
-          description="Your first event stays a draft until you publish it, so there is no rush to get everything right."
-          action={can(role, "edit_events") ? <Button asChild><Link href="/dashboard/events/new"><Plus className="size-4" /> Create your first event</Link></Button> : undefined}
+          title={t("events.empty.title")}
+          description={t("events.empty.description")}
+          action={can(role, "edit_events") ? <Button asChild><Link href="/dashboard/events/new"><Plus className="size-4" /> {t("events.empty.action")}</Link></Button> : undefined}
         />
       ) : (
         <div className="mt-8 space-y-10">
@@ -69,12 +70,13 @@ export default async function EventsPage() {
   );
 }
 
-function EventRow({ row }: { row: Row }) {
+async function EventRow({ row }: { row: Row }) {
+  const [t, locale] = await Promise.all([getTranslations("dashboard"), getLocale()]);
   const { event: e, registrations, pending, revenue, checkedIn } = row;
-  const time = new Intl.DateTimeFormat("en-US", { weekday: "short", hour: "numeric", minute: "2-digit", timeZone: e.timezone }).format(e.startsAt);
-  const year = new Intl.DateTimeFormat("en-US", { year: "numeric", timeZone: e.timezone }).format(e.startsAt);
-  const thisYear = year === String(new Date().getFullYear());
-  const place = e.locationType === "online" ? "Online" : e.city ?? e.venueName ?? "In person";
+  const time = new Intl.DateTimeFormat(locale, { weekday: "short", hour: "numeric", minute: "2-digit", timeZone: e.timezone }).format(e.startsAt);
+  const year = new Intl.DateTimeFormat(locale, { year: "numeric", timeZone: e.timezone }).format(e.startsAt);
+  const thisYear = year === new Intl.DateTimeFormat(locale, { year: "numeric" }).format(new Date());
+  const place = e.locationType === "online" ? t("events.row.online") : e.city ?? e.venueName ?? t("events.row.inPerson");
   const PlaceIcon = e.locationType === "online" ? Globe : MapPin;
 
   return (
@@ -83,11 +85,11 @@ function EventRow({ row }: { row: Row }) {
       className="press lift block rounded-xl border border-border/80 bg-card p-4 shadow-card focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/25 sm:p-5"
     >
       <div className="flex flex-wrap items-start gap-x-4 gap-y-3">
-        <DateLeaf date={e.startsAt} timezone={e.timezone} className="shrink-0" />
+        <DateLeaf date={e.startsAt} timezone={e.timezone} locale={locale} className="shrink-0" />
         <div className="min-w-0 flex-1 basis-52">
           <div className="flex min-w-0 items-center gap-2">
             <h3 className="truncate font-display text-lg leading-tight">{e.name}</h3>
-            <Badge variant={statusVariant[e.status]} className="shrink-0">{e.status}</Badge>
+            <Badge variant={statusVariant[e.status]} className="shrink-0">{t(`status.event.${e.status}`)}</Badge>
           </div>
           <p className="mt-1 flex min-w-0 items-center gap-1.5 truncate text-sm text-muted-foreground">
             <span className="tabular-nums">{time}{thisYear ? "" : `, ${year}`}</span>
@@ -97,11 +99,11 @@ function EventRow({ row }: { row: Row }) {
           </p>
         </div>
         <div className="hairline grid w-full grid-cols-3 gap-3 pt-3 sm:w-auto sm:shrink-0 sm:border-t-0 sm:pt-0">
-          <Metric label="Registered" value={registrations} sub={pending > 0 ? `${pending} pending` : undefined} className="sm:w-24 sm:text-right" />
-          <Metric label="Revenue" value={revenue > 0 ? formatMoney(revenue, "USD") : "—"} className="sm:w-28 sm:text-right" />
-          <Metric label="Checked in" value={checkedIn} className="sm:w-24 sm:text-right" />
+          <Metric label={t("events.row.registered")} value={registrations} sub={pending > 0 ? t("events.row.pending", { count: pending }) : undefined} className="sm:w-24 sm:text-end" />
+          <Metric label={t("events.row.revenue")} value={revenue > 0 ? formatMoney(revenue, "USD", locale) : "—"} className="sm:w-28 sm:text-end" />
+          <Metric label={t("events.row.checkedIn")} value={checkedIn} className="sm:w-24 sm:text-end" />
         </div>
-        <ChevronRight className="hidden size-4 shrink-0 self-center text-muted-foreground lg:block" aria-hidden />
+        <ChevronRight className="hidden size-4 shrink-0 self-center text-muted-foreground rtl:-scale-x-100 lg:block" aria-hidden />
       </div>
     </Link>
   );

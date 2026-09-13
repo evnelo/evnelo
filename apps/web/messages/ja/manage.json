@@ -1,0 +1,434 @@
+{
+  "eventForm": {
+    "validation": {
+      "times": "開始時刻と終了時刻を設定してください。"
+    },
+    "saved": "保存しました。",
+    "restore": {
+      "notice": "前回中断したところから再開します。__ {when}から保存されていない変更がフォームに反映されます。",
+      "discard": "それらを捨てる"
+    },
+    "basics": {
+      "title": "基本",
+      "description": "人々が最初に目にするもの：名前、住所、物語、そして作品。",
+      "name": "イベント名",
+      "url": "イベントURL",
+      "descriptionLabel": "説明",
+      "descriptionHelp": "Markdownに対応しています。",
+      "tags": "タグ",
+      "tagsHelp": "カンマ区切り。検索に使用されます。",
+      "tagsPlaceholder": "デザイン、ミートアップ",
+      "cover": "表紙画像",
+      "logo": "イベントロゴ"
+    },
+    "when": {
+      "title": "いつ",
+      "description": "時刻はUTCで保存され、イベント開催地と同じタイムゾーンにいるすべての人に表示されます。",
+      "starts": "開始",
+      "ends": "終了",
+      "timezone": "タイムゾーン",
+      "publishedNote": "公開済みのイベントの時間を変更すると、参加者全員にメールが送信されます。"
+    },
+    "where": {
+      "title": "どこ",
+      "description": "人々が集まる場所、あるいは彼らが参加する繋がり。",
+      "locationType": {
+        "in_person": "対面で",
+        "online": "オンライン",
+        "hybrid": "ハイブリッド"
+      },
+      "venue": "会場",
+      "venuePlaceholder": "会場名",
+      "address": "住所",
+      "addressHelp": "都市名、国名、地図上の座標を入力するための候補を選択してください。",
+      "city": "市",
+      "country": "国コード",
+      "countryHelp": "2文字コード（例：BR）",
+      "countryPlaceholder": "私たち",
+      "mapPin": "地図上のピンは、( {lat}, {lng} ) の住所から設定されています。別の候補を選択して移動してください。",
+      "joinLink": "参加リンク",
+      "joinLinkHelp": "参加が確定した方にのみ、確認メールおよびリマインダーメールに表示されます。",
+      "joinLinkPlaceholder": "https://meet…"
+    },
+    "registration": {
+      "title": "登録",
+      "description": "イベントの場所は誰が確認でき、何人まで参加できるのか。",
+      "visibility": "可視性",
+      "visibilityOptions": {
+        "public": "公共",
+        "unlisted": "非公開",
+        "private": "プライベート"
+      },
+      "visibilityHelp": {
+        "public": "Discoverに掲載され、検索エンジンにもインデックス登録されています。",
+        "unlisted": "リンクを知っている人なら誰でも。リストやインデックスには掲載されていない人。",
+        "private": "招待リンクを持っている人だけが参加できます。"
+      },
+      "capacity": "容量",
+      "capacityHelp": "無制限の場合は空欄のままにしてください。"
+    },
+    "options": {
+      "title": "登録オプション",
+      "description": "承認、ゲスト、リマインダー、料金、返金ポリシー。",
+      "approval": "各登録を手動で承認する",
+      "approvalHelp": "参加希望者が登録を申請し、参加者側が承認または拒否する。",
+      "phone": "電話番号を尋ねてください",
+      "phoneHelp": "チケットやリマインダーに関するSMS通知のオプトイン設定が可能なオプション項目。",
+      "guests": "ゲスト（+1名）を許可する",
+      "guestsHelp": "ゲスト一人につき、個別のチケットが配布されます。",
+      "maxGuests": "登録1件あたりの最大ゲスト数",
+      "waitlist": "売り切れの場合はウェイティングリストに登録してください",
+      "waitlistHelp": "来場者は列に並ぶことができ、空席が出たら「待機リスト」タブから順番待ちの席を提供できます。",
+      "feePassThrough": "購入者がサービス料を支払います",
+      "feePassThroughHelp": "クラウド版：0.99%を明細項目として表示する。",
+      "refundPolicy": "返金ポリシー",
+      "refundPolicyHelp": "有料チケットの場合、チェックアウト時に表示されます。",
+      "reminders": "リマインダー",
+      "reminder24": "24時間前",
+      "reminder1": "1時間前",
+      "reminderCustom": "また、 <input></input>時間前",
+      "reminderCustomLabel": "カスタムリマインダー時間",
+      "reminderCustomPlaceholder": "48、3",
+      "hint": {
+        "joined": "{first} · {second}",
+        "on": "オン: {items}",
+        "defaults": "デフォルト",
+        "reminders": "リマインダー{items}",
+        "noReminders": "リマインダーなし",
+        "hours": "{hours}時間",
+        "flags": {
+          "approval": "承認",
+          "phone": "電話",
+          "guests": "ゲスト",
+          "waitlist": "待機リスト",
+          "feePassThrough": "購入者が手数料を支払う"
+        }
+      }
+    },
+    "links": {
+      "title": "リンク",
+      "description": "イベントページにはソーシャルメディアへのリンクが表示されています。",
+      "hint": "{count, plural, =0 {リンクはまだありません} one {#リンク} other {#リンク}}",
+      "platform": "プラットフォーム",
+      "url": "URL",
+      "remove": "リンクを削除",
+      "add": "リンクを追加"
+    },
+    "hosts": {
+      "title": "主催者",
+      "description": "イベントページに掲載されている人々。",
+      "hint": "{count, plural, =0 {ホストはまだいません} one {#ホスト} other {#ホスト}}",
+      "name": "ホスト名",
+      "titleField": "タイトル",
+      "remove": "ホストを削除",
+      "avatar": "アバター",
+      "add": "ホストを追加"
+    },
+    "sponsors": {
+      "title": "スポンサー",
+      "description": "イベントページには、ロゴは以下の順序で表示されます。",
+      "hint": "{count, plural, =0 {スポンサーはまだありません} one {#スポンサー} other {#スポンサー}}",
+      "name": "スポンサー名",
+      "tier": "ティア",
+      "website": "Webサイト",
+      "remove": "スポンサーを削除",
+      "logo": "ロゴ",
+      "add": "スポンサーを追加"
+    },
+    "bar": {
+      "createNote": "公開するまでは何も公開されていません。",
+      "editNote": "変更内容は保存後すぐに反映されます。",
+      "createDraft": "下書きを作成",
+      "saveChanges": "変更を保存する"
+    }
+  },
+  "fields": {
+    "title": "登録フォーム",
+    "description": "氏名とメールアドレスは必ず入力していただきます。ご自身で入力された質問は、登録者、注文全体、または各ゲストに適用でき、以前の回答と一致する場合にのみ表示されます。",
+    "add": "質問を追加する",
+    "empty": {
+      "title": "名前とメールアドレスだけ",
+      "description": "食事に関する注意事項、会社名、Tシャツのサイズなど、さらに詳しい情報が必要な場合は、質問を追加してください。",
+      "action": "最初の質問を追加してください"
+    },
+    "untitled": "無題の質問",
+    "types": {
+      "short_text": "短いテキスト",
+      "long_text": "長文",
+      "email": "メール",
+      "phone": "電話",
+      "number": "番号",
+      "select": "単一選択",
+      "multi_select": "複数選択",
+      "checkbox": "チェックボックス",
+      "date": "日付",
+      "url": "リンク",
+      "file": "ファイルアップロード",
+      "consent": "同意（必ずチェックを入れてください）"
+    },
+    "scopes": {
+      "attendee": "各登録者",
+      "order": "1回の注文につき1回",
+      "guest": "各ゲスト"
+    },
+    "badges": {
+      "required": "必須",
+      "conditional": "条件付き"
+    },
+    "moveUp": "上へ進む",
+    "moveDown": "下へ移動",
+    "question": "質問",
+    "key": "鍵",
+    "keyHelp": "エクスポートおよびAPIにおける列名。小文字、アンダースコアを使用します。",
+    "type": "タイプ",
+    "fileNeedsS3": "ファイルアップロードには、このインスタンスにS3ストレージが設定されている必要があります。",
+    "fileUnavailable": "S3ストレージが設定されていないため、登録者はこのファイルをアップロードできません。フォームには利用不可と表示されます。",
+    "asked": "質問",
+    "options": "オプション",
+    "optionsHelp": "1行に1つずつ入力してください。「値｜ラベル」を使用して、異なる値を格納してください。",
+    "helpText": "ヘルプテキスト",
+    "placeholder": "プレースホルダー",
+    "requiredOnlyWhenShown": "（表示されている場合のみ）",
+    "onlyForTicketTypes": "これらのチケットタイプのみ",
+    "noneSelectedIsAll": "（選択なし＝すべて）",
+    "condition": "以前の回答と一致する場合のみ表示する",
+    "conditionNeedsEarlier": "（まずその上に質問を追加してください）",
+    "showWhen": "これらのうち<select></select>が一致する場合を表示します。",
+    "allOrAny": "すべてまたは一部",
+    "match": {
+      "and": "全て",
+      "or": "どれでも"
+    },
+    "ops": {
+      "eq": "は",
+      "neq": "ではない",
+      "contains": "含まれる",
+      "empty": "空です",
+      "not_empty": "空ではありません"
+    },
+    "rule": {
+      "field": "分野",
+      "operator": "オペレーター",
+      "value": "価値",
+      "choose": "選ぶ…",
+      "checked": "チェック済み",
+      "unchecked": "チェックされていない",
+      "remove": "ルールを削除する",
+      "add": "ルールを追加する"
+    },
+    "dependNote": "ある質問は、その上に位置する質問にのみ依存する可能性がある。",
+    "save": "フォームを保存"
+  },
+  "ticketTypes": {
+    "title": "チケットの種類",
+    "descriptionEmpty": "チケットの種類を指定せずに公開すると、自動的に無料の一般入場券が作成されます。",
+    "descriptionGuests": "購入可能な商品とその数量。ゲストの料金は登録者と同額です。",
+    "description": "購入できる商品とその数量。価格が0の場合は無料です。",
+    "add": "チケットの種類を追加する",
+    "saved": "保存しました。",
+    "columns": {
+      "price": "価格",
+      "sold": "売却済み",
+      "salesWindow": "販売期間"
+    },
+    "empty": {
+      "title": "チケットの種類はまだありません",
+      "description": "購入できる商品ごとに1つずつ追加してください。例えば、早期割引、通常価格、学生割引などです。"
+    },
+    "tax": "+ {rate} %の税金",
+    "soldOfQuantity": "{sold} / {quantity}",
+    "held": "{count}が保持されました",
+    "window": "{start} → {end}",
+    "windowNow": "今",
+    "windowEvent": "イベント",
+    "always": "いつも",
+    "badges": {
+      "hidden": "隠れた",
+      "code": "コード"
+    },
+    "confirmDelete": "「 {name} 」を削除しますか？",
+    "dialog": {
+      "editTitle": "チケットの種類を編集する",
+      "newTitle": "新しいチケットの種類",
+      "description": "価格は{currency}です。数量限定販売の場合は数量を設定してください。"
+    },
+    "form": {
+      "description": "説明",
+      "price": "価格",
+      "currency": "通貨",
+      "tax": "税 ％",
+      "quantity": "量",
+      "quantityHelp": "空＝無制限",
+      "minPerOrder": "注文ごとの最低金額",
+      "maxPerOrder": "1回の注文につき最大",
+      "salesStart": "販売開始",
+      "salesEnd": "セール終了",
+      "hidden": "イベントページには表示されません",
+      "accessCode": "アクセスコード"
+    }
+  },
+  "discounts": {
+    "title": "割引コード",
+    "description": "注文金額から一定の割合または固定金額が割引されます。購入者はチェックアウト時にコードを入力すると、注文に含まれるすべての商品に適用されます。",
+    "add": "コードを追加",
+    "form": {
+      "code": "コード",
+      "codePlaceholder": "アーリーバード",
+      "type": "タイプ",
+      "kind": {
+        "percent": "％ オフ",
+        "fixed": "{currency}オフ"
+      },
+      "percent": "パーセント",
+      "amount": "金額（ {currency} ）",
+      "maxUses": "マックスは",
+      "unlimited": "無制限",
+      "expires": "有効期限",
+      "create": "作成する"
+    },
+    "columns": {
+      "code": "コード",
+      "discount": "割引",
+      "uses": "用途",
+      "expires": "有効期限"
+    },
+    "empty": {
+      "title": "割引コードはありません",
+      "description": "コードを使うと、早期割引、提携企業割引、友人・家族割引などを簡単に適用できます。"
+    },
+    "percentOff": "{value} ％オフ",
+    "amountOff": "{amount}オフ",
+    "usesOfMax": "{uses} / {max}",
+    "never": "一度もない",
+    "status": {
+      "expired": "期限切れ",
+      "usedUp": "使い果たした",
+      "active": "アクティブ"
+    },
+    "confirmDelete": "コード{code}を削除しますか？既にそのコードを使用した注文は割引が維持されます。"
+  },
+  "invites": {
+    "title": "招待状",
+    "description": "ゲスト一人につきリンクを1つ、または全員に1つのリンクを配布できます。各招待状は使用回数を記録します。",
+    "privateNote": "このイベントは非公開です。招待リンクを開いた方（または貴団体のメンバー）のみが閲覧および登録できます。メールによる招待は、送信先のメールアドレスでのみ有効です。",
+    "publicNote": "招待制は<b>プライベート</b>イベントのみに適用されます。このイベントは{visibility}なので、リンクを知っている人なら誰でも登録できます。ただし、招待状を送ることは歓迎の意として構いません。",
+    "visibility": {
+      "public": "公共",
+      "unlisted": "非公開",
+      "private": "プライベート"
+    },
+    "form": {
+      "emailPlaceholder": "guest@example.com",
+      "maxUses": "マックスは",
+      "expiresInDays": "有効期限（日数）",
+      "never": "一度もない",
+      "create": "招待状を作成する",
+      "help": "メールアドレス欄を空欄にしておくと、誰でも利用できる共有リンクが生成されます。"
+    },
+    "copyPrompt": "このリンクをコピーしてください",
+    "newLink": "新しいリンク",
+    "copyLink": "リンクをコピー",
+    "columns": {
+      "invite": "招待する",
+      "uses": "用途",
+      "expires": "有効期限切れ"
+    },
+    "empty": {
+      "title": "まだ招待状は届いていません",
+      "description": "上記でリンクを配布するためのものを作成するか、単一のメールアドレス宛てに作成してください。"
+    },
+    "shareableLink": "共有可能なリンク",
+    "created": "作成日時{date}",
+    "usesOfMax": "{uses} / {max}",
+    "never": "一度もない",
+    "status": {
+      "expired": "期限切れ",
+      "usedUp": "使い果たした",
+      "active": "アクティブ"
+    },
+    "revoke": "取り消す",
+    "confirmRevoke": "この招待を取り消すと、リンクはすぐに無効になります。"
+  },
+  "waitlist": {
+    "title": "待機リスト",
+    "summary": "{waiting}待機中、 {offered}提供済み、 {registered}登録済み。",
+    "description": "イベントのチケットが完売するとできる行列。",
+    "enabledNote": "イベントのチケットが完売した場合、参加者はこのリストに登録できます。誰かを推薦すると、その人のために24時間席が確保され、予約リンクがメールで送信されます。予約されなかった席は、再び予約者リストに戻されます。",
+    "disabledNote": "このイベントのウェイティングリストは終了しました（編集 → 登録オプション）。以前に登録された方は引き続きこちらに掲載されています。",
+    "columns": {
+      "person": "人",
+      "joined": "参加しました",
+      "actions": "行動"
+    },
+    "empty": {
+      "title": "待機リストに誰もいません",
+      "description": "チケットが売り切れると、ここに人々が列を作ります。次に空席になるのは誰なのか、あなたが決めます。"
+    },
+    "status": {
+      "waiting": "待っている",
+      "offered": "提供",
+      "registered": "登録済み",
+      "expired": "期限切れ"
+    },
+    "heldUntil": "{ticketType}から{time}まで",
+    "lapsed": "オファーは期限切れです。再度プロモーションされる可能性があります。",
+    "ticketType": "チケットの種類",
+    "option": "{name} · {price}",
+    "optionWithRoom": "{name} · {price} · {room}左",
+    "offer": "スポットを提供する",
+    "confirmRemove": "待機リストから{email}を削除しますか？",
+    "confirmRemoveOffered": "待機リストから{email}を削除しますか？その席は解放されます。"
+  },
+  "refund": {
+    "confirm": "全額返金され{amount} ？Stripeが確認次第、この注文のチケットは無効になり、座席は解放されます。",
+    "requested": "返金を要求しました。",
+    "button": "返金{amount}"
+  },
+  "chart": {
+    "peak": "ピーク時{max} /日",
+    "summary": "{total, plural, one {#登録} other {#の登録}} 以上 {days, plural, one {#日} other {#日}}",
+    "aria": "1日あたりの登録者数。1日あたりのピークは{max} 、合計は{total}です。",
+    "tooltip": "{date}: {count}"
+  },
+  "scanner": {
+    "outcome": {
+      "ok": "チェックインしました",
+      "offline_ok": "チェックインしました（オフライン、後で同期します）",
+      "already": "既にチェックイン済み",
+      "not_confirmed": "登録は確認されていません",
+      "revoked": "チケットのキャンセルまたは払い戻し",
+      "wrong_event": "このチケットは別のイベント用です",
+      "not_found": "有効なチケットではありません",
+      "offline_unknown": "不明なチケット（オフライン）",
+      "error": "チェックインできませんでした"
+    },
+    "checkedIn": "チェックインしました",
+    "ofConfirmed": "/ {confirmed}",
+    "mode": "チェックインモード",
+    "scan": "スキャン",
+    "progress": "確認済みチケットの{pct} ％ · 更新日{time}",
+    "progressQueued": "確認済みチケットの{pct} % · 更新済み{time} · {count}同期待ち",
+    "offline": "オフライン：スキャンデータは保存され、後で同期されます",
+    "guestOf": "{name}のゲスト",
+    "ticketTypeInAt": "{ticketType} · {time}で",
+    "undo": "元に戻す",
+    "camera": {
+      "denied": "カメラへのアクセスがブロックされました。このサイトのカメラを許可するか、検索機能を使って名前でチェックインしてください。",
+      "unsupported": "このブラウザではカメラを使用できません。検索機能をご利用いただくか、下記のリンクからチケットを送信してください。",
+      "starting": "カメラを起動します…",
+      "point": "チケットのQRコードを指差してください"
+    },
+    "manualPlaceholder": "またはチケットリンク/コードを貼り付けてください",
+    "manualLabel": "チケットリンクまたはコード",
+    "checkIn": "チェックイン",
+    "searchPlaceholder": "名前またはメールアドレスで検索",
+    "searchLabel": "参加者を検索",
+    "noMatches": "確認済みの参加者の中に一致する人物はいません。",
+    "listGuestOf": "・{name}のゲスト",
+    "listDetail": "{ticketType} · {email}",
+    "listDetailInAt": "{ticketType} · {email} · {time}で",
+    "recent": "最近の",
+    "recentDetail": "· {ticketType} · {time}",
+    "recentDetailManual": "· {ticketType} · {time} · マニュアル"
+  }
+}

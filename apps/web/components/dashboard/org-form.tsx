@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { Plus, X } from "lucide-react";
 import { normalizeWebsiteUrl, SOCIAL_PLATFORMS } from "@evnelo/core";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,8 @@ import { updateOrgAction } from "@/app/dashboard/actions";
 type Values = { name: string; slug: string; website: string; logoUrl: string; accentColor: string; feePassThrough: boolean; socialLinks: { platform: string; url: string }[] };
 
 export function OrgForm({ org, readOnly, uploadsEnabled }: { org: Values; readOnly: boolean; uploadsEnabled: boolean }) {
+  const t = useTranslations("dashboard");
+  const tc = useTranslations("common");
   const [v, setV] = useState<Values>(org);
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
   const [pending, start] = useTransition();
@@ -32,40 +35,40 @@ export function OrgForm({ org, readOnly, uploadsEnabled }: { org: Values; readOn
     >
       <fieldset disabled={readOnly || pending} className="space-y-5">
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Name" htmlFor="org-name"><Input id="org-name" value={v.name} onChange={(e) => set("name", e.target.value)} required /></Field>
-          <Field label="Public URL" htmlFor="org-slug" help="/o/…  Lowercase letters, numbers, hyphens."><Input id="org-slug" value={v.slug} onChange={(e) => set("slug", e.target.value)} pattern="[a-z0-9\-]{3,60}" /></Field>
-          <Field label="Website" htmlFor="org-web" optional help="Enter example.com and we'll add https:// automatically."><Input id="org-web" type="text" inputMode="url" autoCapitalize="none" autoCorrect="off" value={v.website} onChange={(e) => set("website", e.target.value)} onBlur={() => set("website", normalizeWebsiteUrl(v.website))} placeholder="example.com" /></Field>
+          <Field label={tc("labels.name")} htmlFor="org-name"><Input id="org-name" value={v.name} onChange={(e) => set("name", e.target.value)} required /></Field>
+          <Field label={t("settings.organization.publicUrl")} htmlFor="org-slug" help={t("settings.organization.publicUrlHelp")}><Input id="org-slug" value={v.slug} onChange={(e) => set("slug", e.target.value)} pattern="[a-z0-9\-]{3,60}" /></Field>
+          <Field label={t("settings.organization.website")} htmlFor="org-web" optional help={t("settings.organization.websiteHelp")}><Input id="org-web" type="text" inputMode="url" autoCapitalize="none" autoCorrect="off" value={v.website} onChange={(e) => set("website", e.target.value)} onBlur={() => set("website", normalizeWebsiteUrl(v.website))} placeholder="example.com" /></Field>
           <div>
-            <ImageUploadField id="org-logo" label="Logo" aspect="thumb" uploadsEnabled={uploadsEnabled} value={v.logoUrl} onChange={(url) => set("logoUrl", url)} />
-            <p className="mt-1.5 text-xs text-muted-foreground">Shown on event pages and emails.</p>
+            <ImageUploadField id="org-logo" label={t("settings.organization.logo")} aspect="thumb" uploadsEnabled={uploadsEnabled} value={v.logoUrl} onChange={(url) => set("logoUrl", url)} />
+            <p className="mt-1.5 text-xs text-muted-foreground">{t("settings.organization.logoHelp")}</p>
           </div>
-          <Field label="Accent colour" htmlFor="org-accent" optional help="Buttons in emails and on ticket pages.">
+          <Field label={t("settings.organization.accentColour")} htmlFor="org-accent" optional help={t("settings.organization.accentColourHelp")}>
             <div className="flex gap-2">
-              <input type="color" aria-label="Pick colour" value={v.accentColor || "var(--evnelo-pulse)"} onChange={(e) => set("accentColor", e.target.value)} className="h-10 w-12 shrink-0 cursor-pointer rounded-lg border border-input bg-card p-1" />
+              <input type="color" aria-label={t("settings.organization.pickColour")} value={v.accentColor || "var(--evnelo-pulse)"} onChange={(e) => set("accentColor", e.target.value)} className="h-10 w-12 shrink-0 cursor-pointer rounded-lg border border-input bg-card p-1" />
               <Input id="org-accent" value={v.accentColor} onChange={(e) => set("accentColor", e.target.value)} placeholder="var(--evnelo-pulse)" pattern="#[0-9a-fA-F]{6}" />
             </div>
           </Field>
-          <Field label="Service fee" htmlFor="org-fee" help="Default for new events: pass the platform fee to the buyer as a line item, or absorb it.">
-            <label className="press flex h-10 cursor-pointer items-center gap-2 text-sm"><Switch id="org-fee" checked={v.feePassThrough} onCheckedChange={(c) => set("feePassThrough", c)} /> Buyer pays the service fee</label>
+          <Field label={t("settings.organization.serviceFee")} htmlFor="org-fee" help={t("settings.organization.serviceFeeHelp")}>
+            <label className="press flex h-10 cursor-pointer items-center gap-2 text-sm"><Switch id="org-fee" checked={v.feePassThrough} onCheckedChange={(c) => set("feePassThrough", c)} /> {t("settings.organization.buyerPaysFee")}</label>
           </Field>
         </div>
 
         <div className="hairline pt-5">
-          <p className="eyebrow">Social links</p>
+          <p className="eyebrow">{t("settings.organization.socialLinks")}</p>
           <div className="mt-2.5 space-y-2">
             {v.socialLinks.map((l, i) => (
               <div key={i} className="flex gap-2">
-                <div className="w-36"><Select value={l.platform} onChange={(e) => set("socialLinks", v.socialLinks.map((x, j) => (j === i ? { ...x, platform: e.target.value } : x)))} aria-label="Platform">{SOCIAL_PLATFORMS.map((p) => <option key={p} value={p}>{p}</option>)}</Select></div>
-                <Input type="url" value={l.url} onChange={(e) => set("socialLinks", v.socialLinks.map((x, j) => (j === i ? { ...x, url: e.target.value } : x)))} placeholder="https://" aria-label="URL" />
-                <Button type="button" variant="ghost" size="icon" aria-label="Remove" onClick={() => set("socialLinks", v.socialLinks.filter((_, j) => j !== i))}><X className="size-4" /></Button>
+                <div className="w-36"><Select value={l.platform} onChange={(e) => set("socialLinks", v.socialLinks.map((x, j) => (j === i ? { ...x, platform: e.target.value } : x)))} aria-label={t("settings.organization.platform")}>{SOCIAL_PLATFORMS.map((p) => <option key={p} value={p}>{p}</option>)}</Select></div>
+                <Input type="url" value={l.url} onChange={(e) => set("socialLinks", v.socialLinks.map((x, j) => (j === i ? { ...x, url: e.target.value } : x)))} placeholder="https://" aria-label={t("settings.organization.url")} />
+                <Button type="button" variant="ghost" size="icon" aria-label={tc("actions.remove")} onClick={() => set("socialLinks", v.socialLinks.filter((_, j) => j !== i))}><X className="size-4" /></Button>
               </div>
             ))}
-            <Button type="button" variant="outline" size="sm" onClick={() => set("socialLinks", [...v.socialLinks, { platform: "website", url: "" }])}><Plus className="size-4" /> Add link</Button>
+            <Button type="button" variant="outline" size="sm" onClick={() => set("socialLinks", [...v.socialLinks, { platform: "website", url: "" }])}><Plus className="size-4" /> {t("settings.organization.addLink")}</Button>
           </div>
         </div>
       </fieldset>
       <FormMessage error={msg.error} success={msg.success} />
-      {!readOnly && <div className="hairline flex justify-end pt-5"><Button type="submit" pending={pending}>Save organization</Button></div>}
+      {!readOnly && <div className="hairline flex justify-end pt-5"><Button type="submit" pending={pending}>{t("settings.organization.save")}</Button></div>}
     </form>
   );
 }

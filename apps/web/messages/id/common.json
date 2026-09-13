@@ -1,0 +1,57 @@
+{
+  "language": "Bahasa",
+  "brand": "Evnelo",
+  "tagline": "Peristiwa yang sedang berlangsung.",
+  "actions": {
+    "save": "Menyimpan",
+    "cancel": "Membatalkan",
+    "close": "Menutup",
+    "delete": "Menghapus",
+    "remove": "Menghapus",
+    "edit": "Edit",
+    "add": "Menambahkan",
+    "back": "Kembali",
+    "continue": "Melanjutkan",
+    "confirm": "Mengonfirmasi",
+    "copy": "Menyalin",
+    "copied": "Disalin",
+    "search": "Mencari",
+    "retry": "Coba lagi",
+    "ok": "OKE",
+    "discard": "Membuang",
+    "restore": "Memulihkan",
+    "signIn": "Masuk",
+    "signOut": "Keluar",
+    "loading": "Memuat…"
+  },
+  "labels": {
+    "optional": "opsional",
+    "required": "Diperlukan",
+    "free": "Bebas",
+    "soldOut": "Terjual habis",
+    "cancelled": "Dibatalkan",
+    "draft": "Draf",
+    "published": "Diterbitkan",
+    "yes": "Ya",
+    "no": "TIDAK",
+    "name": "Nama",
+    "email": "E-mail",
+    "phone": "Telepon",
+    "status": "Status",
+    "date": "Tanggal",
+    "created": "Dibuat",
+    "unknown": "Tidak dikenal"
+  },
+  "errors": {
+    "generic": "Terjadi kesalahan. Coba lagi.",
+    "network": "Terjadi kesalahan jaringan. Coba lagi.",
+    "notFound": "Tidak ditemukan",
+    "rateLimited": "Terlalu banyak percobaan. Tunggu beberapa menit dan coba lagi.",
+    "captcha": "Kami tidak dapat memastikan Anda bukan bot. Muat ulang halaman dan coba lagi."
+  },
+  "time": {
+    "momentAgo": "beberapa saat",
+    "minutesAgo": "{minutes} menit yang lalu",
+    "hoursAgo": "{hours, plural, one {# jam yang lalu} other {# jam yang lalu}}"
+  }
+}

@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "title": "Dasbor",
+    "checkin": "Check-in"
+  },
+  "shell": {
+    "organization": "Organisasi",
+    "switchOrganization": "Organisasi pengalihan"
+  },
+  "nav": {
+    "events": "Acara",
+    "checkin": "Check-in",
+    "settings": "Pengaturan"
+  },
+  "status": {
+    "event": {
+      "draft": "draf",
+      "published": "diterbitkan",
+      "cancelled": "dibatalkan",
+      "ended": "berakhir"
+    },
+    "attendee": {
+      "confirmed": "dikonfirmasi",
+      "pending_approval": "menunggu persetujuan",
+      "waitlisted": "masuk daftar tunggu",
+      "rejected": "ditolak",
+      "cancelled": "dibatalkan"
+    },
+    "order": {
+      "pending": "tertunda",
+      "processing": "pengolahan",
+      "paid": "dibayar",
+      "free": "bebas",
+      "refunded": "dikembalikan",
+      "partially_refunded": "sebagian dikembalikan",
+      "failed": "gagal",
+      "expired": "kedaluwarsa"
+    },
+    "delivery": {
+      "delivered": "terkirim",
+      "retrying": "mencoba lagi",
+      "pending": "tertunda",
+      "failed": "gagal"
+    }
+  },
+  "noAccess": {
+    "title": "Tidak ada akses",
+    "description": "Peran menentukan apa yang dapat dibuka oleh setiap orang dalam suatu organisasi.",
+    "empty": {
+      "title": "Area ini bukan milik Anda untuk dibuka.",
+      "description": "Peran Anda di organisasi ini tidak memungkinkan hal itu. Mintalah pemilik atau admin untuk mengubahnya."
+    }
+  },
+  "events": {
+    "title": "Acara",
+    "description": "{org} berjalan lancar, dengan pendaftaran, pendapatan, dan jumlah pengunjung yang terlihat sekilas.",
+    "newEvent": "Acara baru",
+    "groups": {
+      "upcoming": "Mendatang",
+      "drafts": "Draf",
+      "past": "Masa lalu"
+    },
+    "empty": {
+      "title": "Belum ada acara yang berlangsung",
+      "description": "Acara pertama Anda akan tetap berupa draf sampai Anda mempublikasikannya, jadi tidak perlu terburu-buru untuk menyempurnakan semuanya.",
+      "action": "Buat acara pertama Anda"
+    },
+    "row": {
+      "online": "On line",
+      "inPerson": "Secara langsung",
+      "registered": "Terdaftar",
+      "pending": "{count} tertunda",
+      "revenue": "Pendapatan",
+      "checkedIn": "Sudah check-in"
+    }
+  },
+  "checkin": {
+    "title": "Check-in",
+    "description": "{org}. Buka acara di ponsel di pintu masuk; pemindaian memerlukan akses kamera.",
+    "in": "Di dalam",
+    "empty": {
+      "title": "Tidak ada yang perlu dipindai hari ini.",
+      "description": "Acara yang dipublikasikan akan muncul di sini sejak saat ditayangkan hingga satu hari setelah berakhir."
+    },
+    "event": {
+      "allCheckin": "Semua proses check-in",
+      "eventDashboard": "Dasbor acara"
+    }
+  },
+  "event": {
+    "allEvents": "Semua acara",
+    "viewPage": "Lihat halaman",
+    "nav": {
+      "overview": "Ringkasan",
+      "tickets": "Tiket",
+      "form": "Membentuk",
+      "invites": "Undangan",
+      "attendees": "Peserta",
+      "waitlist": "Daftar Tunggu",
+      "orders": "Pesanan",
+      "checkin": "Check-in"
+    },
+    "new": {
+      "title": "Acara baru",
+      "description": "Disimpan sebagai draf. Tambahkan tiket dan pertanyaan, lalu publikasikan setelah siap."
+    },
+    "overview": {
+      "stats": {
+        "registered": "Terdaftar",
+        "awaitingApproval": "{count} menunggu persetujuan",
+        "confirmedAndApproved": "dikonfirmasi dan disetujui",
+        "revenue": "Pendapatan",
+        "afterRefunds": "setelah pengembalian dana",
+        "checkedIn": "Sudah check-in",
+        "percentOfRegistrations": "{percent} % dari pendaftaran",
+        "nobodyYet": "belum ada siapa pun di pintu",
+        "capacity": "Kapasitas",
+        "seatsLeft": "{count} kursi tersisa",
+        "unlimitedSeats": "kursi tak terbatas"
+      },
+      "registrationsByDay": "Pendaftaran per hari",
+      "noRegistrations": {
+        "title": "Belum ada pendaftaran",
+        "description": "Kurva tersebut mulai terlihat sejak orang pertama mendaftar."
+      },
+      "tickets": "Tiket",
+      "manage": "Mengelola",
+      "noTickets": {
+        "title": "Belum ada jenis tiket yang tersedia",
+        "description": "Menerbitkan tanpa itu akan memberi Anda tiket masuk umum gratis.",
+        "action": "Tambahkan jenis tiket"
+      },
+      "ticketSales": "{hasQuantity, select, true {{sold} / {quantity} terjual} other {{sold} terjual}}{held, plural, =0 {} other {, # diadakan}}",
+      "eventPage": "Halaman acara",
+      "visibility": {
+        "public": "Publik: terdaftar di Discover dan terindeks.",
+        "unlisted": "Tidak terdaftar: siapa pun yang memiliki tautan.",
+        "private": "Pribadi: hanya dengan undangan."
+      },
+      "actions": "Tindakan",
+      "publish": "Publikasikan acara",
+      "unpublish": "Batalkan publikasi, kembali ke draf",
+      "statusNote": {
+        "draft": "Hanya Anda yang dapat melihat acara ini hingga dipublikasikan.",
+        "published": "Aktif. Dengan menonaktifkan publikasi, halaman akan disembunyikan; pendaftaran yang sudah ada akan tetap tersimpan.",
+        "cancelled": "Acara ini dibatalkan."
+      },
+      "irreversible": "Tidak dapat diubah",
+      "cancelEvent": "Batalkan acara",
+      "cancelConfirm": "Batalkan acara ini? Setiap peserta yang terdaftar akan menerima email pembatalan (dan SMS jika memilih untuk menerimanya). Pesanan yang sudah dibayar masih perlu dikembalikan dananya melalui tab Pesanan.",
+      "deleteEvent": "Hapus acara",
+      "deleteConfirm": "Hapus acara ini? Acara akan hilang dari dasbor. Catatan peserta tetap tersimpan."
+    },
+    "attendees": {
+      "exportCsv": "Ekspor CSV",
+      "searchPlaceholder": "Cari berdasarkan nama, email, atau nomor telepon.",
+      "filter": "Menyaring",
+      "allOption": "Semua ( {count} )",
+      "statusOption": "{label} ( {count} )",
+      "pendingNote": "{count, plural, one {pendaftaran #} other {# pendaftaran}} Menunggu persetujuan Anda.",
+      "review": "Tinjauan",
+      "columns": {
+        "ticket": "Tiket",
+        "registered": "Terdaftar",
+        "files": "Berkas",
+        "actions": "Tindakan"
+      },
+      "empty": {
+        "noMatch": {
+          "title": "Tidak ada peserta yang cocok.",
+          "description": "Coba pencarian lain atau hapus filter status."
+        },
+        "none": {
+          "title": "Belum ada yang mendaftar",
+          "description": "Data pendaftaran akan masuk ke sini begitu seseorang mendaftar."
+        }
+      },
+      "guestOf": "Tamu dari {name}",
+      "sms": "SMS",
+      "paymentPending": "pembayaran tertunda",
+      "approve": "Menyetujui",
+      "reject": "Menolak",
+      "ticket": "Tiket",
+      "cancelConfirm": "Membatalkan pendaftaran {name}? Tiket mereka berhenti berfungsi dan kursi tersebut dikosongkan. Tidak ada email yang dikirim.",
+      "export": "Ekspor",
+      "erase": "Menghapus",
+      "eraseConfirm": "Menghapus data pribadi {name}? Nama, email, telepon, dan jawaban diganti dengan placeholder, tiket mereka dicabut, dan email yang antri dihapus. Ini tidak dapat dibatalkan."
+    },
+    "orders": {
+      "collected": "<strong>{amount}</strong> terkumpul, setelah dikurangi pengembalian dana",
+      "count": "{count, plural, one {pesanan #} other {# pesanan}}",
+      "columns": {
+        "order": "Memesan",
+        "items": "Barang-barang",
+        "total": "Total",
+        "placed": "Ditempatkan",
+        "actions": "Tindakan"
+      },
+      "empty": {
+        "title": "Belum ada pesanan",
+        "description": "Setiap pendaftaran, baik gratis maupun berbayar, akan ditampilkan di sini beserta data yang telah dikumpulkan."
+      },
+      "people": "{count, plural, one {# orang} other {# orang}}",
+      "refunded": "{amount} dikembalikan"
+    }
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "description": "Bagaimana citra organisasi Anda di mata publik, siapa yang dapat bekerja di dalamnya, dan bagaimana sistem lain berkomunikasi dengannya.",
+    "tabs": {
+      "organization": "Organisasi",
+      "members": "Anggota",
+      "developer": "Pengembang",
+      "payments": "Pembayaran"
+    },
+    "organization": {
+      "title": "Organisasi",
+      "description": "Nama, URL publik, logo, dan warna aksen yang digunakan dalam email dan halaman tiket.",
+      "publicUrl": "URL Publik",
+      "publicUrlHelp": "/o/… Huruf kecil, angka, tanda hubung.",
+      "website": "Situs web",
+      "websiteHelp": "Masukkan example.com dan kami akan menambahkan https:// secara otomatis.",
+      "logo": "Logo",
+      "logoHelp": "Ditampilkan di halaman acara dan email.",
+      "accentColour": "Warna aksen",
+      "accentColourHelp": "Tombol di email dan di halaman tiket.",
+      "pickColour": "Pilih warna",
+      "serviceFee": "Biaya layanan",
+      "serviceFeeHelp": "Pengaturan default untuk acara baru: bebankan biaya platform kepada pembeli sebagai item terpisah, atau tanggung biaya tersebut.",
+      "buyerPaysFee": "Pembeli membayar biaya layanan.",
+      "socialLinks": "Tautan sosial",
+      "platform": "Platform",
+      "url": "URL",
+      "addLink": "Tambahkan tautan",
+      "save": "Simpan organisasi"
+    },
+    "members": {
+      "title": "Anggota",
+      "description": "Pemilik dan admin mengelola organisasi; anggota membuat dan menjalankan acara; staf pendaftaran hanya dapat memindai tiket.",
+      "roles": {
+        "owner": "Pemilik",
+        "admin": "Admin",
+        "member": "Anggota",
+        "checkin": "Staf check-in"
+      },
+      "columns": {
+        "member": "Anggota",
+        "role": "Peran",
+        "since": "Sejak"
+      },
+      "removeConfirm": "Hapus {email} dari organisasi?",
+      "invited": "Diundang · kedaluwarsa {date}",
+      "revoke": "Menarik kembali",
+      "emailPlaceholder": "rekan tim@contoh.com",
+      "sendInvite": "Kirim undangan"
+    },
+    "developer": {
+      "apiKeys": {
+        "title": "Kunci API",
+        "description": "Akses server-ke-server ke acara, pesanan, dan peserta organisasi ini.",
+        "note": "Kunci memanggil API REST <docs></docs> sebagai organisasi ini. Kirimkan sebagai <code>{header}</code>. Baca daftar kunci dan ambil; tulis kunci juga buat.",
+        "newKey": "Salin kunci baru Anda sekarang. Kunci ini tidak akan ditampilkan lagi.",
+        "saved": "Saya sudah menyimpannya",
+        "columns": {
+          "key": "Kunci",
+          "scopes": "Lingkup",
+          "lastUsed": "Terakhir digunakan"
+        },
+        "never": "tidak pernah",
+        "empty": {
+          "title": "Belum ada kunci API.",
+          "description": "Buat satu per integrasi sehingga Anda dapat mencabut satu alat tanpa merusak yang lainnya."
+        },
+        "revoked": "dicabut",
+        "revokeConfirm": "Cabut \" {name} \"? Permintaan yang mengandungnya akan langsung berhenti berfungsi.",
+        "revoke": "Menarik kembali",
+        "namePlaceholder": "Nama kunci, misalnya Zapier",
+        "nameLabel": "Nama kunci",
+        "scopeRead": "membaca",
+        "scopeWrite": "menulis",
+        "create": "Buat kunci"
+      },
+      "webhooks": {
+        "title": "Webhooks",
+        "description": "Sebuah permintaan POST JSON yang ditandatangani akan dikirim ke endpoint Anda sendiri setiap kali terjadi sesuatu di sini.",
+        "note": "Kami mengirimkan amplop JSON ke URL Anda untuk acara yang Anda pilih, ditandatangani dengan HMAC-SHA256 ( <code>{signature}</code> over <code>{template}</code> ). Pengiriman yang gagal akan dicoba ulang dengan penundaan sekitar satu hari.",
+        "addWebhook": "Tambahkan webhook",
+        "count": "{count, plural, one {titik akhir #} other {# titik akhir}}",
+        "signingSecret": "Rahasia penandatanganan",
+        "copyPrompt": "Salin rahasia ini",
+        "endpointUrl": "URL Titik Akhir",
+        "endpointUrlHelp": "Hanya HTTPS (http://localhost diperbolehkan untuk pengembangan).",
+        "events": "Acara",
+        "create": "Buat webhook",
+        "columns": {
+          "endpoint": "Titik akhir",
+          "events": "Acara"
+        },
+        "empty": {
+          "title": "Belum ada webhook",
+          "description": "Pilih seseorang di layanan Anda sendiri untuk menjaga agar CRM, saluran Slack, atau spreadsheet tetap sinkron."
+        },
+        "hideDeliveries": "Sembunyikan pengiriman",
+        "recentDeliveries": "Pengiriman terbaru ( {count} )",
+        "nothingDelivered": "Belum ada yang dikirim.",
+        "attempts": "{count, plural, one {# percobaan} other {# percobaan}}{hasStatus, select, true {, terakhir {status}} other {}}",
+        "allEvents": "Semua acara",
+        "active": "aktif",
+        "paused": "berhenti sejenak",
+        "sendTest": "Kirim tes",
+        "pause": "Berhenti sebentar",
+        "resume": "Melanjutkan",
+        "rotateConfirm": "Apakah perlu mengganti kode rahasia penandatanganan? Kode yang lama akan langsung berhenti berfungsi.",
+        "rotateSecret": "Putar rahasia",
+        "deleteConfirm": "Hapus webhook ini?"
+      }
+    },
+    "payments": {
+      "title": "Pembayaran",
+      "descriptionCloud": "Tiket yang sudah dibayar akan langsung masuk ke akun Stripe Anda.",
+      "descriptionSelfHosted": "Instansi ini melakukan penagihan melalui kunci Stripe yang dikonfigurasi oleh operatornya.",
+      "connected": "Akun Stripe {id} terhubung.",
+      "connectPrompt": "Hubungkan akun Stripe Anda untuk menjual tiket berbayar. Tersedia melalui alur pendaftaran Connect.",
+      "configured": "Stripe telah dikonfigurasi. Tiket berbayar akan dibebankan ke akun Stripe instance tanpa biaya platform.",
+      "notConfigured": "Stripe belum dikonfigurasi pada instance ini, sehingga hanya tiket gratis yang dapat dijual. Atur STRIPE_SECRET_KEY dan STRIPE_PUBLISHABLE_KEY untuk mengaktifkan pembayaran."
+    },
+    "danger": {
+      "title": "Data dan penghapusan",
+      "description": "Unduh semua data milik organisasi ini dalam format JSON — acara, pesanan, peserta, check-in, pengaturan, tanpa rahasia. Menghapus organisasi akan membatalkan acaranya, mencabut semua tiket, menghapus semua data pribadi peserta, dan menonaktifkan kunci API dan webhook. Tindakan ini tidak dapat dibatalkan.",
+      "download": "Unduh semua data",
+      "confirmLabel": "Ketik {slug} untuk konfirmasi",
+      "delete": "Hapus organisasi",
+      "ownerOnly": "Hanya pemilik yang dapat menghapus organisasi ini."
+    }
+  },
+  "imageUpload": {
+    "uploadFailed": "Unggahan gagal.",
+    "bucketRejected": "Bucket penyimpanan menolak unggahan. Periksa pengaturan CORS dan kebijakannya.",
+    "connectionFailed": "Unggahan gagal. Periksa koneksi Anda dan coba lagi.",
+    "noImage": "Belum ada gambar",
+    "uploading": "Sedang mengunggah…",
+    "replace": "Mengganti",
+    "replaceImage": "Ganti gambar",
+    "upload": "Mengunggah",
+    "uploadImage": "Unggah gambar",
+    "urlPlaceholder": "https://… (unggahan gambar memerlukan konfigurasi S3)",
+    "urlLabel": "URL {label}",
+    "formats": "JPEG, PNG atau WebP · maksimal 5 MB"
+  },
+  "imageCrop": {
+    "openFailed": "Gambar tersebut tidak dapat dibuka.",
+    "renderFailed": "Browser ini tidak dapat menampilkan gambar yang telah dipotong. Unggah gambar apa adanya.",
+    "dialogLabel": "Bingkai gambar sampul",
+    "title": "Bingkai sampulnya",
+    "description": "Seret untuk memposisikan dan perbesar untuk mengisi area. Disimpan dalam rasio 16:7, rasio yang digunakan halaman acara.",
+    "zoom": "Zoom",
+    "use": "Gunakan tanaman ini"
+  },
+  "address": {
+    "unavailable": "Pencarian alamat untuk sementara tidak tersedia.",
+    "placeholder": "Mulailah mengetik alamat"
+  },
+  "linkTabs": {
+    "label": "Bagian-bagian"
+  },
+  "actions": {
+    "genericError": "Terjadi kesalahan.",
+    "formIssue": "{path}: {message}",
+    "formPath": "membentuk",
+    "checkForm": "Periksa formulirnya.",
+    "saved": "Tersimpan.",
+    "savedNotified": "Tersimpan. Para peserta akan diberitahu tentang waktu atau tempat yang baru.",
+    "deletePublished": "Batalkan publikasi atau acara tersebut sebelum menghapusnya.",
+    "addressRateLimited": "Terlalu banyak pencarian alamat. Tunggu sebentar dan coba lagi.",
+    "addressUnavailable": "Pencarian alamat untuk sementara tidak tersedia.",
+    "formSaved": "Formulir tersimpan.",
+    "refund": {
+      "noPayment": "Pesanan ini tidak memiliki pembayaran yang perlu dikembalikan.",
+      "nothingToRefund": "Pesanan berjumlah {status}; tidak ada yang perlu dikembalikan.",
+      "requested": "Pengembalian dana diminta. Pesanan akan diperbarui segera setelah Stripe mengkonfirmasinya."
+    },
+    "invitationSent": "Undangan dikirim ke {email}.",
+    "apiKeyCreated": "Kunci telah dibuat. Salin sekarang; kunci ini tidak akan ditampilkan lagi.",
+    "unknownError": "kesalahan yang tidak diketahui",
+    "eventInvite": {
+      "emailFailed": "Undangan telah dibuat, tetapi email tidak dapat dikirim ( {reason} ). Bagikan tautannya sendiri.",
+      "emailed": "Undangan dikirim melalui email ke {email}.",
+      "linkCreated": "Tautan undangan telah dibuat."
+    },
+    "waitlist": {
+      "notFound": "Entri tersebut sudah tidak ada lagi.",
+      "alreadyOffered": "Orang ini sudah memiliki tawaran terbuka.",
+      "registered": "Orang ini sudah terdaftar.",
+      "noRoom": "Tidak ada kursi yang kosong pada jenis tiket tersebut (atau acara sudah penuh). Kursi gratis tersedia terlebih dahulu.",
+      "emailFailed": "Tempat sudah dipesan hingga {deadline}, tetapi email tidak dapat dikirim ( {reason} ). Kirimkan tautan ini kepada mereka: {url}",
+      "offered": "Penawaran dikirim melalui email ke {email}; tempat tersebut akan dipertahankan hingga {deadline}."
+    },
+    "discountCreated": "Kode {code} dibuat.",
+    "webhook": {
+      "created": "Webhook telah dibuat. Salin rahasia penandatanganan sekarang; rahasia ini hanya akan ditampilkan sekali.",
+      "notFound": "Webhook tidak ditemukan.",
+      "rotated": "Rahasia penandatanganan baru. Perbarui penerima Anda; rahasia lama tidak lagi berfungsi.",
+      "testQueued": "Pengiriman uji coba sedang dalam antrian; akan dikirim dalam waktu sekitar 10 detik. Periksa daftar pengiriman."
+    },
+    "deleteOrg": {
+      "ownerOnly": "Hanya pemilik yang dapat menghapus organisasi.",
+      "confirmSlug": "Ketik URL organisasi ( {slug} ) untuk konfirmasi."
+    }
+  }
+}

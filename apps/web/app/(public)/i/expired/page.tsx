@@ -1,19 +1,25 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { MailX } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { NarrowPage } from "@/components/narrow-page";
 
-export const metadata = { title: "Invitation", robots: "noindex" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("event");
+  return { title: t("inviteExpired.metaTitle"), robots: "noindex" };
+}
 
-export default function InviteExpiredPage() {
+export default async function InviteExpiredPage() {
+  const t = await getTranslations("event");
   return (
     <NarrowPage
       icon={<MailX />}
-      eyebrow="Invitation"
-      title="This invitation is no longer valid"
-      description="It may have expired or been used the maximum number of times. Ask the host for a new link."
+      eyebrow={t("inviteExpired.eyebrow")}
+      title={t("inviteExpired.title")}
+      description={t("inviteExpired.description")}
     >
-      <Link href="/discover" className={buttonVariants({ variant: "outline", size: "lg" })}>Browse public events</Link>
+      <Link href="/discover" className={buttonVariants({ variant: "outline", size: "lg" })}>{t("inviteExpired.browse")}</Link>
     </NarrowPage>
   );
 }

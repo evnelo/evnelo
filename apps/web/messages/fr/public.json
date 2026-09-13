@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "description": "Des événements en mouvement. Infrastructure événementielle ouverte: publiez des événements, inscrivez les participants, vendez ou distribuez des billets, communiquez avec votre communauté, enregistrez les personnes à leur arrivée."
+  },
+  "nav": {
+    "discover": "Découvrir",
+    "pricing": "Tarification",
+    "dashboard": "Tableau de bord",
+    "signIn": "Se connecter",
+    "host": "Organisez un événement",
+    "hostShort": "Hôte",
+    "api": "API"
+  },
+  "footer": {
+    "tagline": "Des événements en mouvement. Une infrastructure événementielle ouverte: les événements gratuits sont gratuits, les événements payants coûtent 0,99 % à l’organisateur.",
+    "credit": "Présenté par <inevent>InEvent</inevent>."
+  },
+  "og": {
+    "subtitle": "Infrastructure événementielle ouverte. Publier, s'inscrire, participer."
+  },
+  "github": {
+    "label": "evnelo/evnelo sur GitHub"
+  },
+  "captcha": {
+    "notice": "Ce site est protégé par reCAPTCHA et la politique de confidentialité de Google <privacy></privacy> et les conditions d'utilisation <terms></terms> s'appliquent."
+  },
+  "hero": {
+    "eyebrow": "Infrastructure événementielle ouverte",
+    "title": "Du premier clic jusqu'au portail d'entrée.",
+    "lead": "Publiez des événements, vendez des billets, envoyez des messages aux participants et gérez l'enregistrement sur une plateforme ouverte, ou hébergez-la vous-même sur votre propre infrastructure.",
+    "pricing": "<b>% sur <b>billets</b>. Les événements gratuits restent gratuits. 0 % si vous organisez vous-</b> <br></br>.",
+    "explore": "Explorez les événements",
+    "scene": {
+      "steps": {
+        "discover": {
+          "label": "Découvrir",
+          "sub": "Trouvez ce qui vous touche"
+        },
+        "register": {
+          "label": "Registre",
+          "sub": "À portée de clic"
+        },
+        "ticketing": {
+          "label": "billetterie",
+          "sub": "Vendez sans limites"
+        },
+        "checkin": {
+          "label": "Enregistrement",
+          "sub": "Rapide. Convivial. Flexible."
+        },
+        "attendance": {
+          "label": "Présence",
+          "sub": "Des personnes authentiques. Un impact durable."
+        }
+      },
+      "event": {
+        "category": "Musique",
+        "title": "Séances au coucher du soleil",
+        "date": "Samedi 24 août 2024",
+        "place": "Parc Riverside"
+      },
+      "create": {
+        "title": "Créez votre événement",
+        "publish": "Publier l'événement"
+      },
+      "ticket": {
+        "title": "Admission générale",
+        "meta": "Samedi 24 août 2024 <br></br> Parc Riverside"
+      },
+      "checkin": {
+        "title": "Le participant s'est enregistré",
+        "welcome": "Accueillir!"
+      },
+      "attendance": {
+        "more": "+ {count}",
+        "meta": "des personnes ont assisté"
+      },
+      "notes": {
+        "left": "Plus d'événements. <br></br> Un monde plus ouvert.",
+        "right": "Les événements <br></br> déplacent les gens."
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Evnelo: événements, en mouvement",
+      "description": "Infrastructure événementielle ouverte. Publiez vos événements, inscrivez les participants, vendez ou offrez des billets, communiquez avec votre communauté et gérez l'accueil. Commission de 0,99 % sur les billets payants, événements gratuits ou organisation entièrement autonome."
+    },
+    "pricing": {
+      "eyebrow": "Tarification",
+      "title": "Des frais inférieurs à ceux de toute autre plateforme.",
+      "body": "La plupart des plateformes prélèvent entre 3 et 5 % plus des frais sur chaque billet. Evnelo prélève 0,99 % sur les billets payants et rien sur les billets gratuits. Vous connectez votre propre compte Stripe: le montant des ventes vous est directement versé et ne transite jamais par nous. Les frais de traitement de Stripe s'appliquent à leur taux, et vous pouvez les répercuter sur les acheteurs ou les prendre en charge.",
+      "plans": {
+        "free": {
+          "title": "Événements gratuits",
+          "price": "0 $",
+          "note": "Pas de frais de plateforme, pas de frais par billet, nombre de participants illimité."
+        },
+        "paid": {
+          "title": "Événements payants",
+          "price": "0,99%",
+          "note": "Le prix du billet est débité via votre compte Stripe connecté. Un billet à 25 $ vous coûte 0,25 $, plus les frais Stripe."
+        },
+        "selfHosted": {
+          "title": "Auto-hébergé",
+          "price": "0 $",
+          "note": "Logiciel libre. Un seul conteneur, votre MySQL, vos clés Stripe. Aucun frais de plateforme, jamais."
+        }
+      }
+    },
+    "flow": {
+      "eyebrow": "Comment ça se déroule",
+      "title": "Tout ce qui se situe entre « Je veux y aller » et « Je suis ici ».",
+      "steps": {
+        "publish": {
+          "title": "Publier",
+          "text": "Une page événement avec votre couverture, le programme, le lieu et les organisateurs. Publique, non répertoriée ou privée sur invitation."
+        },
+        "register": {
+          "title": "Registre",
+          "text": "Différentes catégories de billets, vos propres questions, des invités avec leurs propres billets, des codes de réduction, une liste d'attente en cas de vente complète."
+        },
+        "pay": {
+          "title": "Payer et recevoir",
+          "text": "Cartes, Apple Pay, Google Pay, Pix. Billets avec code QR, cartes de paiement, fichiers calendrier, confirmation par e-mail et SMS."
+        },
+        "checkin": {
+          "title": "Enregistrement",
+          "text": "Un scanner qui fonctionne sur n'importe quel navigateur mobile, continue de fonctionner sans signal et affiche en direct le remplissage de la salle."
+        }
+      }
+    },
+    "openSource": {
+      "eyebrow": "Source libre",
+      "title": "Vos événements. Vos données. Votre infrastructure.",
+      "body": "Evnelo est un logiciel libre sous licence Apache 2.0. Hébergez-le vous-même avec un seul conteneur et une seule base de données MySQL, intégrez vos clés Stripe, Resend et Vonage, et conservez les informations de chaque participant sur votre infrastructure. Même produit, sans frais de plateforme.",
+      "points": {
+        "export": "L'exportation et la suppression des participants sont intégrées.",
+        "providers": "Apportez vos propres fournisseurs de paiement, de messagerie électronique et de SMS",
+        "ops": "Migrations, contrôles de santé et sauvegardes documentés",
+        "migrate": "Passer à l'édition hébergée ou en revenir est une opération sur la base de données, et non une réécriture."
+      },
+      "source": "Voir la source",
+      "apiReference": "Référence API"
+    },
+    "developers": {
+      "eyebrow": "Pour les développeurs",
+      "title": "Conçu pour être agrandi.",
+      "points": {
+        "rest": "Une API REST pour chaque ressource, avec des écritures idempotentes.",
+        "sdk": "Kit de développement logiciel (SDK) TypeScript généré et serveur MCP pour les agents",
+        "webhooks": "Webhooks signés pour les inscriptions, les paiements et les enregistrements",
+        "openapi": "Documentation OpenAPI et documentation interactive disponibles à l'adresse /api/v1/docs"
+      }
+    },
+    "upcoming": {
+      "eyebrow": "Ça arrive bientôt",
+      "title": "Événements publics sur Evnelo",
+      "all": "Tous les événements"
+    },
+    "cta": {
+      "title": "Facilitez le rassemblement.",
+      "body": "Créez votre premier événement en quelques minutes. Les événements gratuits ne nécessitent rien; les événements payants requièrent votre compte Stripe.",
+      "explore": "Découvrez la programmation"
+    }
+  },
+  "discover": {
+    "meta": {
+      "description": "Événements publics organisés par tous les hôtes sur Evnelo. Recherchez par ville, thème, date, prix et distance."
+    },
+    "headline": {
+      "query": {
+        "none": "Événements correspondant à « {q} »",
+        "city": "Événements correspondant à « {q} » dans {city}",
+        "near": "Événements correspondant à « {q} » près de chez vous",
+        "online": "Événements correspondant à « {q} » en ligne",
+        "inPerson": "Événements correspondant à « {q} » en personne"
+      },
+      "free": {
+        "none": "Événements gratuits",
+        "city": "Événements gratuits à {city}",
+        "near": "Événements gratuits près de chez vous",
+        "online": "Événements gratuits en ligne",
+        "inPerson": "Événements gratuits en présentiel"
+      },
+      "tag": {
+        "none": "{tag} événements",
+        "city": "{tag} événements dans {city}",
+        "near": "{tag} événements près de chez vous",
+        "online": "{tag} événements en ligne",
+        "inPerson": "{tag} événements en personne"
+      },
+      "paid": {
+        "none": "Événements payants",
+        "city": "Événements payants en {city}",
+        "near": "Événements payants près de chez vous",
+        "online": "Événements payants en ligne",
+        "inPerson": "Événements payants en personne"
+      },
+      "all": {
+        "none": "Qu'est-ce qui se passe?",
+        "city": "Événements dans {city}",
+        "near": "Événements près de chez vous",
+        "online": "Événements en ligne",
+        "inPerson": "Événements en présentiel"
+      }
+    },
+    "lead": "Conférences, ateliers, dîners et rencontres organisés par tous les hôtes d'Evnelo.",
+    "jsonLdName": "Événements publics à venir",
+    "count": {
+      "exact": "{count, plural, one {# événement} other {# événements}}",
+      "more": "{count, plural, one {# + événement} other {# + événements}}",
+      "exactFrom": "{count, plural, one {# événement} other {# événements}} de # {from}",
+      "moreFrom": "{count, plural, one {# + événement} other {# + événements}} de # {from}"
+    },
+    "format": {
+      "online": "En ligne",
+      "in_person": "En personne",
+      "hybrid": "Hybride"
+    },
+    "price": {
+      "paid": "Payé"
+    },
+    "date": {
+      "today": "Aujourd'hui",
+      "week": "Cette semaine",
+      "month": "Ce mois-ci",
+      "custom": "Choisissez les dates"
+    },
+    "active": {
+      "showing": "Affichage",
+      "query": "« {q} »",
+      "customRange": "{from} à {to}",
+      "customDates": "Dates personnalisées",
+      "within": "À moins {km} km",
+      "remove": "Supprimer le filtre",
+      "clearAll": "Effacer tout"
+    },
+    "search": {
+      "events": "Événements de recherche",
+      "placeholder": "Rechercher des événements, des hôtes et des tags",
+      "city": "Ville",
+      "cityOption": "{city}, {country}",
+      "nearMe": "Près de moi",
+      "nearYou": "Près de chez vous",
+      "unsupported": "Ce navigateur ne peut pas partager votre position. Essayez plutôt une ville.",
+      "blocked": "La localisation est bloquée. Veuillez plutôt filtrer par ville."
+    },
+    "toolbar": {
+      "label": "Filtres",
+      "km": "{km} km",
+      "anywhere": "N'importe où",
+      "view": "Voir",
+      "list": "Liste",
+      "calendar": "Calendrier"
+    },
+    "customDates": {
+      "from": "Depuis",
+      "to": "À",
+      "apply": "Dates d'application",
+      "clear": "Dates claires"
+    },
+    "topics": "Sujets",
+    "sections": {
+      "featured": "En vedette",
+      "upcoming": "Prochain"
+    },
+    "empty": {
+      "month": {
+        "title": "Rien de prévu ce mois-ci.",
+        "body": "Réessayez un mois de plus ou nettoyez le filtre.",
+        "action": "Mois prochain"
+      },
+      "filtered": {
+        "title": "Aucun événement ne correspond à ces filtres.",
+        "body": "Essayez une plage de dates plus large ou effacez les filtres.",
+        "action": "Effacer les filtres"
+      },
+      "end": {
+        "title": "Vous avez atteint la fin.",
+        "body": "Voici tous les événements publics à venir répertoriés sur cette page.",
+        "action": "Retour au début"
+      },
+      "none": {
+        "title": "Aucun événement public prévu pour le moment.",
+        "body": "Soyez le premier à en organiser un."
+      }
+    },
+    "pagination": {
+      "label": "Pagination",
+      "more": "Charger plus"
+    },
+    "card": {
+      "from": "à partir de {price}",
+      "underOneKm": "À moins d'1 km",
+      "kmAway": "{km} km"
+    },
+    "calendar": {
+      "eyebrow": "Calendrier",
+      "changeMonth": "Changer de mois",
+      "goTo": "Allez à {month}",
+      "today": "Aujourd'hui",
+      "dayCount": "{count, plural, one {# événement} other {# événements}}",
+      "overflow": "+ {count} plus",
+      "timezoneNote": "Les horaires sont indiqués dans le fuseau horaire de chaque événement.",
+      "rowTitle": "{name} — {time}"
+    }
+  },
+  "org": {
+    "meta": {
+      "description": "Événements par {name}"
+    },
+    "eyebrow": "Organisateur",
+    "upcoming": "Prochain",
+    "count": "{count, plural, one {# événement} other {# événements}}",
+    "empty": {
+      "title": "Rien de prévu pour le moment.",
+      "body": "Revenez bientôt consulter cette page, ou voyez quels autres hébergeurs proposent leurs services.",
+      "action": "Consultez tous les événements"
+    },
+    "past": "Événements passés"
+  },
+  "report": {
+    "meta": {
+      "title": "Signaler un événement"
+    },
+    "eyebrow": "Rapport",
+    "title": "Signaler un événement",
+    "reasons": {
+      "spam": "Spam ou contenu trompeur",
+      "scam": "Escroquerie ou fraude",
+      "inappropriate": "Contenu inapproprié",
+      "copyright": "Droit d'auteur ou marque de commerce",
+      "other": "Autre chose"
+    },
+    "notFound": "Cet événement est introuvable.",
+    "openFromEvent": "Ouvrez cette page depuis un événement pour le signaler.",
+    "sent": "Merci. Votre signalement concernant <b>{name}</b> a été enregistré.",
+    "sentAndForwarded": "Merci. Votre signalement concernant <b>{name}</b> a été enregistré et envoyé aux opérateurs de cette instance.",
+    "reporting": "Rapport <b>{name}</b> par {org}. Les rapports sont envoyés aux personnes qui gèrent cette instance Evnelo, et non à l'hôte.",
+    "errors": {
+      "limited": "Trop de rapports provenant de votre connexion. Veuillez réessayer plus tard.",
+      "invalid": "Vérifiez le formulaire et réessayez."
+    },
+    "form": {
+      "reason": "Raison",
+      "details": "Détails",
+      "optional": "(facultatif)",
+      "email": "Votre courriel",
+      "optionalFollowUp": "(facultatif, si nous pouvons vous recontacter)",
+      "submit": "Envoyer un rapport"
+    },
+    "back": "Retour à l'événement"
+  },
+  "notFound": {
+    "meta": {
+      "title": "Page introuvable"
+    },
+    "eyebrow": "404",
+    "title": "Il n'y a rien ici",
+    "body": "Le lien est peut-être obsolète, l'événement a peut-être été supprimé ou l'adresse contient une faute de frappe.",
+    "action": "Consultez les événements publics"
+  },
+  "error": {
+    "title": "Quelque chose s'est mal passé",
+    "body": "La page a rencontré une erreur. En général, réessayer résout le problème; si l’erreur persiste, l’hébergeur en a été informé.",
+    "reference": "Référence {digest}",
+    "home": "Rentrez chez vous"
+  }
+}

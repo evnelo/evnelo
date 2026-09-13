@@ -1,0 +1,57 @@
+{
+  "language": "语言",
+  "brand": "埃夫内洛",
+  "tagline": "事件，动态之中。",
+  "actions": {
+    "save": "节省",
+    "cancel": "取消",
+    "close": "关闭",
+    "delete": "删除",
+    "remove": "消除",
+    "edit": "编辑",
+    "add": "添加",
+    "back": "后退",
+    "continue": "继续",
+    "confirm": "确认",
+    "copy": "复制",
+    "copied": "已复制",
+    "search": "搜索",
+    "retry": "再试一次",
+    "ok": "好的",
+    "discard": "丢弃",
+    "restore": "恢复",
+    "signIn": "登入",
+    "signOut": "登出",
+    "loading": "加载中…"
+  },
+  "labels": {
+    "optional": "选修的",
+    "required": "必需的",
+    "free": "自由的",
+    "soldOut": "售罄",
+    "cancelled": "取消",
+    "draft": "草稿",
+    "published": "已发布",
+    "yes": "是的",
+    "no": "不",
+    "name": "姓名",
+    "email": "电子邮件",
+    "phone": "电话",
+    "status": "地位",
+    "date": "日期",
+    "created": "创建",
+    "unknown": "未知"
+  },
+  "errors": {
+    "generic": "出错了，请重试。",
+    "network": "网络错误，请重试。",
+    "notFound": "未找到",
+    "rateLimited": "尝试次数过多。请稍等几分钟后再试。",
+    "captcha": "我们无法确认您不是机器人。请刷新页面后重试。"
+  },
+  "time": {
+    "momentAgo": "刚才",
+    "minutesAgo": "{minutes}分钟前",
+    "hoursAgo": "{hours, plural, one {#小时前} other {#小时前}}"
+  }
+}

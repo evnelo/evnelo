@@ -1,0 +1,434 @@
+{
+  "eventForm": {
+    "validation": {
+      "times": "Legen Sie eine Start- und eine Endzeit fest."
+    },
+    "saved": "Gespeichert.",
+    "restore": {
+      "notice": "Sie haben dort weitergemacht, wo Sie aufgehört haben: Nicht gespeicherte Änderungen von {when} sind wieder im Formular vorhanden.",
+      "discard": "Entsorgen Sie sie"
+    },
+    "basics": {
+      "title": "Grundlagen",
+      "description": "Was die Leute zuerst sehen: den Namen, die Adresse, die Geschichte, das Kunstwerk.",
+      "name": "Veranstaltungsname",
+      "url": "Event-URL",
+      "descriptionLabel": "Beschreibung",
+      "descriptionHelp": "Markdown wird unterstützt.",
+      "tags": "Tags",
+      "tagsHelp": "Durch Komma getrennt. Wird zur Ermittlung verwendet.",
+      "tagsPlaceholder": "Design, Treffen",
+      "cover": "Titelbild",
+      "logo": "Veranstaltungslogo"
+    },
+    "when": {
+      "title": "Wann",
+      "description": "Die Zeiten werden in UTC gespeichert und allen Teilnehmern in ihrer jeweiligen Zeitzone angezeigt.",
+      "starts": "Beginnt",
+      "ends": "Ende",
+      "timezone": "Zeitzone",
+      "publishedNote": "Die Änderung des Zeitpunkts einer veröffentlichten Veranstaltung wird per E-Mail an alle Teilnehmer versendet."
+    },
+    "where": {
+      "title": "Wo",
+      "description": "Wo die Leute auftauchen, oder über welche Verbindungen sie sich austauschen.",
+      "locationType": {
+        "in_person": "Persönlich",
+        "online": "Online",
+        "hybrid": "Hybrid"
+      },
+      "venue": "Veranstaltungsort",
+      "venuePlaceholder": "Veranstaltungsortname",
+      "address": "Adresse",
+      "addressHelp": "Wählen Sie einen Vorschlag aus, um Stadt, Land und Kartenkoordinaten einzugeben.",
+      "city": "Stadt",
+      "country": "Landesvorwahl",
+      "countryHelp": "Zweistelliger Code, z. B. BR",
+      "countryPlaceholder": "UNS",
+      "mapPin": "Die Markierung wurde an der Adresse ( {lat}, {lng} ) gesetzt. Wählen Sie einen anderen Vorschlag zum Verschieben aus.",
+      "joinLink": "Beitrittslink",
+      "joinLinkHelp": "Wird nur bestätigten Teilnehmern in ihrer Bestätigung und ihren Erinnerungen angezeigt.",
+      "joinLinkPlaceholder": "https://meet…"
+    },
+    "registration": {
+      "title": "Anmeldung",
+      "description": "Wer kann die Veranstaltung finden und wie viele können kommen?",
+      "visibility": "Sichtweite",
+      "visibilityOptions": {
+        "public": "Öffentlich",
+        "unlisted": "Nicht gelistet",
+        "private": "Privat"
+      },
+      "visibilityHelp": {
+        "public": "Auf Discover gelistet und von Suchmaschinen indexiert.",
+        "unlisted": "Jeder, der den Link besitzt; nicht aufgeführt oder indexiert.",
+        "private": "Nur Personen mit einem Einladungslink."
+      },
+      "capacity": "Kapazität",
+      "capacityHelp": "Für unbegrenzte Menge leer lassen."
+    },
+    "options": {
+      "title": "Registrierungsoptionen",
+      "description": "Genehmigung, Gäste, Erinnerungen, Gebühren und Rückerstattungsrichtlinien.",
+      "approval": "Jede Registrierung manuell genehmigen",
+      "approvalHelp": "Personen beantragen die Teilnahme; genehmigen oder lehnen Sie diese Anträge von den Teilnehmern ab.",
+      "phone": "Fragen Sie nach einer Telefonnummer",
+      "phoneHelp": "Optionales Feld mit SMS-Anmeldung für Tickets und Erinnerungen.",
+      "guests": "Gäste zulassen (+1)",
+      "guestsHelp": "Jeder Gast erhält eine separate Eintrittskarte.",
+      "maxGuests": "Maximale Gästeanzahl pro Registrierung",
+      "waitlist": "Warteliste bei Ausverkauf",
+      "waitlistHelp": "Besucher können sich anstellen; Sie bieten Plätze über die Registerkarte „Warteliste“ an, sobald Plätze frei werden.",
+      "feePassThrough": "Der Käufer zahlt die Servicegebühr.",
+      "feePassThroughHelp": "Cloud-Edition: Zeigen Sie die 0,99 % als Einzelposten an.",
+      "refundPolicy": "Rückerstattungsrichtlinie",
+      "refundPolicyHelp": "Wird beim Bezahlvorgang für bezahlte Tickets angezeigt.",
+      "reminders": "Erinnerungen",
+      "reminder24": "24 Stunden vorher",
+      "reminder1": "1 Stunde vorher",
+      "reminderCustom": "Auch <input></input> Stunden zuvor",
+      "reminderCustomLabel": "Benutzerdefinierte Erinnerungszeiten",
+      "reminderCustomPlaceholder": "48, 3",
+      "hint": {
+        "joined": "{first} · {second}",
+        "on": "Am: {items}",
+        "defaults": "Standardeinstellungen",
+        "reminders": "Erinnerungen {items}",
+        "noReminders": "keine Erinnerungen",
+        "hours": "{hours} h",
+        "flags": {
+          "approval": "Genehmigung",
+          "phone": "Telefon",
+          "guests": "Gäste",
+          "waitlist": "Warteliste",
+          "feePassThrough": "Käufer zahlt Gebühr"
+        }
+      }
+    },
+    "links": {
+      "title": "Links",
+      "description": "Auf der Veranstaltungsseite werden Social-Media-Links angezeigt.",
+      "hint": "{count, plural, =0 {Noch keine Links} one {# Link} other {# Links}}",
+      "platform": "Plattform",
+      "url": "URL",
+      "remove": "Link entfernen",
+      "add": "Link hinzufügen"
+    },
+    "hosts": {
+      "title": "Gastgeber",
+      "description": "Auf der Veranstaltungsseite abgebildete Personen.",
+      "hint": "{count, plural, =0 {Noch keine Hosts} one {# Host} other {# Hosts}}",
+      "name": "Hostname",
+      "titleField": "Titel",
+      "remove": "Host entfernen",
+      "avatar": "Avatar",
+      "add": "Host hinzufügen"
+    },
+    "sponsors": {
+      "title": "Sponsoren",
+      "description": "Die Logos werden auf der Veranstaltungsseite in dieser Reihenfolge angezeigt.",
+      "hint": "{count, plural, =0 {Noch keine Sponsoren} one {# Sponsor} other {# Sponsoren}}",
+      "name": "Sponsorenname",
+      "tier": "Stufe",
+      "website": "Webseite",
+      "remove": "Sponsor entfernen",
+      "logo": "Logo",
+      "add": "Sponsor hinzufügen"
+    },
+    "bar": {
+      "createNote": "Nichts ist öffentlich, bis man es veröffentlicht.",
+      "editNote": "Die Änderungen werden sofort nach dem Speichern wirksam.",
+      "createDraft": "Entwurf erstellen",
+      "saveChanges": "Änderungen speichern"
+    }
+  },
+  "fields": {
+    "title": "Anmeldeformular",
+    "description": "Name und E-Mail-Adresse werden immer abgefragt. Ihre Fragen können sich auf den Registranten, die gesamte Bestellung oder jeden einzelnen Gast beziehen und werden nur dann angezeigt, wenn eine vorherige Antwort übereinstimmt.",
+    "add": "Frage hinzufügen",
+    "empty": {
+      "title": "Nur Name und E-Mail-Adresse",
+      "description": "Fügen Sie eine Frage hinzu, wenn Sie weitere Informationen benötigen – beispielsweise einen Ernährungshinweis, ein Unternehmen oder eine T-Shirt-Größe.",
+      "action": "Füge deine erste Frage hinzu"
+    },
+    "untitled": "Unbetitelte Frage",
+    "types": {
+      "short_text": "Kurzer Text",
+      "long_text": "Langer Text",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "number": "Nummer",
+      "select": "Einzelwahl",
+      "multi_select": "Multiple Choice",
+      "checkbox": "Kontrollkästchen",
+      "date": "Datum",
+      "url": "Link",
+      "file": "Datei hochladen",
+      "consent": "Einwilligung (muss angekreuzt werden)"
+    },
+    "scopes": {
+      "attendee": "Jeder Registrant",
+      "order": "Einmal pro Bestellung",
+      "guest": "Jeder Gast"
+    },
+    "badges": {
+      "required": "erforderlich",
+      "conditional": "bedingt"
+    },
+    "moveUp": "Aufsteigen",
+    "moveDown": "Nach unten schieben",
+    "question": "Frage",
+    "key": "Schlüssel",
+    "keyHelp": "Spaltenname in den Exporten und der API. Kleinbuchstaben, Unterstriche.",
+    "type": "Typ",
+    "fileNeedsS3": "Für den Dateiupload muss auf dieser Instanz S3-Speicher konfiguriert sein.",
+    "fileUnavailable": "Der S3-Speicher ist nicht konfiguriert, daher können Registranten diese Datei nicht hochladen. Das Formular zeigt sie als nicht verfügbar an.",
+    "asked": "Gefragt",
+    "options": "Optionen",
+    "optionsHelp": "Ein Wert pro Zeile. Verwenden Sie „Wert | Bezeichnung“, um einen anderen Wert zu speichern.",
+    "helpText": "Hilfetext",
+    "placeholder": "Platzhalter",
+    "requiredOnlyWhenShown": "(nur wenn angezeigt)",
+    "onlyForTicketTypes": "Nur für diese Ticketarten",
+    "noneSelectedIsAll": "(keine Auswahl = alle)",
+    "condition": "Zeige die Antwort nur an, wenn eine vorherige Antwort übereinstimmt.",
+    "conditionNeedsEarlier": "(Füge zuerst eine Frage darüber ein)",
+    "showWhen": "Zeigt an, wann <select></select> davon übereinstimmen:",
+    "allOrAny": "Alle oder irgendwelche",
+    "match": {
+      "and": "alle",
+      "or": "beliebig"
+    },
+    "ops": {
+      "eq": "Ist",
+      "neq": "ist nicht",
+      "contains": "enthält",
+      "empty": "ist leer",
+      "not_empty": "ist nicht leer"
+    },
+    "rule": {
+      "field": "Feld",
+      "operator": "Operator",
+      "value": "Wert",
+      "choose": "Wählen…",
+      "checked": "geprüft",
+      "unchecked": "ungeprüft",
+      "remove": "Regel entfernen",
+      "add": "Regel hinzufügen"
+    },
+    "dependNote": "Eine Frage kann nur von einer darüber stehenden Frage abhängen.",
+    "save": "Formular speichern"
+  },
+  "ticketTypes": {
+    "title": "Ticketarten",
+    "descriptionEmpty": "Bei einer Veröffentlichung ohne Angabe einer Ticketart wird automatisch eine kostenlose Eintrittskarte für den allgemeinen Eintritt erstellt.",
+    "descriptionGuests": "Was die Leute kaufen können und wie viele von jedem Artikel. Gäste zahlen den gleichen Preis wie die Eintrittskarte des Registranten.",
+    "description": "Was die Leute kaufen können und wie viele von jedem Artikel. Ein Preis von 0 bedeutet kostenlos.",
+    "add": "Ticketart hinzufügen",
+    "saved": "Gespeichert.",
+    "columns": {
+      "price": "Preis",
+      "sold": "Verkauft",
+      "salesWindow": "Verkaufsfenster"
+    },
+    "empty": {
+      "title": "Noch keine Ticketarten verfügbar",
+      "description": "Füge für jede Artikelart, die man kaufen kann, eine hinzu – Frühbucherpreis, Standardpreis, Studentenpreis."
+    },
+    "tax": "+ {rate} % Steuer",
+    "soldOfQuantity": "{sold} / {quantity}",
+    "held": "{count} gehalten",
+    "window": "{start} → {end}",
+    "windowNow": "Jetzt",
+    "windowEvent": "Ereignis",
+    "always": "Stets",
+    "badges": {
+      "hidden": "versteckt",
+      "code": "Code"
+    },
+    "confirmDelete": "\" {name} \" löschen?",
+    "dialog": {
+      "editTitle": "Ticketart bearbeiten",
+      "newTitle": "Neuer Tickettyp",
+      "description": "Preis in {currency}. Menge für eine limitierte Auflage festlegen."
+    },
+    "form": {
+      "description": "Beschreibung",
+      "price": "Preis",
+      "currency": "Währung",
+      "tax": "Steuer %",
+      "quantity": "Menge",
+      "quantityHelp": "Leer = unbegrenzt",
+      "minPerOrder": "Mindestbestellwert",
+      "maxPerOrder": "Maximaler Betrag pro Bestellung",
+      "salesStart": "Verkaufsstart",
+      "salesEnd": "Verkaufsende",
+      "hidden": "Auf der Veranstaltungsseite ausgeblendet",
+      "accessCode": "Zugangscode"
+    }
+  },
+  "discounts": {
+    "title": "Rabattcodes",
+    "description": "Prozentualer oder fester Rabatt auf die Bestellung. Käufer geben den Code an der Kasse ein; er gilt für alle Artikel der Bestellung.",
+    "add": "Code hinzufügen",
+    "form": {
+      "code": "Code",
+      "codePlaceholder": "FRÜHBUCHER",
+      "type": "Typ",
+      "kind": {
+        "percent": "% aus",
+        "fixed": "{currency} aus"
+      },
+      "percent": "Prozent",
+      "amount": "Betrag ( {currency} )",
+      "maxUses": "Max verwendet",
+      "unlimited": "unbegrenzt",
+      "expires": "Läuft ab",
+      "create": "Erstellen"
+    },
+    "columns": {
+      "code": "Code",
+      "discount": "Rabatt",
+      "uses": "Verwendung",
+      "expires": "Läuft ab"
+    },
+    "empty": {
+      "title": "Keine Rabattcodes",
+      "description": "Gutscheincodes sind die einfachste Möglichkeit, einen Frühbucherrabatt, einen Partnertarif oder einen Freunde-und-Familien-Preis anzubieten."
+    },
+    "percentOff": "{value} % Rabatt",
+    "amountOff": "{amount} aus",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Niemals",
+    "status": {
+      "expired": "Abgelaufen",
+      "usedUp": "verbraucht",
+      "active": "aktiv"
+    },
+    "confirmDelete": "Code {code} löschen? Bestellungen, die diesen Code bereits verwendet haben, behalten ihren Rabatt."
+  },
+  "invites": {
+    "title": "Einladungen",
+    "description": "Ein Link pro Gast oder ein Link für alle. Jede Einladung erfasst, wie oft sie verwendet wurde.",
+    "privateNote": "Diese Veranstaltung ist privat: Nur Personen, die einen Einladungslink öffnen (oder Mitglieder Ihrer Organisation), können sie sehen und sich anmelden. E-Mail-Einladungen funktionieren nur mit der Adresse, an die sie gesendet wurden.",
+    "publicNote": "Einladungen beschränken den Zugang nur zu <b></b>. Diese Veranstaltung ist {visibility}, daher kann sich jeder mit dem Link anmelden; Sie können aber trotzdem gerne Einladungen verschicken.",
+    "visibility": {
+      "public": "öffentlich",
+      "unlisted": "nicht gelistet",
+      "private": "Privat"
+    },
+    "form": {
+      "emailPlaceholder": "guest@example.com",
+      "maxUses": "Max verwendet",
+      "expiresInDays": "Läuft ab in (Tagen)",
+      "never": "niemals",
+      "create": "Einladung erstellen",
+      "help": "Lassen Sie das E-Mail-Feld leer, damit Sie einen teilbaren Link erhalten, den jeder nutzen kann."
+    },
+    "copyPrompt": "Diesen Link kopieren",
+    "newLink": "Neuer Link",
+    "copyLink": "Link kopieren",
+    "columns": {
+      "invite": "Einladen",
+      "uses": "Verwendung",
+      "expires": "Läuft ab"
+    },
+    "empty": {
+      "title": "Noch keine Einladungen",
+      "description": "Erstellen Sie oben ein Formular, um einen Link weiterzugeben oder ihn an eine bestimmte E-Mail-Adresse zu adressieren."
+    },
+    "shareableLink": "Teilbarer Link",
+    "created": "Erstellt {date}",
+    "usesOfMax": "{uses} / {max}",
+    "never": "Niemals",
+    "status": {
+      "expired": "Abgelaufen",
+      "usedUp": "verbraucht",
+      "active": "aktiv"
+    },
+    "revoke": "Widerrufen",
+    "confirmRevoke": "Diese Einladung widerrufen? Der Link funktioniert sofort nicht mehr."
+  },
+  "waitlist": {
+    "title": "Warteliste",
+    "summary": "{waiting} warten, {offered} angeboten, {registered} registriert.",
+    "description": "Die Warteschlange, die sich bildet, sobald die Veranstaltung ausverkauft ist.",
+    "enabledNote": "Wenn die Veranstaltung ausverkauft ist, können sich Besucher in diese Liste eintragen. Wenn Sie jemanden bewerben, wird ein Platz für 24 Stunden reserviert und ein Bestätigungslink per E-Mail zugesendet; nicht beanspruchte Plätze gehen wieder in den Pool zurück.",
+    "disabledNote": "Die Warteliste für diese Veranstaltung ist deaktiviert (Bearbeiten → Anmeldeoptionen). Personen, die sich zuvor angemeldet haben, werden weiterhin hier aufgeführt.",
+    "columns": {
+      "person": "Person",
+      "joined": "Beigetreten",
+      "actions": "Aktionen"
+    },
+    "empty": {
+      "title": "Niemand auf der Warteliste",
+      "description": "Sobald alle Tickets vergriffen sind, stehen die Leute hier Schlange. Sie entscheiden, wer den nächsten freien Platz bekommt."
+    },
+    "status": {
+      "waiting": "Warten",
+      "offered": "angeboten",
+      "registered": "eingetragen",
+      "expired": "Abgelaufen"
+    },
+    "heldUntil": "{ticketType} bis {time}",
+    "lapsed": "Angebot abgelaufen; kann erneut beworben werden",
+    "ticketType": "Ticketart",
+    "option": "{name} · {price}",
+    "optionWithRoom": "{name} · {price} · {room} links",
+    "offer": "Bieten Sie einen Platz an",
+    "confirmRemove": "{email} von der Warteliste entfernen?",
+    "confirmRemoveOffered": "Soll {email} von der Warteliste entfernt werden? Ihr reservierter Platz wird freigegeben."
+  },
+  "refund": {
+    "confirm": "Eine vollständige Rückerstattung {amount} ist nicht möglich? Die Tickets dieser Bestellung verlieren ihre Gültigkeit und die Plätze werden freigegeben, sobald Stripe dies bestätigt.",
+    "requested": "Rückerstattung beantragt.",
+    "button": "Rückerstattung {amount}"
+  },
+  "chart": {
+    "peak": "Spitzenwert {max} /Tag",
+    "summary": "{total, plural, one {# Registrierung} other {# Anmeldungen}} über {days, plural, one {# Tag} other {# Tage}}",
+    "aria": "Anmeldungen pro Tag. Höchstwert {max} an einem einzelnen Tag, {total} insgesamt.",
+    "tooltip": "{date}: {count}"
+  },
+  "scanner": {
+    "outcome": {
+      "ok": "Eingecheckt",
+      "offline_ok": "Eingecheckt (offline, wird synchronisiert)",
+      "already": "Bereits eingecheckt",
+      "not_confirmed": "Registrierung nicht bestätigt",
+      "revoked": "Ticket storniert oder erstattet",
+      "wrong_event": "Das Ticket gilt für eine andere Veranstaltung.",
+      "not_found": "Ungültiges Ticket",
+      "offline_unknown": "Unbekanntes Ticket (offline)",
+      "error": "Einchecken fehlgeschlagen"
+    },
+    "checkedIn": "Eingecheckt",
+    "ofConfirmed": "/ {confirmed}",
+    "mode": "Check-in-Modus",
+    "scan": "Scan",
+    "progress": "{pct} % bestätigte Tickets · aktualisiert {time}",
+    "progressQueued": "{pct} % bestätigte Tickets · aktualisiert {time} · {count} warten auf Synchronisierung",
+    "offline": "Offline: Scans werden gespeichert und später synchronisiert.",
+    "guestOf": "Gast von {name}",
+    "ticketTypeInAt": "{ticketType} · in at {time}",
+    "undo": "Rückgängig machen",
+    "camera": {
+      "denied": "Der Kamerazugriff wurde gesperrt. Erlauben Sie den Kamerazugriff für diese Website oder verwenden Sie die Suchfunktion, um Personen anhand ihres Namens einzuchecken.",
+      "unsupported": "Dieser Browser unterstützt die Kamera nicht. Nutzen Sie die Suche oder fügen Sie unten einen Ticketlink ein.",
+      "starting": "Kamera startet…",
+      "point": "Zeigen Sie auf den QR-Code auf dem Ticket."
+    },
+    "manualPlaceholder": "Oder fügen Sie einen Ticketlink/Code ein.",
+    "manualLabel": "Ticketlink oder Code",
+    "checkIn": "Einchecken",
+    "searchPlaceholder": "Suche nach Name oder E-Mail-Adresse",
+    "searchLabel": "Teilnehmer suchen",
+    "noMatches": "Keine bestätigten Teilnehmer gefunden.",
+    "listGuestOf": "• Gast von {name}",
+    "listDetail": "{ticketType} · {email}",
+    "listDetailInAt": "{ticketType} · {email} · in at {time}",
+    "recent": "Jüngste",
+    "recentDetail": "· {ticketType} · {time}",
+    "recentDetailManual": "• {ticketType} • {time} • Handbuch"
+  }
+}

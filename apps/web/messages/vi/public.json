@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "description": "Các sự kiện đang diễn ra. Cơ sở hạ tầng sự kiện mở: đăng tải sự kiện, đăng ký người tham dự, bán hoặc tặng vé, gửi thông điệp đến cộng đồng của bạn, điểm danh người tham dự."
+  },
+  "nav": {
+    "discover": "Phát hiện",
+    "pricing": "Giá cả",
+    "dashboard": "Bảng điều khiển",
+    "signIn": "Đăng nhập",
+    "host": "Tổ chức một sự kiện",
+    "hostShort": "Chủ nhà",
+    "api": "API"
+  },
+  "footer": {
+    "tagline": "Các sự kiện đang diễn ra. Cơ sở hạ tầng sự kiện mở: sự kiện miễn phí thì hoàn toàn miễn phí, sự kiện trả phí khiến người tổ chức phải trả 0,99%.",
+    "credit": "Được mang đến cho bạn bởi <inevent>InEvent</inevent>."
+  },
+  "og": {
+    "subtitle": "Mở rộng cơ sở hạ tầng sự kiện. Đăng tải thông tin, đăng ký, tham dự."
+  },
+  "github": {
+    "label": "evnelo/evnelo trên GitHub"
+  },
+  "captcha": {
+    "notice": "Trang web này được bảo vệ bởi reCAPTCHA và Chính sách Bảo mật <privacy>và Điều khoản Dịch vụ</privacy> <terms>Google được áp dụng</terms>"
+  },
+  "hero": {
+    "eyebrow": "Cơ sở hạ tầng sự kiện mở",
+    "title": "Từ cú nhấp chuột đầu tiên đến cổng chính.",
+    "lead": "Đăng tải sự kiện, bán vé, gửi tin nhắn cho người tham dự và thực hiện thủ tục check-in trên một nền tảng mở duy nhất, hoặc tự lưu trữ trên hệ thống của riêng bạn.",
+    "pricing": "<b>0,99%</b> cho vé trả phí. Sự kiện miễn phí vẫn miễn phí. <br></br> <b>0%</b> nếu bạn tự tổ chức.",
+    "explore": "Khám phá các sự kiện",
+    "scene": {
+      "steps": {
+        "discover": {
+          "label": "Phát hiện",
+          "sub": "Hãy tìm điều gì truyền cảm hứng cho bạn"
+        },
+        "register": {
+          "label": "Đăng ký",
+          "sub": "Chỉ cần vài cú nhấp chuột"
+        },
+        "ticketing": {
+          "label": "Đặt vé",
+          "sub": "Bán hàng không giới hạn"
+        },
+        "checkin": {
+          "label": "Đăng ký vào",
+          "sub": "Nhanh chóng. Thân thiện. Linh hoạt."
+        },
+        "attendance": {
+          "label": "Sự tham dự",
+          "sub": "Những con người thực. Tác động lâu dài."
+        }
+      },
+      "event": {
+        "category": "Âm nhạc",
+        "title": "Buổi tối hoàng hôn",
+        "date": "Thứ bảy, ngày 24 tháng 8 năm 2024",
+        "place": "Công viên Riverside"
+      },
+      "create": {
+        "title": "Tạo sự kiện của bạn",
+        "publish": "Công bố sự kiện"
+      },
+      "ticket": {
+        "title": "Vé vào cửa chung",
+        "meta": "Thứ Bảy, ngày 24 tháng 8 năm 2024 <br></br> Công viên Riverside"
+      },
+      "checkin": {
+        "title": "Người tham dự đã đăng ký tham dự.",
+        "welcome": "Chào mừng!"
+      },
+      "attendance": {
+        "more": "+ {count}",
+        "meta": "mọi người đã tham dự"
+      },
+      "notes": {
+        "left": "Nhiều sự kiện hơn. <br></br> Một thế giới cởi mở hơn.",
+        "right": "Các sự kiện <br></br> tác động đến mọi người."
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Evnelo: các sự kiện, đang chuyển động",
+      "description": "Mở rộng cơ sở hạ tầng sự kiện. Đăng tải sự kiện, đăng ký người tham dự, bán hoặc tặng vé, gửi thông điệp đến cộng đồng và điểm danh người tham dự. Phí 0,99% cho vé trả phí, sự kiện miễn phí hoặc tự tổ chức hoàn toàn miễn phí."
+    },
+    "pricing": {
+      "eyebrow": "Giá cả",
+      "title": "Mức phí thấp hơn bất kỳ nền tảng nào khác.",
+      "body": "Hầu hết các nền tảng đều tính phí từ 3 đến 5 phần trăm cộng thêm một khoản phí khác trên mỗi vé. Evnelo chỉ tính 0,99% cho vé trả phí và không tính phí cho vé miễn phí. Bạn kết nối tài khoản Stripe của riêng mình, vì vậy tiền vé sẽ được chuyển thẳng đến bạn và không bao giờ nằm ở chỗ chúng tôi; phí xử lý của Stripe được áp dụng theo mức phí của Stripe, và bạn có thể chuyển phí này cho người mua hoặc tự chịu trách nhiệm.",
+      "plans": {
+        "free": {
+          "title": "Sự kiện miễn phí",
+          "price": "$0",
+          "note": "Không phí nền tảng, không phí vé, số lượng người tham dự không giới hạn."
+        },
+        "paid": {
+          "title": "Sự kiện trả phí",
+          "price": "0,99%",
+          "note": "Giá vé sẽ được tính qua tài khoản Stripe đã liên kết của bạn. Một vé 25 đô la sẽ tốn của bạn 25 xu, cộng thêm phí Stripe."
+        },
+        "selfHosted": {
+          "title": "Tự lưu trữ",
+          "price": "$0",
+          "note": "Mã nguồn mở. Một container duy nhất, MySQL của bạn, khóa Stripe của riêng bạn. Không bao giờ phải trả phí nền tảng."
+        }
+      }
+    },
+    "flow": {
+      "eyebrow": "Cách nó chảy",
+      "title": "Mọi thứ nằm giữa \"Tôi muốn đi\" và \"Tôi đang ở đây\".",
+      "steps": {
+        "publish": {
+          "title": "Xuất bản",
+          "text": "Trang sự kiện hiển thị ảnh bìa, lịch trình, địa điểm và người dẫn chương trình. Có thể công khai, không công khai hoặc riêng tư theo lời mời."
+        },
+        "register": {
+          "title": "Đăng ký",
+          "text": "Các hạng vé khác nhau, câu hỏi do chính bạn đặt ra, khách mời có vé riêng, mã giảm giá, danh sách chờ khi hết vé."
+        },
+        "pay": {
+          "title": "Thanh toán và nhận",
+          "text": "Các phương thức thanh toán bao gồm: Thẻ tín dụng, Apple Pay, Google Pay, Pix. Vé có mã QR, thẻ ví điện tử, tệp lịch, xác nhận qua email và SMS."
+        },
+        "checkin": {
+          "title": "Đăng ký vào",
+          "text": "Một ứng dụng quét hoạt động trên mọi trình duyệt điện thoại, vẫn hoạt động ngay cả khi không có tín hiệu và hiển thị trực tiếp quá trình lấp đầy phòng."
+        }
+      }
+    },
+    "openSource": {
+      "eyebrow": "Mã nguồn mở",
+      "title": "Sự kiện của bạn. Dữ liệu của bạn. Hệ thống của bạn.",
+      "body": "Evnelo là mã nguồn mở theo giấy phép Apache 2.0. Bạn có thể tự lưu trữ nó với một container và một cơ sở dữ liệu MySQL, tích hợp khóa Stripe, Resend và Vonage của riêng mình, và lưu giữ mọi bản ghi người tham dự trên cơ sở hạ tầng của riêng bạn. Cùng một sản phẩm, không mất phí nền tảng.",
+      "points": {
+        "export": "Tính năng xuất và xóa người tham dự được tích hợp sẵn.",
+        "providers": "Bạn có thể tự chuẩn bị phương thức thanh toán, email và tin nhắn SMS của mình.",
+        "ops": "Quá trình di chuyển dữ liệu, kiểm tra sức khỏe hệ thống và sao lưu được ghi lại đầy đủ.",
+        "migrate": "Việc chuyển đổi sang hoặc từ phiên bản được lưu trữ là thao tác với cơ sở dữ liệu, không phải là viết lại."
+      },
+      "source": "Xem nguồn",
+      "apiReference": "Tài liệu tham khảo API"
+    },
+    "developers": {
+      "eyebrow": "Dành cho các nhà phát triển",
+      "title": "Được xây dựng để làm nền móng cho các công trình khác.",
+      "points": {
+        "rest": "API REST cho mọi tài nguyên, với khả năng ghi dữ liệu bất biến.",
+        "sdk": "Đã tạo SDK TypeScript và máy chủ MCP cho các tác nhân.",
+        "webhooks": "Đã ký webhook cho việc đăng ký, thanh toán và điểm danh.",
+        "openapi": "Tài liệu OpenAPI và tài liệu tương tác tại /api/v1/docs"
+      }
+    },
+    "upcoming": {
+      "eyebrow": "Sắp diễn ra",
+      "title": "Các sự kiện công cộng trên Evnelo",
+      "all": "Tất cả các sự kiện"
+    },
+    "cta": {
+      "title": "Hãy đảm bảo quá trình thu thập thông tin diễn ra suôn sẻ.",
+      "body": "Tạo sự kiện đầu tiên của bạn chỉ trong vài phút. Sự kiện miễn phí không yêu cầu gì; sự kiện trả phí yêu cầu tài khoản Stripe của bạn.",
+      "explore": "Xem có gì đang diễn ra"
+    }
+  },
+  "discover": {
+    "meta": {
+      "description": "Các sự kiện công cộng từ mọi đơn vị tổ chức trên Evnelo. Tìm kiếm theo thành phố, chủ đề, ngày, giá cả và khoảng cách."
+    },
+    "headline": {
+      "query": {
+        "none": "Các sự kiện khớp với “ {q} ”",
+        "city": "Các sự kiện khớp với “ {q} ” trong {city}",
+        "near": "Các sự kiện phù hợp với “ {q} ” gần bạn",
+        "online": "Các sự kiện khớp với “ {q} ” trực tuyến",
+        "inPerson": "Các sự kiện phù hợp với “ {q} ” trực tiếp"
+      },
+      "free": {
+        "none": "Sự kiện miễn phí",
+        "city": "Các sự kiện miễn phí tại {city}",
+        "near": "Các sự kiện miễn phí gần bạn",
+        "online": "Các sự kiện trực tuyến miễn phí",
+        "inPerson": "Các sự kiện miễn phí trực tiếp"
+      },
+      "tag": {
+        "none": "sự kiện {tag}",
+        "city": "{tag} sự kiện trong {city}",
+        "near": "{tag} sự kiện gần bạn",
+        "online": "sự kiện {tag} trực tuyến",
+        "inPerson": "các sự kiện {tag} trực tiếp"
+      },
+      "paid": {
+        "none": "Sự kiện có bán vé",
+        "city": "Các sự kiện có bán vé tại {city}",
+        "near": "Các sự kiện có bán vé gần bạn",
+        "online": "Các sự kiện có bán vé trực tuyến",
+        "inPerson": "Các sự kiện có bán vé trực tiếp"
+      },
+      "all": {
+        "none": "Có gì đang diễn ra?",
+        "city": "Các sự kiện trong {city}",
+        "near": "Các sự kiện gần bạn",
+        "online": "Các sự kiện trực tuyến",
+        "inPerson": "Các sự kiện trực tiếp"
+      }
+    },
+    "lead": "Các buổi nói chuyện, hội thảo, bữa tối và gặp gỡ từ tất cả các đơn vị tổ chức trên Evnelo.",
+    "jsonLdName": "Các sự kiện công cộng sắp tới",
+    "count": {
+      "exact": "{count, plural, one {sự kiện #} other {sự kiện #}}",
+      "more": "{count, plural, one {# + sự kiện} other {# + sự kiện}}",
+      "exactFrom": "{count, plural, one {sự kiện #} other {sự kiện #}} từ # {from}",
+      "moreFrom": "{count, plural, one {# + sự kiện} other {# + sự kiện}} từ # {from}"
+    },
+    "format": {
+      "online": "Trực tuyến",
+      "in_person": "Trực tiếp",
+      "hybrid": "Lai"
+    },
+    "price": {
+      "paid": "Trả"
+    },
+    "date": {
+      "today": "Hôm nay",
+      "week": "Tuần này",
+      "month": "Tháng này",
+      "custom": "Chọn ngày"
+    },
+    "active": {
+      "showing": "Đang hiển thị",
+      "query": "“ {q} ”",
+      "customRange": "{from} đến {to}",
+      "customDates": "Ngày tùy chỉnh",
+      "within": "Trong vòng {km} km",
+      "remove": "Xóa bộ lọc",
+      "clearAll": "Xóa tất cả"
+    },
+    "search": {
+      "events": "Sự kiện tìm kiếm",
+      "placeholder": "Tìm kiếm sự kiện, người tổ chức và thẻ",
+      "city": "Thành phố",
+      "cityOption": "{city}, {country}",
+      "nearMe": "Gần tôi",
+      "nearYou": "Gần bạn",
+      "unsupported": "Trình duyệt này không thể chia sẻ vị trí của bạn. Hãy thử nhập thành phố thay thế.",
+      "blocked": "Vị trí đã bị chặn. Thay vào đó, hãy lọc theo thành phố."
+    },
+    "toolbar": {
+      "label": "Bộ lọc",
+      "km": "{km} km",
+      "anywhere": "Bất cứ nơi nào",
+      "view": "Xem",
+      "list": "Danh sách",
+      "calendar": "Lịch"
+    },
+    "customDates": {
+      "from": "Từ",
+      "to": "ĐẾN",
+      "apply": "Ngày áp dụng",
+      "clear": "Ngày trống"
+    },
+    "topics": "Chủ đề",
+    "sections": {
+      "featured": "Nổi bật",
+      "upcoming": "Sắp tới"
+    },
+    "empty": {
+      "month": {
+        "title": "Không có lịch trình nào trong tháng này.",
+        "body": "Hãy thử lại vào tháng sau hoặc vệ sinh bộ lọc.",
+        "action": "Tháng tới"
+      },
+      "filtered": {
+        "title": "Không có sự kiện nào phù hợp với các bộ lọc này.",
+        "body": "Hãy thử mở rộng phạm vi ngày hoặc xóa bộ lọc.",
+        "action": "Xóa bộ lọc"
+      },
+      "end": {
+        "title": "Bạn đã đến cuối rồi.",
+        "body": "Trên trang này hiển thị tất cả các sự kiện công cộng sắp diễn ra.",
+        "action": "Trở lại điểm xuất phát"
+      },
+      "none": {
+        "title": "Hiện chưa có sự kiện công cộng nào sắp diễn ra.",
+        "body": "Hãy là người đầu tiên tổ chức sự kiện này."
+      }
+    },
+    "pagination": {
+      "label": "Đánh số trang",
+      "more": "Tải thêm"
+    },
+    "card": {
+      "from": "từ {price}",
+      "underOneKm": "Cách đó chưa đầy 1 km",
+      "kmAway": "Cách {km} km"
+    },
+    "calendar": {
+      "eyebrow": "Lịch",
+      "changeMonth": "Thay đổi tháng",
+      "goTo": "Đi đến {month}",
+      "today": "Hôm nay",
+      "dayCount": "{count, plural, one {sự kiện #} other {sự kiện #}}",
+      "overflow": "+ {count} nữa",
+      "timezoneNote": "Thời gian được hiển thị theo múi giờ riêng của từng sự kiện.",
+      "rowTitle": "{name} — {time}"
+    }
+  },
+  "org": {
+    "meta": {
+      "description": "Sự kiện bởi {name}"
+    },
+    "eyebrow": "Người tổ chức",
+    "upcoming": "Sắp tới",
+    "count": "{count, plural, one {sự kiện #} other {sự kiện #}}",
+    "empty": {
+      "title": "Hiện tại chưa có lịch trình nào.",
+      "body": "Hãy quay lại sớm hoặc xem các máy chủ khác đang sử dụng dịch vụ gì.",
+      "action": "Xem tất cả sự kiện"
+    },
+    "past": "Các sự kiện trong quá khứ"
+  },
+  "report": {
+    "meta": {
+      "title": "Báo cáo sự kiện"
+    },
+    "eyebrow": "Báo cáo",
+    "title": "Báo cáo sự kiện",
+    "reasons": {
+      "spam": "Thư rác hoặc thông tin sai lệch",
+      "scam": "Lừa đảo hoặc gian lận",
+      "inappropriate": "Nội dung không phù hợp",
+      "copyright": "Bản quyền hoặc thương hiệu",
+      "other": "Một điều khác"
+    },
+    "notFound": "Không tìm thấy sự kiện đó.",
+    "openFromEvent": "Mở trang này từ một sự kiện để báo cáo sự kiện đó.",
+    "sent": "Cảm ơn. Báo cáo của bạn về <b>{name}</b> đã được ghi nhận.",
+    "sentAndForwarded": "Cảm ơn. Báo cáo của bạn về <b>{name}</b> đã được ghi nhận và gửi đến người điều hành của phiên bản này.",
+    "reporting": "Báo cáo <b>{name}</b> bởi {org}. Báo cáo được gửi đến những người vận hành phiên bản Evnelo này, chứ không phải đến máy chủ.",
+    "errors": {
+      "limited": "Quá nhiều báo cáo từ kết nối của bạn. Vui lòng thử lại sau.",
+      "invalid": "Hãy kiểm tra lại mẫu đơn và thử lại."
+    },
+    "form": {
+      "reason": "Lý do",
+      "details": "Chi tiết",
+      "optional": "(không bắt buộc)",
+      "email": "Email của bạn",
+      "optionalFollowUp": "(Tùy chọn, nếu chúng ta có thể tiếp tục thảo luận)",
+      "submit": "Gửi báo cáo"
+    },
+    "back": "Trở lại sự kiện"
+  },
+  "notFound": {
+    "meta": {
+      "title": "Không tìm thấy trang"
+    },
+    "eyebrow": "404",
+    "title": "Ở đây chẳng có gì cả.",
+    "body": "Liên kết có thể đã cũ, sự kiện có thể đã bị gỡ xuống hoặc địa chỉ có lỗi chính tả.",
+    "action": "Xem các sự kiện công cộng"
+  },
+  "error": {
+    "title": "Đã xảy ra lỗi",
+    "body": "Trang web gặp lỗi. Thử lại thường sẽ khắc phục được sự cố; nếu lỗi vẫn tiếp diễn, nhà cung cấp dịch vụ lưu trữ đã được thông báo.",
+    "reference": "Tham chiếu {digest}",
+    "home": "Về nhà"
+  }
+}

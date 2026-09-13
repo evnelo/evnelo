@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { CaptchaField, captchaTokenFrom } from "@/components/captcha";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,6 +34,9 @@ type Props = {
  * evaluated live from @evnelo/core and the same schema runs on the server.
  */
 export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guestsEnabled, maxGuests, onSubmitted }: Props) {
+  const t = useTranslations("event");
+  const tc = useTranslations("common");
+  const locale = useLocale();
   const [ticketTypeId, setTicketTypeId] = useState(ticketTypes[0]?.id ?? "");
   const [answers, setAnswers] = useState<Answers>({});
   const [guestAnswers, setGuestAnswers] = useState<Answers[]>([]);
@@ -48,19 +52,19 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
   const schema = useMemo(
     () =>
       z.object({
-        name: z.string().trim().min(1, "Enter your name"),
-        email: z.string().trim().email("Enter a valid email"),
-        phone: collectPhone ? z.string().trim().regex(/^\+[1-9]\d{6,14}$/, "Use international format, e.g. +5511999999999").optional().or(z.literal("")) : z.string().optional(),
+        name: z.string().trim().min(1, t("form.validation.name")),
+        email: z.string().trim().email(t("form.validation.email")),
+        phone: collectPhone ? z.string().trim().regex(/^\+[1-9]\d{6,14}$/, t("form.validation.phone")).optional().or(z.literal("")) : z.string().optional(),
         smsOptIn: z.boolean().optional(),
         attendee: buildAnswersSchema(fields, { scope: "attendee", ticketTypeId }),
         order: buildAnswersSchema(fields, { scope: "order" }),
         guests: z.array(z.object({
-          name: z.string().trim().min(1, "Enter your guest's name"),
-          email: z.string().trim().email("Enter a valid email").optional().or(z.literal("")),
+          name: z.string().trim().min(1, t("form.validation.guestName")),
+          email: z.string().trim().email(t("form.validation.email")).optional().or(z.literal("")),
           answers: buildAnswersSchema(fields, { scope: "guest", ticketTypeId }),
         })).max(maxGuests),
       }),
-    [fields, ticketTypeId, collectPhone, maxGuests],
+    [fields, ticketTypeId, collectPhone, maxGuests, t],
   );
   type Values = z.input<typeof schema>;
 
@@ -96,7 +100,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
       body: JSON.stringify({ eventId, ticketTypeId, ...values, discountCode: discount?.code, captchaToken }),
     });
     if (!res.ok) {
-      setServerError((await res.json().catch(() => ({})))?.error ?? "Something went wrong. Try again.");
+      setServerError((await res.json().catch(() => ({})))?.error ?? tc("errors.generic"));
       return;
     }
     onSubmitted?.({ ...(await res.json()), partySize: 1 + values.guests.length });
@@ -117,7 +121,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
     const label = (
       <Label htmlFor={name}>
         {f.label}
-        {!f.required && <span className="ml-1 font-normal text-muted-foreground">(optional)</span>}
+        {!f.required && <span className="ms-1 font-normal text-muted-foreground">{t("form.optional")}</span>}
       </Label>
     );
     const help = f.helpText && <p className="mt-1 text-xs text-muted-foreground">{f.helpText}</p>;
@@ -140,14 +144,14 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
         return (
           <div key={name}>{label}
             <select id={name} className="mt-1.5 flex h-11 w-full rounded-lg border border-input bg-card px-3 text-sm shadow-[inset_0_1px_1px_rgb(23_23_15/0.04)] focus-visible:border-ring focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/25" {...reg} defaultValue="">
-              <option value="" disabled>Choose one</option>
+              <option value="" disabled>{t("form.chooseOne")}</option>
               {(f.options ?? []).map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>{help}{err(name)}
           </div>
         );
       case "multi_select":
         return (
-          <fieldset key={name}><legend className="text-sm font-medium">{f.label}{!f.required && <span className="ml-1 font-normal text-muted-foreground">(optional)</span>}</legend>
+          <fieldset key={name}><legend className="text-sm font-medium">{f.label}{!f.required && <span className="ms-1 font-normal text-muted-foreground">{t("form.optional")}</span>}</legend>
             <div className="mt-2 space-y-2">
               {(f.options ?? []).map((o) => (
                 <label key={o.value} className="flex min-h-11 items-center gap-2.5 text-sm">
@@ -165,7 +169,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
         return (
           <div key={name} className="flex items-start gap-2.5">
             <Checkbox id={name} className="mt-0.5" onCheckedChange={(c) => { form.setValue(name, c === true, { shouldValidate: form.formState.isSubmitted }); update(f.key, c === true); }} />
-            <Label htmlFor={name} className="leading-snug">{f.label}{!f.required && f.type === "checkbox" && <span className="ml-1 font-normal text-muted-foreground">(optional)</span>}</Label>
+            <Label htmlFor={name} className="leading-snug">{f.label}{!f.required && f.type === "checkbox" && <span className="ms-1 font-normal text-muted-foreground">{t("form.optional")}</span>}</Label>
             {err(name)}
           </div>
         );
@@ -182,26 +186,26 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
   const updateHost = (key: string, value: unknown) => setAnswers((a) => ({ ...a, [key]: value }));
   const updateGuest = (i: number) => (key: string, value: unknown) => setGuestAnswers((all) => all.map((a, j) => (j === i ? { ...a, [key]: value } : a)));
 
-  const ticketPrice = (t: TicketType) => (t.priceMinor === 0 ? "Free" : formatMoney(t.priceMinor, t.currency));
+  const ticketPrice = (tt: TicketType) => (tt.priceMinor === 0 ? tc("labels.free") : formatMoney(tt.priceMinor, tt.currency, locale));
 
   return (
     <form onSubmit={form.handleSubmit(submit)} className="space-y-6" noValidate>
       {ticketTypes.length > 0 && (
         <fieldset>
-          <legend className="eyebrow">Ticket</legend>
+          <legend className="eyebrow">{t("form.ticket")}</legend>
           <div className="mt-2.5 grid gap-2.5">
-            {ticketTypes.map((t) => {
-              const soldOut = t.quantity != null && t.sold + t.held >= t.quantity;
+            {ticketTypes.map((tt) => {
+              const soldOut = tt.quantity != null && tt.sold + tt.held >= tt.quantity;
               return (
-                <label key={t.id} className="option-card">
-                  <input type="radio" name="ticketType" value={t.id} checked={ticketTypeId === t.id} disabled={soldOut} onChange={() => { setTicketTypeId(t.id); setDiscount(null); }} className="peer sr-only" />
+                <label key={tt.id} className="option-card">
+                  <input type="radio" name="ticketType" value={tt.id} checked={ticketTypeId === tt.id} disabled={soldOut} onChange={() => { setTicketTypeId(tt.id); setDiscount(null); }} className="peer sr-only" />
                   <span aria-hidden className="flex size-5 shrink-0 items-center justify-center rounded-full border border-border bg-card transition-colors peer-checked:border-[6px] peer-checked:border-event" />
                   <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-medium">{t.name}</span>
-                    {t.description && <span className="mt-0.5 line-clamp-2 block text-xs text-muted-foreground">{t.description}</span>}
+                    <span className="block text-sm font-medium">{tt.name}</span>
+                    {tt.description && <span className="mt-0.5 line-clamp-2 block text-xs text-muted-foreground">{tt.description}</span>}
                   </span>
                   <span className={cn("shrink-0 font-display text-lg tabular-nums", soldOut && "font-sans text-xs uppercase tracking-wide text-muted-foreground")}>
-                    {soldOut ? "Sold out" : ticketPrice(t)}
+                    {soldOut ? tc("labels.soldOut") : ticketPrice(tt)}
                   </span>
                 </label>
               );
@@ -211,17 +215,17 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
       )}
 
       <div className="space-y-4">
-        <p className="eyebrow">Your details</p>
-        <div><Label htmlFor="name">Name</Label><Input id="name" autoComplete="name" className="mt-1.5 h-11" {...form.register("name")} />{err("name")}</div>
-        <div><Label htmlFor="email">Email</Label><Input id="email" type="email" autoComplete="email" className="mt-1.5 h-11" {...form.register("email")} />{err("email")}</div>
+        <p className="eyebrow">{t("form.yourDetails")}</p>
+        <div><Label htmlFor="name">{tc("labels.name")}</Label><Input id="name" autoComplete="name" className="mt-1.5 h-11" {...form.register("name")} />{err("name")}</div>
+        <div><Label htmlFor="email">{tc("labels.email")}</Label><Input id="email" type="email" autoComplete="email" className="mt-1.5 h-11" {...form.register("email")} />{err("email")}</div>
         {collectPhone && (
           <div>
-            <Label htmlFor="phone">Phone <span className="font-normal text-muted-foreground">(optional)</span></Label>
+            <Label htmlFor="phone">{tc("labels.phone")} <span className="font-normal text-muted-foreground">{t("form.optional")}</span></Label>
             <Input id="phone" type="tel" autoComplete="tel" placeholder="+5511999999999" className="mt-1.5 h-11" {...form.register("phone")} />
             {err("phone")}
             <label className="mt-3 flex items-start gap-2.5 text-sm">
               <Checkbox onCheckedChange={(c) => form.setValue("smsOptIn", c === true)} className="mt-0.5" />
-              <span>Text me my ticket and a reminder before the event. Reply STOP to opt out.</span>
+              <span>{t("form.smsOptIn")}</span>
             </label>
           </div>
         )}
@@ -233,10 +237,11 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
       {guestsEnabled && (
         <section className="hairline space-y-3 pt-5">
           <div className="flex items-baseline justify-between gap-3">
-            <h3 className="eyebrow">Guests</h3>
+            <h3 className="eyebrow">{t("form.guests")}</h3>
             <span className="text-xs text-muted-foreground">
-              {guests.fields.length === 0 ? `Bring up to ${maxGuests} guest${maxGuests === 1 ? "" : "s"}` : `${guests.fields.length} of ${maxGuests}`}
-              {selected && selected.priceMinor > 0 ? `, ${formatMoney(selected.priceMinor, selected.currency)} each` : ""}
+              {selected && selected.priceMinor > 0
+                ? (guests.fields.length === 0 ? t("form.bringUpToEach", { count: maxGuests, price: formatMoney(selected.priceMinor, selected.currency, locale) }) : t("form.guestCountEach", { count: guests.fields.length, max: maxGuests, price: formatMoney(selected.priceMinor, selected.currency, locale) }))
+                : (guests.fields.length === 0 ? t("form.bringUpTo", { count: maxGuests }) : t("form.guestCount", { count: guests.fields.length, max: maxGuests }))}
             </span>
           </div>
           {guests.fields.map((g, i) => {
@@ -247,15 +252,15 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-2.5 text-sm font-medium">
                     <span className="flex size-8 items-center justify-center rounded-full bg-accent text-accent-foreground"><UserRound className="size-4" aria-hidden /></span>
-                    Guest {i + 1}
+                    {t("form.guestN", { n: i + 1 })}
                   </span>
-                  <button type="button" onClick={() => removeGuest(i)} className="press inline-flex h-9 items-center gap-1 rounded-full px-2.5 text-xs text-muted-foreground hover:bg-muted hover:text-foreground" aria-label={`Remove guest ${i + 1}`}>
-                    <X className="size-3.5" aria-hidden /> Remove
+                  <button type="button" onClick={() => removeGuest(i)} className="press inline-flex h-9 items-center gap-1 rounded-full px-2.5 text-xs text-muted-foreground hover:bg-muted hover:text-foreground" aria-label={t("form.removeGuestN", { n: i + 1 })}>
+                    <X className="size-3.5" aria-hidden /> {tc("actions.remove")}
                   </button>
                 </div>
-                <div><Label htmlFor={`${prefix}.name`}>Name</Label><Input id={`${prefix}.name`} className="mt-1.5 h-11" {...form.register(`guests.${i}.name`)} />{err(`${prefix}.name`)}</div>
+                <div><Label htmlFor={`${prefix}.name`}>{tc("labels.name")}</Label><Input id={`${prefix}.name`} className="mt-1.5 h-11" {...form.register(`guests.${i}.name`)} />{err(`${prefix}.name`)}</div>
                 <div>
-                  <Label htmlFor={`${prefix}.email`}>Email <span className="font-normal text-muted-foreground">(optional, we'll send their ticket to you otherwise)</span></Label>
+                  <Label htmlFor={`${prefix}.email`}>{tc("labels.email")} <span className="font-normal text-muted-foreground">{t("form.guestEmailOptional")}</span></Label>
                   <Input id={`${prefix}.email`} type="email" className="mt-1.5 h-11" {...form.register(`guests.${i}.email`)} />{err(`${prefix}.email`)}
                 </div>
                 {guestFields.map((f) => renderField(f, `${prefix}.answers`, gVisible.has(f.key), updateGuest(i)))}
@@ -264,7 +269,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
           })}
           {guests.fields.length < maxGuests && (
             <Button type="button" variant="outline" className="h-11 w-full border-dashed" onClick={addGuest}>
-              <UserPlus className="size-4" /> Add a guest
+              <UserPlus className="size-4" /> {t("form.addGuest")}
             </Button>
           )}
         </section>
@@ -278,19 +283,19 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
       <div className="sticky bottom-0 -mx-5 -mb-5 mt-2 border-t border-border/70 bg-card/95 px-5 pb-5 pt-4 backdrop-blur sm:static sm:mx-0 sm:mb-0 sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none">
         {selected && (listMinor > 0 || partySize > 1) && (
           <div className="mb-3 flex items-baseline justify-between gap-3 text-sm">
-            <span className="text-muted-foreground">{partySize > 1 ? `${partySize} × ${selected.name}` : selected.name}</span>
+            <span className="text-muted-foreground">{partySize > 1 ? t("form.lineItem", { count: partySize, name: selected.name }) : selected.name}</span>
             <span className="font-display text-xl tabular-nums">
-              {discount && listMinor > 0 && discount.totalMinor !== listMinor && <s className="mr-2 text-sm text-muted-foreground">{formatMoney(listMinor, selected.currency)}</s>}
-              {totalMinor === 0 ? "Free" : formatMoney(totalMinor, selected.currency)}
+              {discount && listMinor > 0 && discount.totalMinor !== listMinor && <s className="me-2 text-sm text-muted-foreground">{formatMoney(listMinor, selected.currency, locale)}</s>}
+              {totalMinor === 0 ? tc("labels.free") : formatMoney(totalMinor, selected.currency, locale)}
             </span>
           </div>
         )}
         <CaptchaField action="register" />
         <Button type="submit" variant="event" size="lg" className="w-full" pending={form.formState.isSubmitting} disabled={!selected}>
           {totalMinor > 0
-            ? `Continue to payment, ${formatMoney(totalMinor, selected!.currency)}${partySize > 1 ? ` for ${partySize}` : ""}`
-            : discount && listMinor > 0 ? (partySize > 1 ? `Register ${partySize} people, free with code` : "Register, free with code")
-            : partySize > 1 ? `Register ${partySize} people` : "Register"}
+            ? (partySize > 1 ? t("form.continueToPaymentFor", { price: formatMoney(totalMinor, selected!.currency, locale), count: partySize }) : t("form.continueToPayment", { price: formatMoney(totalMinor, selected!.currency, locale) }))
+            : discount && listMinor > 0 ? (partySize > 1 ? t("form.registerPeopleFreeWithCode", { count: partySize }) : t("form.registerFreeWithCode"))
+            : partySize > 1 ? t("form.registerPeople", { count: partySize }) : t("form.register")}
         </Button>
       </div>
     </form>

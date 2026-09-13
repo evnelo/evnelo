@@ -14,5 +14,297 @@
   "footer": {
     "tagline": "Events, in motion. Open event infrastructure: free events are free, paid events cost the host 0.99%.",
     "credit": "Brought to you by <inevent>InEvent</inevent>."
+  },
+  "og": {
+    "subtitle": "Open event infrastructure. Publish, register, attend."
+  },
+  "github": {
+    "label": "evnelo/evnelo on GitHub"
+  },
+  "captcha": {
+    "notice": "This site is protected by reCAPTCHA and the Google <privacy>Privacy Policy</privacy> and <terms>Terms of Service</terms> apply."
+  },
+  "hero": {
+    "eyebrow": "Open event infrastructure",
+    "title": "From first click to front gate.",
+    "lead": "Publish events, sell tickets, message attendees, and run check-in in one open platform, or self-host it on your own stack.",
+    "pricing": "<b>0.99%</b> on paid tickets. Free events stay free.<br></br><b>0%</b> if you self-host.",
+    "explore": "Explore events",
+    "scene": {
+      "steps": {
+        "discover": { "label": "Discover", "sub": "Find what moves you" },
+        "register": { "label": "Register", "sub": "A few clicks away" },
+        "ticketing": { "label": "Ticketing", "sub": "Sell with no limits" },
+        "checkin": { "label": "Check-in", "sub": "Fast. Friendly. Flexible." },
+        "attendance": { "label": "Attendance", "sub": "Real people.\nLasting impact." }
+      },
+      "event": {
+        "category": "Music",
+        "title": "Sunset Sessions",
+        "date": "Sat, Aug 24, 2024",
+        "place": "Riverside Park"
+      },
+      "create": {
+        "title": "Create your event",
+        "publish": "Publish event"
+      },
+      "ticket": {
+        "title": "General Admission",
+        "meta": "Sat, Aug 24, 2024<br></br>Riverside Park"
+      },
+      "checkin": {
+        "title": "Attendee checked in",
+        "welcome": "Welcome!"
+      },
+      "attendance": {
+        "more": "+{count}",
+        "meta": "people attended"
+      },
+      "notes": {
+        "left": "More events.<br></br>A more open world.",
+        "right": "Events<br></br>move people."
+      }
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Evnelo: events, in motion",
+      "description": "Open event infrastructure. Publish events, register attendees, sell or give away tickets, message your community and check people in. 0.99% on paid tickets, free events are free, or self-host for nothing."
+    },
+    "pricing": {
+      "eyebrow": "Pricing",
+      "title": "Lower fees than any other platform.",
+      "body": "Most platforms take 3 to 5 percent plus a fee on every ticket. Evnelo takes 0.99% on paid tickets and nothing on free ones. You connect your own Stripe account, so ticket money goes straight to you and never sits with us; Stripe’s processing fee applies at Stripe’s rate, and you can pass fees to buyers or absorb them.",
+      "plans": {
+        "free": { "title": "Free events", "price": "$0", "note": "No platform fee, no per-ticket fee, unlimited attendees." },
+        "paid": { "title": "Paid events", "price": "0.99%", "note": "On the ticket price, charged through your connected Stripe account. A $25 ticket costs you 25 cents, plus Stripe." },
+        "selfHosted": { "title": "Self-hosted", "price": "$0", "note": "Open source. One container, your MySQL, your own Stripe keys. No platform fee, ever." }
+      }
+    },
+    "flow": {
+      "eyebrow": "How it flows",
+      "title": "Everything between “I want to go” and “I’m here”.",
+      "steps": {
+        "publish": { "title": "Publish", "text": "An event page with your cover, schedule, venue and hosts. Public, unlisted, or private by invitation." },
+        "register": { "title": "Register", "text": "Ticket tiers, your own questions, guests with their own tickets, discount codes, a waitlist when you sell out." },
+        "pay": { "title": "Pay and receive", "text": "Cards, Apple Pay, Google Pay, Pix. Tickets with a QR code, wallet passes, calendar files, confirmation by email and SMS." },
+        "checkin": { "title": "Check in", "text": "A scanner that runs in any phone browser, keeps working without signal, and shows the room filling up live." }
+      }
+    },
+    "openSource": {
+      "eyebrow": "Open source",
+      "title": "Your events. Your data. Your stack.",
+      "body": "Evnelo is open source under the Apache 2.0 license. Host it yourself with one container and one MySQL database, plug in your own Stripe, Resend and Vonage keys, and keep every attendee record on your own infrastructure. Same product, no platform fee.",
+      "points": {
+        "export": "Attendee export and erasure built in",
+        "providers": "Bring your own payment, email and SMS providers",
+        "ops": "Migrations, health checks and backups documented",
+        "migrate": "Moving to or from the hosted edition is a database, not a rewrite"
+      },
+      "source": "View the source",
+      "apiReference": "API reference"
+    },
+    "developers": {
+      "eyebrow": "For developers",
+      "title": "Built to be built on.",
+      "points": {
+        "rest": "REST API for every resource, with idempotent writes",
+        "sdk": "Generated TypeScript SDK and an MCP server for agents",
+        "webhooks": "Signed webhooks for registrations, payments and check-ins",
+        "openapi": "OpenAPI document and interactive docs at /api/v1/docs"
+      }
+    },
+    "upcoming": {
+      "eyebrow": "Happening soon",
+      "title": "Public events on Evnelo",
+      "all": "All events"
+    },
+    "cta": {
+      "title": "Make gathering flow.",
+      "body": "Create your first event in a few minutes. Free events need nothing; paid events need your Stripe account.",
+      "explore": "See what’s on"
+    }
+  },
+  "discover": {
+    "meta": {
+      "description": "Public events from every host on Evnelo. Search by city, topic, date, price and distance."
+    },
+    "headline": {
+      "query": {
+        "none": "Events matching “{q}”",
+        "city": "Events matching “{q}” in {city}",
+        "near": "Events matching “{q}” near you",
+        "online": "Events matching “{q}” online",
+        "inPerson": "Events matching “{q}” in person"
+      },
+      "free": {
+        "none": "Free events",
+        "city": "Free events in {city}",
+        "near": "Free events near you",
+        "online": "Free events online",
+        "inPerson": "Free events in person"
+      },
+      "tag": {
+        "none": "{tag} events",
+        "city": "{tag} events in {city}",
+        "near": "{tag} events near you",
+        "online": "{tag} events online",
+        "inPerson": "{tag} events in person"
+      },
+      "paid": {
+        "none": "Ticketed events",
+        "city": "Ticketed events in {city}",
+        "near": "Ticketed events near you",
+        "online": "Ticketed events online",
+        "inPerson": "Ticketed events in person"
+      },
+      "all": {
+        "none": "What's on",
+        "city": "Events in {city}",
+        "near": "Events near you",
+        "online": "Events online",
+        "inPerson": "Events in person"
+      }
+    },
+    "lead": "Talks, workshops, dinners and meetups from every host on Evnelo.",
+    "jsonLdName": "Upcoming public events",
+    "count": {
+      "exact": "{count, plural, one {# event} other {# events}}",
+      "more": "{count, plural, one {#+ event} other {#+ events}}",
+      "exactFrom": "{count, plural, one {# event} other {# events}} from #{from}",
+      "moreFrom": "{count, plural, one {#+ event} other {#+ events}} from #{from}"
+    },
+    "format": {
+      "online": "Online",
+      "in_person": "In person",
+      "hybrid": "Hybrid"
+    },
+    "price": {
+      "paid": "Paid"
+    },
+    "date": {
+      "today": "Today",
+      "week": "This week",
+      "month": "This month",
+      "custom": "Pick dates"
+    },
+    "active": {
+      "showing": "Showing",
+      "query": "“{q}”",
+      "customRange": "{from} to {to}",
+      "customDates": "Custom dates",
+      "within": "Within {km} km",
+      "remove": "Remove filter",
+      "clearAll": "Clear all"
+    },
+    "search": {
+      "events": "Search events",
+      "placeholder": "Search events, hosts and tags",
+      "city": "City",
+      "cityOption": "{city}, {country}",
+      "nearMe": "Near me",
+      "nearYou": "Near you",
+      "unsupported": "This browser can't share your location. Try a city instead.",
+      "blocked": "Location is blocked. Filter by city instead."
+    },
+    "toolbar": {
+      "label": "Filters",
+      "km": "{km} km",
+      "anywhere": "Anywhere",
+      "view": "View",
+      "list": "List",
+      "calendar": "Calendar"
+    },
+    "customDates": {
+      "from": "From",
+      "to": "To",
+      "apply": "Apply dates",
+      "clear": "Clear dates"
+    },
+    "topics": "Topics",
+    "sections": {
+      "featured": "Featured",
+      "upcoming": "Upcoming"
+    },
+    "empty": {
+      "month": { "title": "Nothing scheduled this month.", "body": "Try another month or clear a filter.", "action": "Next month" },
+      "filtered": { "title": "No events match these filters.", "body": "Try a wider date range or clear the filters.", "action": "Clear the filters" },
+      "end": { "title": "You reached the end.", "body": "That is every upcoming public event on this page.", "action": "Back to the start" },
+      "none": { "title": "No upcoming public events yet.", "body": "Be the first to host one." }
+    },
+    "pagination": {
+      "label": "Pagination",
+      "more": "Load more"
+    },
+    "card": {
+      "from": "from {price}",
+      "underOneKm": "Under 1 km away",
+      "kmAway": "{km} km away"
+    },
+    "calendar": {
+      "eyebrow": "Calendar",
+      "changeMonth": "Change month",
+      "goTo": "Go to {month}",
+      "today": "Today",
+      "dayCount": "{count, plural, one {# event} other {# events}}",
+      "overflow": "+{count} more",
+      "timezoneNote": "Times are shown in each event’s own time zone.",
+      "rowTitle": "{name} — {time}"
+    }
+  },
+  "org": {
+    "meta": { "description": "Events by {name}" },
+    "eyebrow": "Organizer",
+    "upcoming": "Upcoming",
+    "count": "{count, plural, one {# event} other {# events}}",
+    "empty": {
+      "title": "Nothing scheduled right now.",
+      "body": "Check back soon, or see what other hosts are running.",
+      "action": "Browse all events"
+    },
+    "past": "Past events"
+  },
+  "report": {
+    "meta": { "title": "Report an event" },
+    "eyebrow": "Report",
+    "title": "Report an event",
+    "reasons": {
+      "spam": "Spam or misleading",
+      "scam": "Scam or fraud",
+      "inappropriate": "Inappropriate content",
+      "copyright": "Copyright or trademark",
+      "other": "Something else"
+    },
+    "notFound": "That event could not be found.",
+    "openFromEvent": "Open this page from an event to report it.",
+    "sent": "Thanks. Your report about <b>{name}</b> was recorded.",
+    "sentAndForwarded": "Thanks. Your report about <b>{name}</b> was recorded and sent to the operators of this instance.",
+    "reporting": "Reporting <b>{name}</b> by {org}. Reports go to the people who run this Evnelo instance, not to the host.",
+    "errors": {
+      "limited": "Too many reports from your connection. Try again later.",
+      "invalid": "Check the form and try again."
+    },
+    "form": {
+      "reason": "Reason",
+      "details": "Details",
+      "optional": "(optional)",
+      "email": "Your email",
+      "optionalFollowUp": "(optional, if we may follow up)",
+      "submit": "Send report"
+    },
+    "back": "Back to the event"
+  },
+  "notFound": {
+    "meta": { "title": "Page not found" },
+    "eyebrow": "404",
+    "title": "There's nothing here",
+    "body": "The link may be old, the event may have been taken down, or the address has a typo.",
+    "action": "Browse public events"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "body": "The page hit an error. Trying again usually works; if it keeps happening, the host has been notified.",
+    "reference": "Reference {digest}",
+    "home": "Go home"
   }
 }

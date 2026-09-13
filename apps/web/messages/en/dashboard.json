@@ -1,1 +1,410 @@
-{}
+{
+  "meta": {
+    "title": "Dashboard",
+    "checkin": "Check-in"
+  },
+  "shell": {
+    "organization": "Organization",
+    "switchOrganization": "Switch organization"
+  },
+  "nav": {
+    "events": "Events",
+    "checkin": "Check-in",
+    "settings": "Settings"
+  },
+  "status": {
+    "event": {
+      "draft": "draft",
+      "published": "published",
+      "cancelled": "cancelled",
+      "ended": "ended"
+    },
+    "attendee": {
+      "confirmed": "confirmed",
+      "pending_approval": "pending approval",
+      "waitlisted": "waitlisted",
+      "rejected": "rejected",
+      "cancelled": "cancelled"
+    },
+    "order": {
+      "pending": "pending",
+      "processing": "processing",
+      "paid": "paid",
+      "free": "free",
+      "refunded": "refunded",
+      "partially_refunded": "partially refunded",
+      "failed": "failed",
+      "expired": "expired"
+    },
+    "delivery": {
+      "delivered": "delivered",
+      "retrying": "retrying",
+      "pending": "pending",
+      "failed": "failed"
+    }
+  },
+  "noAccess": {
+    "title": "No access",
+    "description": "Roles decide what each person in an organization can open.",
+    "empty": {
+      "title": "This area isn't yours to open",
+      "description": "Your role in this organization doesn't allow that. Ask an owner or admin to change it."
+    }
+  },
+  "events": {
+    "title": "Events",
+    "description": "Everything {org} is running, with registrations, revenue and door numbers at a glance.",
+    "newEvent": "New event",
+    "groups": {
+      "upcoming": "Upcoming",
+      "drafts": "Drafts",
+      "past": "Past"
+    },
+    "empty": {
+      "title": "No events yet",
+      "description": "Your first event stays a draft until you publish it, so there is no rush to get everything right.",
+      "action": "Create your first event"
+    },
+    "row": {
+      "online": "Online",
+      "inPerson": "In person",
+      "registered": "Registered",
+      "pending": "{count} pending",
+      "revenue": "Revenue",
+      "checkedIn": "Checked in"
+    }
+  },
+  "checkin": {
+    "title": "Check-in",
+    "description": "{org}. Open an event on the phone at the door; scanning needs camera access.",
+    "in": "In",
+    "empty": {
+      "title": "Nothing to scan today",
+      "description": "Published events appear here from the moment they go live until a day after they end."
+    },
+    "event": {
+      "allCheckin": "All check-in",
+      "eventDashboard": "Event dashboard"
+    }
+  },
+  "event": {
+    "allEvents": "All events",
+    "viewPage": "View page",
+    "nav": {
+      "overview": "Overview",
+      "tickets": "Tickets",
+      "form": "Form",
+      "invites": "Invites",
+      "attendees": "Attendees",
+      "waitlist": "Waitlist",
+      "orders": "Orders",
+      "checkin": "Check-in"
+    },
+    "new": {
+      "title": "New event",
+      "description": "Saved as a draft. Add tickets and questions, then publish when it's ready."
+    },
+    "overview": {
+      "stats": {
+        "registered": "Registered",
+        "awaitingApproval": "{count} awaiting approval",
+        "confirmedAndApproved": "confirmed and approved",
+        "revenue": "Revenue",
+        "afterRefunds": "after refunds",
+        "checkedIn": "Checked in",
+        "percentOfRegistrations": "{percent}% of registrations",
+        "nobodyYet": "nobody at the door yet",
+        "capacity": "Capacity",
+        "seatsLeft": "{count} seats left",
+        "unlimitedSeats": "unlimited seats"
+      },
+      "registrationsByDay": "Registrations by day",
+      "noRegistrations": {
+        "title": "No registrations yet",
+        "description": "The curve starts the moment your first person signs up."
+      },
+      "tickets": "Tickets",
+      "manage": "Manage",
+      "noTickets": {
+        "title": "No ticket types yet",
+        "description": "Publishing without one creates a free General admission ticket for you.",
+        "action": "Add a ticket type"
+      },
+      "ticketSales": "{hasQuantity, select, true {{sold} / {quantity} sold} other {{sold} sold}}{held, plural, =0 {} other {, # held}}",
+      "eventPage": "Event page",
+      "visibility": {
+        "public": "Public: listed on Discover and indexed.",
+        "unlisted": "Unlisted: anyone with the link.",
+        "private": "Private: invite only."
+      },
+      "actions": "Actions",
+      "publish": "Publish event",
+      "unpublish": "Unpublish, back to draft",
+      "statusNote": {
+        "draft": "Only you can see this event until it is published.",
+        "published": "Live. Unpublishing hides the page; registrations already taken are kept.",
+        "cancelled": "This event is cancelled."
+      },
+      "irreversible": "Irreversible",
+      "cancelEvent": "Cancel event",
+      "cancelConfirm": "Cancel this event? Every registered attendee gets a cancellation email (and SMS if opted in). Paid orders still need refunding from the Orders tab.",
+      "deleteEvent": "Delete event",
+      "deleteConfirm": "Delete this event? It disappears from the dashboard. Attendee records are kept."
+    },
+    "attendees": {
+      "exportCsv": "Export CSV",
+      "searchPlaceholder": "Search name, email or phone",
+      "filter": "Filter",
+      "allOption": "All ({count})",
+      "statusOption": "{label} ({count})",
+      "pendingNote": "{count, plural, one {# registration} other {# registrations}} waiting for your approval.",
+      "review": "Review",
+      "columns": {
+        "ticket": "Ticket",
+        "registered": "Registered",
+        "files": "Files",
+        "actions": "Actions"
+      },
+      "empty": {
+        "noMatch": {
+          "title": "No attendees match",
+          "description": "Try a different search or clear the status filter."
+        },
+        "none": {
+          "title": "Nobody has registered yet",
+          "description": "Registrations land here the moment someone signs up."
+        }
+      },
+      "guestOf": "Guest of {name}",
+      "sms": "SMS",
+      "paymentPending": "payment pending",
+      "approve": "Approve",
+      "reject": "Reject",
+      "ticket": "Ticket",
+      "cancelConfirm": "Cancel {name}'s registration? Their ticket stops working and the seat is freed. No email is sent.",
+      "export": "Export",
+      "erase": "Erase",
+      "eraseConfirm": "Erase {name}'s personal data? Name, email, phone and answers are replaced with placeholders, their ticket is revoked and queued emails are dropped. This cannot be undone."
+    },
+    "orders": {
+      "collected": "<strong>{amount}</strong> collected, net of refunds",
+      "count": "{count, plural, one {# order} other {# orders}}",
+      "columns": {
+        "order": "Order",
+        "items": "Items",
+        "total": "Total",
+        "placed": "Placed",
+        "actions": "Actions"
+      },
+      "empty": {
+        "title": "No orders yet",
+        "description": "Every registration, free or paid, shows up here with what was collected."
+      },
+      "people": "{count, plural, one {# person} other {# people}}",
+      "refunded": "{amount} refunded"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "How your organization looks in public, who can work in it, and how other systems talk to it.",
+    "tabs": {
+      "organization": "Organization",
+      "members": "Members",
+      "developer": "Developer",
+      "payments": "Payments"
+    },
+    "organization": {
+      "title": "Organization",
+      "description": "Name, public URL, logo and the accent colour used in emails and on ticket pages.",
+      "publicUrl": "Public URL",
+      "publicUrlHelp": "/o/…  Lowercase letters, numbers, hyphens.",
+      "website": "Website",
+      "websiteHelp": "Enter example.com and we'll add https:// automatically.",
+      "logo": "Logo",
+      "logoHelp": "Shown on event pages and emails.",
+      "accentColour": "Accent colour",
+      "accentColourHelp": "Buttons in emails and on ticket pages.",
+      "pickColour": "Pick colour",
+      "serviceFee": "Service fee",
+      "serviceFeeHelp": "Default for new events: pass the platform fee to the buyer as a line item, or absorb it.",
+      "buyerPaysFee": "Buyer pays the service fee",
+      "socialLinks": "Social links",
+      "platform": "Platform",
+      "url": "URL",
+      "addLink": "Add link",
+      "save": "Save organization"
+    },
+    "members": {
+      "title": "Members",
+      "description": "Owners and admins manage the organization; members create and run events; check-in staff can only scan tickets.",
+      "roles": {
+        "owner": "Owner",
+        "admin": "Admin",
+        "member": "Member",
+        "checkin": "Check-in staff"
+      },
+      "columns": {
+        "member": "Member",
+        "role": "Role",
+        "since": "Since"
+      },
+      "removeConfirm": "Remove {email} from the organization?",
+      "invited": "Invited · expires {date}",
+      "revoke": "Revoke",
+      "emailPlaceholder": "teammate@example.com",
+      "sendInvite": "Send invite"
+    },
+    "developer": {
+      "apiKeys": {
+        "title": "API keys",
+        "description": "Server-to-server access to this organization's events, orders and attendees.",
+        "note": "Keys call the <docs>REST API</docs> as this organization. Send them as <code>{header}</code>. Read keys list and fetch; write keys also create.",
+        "newKey": "Copy your new key now. It will not be shown again.",
+        "saved": "I've saved it",
+        "columns": {
+          "key": "Key",
+          "scopes": "Scopes",
+          "lastUsed": "Last used"
+        },
+        "never": "never",
+        "empty": {
+          "title": "No API keys yet",
+          "description": "Create one per integration so you can revoke a single tool without breaking the rest."
+        },
+        "revoked": "revoked",
+        "revokeConfirm": "Revoke \"{name}\"? Requests with it stop working immediately.",
+        "revoke": "Revoke",
+        "namePlaceholder": "Key name, e.g. Zapier",
+        "nameLabel": "Key name",
+        "scopeRead": "read",
+        "scopeWrite": "write",
+        "create": "Create key"
+      },
+      "webhooks": {
+        "title": "Webhooks",
+        "description": "A signed JSON POST to your own endpoint whenever something happens here.",
+        "note": "We POST a JSON envelope to your URL for the events you pick, signed with HMAC-SHA256 (<code>{signature}</code> over <code>{template}</code>). Failed deliveries retry with backoff for about a day.",
+        "addWebhook": "Add webhook",
+        "count": "{count, plural, one {# endpoint} other {# endpoints}}",
+        "signingSecret": "Signing secret",
+        "copyPrompt": "Copy this secret",
+        "endpointUrl": "Endpoint URL",
+        "endpointUrlHelp": "https only (http://localhost is allowed for development).",
+        "events": "Events",
+        "create": "Create webhook",
+        "columns": {
+          "endpoint": "Endpoint",
+          "events": "Events"
+        },
+        "empty": {
+          "title": "No webhooks yet",
+          "description": "Point one at your own service to keep a CRM, a Slack channel or a spreadsheet in step."
+        },
+        "hideDeliveries": "Hide deliveries",
+        "recentDeliveries": "Recent deliveries ({count})",
+        "nothingDelivered": "Nothing delivered yet.",
+        "attempts": "{count, plural, one {# attempt} other {# attempts}}{hasStatus, select, true {, last {status}} other {}}",
+        "allEvents": "All events",
+        "active": "active",
+        "paused": "paused",
+        "sendTest": "Send test",
+        "pause": "Pause",
+        "resume": "Resume",
+        "rotateConfirm": "Rotate the signing secret? The old one stops working immediately.",
+        "rotateSecret": "Rotate secret",
+        "deleteConfirm": "Delete this webhook?"
+      }
+    },
+    "payments": {
+      "title": "Payments",
+      "descriptionCloud": "Paid tickets settle straight into your own Stripe account.",
+      "descriptionSelfHosted": "This instance charges through the Stripe keys its operator configured.",
+      "connected": "Stripe account {id} connected.",
+      "connectPrompt": "Connect your Stripe account to sell paid tickets. Coming with the Connect onboarding flow.",
+      "configured": "Stripe is configured. Paid tickets are charged on the instance's Stripe account with no platform fee.",
+      "notConfigured": "Stripe is not configured on this instance, so only free tickets can be sold. Set STRIPE_SECRET_KEY and STRIPE_PUBLISHABLE_KEY to enable payments."
+    },
+    "danger": {
+      "title": "Data and deletion",
+      "description": "Download everything this organization owns as JSON — events, orders, attendees, check-ins, settings, no secrets. Deleting the organization cancels its events, revokes every ticket, erases all attendee personal data and disables API keys and webhooks. It cannot be undone.",
+      "download": "Download all data",
+      "confirmLabel": "Type {slug} to confirm",
+      "delete": "Delete organization",
+      "ownerOnly": "Only the owner can delete this organization."
+    }
+  },
+  "imageUpload": {
+    "uploadFailed": "Upload failed.",
+    "bucketRejected": "The storage bucket rejected the upload. Check its CORS and policy settings.",
+    "connectionFailed": "Upload failed. Check your connection and try again.",
+    "noImage": "No image yet",
+    "uploading": "Uploading…",
+    "replace": "Replace",
+    "replaceImage": "Replace image",
+    "upload": "Upload",
+    "uploadImage": "Upload image",
+    "urlPlaceholder": "https://… (image uploads need S3 configured)",
+    "urlLabel": "{label} URL",
+    "formats": "JPEG, PNG or WebP · max 5 MB"
+  },
+  "imageCrop": {
+    "openFailed": "That image could not be opened.",
+    "renderFailed": "This browser could not render the crop. Upload the image as it is instead.",
+    "dialogLabel": "Frame the cover image",
+    "title": "Frame the cover",
+    "description": "Drag to position and zoom to fill. Saved at 16:7, the ratio event pages use.",
+    "zoom": "Zoom",
+    "use": "Use this crop"
+  },
+  "address": {
+    "unavailable": "Address search is temporarily unavailable.",
+    "placeholder": "Start typing an address"
+  },
+  "linkTabs": {
+    "label": "Sections"
+  },
+  "actions": {
+    "genericError": "Something went wrong.",
+    "formIssue": "{path}: {message}",
+    "formPath": "form",
+    "checkForm": "Check the form.",
+    "saved": "Saved.",
+    "savedNotified": "Saved. Attendees will be told about the new time or place.",
+    "deletePublished": "Unpublish or cancel the event before deleting it.",
+    "addressRateLimited": "Too many address searches. Wait a minute and try again.",
+    "addressUnavailable": "Address search is temporarily unavailable.",
+    "formSaved": "Form saved.",
+    "refund": {
+      "noPayment": "This order has no payment to refund.",
+      "nothingToRefund": "Order is {status}; nothing to refund.",
+      "requested": "Refund requested. The order updates as soon as Stripe confirms it."
+    },
+    "invitationSent": "Invitation sent to {email}.",
+    "apiKeyCreated": "Key created. Copy it now; it won't be shown again.",
+    "unknownError": "unknown error",
+    "eventInvite": {
+      "emailFailed": "Invite created, but the email could not be sent ({reason}). Share the link yourself.",
+      "emailed": "Invitation emailed to {email}.",
+      "linkCreated": "Invite link created."
+    },
+    "waitlist": {
+      "notFound": "That entry no longer exists.",
+      "alreadyOffered": "This person already has an open offer.",
+      "registered": "This person already registered.",
+      "noRoom": "No seat is free on that ticket type (or the event is at capacity). Free one first.",
+      "emailFailed": "Spot reserved until {deadline}, but the email could not be sent ({reason}). Send them this link: {url}",
+      "offered": "Offer emailed to {email}; the spot is held until {deadline}."
+    },
+    "discountCreated": "Code {code} created.",
+    "webhook": {
+      "created": "Webhook created. Copy the signing secret now; it is shown once.",
+      "notFound": "Webhook not found.",
+      "rotated": "New signing secret. Update your receiver; the old secret stops working now.",
+      "testQueued": "Test delivery queued; it goes out within about 10 seconds. Check the deliveries list."
+    },
+    "deleteOrg": {
+      "ownerOnly": "Only an owner can delete the organization.",
+      "confirmSlug": "Type the organization URL ({slug}) to confirm."
+    }
+  }
+}

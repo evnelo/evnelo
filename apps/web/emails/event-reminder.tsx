@@ -1,30 +1,33 @@
 import * as React from "react";
-import { Link } from "@react-email/components";
-import { ButtonLink, Divider, EmailLayout, EventBlock, Para, TicketCard, Title, colors, type EmailBrand, type EmailEvent, type EmailTicket } from "./layout";
+import { ButtonLink, Divider, EmailLayout, EventBlock, Para, TicketCard, Title, colors, emailI18n, linkTo, type EmailBrand, type EmailEvent, type EmailI18n, type EmailTicket } from "./layout";
 
-export type EventReminderProps = {
+export type EventReminderProps = EmailI18n & {
   brand: EmailBrand;
   event: EmailEvent;
-  when: string; // "tomorrow", "in 1 hour"
+  when: string; // already translated: "tomorrow", "in 1 hour" (emails.reminderWhen.*)
   tickets: EmailTicket[];
   unsubscribeUrl: string;
 };
 
-export const eventReminderSubject = (p: EventReminderProps) => `${p.event.name} is ${p.when}`;
+export const eventReminderSubject = (p: EventReminderProps) => emailI18n(p).t("eventReminder.subject", { eventName: p.event.name, when: p.when });
 
-export default function EventReminder({ brand, event, when, tickets, unsubscribeUrl }: EventReminderProps) {
+export default function EventReminder(props: EventReminderProps) {
+  const { brand, event, when, tickets, unsubscribeUrl } = props;
+  const { locale, t } = emailI18n(props);
   return (
     <EmailLayout
       brand={brand}
-      preview={`${event.name} is ${when}. ${event.where}.`}
-      footer={<Para muted style={{ margin: 0, fontSize: 12 }}>Don't want reminders for this event? <Link href={unsubscribeUrl} style={{ color: colors.muted }}>Stop reminders</Link>. Confirmations and changes still get through.</Para>}
+      locale={locale}
+      t={t}
+      preview={t("eventReminder.preview", { eventName: event.name, when, where: event.where })}
+      footer={<Para muted style={{ margin: 0, fontSize: 12 }}>{t.rich("eventReminder.stopPrompt", { link: linkTo(unsubscribeUrl, { color: colors.muted }) })} {t("eventReminder.stillGetThrough")}</Para>}
     >
-      <Title>{event.name} is {when}</Title>
-      <EventBlock event={event} />
-      <Para>{tickets.length > 1 ? "Your tickets, ready to scan:" : "Your ticket, ready to scan:"}</Para>
-      {tickets.map((t) => <TicketCard key={t.url} ticket={t} accent={brand.accent} />)}
+      <Title>{t("eventReminder.title", { eventName: event.name, when })}</Title>
+      <EventBlock event={event} t={t} />
+      <Para>{t("eventReminder.tickets", { count: tickets.length })}</Para>
+      {tickets.map((tk) => <TicketCard key={tk.url} ticket={tk} accent={brand.accent} t={t} />)}
       <Divider />
-      <ButtonLink href={event.url} accent={brand.accent}>Event details and directions</ButtonLink>
+      <ButtonLink href={event.url} accent={brand.accent}>{t("eventReminder.cta")}</ButtonLink>
     </EmailLayout>
   );
 }

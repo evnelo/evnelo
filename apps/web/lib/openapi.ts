@@ -113,7 +113,7 @@ function remove(op: Omit<Operation, "ok" | "requestBody"> & { conflict?: string 
 
 const eventInputProperties = {
   name: { type: "string", minLength: 2, maxLength: 160 }, slug: { type: "string", pattern: "^[a-z0-9-]{3,80}$" }, descriptionMd: nullableText(20000),
-  coverImageUrl: nullableHttpUrl(500), logoUrl: nullableHttpUrl(500),
+  coverImageUrl: nullableHttpUrl(500),
   timezone: { type: "string", minLength: 1, maxLength: 64, description: "IANA time zone used for display." }, startsAt: dateTime, endsAt: dateTime,
   locationType: { type: "string", enum: ["in_person", "online", "hybrid"], default: "in_person" }, venueName: nullableText(160), address: nullableText(300), city: nullableText(100), country: { type: ["string", "null"], pattern: "^[A-Z]{2}$" },
   lat: nullableText(20), lng: nullableText(20), onlineUrl: nullableHttpUrl(500),
@@ -140,7 +140,7 @@ const ticketTypeInputProperties = {
 
 const exampleEvent = {
   id: "01J9Z6M5Y3K3F1Q2R8S9T0V1W2", organizationId: "01J9Z6M5Y3K3F1Q2R8S9T0V1W3", slug: "design-systems-meetup", name: "Design Systems Meetup", descriptionMd: "Talks and demos.",
-  coverImageUrl: null, logoUrl: null, timezone: "Europe/Lisbon", startsAt: "2026-10-02T18:00:00.000Z", endsAt: "2026-10-02T21:00:00.000Z",
+  coverImageUrl: null, timezone: "Europe/Lisbon", startsAt: "2026-10-02T18:00:00.000Z", endsAt: "2026-10-02T21:00:00.000Z",
   locationType: "in_person", venueName: "The Loft", address: "Rua Augusta 1", city: "Lisbon", country: "PT", lat: null, lng: null, onlineUrl: null,
   visibility: "public", status: "published", requiresApproval: false, capacity: 120, waitlistEnabled: true, collectPhone: false, guestsEnabled: true, maxGuests: 1, feePassThrough: false,
   refundPolicy: null, socialLinks: [], reminderHours: [24, 1], publishedAt: "2026-09-01T09:00:00.000Z", deletedAt: null, createdAt: "2026-08-30T10:00:00.000Z", updatedAt: "2026-09-01T09:00:00.000Z",
@@ -608,7 +608,7 @@ export const openApiDocument = {
         required: ["id", "organizationId", "slug", "name", "status", "timezone", "startsAt", "endsAt", "locationType", "visibility", "requiresApproval", "guestsEnabled", "maxGuests", "createdAt", "updatedAt"],
         properties: {
           id: { type: "string" }, organizationId: { type: "string" }, slug: { type: "string", description: "Unique within the organization; the public page is /{orgSlug}/{slug}." }, name: { type: "string" }, descriptionMd: { type: ["string", "null"] },
-          coverImageUrl: { type: ["string", "null"] }, logoUrl: { type: ["string", "null"] }, timezone: { type: "string" },
+          coverImageUrl: { type: ["string", "null"] }, timezone: { type: "string" },
           startsAt: dateTime, endsAt: dateTime,
           locationType: { type: "string", enum: ["in_person", "online", "hybrid"] }, venueName: { type: ["string", "null"] }, address: { type: ["string", "null"] }, city: { type: ["string", "null"] }, country: { type: ["string", "null"] },
           lat: { type: ["string", "null"] }, lng: { type: ["string", "null"] }, onlineUrl: { type: ["string", "null"] },

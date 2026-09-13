@@ -5497,12 +5497,6 @@
               "null"
             ]
           },
-          "logoUrl": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
           "timezone": {
             "type": "string"
           },
@@ -5654,7 +5648,6 @@
             "name": "Design Systems Meetup",
             "descriptionMd": "Talks and demos.",
             "coverImageUrl": null,
-            "logoUrl": null,
             "timezone": "Europe/Lisbon",
             "startsAt": "2026-10-02T18:00:00.000Z",
             "endsAt": "2026-10-02T21:00:00.000Z",
@@ -5715,24 +5708,6 @@
             "maxLength": 20000
           },
           "coverImageUrl": {
-            "oneOf": [
-              {
-                "type": "string",
-                "format": "uri",
-                "pattern": "^[hH][tT][tT][pP][sS]?://",
-                "maxLength": 500
-              },
-              {
-                "type": "string",
-                "const": ""
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Must use http:// or https://. An empty string is normalized to null."
-          },
-          "logoUrl": {
             "oneOf": [
               {
                 "type": "string",
@@ -5951,24 +5926,6 @@
             "maxLength": 20000
           },
           "coverImageUrl": {
-            "oneOf": [
-              {
-                "type": "string",
-                "format": "uri",
-                "pattern": "^[hH][tT][tT][pP][sS]?://",
-                "maxLength": 500
-              },
-              {
-                "type": "string",
-                "const": ""
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Must use http:// or https://. An empty string is normalized to null."
-          },
-          "logoUrl": {
             "oneOf": [
               {
                 "type": "string",

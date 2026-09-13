@@ -18,8 +18,7 @@
       "tags": "Tags",
       "tagsHelp": "Durch Komma getrennt. Wird zur Ermittlung verwendet.",
       "tagsPlaceholder": "Design, Treffen",
-      "cover": "Titelbild",
-      "logo": "Veranstaltungslogo"
+      "cover": "Titelbild"
     },
     "when": {
       "title": "Wann",

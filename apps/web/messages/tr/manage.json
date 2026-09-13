@@ -18,8 +18,7 @@
       "tags": "Etiketler",
       "tagsHelp": "Virgülle ayrılmış. Keşif amacıyla kullanılır.",
       "tagsPlaceholder": "tasarım, buluşma",
-      "cover": "Kapak resmi",
-      "logo": "Etkinlik logosu"
+      "cover": "Kapak resmi"
     },
     "when": {
       "title": "Ne zaman",

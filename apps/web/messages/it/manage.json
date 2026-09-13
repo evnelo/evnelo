@@ -18,8 +18,7 @@
       "tags": "Etichette",
       "tagsHelp": "Separati da virgole. Utilizzati per la ricerca.",
       "tagsPlaceholder": "design, incontro",
-      "cover": "Immagine di copertina",
-      "logo": "Logo dell'evento"
+      "cover": "Immagine di copertina"
     },
     "when": {
       "title": "Quando",

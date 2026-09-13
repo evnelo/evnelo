@@ -57,7 +57,7 @@ async function loadContext(n: Notification) {
   // the language the attendee registered in (null on old rows: English)
   const i18n = await emailTranslator(emailLocale(attendee.locale));
   const { locale, t } = i18n;
-  const brand: EmailBrand = { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL };
+  const brand: EmailBrand = { orgName: org.name, orgLogoUrl: org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL };
   const eventUrl = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
   const emailEvent: EmailEvent = {
     name: event.name, url: eventUrl, when: formatDateRange(event.startsAt, event.endsAt, event.timezone, locale),

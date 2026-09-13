@@ -18,8 +18,7 @@
       "tags": "标签",
       "tagsHelp": "逗号分隔。用于发现。",
       "tagsPlaceholder": "设计，聚会",
-      "cover": "封面图片",
-      "logo": "活动标志"
+      "cover": "封面图片"
     },
     "when": {
       "title": "什么时候",

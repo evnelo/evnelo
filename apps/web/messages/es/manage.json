@@ -18,8 +18,7 @@
       "tags": "Etiquetas",
       "tagsHelp": "Separado por comas. Se utiliza para descubrimiento.",
       "tagsPlaceholder": "diseño, encuentro",
-      "cover": "Imagen de portada",
-      "logo": "Logotipo del evento"
+      "cover": "Imagen de portada"
     },
     "when": {
       "title": "Cuando",

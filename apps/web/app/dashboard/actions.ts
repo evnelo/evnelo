@@ -288,7 +288,7 @@ export async function createEventInviteAction(eventId: string, formData: FormDat
     const invite = await svc.createEventInvite(db, eventId, parsed.data);
     const url = `${env.APP_URL}/i/${invite.token}`;
     if (invite.email) {
-      const brand = { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL };
+      const brand = { orgName: org.name, orgLogoUrl: org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL };
       const i18n = await emailTranslator(emailLocale(await getLocale())); // invitee unknown: the host's language
       const emailEvent = {
         name: event.name, url: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, when: formatDateRange(event.startsAt, event.endsAt, event.timezone, i18n.locale),
@@ -343,7 +343,7 @@ export async function promoteWaitlistAction(eventId: string, entryId: string, ti
     const deadlineForHost = new Intl.DateTimeFormat(locale, deadlineFormat).format(entry.holdExpiresAt!);
     const props = {
       ...i18n,
-      brand: { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL },
+      brand: { orgName: org.name, orgLogoUrl: org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL },
       event: { name: event.name, url: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, when: formatDateRange(event.startsAt, event.endsAt, event.timezone, i18n.locale), where: event.locationType === "online" ? i18n.t("layout.online") : [event.venueName, event.city].filter(Boolean).join(", "), calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}` },
       url, ticketTypeName: tt?.name ?? "General admission", deadline,
     };

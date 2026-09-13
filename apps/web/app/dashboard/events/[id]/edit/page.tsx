@@ -16,7 +16,7 @@ export default async function EditEventPage({ params }: { params: Promise<{ id: 
       organizationSlug={org.slug} uploadsEnabled={storageConfigured}
       status={e.status}
       defaults={{
-        name: e.name, slug: e.slug, descriptionMd: e.descriptionMd ?? "", coverImageUrl: e.coverImageUrl ?? "", logoUrl: e.logoUrl ?? "",
+        name: e.name, slug: e.slug, descriptionMd: e.descriptionMd ?? "", coverImageUrl: e.coverImageUrl ?? "",
         timezone: e.timezone, startsAt: e.startsAt.toISOString(), endsAt: e.endsAt.toISOString(),
         locationType: e.locationType, venueName: e.venueName ?? "", address: e.address ?? "", city: e.city ?? "", country: e.country ?? "", lat: e.lat ?? "", lng: e.lng ?? "", onlineUrl: e.onlineUrl ?? "",
         visibility: e.visibility, requiresApproval: e.requiresApproval, capacity: e.capacity, waitlistEnabled: e.waitlistEnabled, collectPhone: e.collectPhone,

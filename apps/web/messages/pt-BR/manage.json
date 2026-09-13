@@ -18,8 +18,7 @@
       "tags": "Etiquetas",
       "tagsHelp": "Separados por vírgula. Usados para descoberta.",
       "tagsPlaceholder": "design, encontro",
-      "cover": "Imagem de capa",
-      "logo": "Logotipo do evento"
+      "cover": "Imagem de capa"
     },
     "when": {
       "title": "Quando",

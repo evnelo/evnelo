@@ -807,7 +807,6 @@ export interface components {
          *       "name": "Design Systems Meetup",
          *       "descriptionMd": "Talks and demos.",
          *       "coverImageUrl": null,
-         *       "logoUrl": null,
          *       "timezone": "Europe/Lisbon",
          *       "startsAt": "2026-10-02T18:00:00.000Z",
          *       "endsAt": "2026-10-02T21:00:00.000Z",
@@ -848,7 +847,6 @@ export interface components {
             name: string;
             descriptionMd?: string | null;
             coverImageUrl?: string | null;
-            logoUrl?: string | null;
             timezone: string;
             /** Format: date-time */
             startsAt: string;
@@ -893,8 +891,6 @@ export interface components {
             descriptionMd?: string | null;
             /** @description Must use http:// or https://. An empty string is normalized to null. */
             coverImageUrl?: string | "" | null;
-            /** @description Must use http:// or https://. An empty string is normalized to null. */
-            logoUrl?: string | "" | null;
             /** @description IANA time zone used for display. */
             timezone: string;
             /** Format: date-time */
@@ -956,8 +952,6 @@ export interface components {
             descriptionMd?: string | null;
             /** @description Must use http:// or https://. An empty string is normalized to null. */
             coverImageUrl?: string | "" | null;
-            /** @description Must use http:// or https://. An empty string is normalized to null. */
-            logoUrl?: string | "" | null;
             /** @description IANA time zone used for display. */
             timezone?: string;
             /** Format: date-time */

@@ -18,8 +18,7 @@
       "tags": "Thẻ",
       "tagsHelp": "Phân tách bằng dấu phẩy. Được sử dụng để tìm kiếm.",
       "tagsPlaceholder": "thiết kế, gặp gỡ",
-      "cover": "Ảnh bìa",
-      "logo": "Logo sự kiện"
+      "cover": "Ảnh bìa"
     },
     "when": {
       "title": "Khi",

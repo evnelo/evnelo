@@ -39,7 +39,6 @@ export const eventInput = z.object({
   slug: z.string().trim().regex(/^[a-z0-9-]{3,80}$/, "Lowercase letters, numbers and hyphens").optional(),
   descriptionMd: text(20_000),
   coverImageUrl: urlOrEmpty(500),
-  logoUrl: urlOrEmpty(500),
   timezone: z.string().trim().min(1).max(64),
   startsAt: z.coerce.date(),
   endsAt: z.coerce.date(),

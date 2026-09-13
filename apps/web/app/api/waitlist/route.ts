@@ -44,7 +44,7 @@ export async function POST(request: Request) {
   if (result.outcome === "registered") return NextResponse.json({ error: t("errors.alreadyRegistered") }, { status: 409 });
   if (result.outcome === "joined" && emailConfigured) {
     const { event, org } = row;
-    const props = { ...(await emailTranslator(locale)), brand: { orgName: org.name, orgLogoUrl: event.logoUrl ?? org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL }, eventName: event.name, eventUrl: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, position: result.position };
+    const props = { ...(await emailTranslator(locale)), brand: { orgName: org.name, orgLogoUrl: org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL }, eventName: event.name, eventUrl: `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`, position: result.position };
     try {
       const { html, text } = await renderEmail(React.createElement(WaitlistJoined, props));
       await sendEmail({ to: form.email, subject: waitlistJoinedSubject(props), html, text });

@@ -106,6 +106,13 @@
       "when": 1789184731707,
       "tag": "0014_locale",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "5",
+      "when": 1789262223775,
+      "tag": "0015_drop_event_logo",
+      "breakpoints": true
     }
   ]
 }

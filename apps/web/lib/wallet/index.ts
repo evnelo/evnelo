@@ -46,7 +46,7 @@ export async function loadTicketPass(token: string): Promise<TicketPassData | nu
     venueName: event.venueName, address: event.address, city: event.city,
     lat: event.lat ? Number(event.lat) : null, lng: event.lng ? Number(event.lng) : null,
     attendeeName: attendee.name, ticketTypeName: ticketType.name,
-    orgName: org.name, logoUrl: event.logoUrl ?? org.logoUrl, coverImageUrl: event.coverImageUrl,
+    orgName: org.name, logoUrl: org.logoUrl, coverImageUrl: event.coverImageUrl,
   };
 }
 

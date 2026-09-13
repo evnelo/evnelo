@@ -18,8 +18,7 @@
       "tags": "タグ",
       "tagsHelp": "カンマ区切り。検索に使用されます。",
       "tagsPlaceholder": "デザイン、ミートアップ",
-      "cover": "表紙画像",
-      "logo": "イベントロゴ"
+      "cover": "表紙画像"
     },
     "when": {
       "title": "いつ",

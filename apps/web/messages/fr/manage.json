@@ -18,8 +18,7 @@
       "tags": "Étiquettes",
       "tagsHelp": "Séparés par des virgules. Utilisé pour la recherche.",
       "tagsPlaceholder": "conception, rencontre",
-      "cover": "Image de couverture",
-      "logo": "Logo de l'événement"
+      "cover": "Image de couverture"
     },
     "when": {
       "title": "Quand",

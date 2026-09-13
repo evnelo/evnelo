@@ -1,0 +1,1 @@
+ALTER TABLE `events` DROP COLUMN `logo_url`;

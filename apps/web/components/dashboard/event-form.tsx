@@ -25,7 +25,7 @@ type ManageT = ReturnType<typeof useTranslations<"manage">>;
 type CommonT = ReturnType<typeof useTranslations<"common">>;
 
 export type EventDefaults = Partial<{
-  name: string; slug: string; descriptionMd: string; coverImageUrl: string; logoUrl: string; timezone: string; startsAt: string; endsAt: string;
+  name: string; slug: string; descriptionMd: string; coverImageUrl: string; timezone: string; startsAt: string; endsAt: string;
   locationType: "in_person" | "online" | "hybrid"; venueName: string; address: string; city: string; country: string; lat: string; lng: string; onlineUrl: string;
   visibility: "public" | "unlisted" | "private"; requiresApproval: boolean; capacity: number | null; waitlistEnabled: boolean; collectPhone: boolean;
   guestsEnabled: boolean; maxGuests: number; feePassThrough: boolean; refundPolicy: string; socialLinks: Link[]; reminderHours: number[]; tags: string[]; hosts: Host[]; sponsors: Sponsor[];
@@ -39,7 +39,7 @@ function initial(d: EventDefaults, tz: string): Values {
   const timezone = d.timezone ?? tz;
   return {
     // the derived slug is part of the baseline, so an untouched form is not "dirty"
-    name: d.name ?? "", slug: d.slug ?? slugify(d.name ?? ""), slugTouched: !!d.slug, descriptionMd: d.descriptionMd ?? "", coverImageUrl: d.coverImageUrl ?? "", logoUrl: d.logoUrl ?? "", timezone,
+    name: d.name ?? "", slug: d.slug ?? slugify(d.name ?? ""), slugTouched: !!d.slug, descriptionMd: d.descriptionMd ?? "", coverImageUrl: d.coverImageUrl ?? "", timezone,
     startsLocal: d.startsAt ? utcToZonedLocal(new Date(d.startsAt), timezone) : "", endsLocal: d.endsAt ? utcToZonedLocal(new Date(d.endsAt), timezone) : "",
     locationType: d.locationType ?? "in_person", venueName: d.venueName ?? "", address: d.address ?? "", city: d.city ?? "", country: d.country ?? "", lat: d.lat ?? "", lng: d.lng ?? "", onlineUrl: d.onlineUrl ?? "",
     visibility: d.visibility ?? "public", requiresApproval: d.requiresApproval ?? false, capacity: d.capacity ? String(d.capacity) : "", waitlistEnabled: d.waitlistEnabled ?? false, collectPhone: d.collectPhone ?? false,
@@ -101,7 +101,7 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
     if (!v.startsLocal || !v.endsLocal) return setMsg({ error: t("eventForm.validation.times") });
     const reminderHours = [...(v.reminder24 ? [24] : []), ...(v.reminder1 ? [1] : []), ...v.reminderCustom.split(/[,\s]+/).filter(Boolean).map(Number)];
     const payload = {
-      name: v.name, slug: v.slug || undefined, descriptionMd: v.descriptionMd, coverImageUrl: v.coverImageUrl, logoUrl: v.logoUrl, timezone: v.timezone,
+      name: v.name, slug: v.slug || undefined, descriptionMd: v.descriptionMd, coverImageUrl: v.coverImageUrl, timezone: v.timezone,
       startsAt: zonedLocalToUtc(v.startsLocal, v.timezone).toISOString(), endsAt: zonedLocalToUtc(v.endsLocal, v.timezone).toISOString(),
       locationType: v.locationType, venueName: v.venueName, address: v.address, city: v.city, country: v.country, lat: v.lat, lng: v.lng, onlineUrl: v.onlineUrl,
       visibility: v.visibility, requiresApproval: v.requiresApproval, capacity: v.capacity ? Number(v.capacity) : null, waitlistEnabled: v.waitlistEnabled, collectPhone: v.collectPhone,
@@ -155,9 +155,8 @@ export function EventForm({ mode, eventId, status, defaults, organizationSlug, u
           <Field label={t("eventForm.basics.url")} htmlFor="slug" help={publicEventPath(organizationSlug, v.slug || "…")} className="sm:col-span-2"><Input id="slug" value={v.slug} onChange={(e) => { set("slugTouched", true); set("slug", e.target.value); }} pattern="[a-z0-9\-]{3,80}" /></Field>
           <Field label={t("eventForm.basics.descriptionLabel")} htmlFor="desc" optional help={t("eventForm.basics.descriptionHelp")} className="sm:col-span-2"><Textarea id="desc" rows={6} value={v.descriptionMd} onChange={(e) => set("descriptionMd", e.target.value)} /></Field>
           <Field label={t("eventForm.basics.tags")} htmlFor="tags" optional help={t("eventForm.basics.tagsHelp")} className="sm:col-span-2"><Input id="tags" value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder={t("eventForm.basics.tagsPlaceholder")} /></Field>
-          <div className="sm:col-span-2 grid gap-5 lg:grid-cols-[minmax(0,1fr)_10rem]">
+          <div className="sm:col-span-2">
             <ImageUploadField label={t("eventForm.basics.cover")} croppable value={v.coverImageUrl} onChange={(url) => set("coverImageUrl", url)} uploadsEnabled={uploadsEnabled} />
-            <ImageUploadField label={t("eventForm.basics.logo")} value={v.logoUrl} onChange={(url) => set("logoUrl", url)} aspect="square" uploadsEnabled={uploadsEnabled} />
           </div>
         </div>
       </Section>

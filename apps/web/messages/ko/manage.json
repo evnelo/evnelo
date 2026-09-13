@@ -18,8 +18,7 @@
       "tags": "태그",
       "tagsHelp": "쉼표로 구분. 검색에 사용됨.",
       "tagsPlaceholder": "디자인, 모임",
-      "cover": "표지 이미지",
-      "logo": "이벤트 로고"
+      "cover": "표지 이미지"
     },
     "when": {
       "title": "언제",

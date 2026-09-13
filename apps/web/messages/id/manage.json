@@ -18,8 +18,7 @@
       "tags": "Tag",
       "tagsHelp": "Dipisahkan dengan koma. Digunakan untuk penemuan.",
       "tagsPlaceholder": "desain, pertemuan",
-      "cover": "Gambar sampul",
-      "logo": "Logo acara"
+      "cover": "Gambar sampul"
     },
     "when": {
       "title": "Kapan",

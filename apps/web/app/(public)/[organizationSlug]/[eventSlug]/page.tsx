@@ -87,7 +87,7 @@ export default async function EventPage({ params }: Params) {
   const placeLine = online ? t("page.placeOnline") : [event.venueName, event.city].filter(Boolean).join(", ");
   const hasCover = Boolean(event.coverImageUrl);
   const mapHref = event.lat && event.lng ? `https://www.google.com/maps?q=${event.lat},${event.lng}` : null;
-  const orgLogo = event.logoUrl ?? org.logoUrl ?? null;
+  const orgLogo = org.logoUrl ?? null;
 
   return (
     <article>

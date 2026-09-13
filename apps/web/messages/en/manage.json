@@ -18,8 +18,7 @@
       "tags": "Tags",
       "tagsHelp": "Comma separated. Used for discovery.",
       "tagsPlaceholder": "design, meetup",
-      "cover": "Cover image",
-      "logo": "Event logo"
+      "cover": "Cover image"
     },
     "when": {
       "title": "When",

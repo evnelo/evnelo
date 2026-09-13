@@ -93,7 +93,6 @@ export const events = mysqlTable(
     name: varchar("name", { length: 160 }).notNull(),
     descriptionMd: text("description_md"),
     coverImageUrl: varchar("cover_image_url", { length: 500 }),
-    logoUrl: varchar("logo_url", { length: 500 }),
     timezone: varchar("timezone", { length: 64 }).notNull().default("UTC"),
     startsAt: datetime("starts_at", { fsp: 3 }).notNull(),
     endsAt: datetime("ends_at", { fsp: 3 }).notNull(),

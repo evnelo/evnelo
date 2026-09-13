@@ -7,7 +7,7 @@ import { ticketTypeInput } from "../services/tickets";
 const now = new Date("2030-05-01T10:00:00.000Z");
 const event: Event = {
   id: "01AAAAAAAAAAAAAAAAAAAAAAAA", organizationId: "01BBBBBBBBBBBBBBBBBBBBBBBB", slug: "launch", name: "Launch party", descriptionMd: null,
-  coverImageUrl: null, logoUrl: null, timezone: "Europe/Lisbon", startsAt: now, endsAt: new Date(now.getTime() + 3_600_000),
+  coverImageUrl: null, timezone: "Europe/Lisbon", startsAt: now, endsAt: new Date(now.getTime() + 3_600_000),
   locationType: "in_person", venueName: "Loft", address: null, city: "Lisbon", country: "PT", lat: null, lng: null, onlineUrl: null,
   visibility: "public", status: "draft", requiresApproval: false, capacity: 120, waitlistEnabled: true, collectPhone: false,
   guestsEnabled: true, maxGuests: 2, feePassThrough: false, refundPolicy: null, socialLinks: [{ platform: "x", url: "https://x.com/evnelo" }],

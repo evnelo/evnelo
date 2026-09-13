@@ -136,7 +136,7 @@ type EventRecord = {
  */
 export function eventInputFromRecord({ event: e, hosts, sponsors, tags }: EventRecord): EventInput {
   return {
-    name: e.name, slug: e.slug, descriptionMd: e.descriptionMd, coverImageUrl: e.coverImageUrl, logoUrl: e.logoUrl,
+    name: e.name, slug: e.slug, descriptionMd: e.descriptionMd, coverImageUrl: e.coverImageUrl,
     timezone: e.timezone, startsAt: e.startsAt, endsAt: e.endsAt, locationType: e.locationType,
     venueName: e.venueName, address: e.address, city: e.city, country: e.country, lat: e.lat, lng: e.lng, onlineUrl: e.onlineUrl,
     visibility: e.visibility, requiresApproval: e.requiresApproval, capacity: e.capacity, waitlistEnabled: e.waitlistEnabled,

@@ -50,9 +50,19 @@ export async function loadTicketPass(token: string): Promise<TicketPassData | nu
   };
 }
 
-/** A PEM/JSON secret from env: inline contents (with "\n" escapes allowed) or a file path. */
+/**
+ * A PEM/JSON secret from env, in whichever form fits the deployment: the inline contents
+ * (with "\n" escapes allowed, so a one-line .env value works), the same contents base64-encoded
+ * (the safest form for a Docker env file), or a path to a file holding them.
+ */
 export function secretFromEnv(value: string, inlineMarker: string) {
-  return value.includes(inlineMarker) ? value.replace(/\\n/g, "\n") : readFileSync(value, "utf8");
+  const trimmed = value.trim();
+  if (trimmed.includes(inlineMarker)) return trimmed.replace(/\\n/g, "\n");
+  if (/^[A-Za-z0-9+/=\s]+$/.test(trimmed)) {
+    const decoded = Buffer.from(trimmed, "base64").toString("utf8");
+    if (decoded.includes(inlineMarker)) return decoded;
+  }
+  return readFileSync(trimmed, "utf8");
 }
 
 export function whereLabel(t: TicketPassData) {

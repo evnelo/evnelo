@@ -12,6 +12,7 @@ import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { createOrderPaymentIntent } from "@/lib/stripe";
 import { connectedAccountStatus } from "@/lib/stripe-connect";
+import { ensureApplePayDomainOnce } from "@/lib/apple-pay";
 import { fulfilFreeOrder, releaseOrder } from "@/lib/orders";
 import { checkoutStripeAccount, paymentsConfigured } from "@/lib/payment-flow";
 import { signPaymentResume } from "@/lib/payment-resume";
@@ -242,6 +243,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: t("errors.paymentsUnavailable") }, { status: 503 });
   }
   await db.update(orders).set({ stripePaymentIntentId: pi.id }).where(eq(orders.id, orderId));
+  if (stripeAccountId) ensureApplePayDomainOnce(stripeAccountId); // Apple Pay for accounts that connected before registration existed
   track(EVENTS.paymentStarted, { distinctId: orderId, anonymous: true, organizationId: event.organizationId, properties: { eventId: event.id, amountMinor: fees.totalMinor, currency: tt.currency, connected: Boolean(stripeAccountId) } });
   const resumeToken = await signPaymentResume({ orderId, eventId: event.id, expiresAt: new Date(now.getTime() + 24 * 60 * 60_000) }, env.AUTH_SECRET);
   return NextResponse.json({ orderId, clientSecret: pi.client_secret, stripeAccountId, holdExpiresAt: holdExpiresAt!.toISOString(), resumeToken });

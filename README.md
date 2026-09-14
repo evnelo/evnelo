@@ -132,6 +132,29 @@ For production on evnelo.com:
 
 Settings reads account readiness directly from Stripe; account webhooks refresh the API's cached `stripeChargesEnabled` field. Revoking access stops new paid checkout, but preserves the account binding and each order's original account ID. Reconnect that same account to restore access to pending payments and refunds. Replacing an organization's payout account is intentionally unsupported. OAuth state lasts 10 minutes, is bound to the initiating user and organization, and can be consumed once; OAuth credentials are not stored.
 
+### Apple Pay, Google Pay and wallet passes
+
+**Paying with Apple Pay or Google Pay** needs no Evnelo configuration. Checkout uses Stripe's Payment Element with automatic payment methods, so both wallets appear as buttons above the card form whenever Stripe allows them: the site is on https, the browser has a card on file (Safari with a card in Apple Wallet; Chrome or Android with Google Pay), and the wallet is enabled under **Settings → Payment methods** on the Stripe account that takes the charge (the host's connected account on Cloud, where both are on by default). Apple Pay additionally requires the domain to be registered with that account; Evnelo does this itself, when an account connects and again at the first paid checkout after a restart, using the verification file it serves from `/.well-known/`. Test with a real card on the device: in Stripe test mode the wallet sheet completes without charging.
+
+**Apple Wallet passes** (`Add to Apple Wallet` on tickets and in the confirmation email) need a Pass Type ID certificate from the Apple Developer Program:
+
+1. In [Certificates, Identifiers & Profiles](https://developer.apple.com/account/resources/identifiers/list/passTypeId) create a Pass Type ID such as `pass.com.evnelo.ticket`; that string is `APPLE_PASS_TYPE_ID`, and the Team ID on the membership page is `APPLE_TEAM_ID`.
+2. Make a key and a signing request, then upload the `.csr` under the Pass Type ID (**Create Certificate**) and download `pass.cer`:
+   ```bash
+   openssl req -new -newkey rsa:2048 -nodes -keyout pass.key -out pass.csr -subj "/CN=Evnelo tickets/O=InEvent"
+   openssl x509 -inform DER -in pass.cer -out pass.pem
+   ```
+3. Download the [Apple WWDR G4 certificate](https://www.apple.com/certificateauthority/) and convert it the same way: `openssl x509 -inform DER -in AppleWWDRCAG4.cer -out wwdr.pem`.
+4. Put the three PEM files in the environment. Each of `APPLE_PASS_CERT`, `APPLE_PASS_KEY` and `APPLE_WWDR_CERT` accepts the PEM contents, the contents base64-encoded (`base64 -i pass.pem | tr -d '\n'`, the safe form for a Docker `.env`), or a file path. `APPLE_PASS_KEY_PASSPHRASE` only if you exported an encrypted key from Keychain Access.
+5. Restart and open a ticket on an iPhone. The certificate lasts a year; repeat step 2 to renew.
+
+**Google Wallet passes** need an issuer account and a service account:
+
+1. In the [Google Pay & Wallet Console](https://pay.google.com/business/console) enable the Google Wallet API and create the issuer with your business profile. The Issuer ID shown there is `GOOGLE_WALLET_ISSUER_ID`.
+2. In Google Cloud, enable the **Google Wallet API** on a project, create a service account and download a JSON key. Back in the Wallet console, under **Users**, add that service account's email with the Developer role.
+3. Set `GOOGLE_WALLET_SERVICE_ACCOUNT` to the JSON (contents, base64, or a path) and restart.
+4. New issuers start in demo mode: passes carry a "Test only" banner and only accounts listed as test users in the console can save them. Request publishing access from the console once a pass looks right; Evnelo submits each event's class for review automatically on first save.
+
 ## How it works
 
 - **Orders and inventory.** Registration reserves seats with a conditional update, so flash sales cannot oversell. Paid orders hold seats for 10 minutes while the Payment Element completes; the Stripe webhook settles them, delayed payment methods sit in `processing` and are reconciled hourly, and a lapsed hold cancels the PaymentIntent before returning seats. A payment that lands after seats were released is refunded automatically. Event capacity is enforced at checkout under a row lock and includes active waitlist offers.
@@ -234,7 +257,7 @@ Infrastructure monitoring for the one-VM setup is one script: `DD_API_KEY=… DD
 - **Observability:** unexpected failures go through one helper that writes a structured JSON log line and forwards the exception to PostHog error tracking when configured; server logs also ship to PostHog Logs over OTLP, the job loop and Stripe webhooks are traced, and product events (checkout funnel, host actions) are captured with ids only, never names or emails. Notification retries are warnings; only a notification that exhausts its retries is an error.
 - **Moderation:** "Report this event" on public pages stores a row and emails `ABUSE_EMAIL`.
 - **Chargebacks:** a dispute revokes the order's tickets and returns the seats the moment Stripe reports it (the money is already held back from the host); the order shows a "Disputed" badge with Stripe's status. Winning the dispute does not re-issue tickets by itself.
-- **Apple Pay:** the app serves Stripe's domain association file under `/.well-known/` and registers the `APP_URL` domain with each connected account when it connects (with the operator's account at boot when self-hosted), so Apple Pay shows in the Payment Element without manual setup.
+- **Apple Pay:** the app serves Stripe's domain association file under `/.well-known/` and registers the `APP_URL` domain with each connected account when it connects, again at the first paid checkout per account after a restart (for accounts that connected before this existed), and with the operator's account at boot when self-hosted. Apple Pay then shows in the Payment Element without manual setup.
 - **Abandoned uploads:** every presigned registration upload is remembered; a registration claims its keys, and the job loop deletes objects nobody submitted within a day.
 - **Known follow-ups:** authenticated production validation of the payment and organizer flows.
 

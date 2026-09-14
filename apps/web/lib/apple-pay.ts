@@ -24,3 +24,16 @@ export async function ensureApplePayDomain(stripeAccountId: string | null) {
     return false;
   }
 }
+
+const ensured = new Set<string>();
+
+/**
+ * The same, once per account per process, from the paid order route: covers accounts that
+ * connected before domain registration existed, or whose registration failed at connect time.
+ * Fire and forget, so the first checkout after a boot costs one background list call.
+ */
+export function ensureApplePayDomainOnce(stripeAccountId: string) {
+  if (ensured.has(stripeAccountId)) return;
+  ensured.add(stripeAccountId);
+  void ensureApplePayDomain(stripeAccountId).then((ok) => { if (!ok) ensured.delete(stripeAccountId); });
+}

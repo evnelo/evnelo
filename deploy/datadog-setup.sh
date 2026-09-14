@@ -8,7 +8,7 @@
 # Optional: DD_SITE (default datadoghq.com), DD_HOSTNAME (default evnelo), DD_NOTIFY (default
 # @giordano@inevent.com), APP_URL (default https://evnelo.com), DD_LOGS=true to also ship
 # container logs to Datadog (app logs already go to PostHog Logs).
-# Idempotent: re-running upgrades the agent and skips monitors and tests that already exist.
+# Idempotent: re-running upgrades the agent, updates monitors in place and skips an existing test.
 set -euo pipefail
 
 : "${DD_API_KEY:?DD_API_KEY is required (Datadog → Organization settings → API keys)}"
@@ -76,9 +76,12 @@ JSON
 else echo "exists"; fi
 
 echo "== monitors"
-create_monitor() { # name json
-  if api GET "/monitor/search?query=title:%22$(printf '%s' "$1" | sed 's/ /%20/g')%22" | grep -q "\"name\":\"$1\""; then echo "exists: $1"; return; fi
-  api POST "/monitor" "$2"; echo
+create_monitor() { # name json: creates the monitor, or updates it in place when one with that title exists
+  local found id
+  found=$(api GET "/monitor/search?query=title:%22$(printf '%s' "$1" | sed 's/ /%20/g')%22")
+  id=$(printf '%s' "$found" | grep -o "{\"id\":[0-9]*,\"name\":\"$1\"" | grep -o '[0-9]*' | head -1)
+  if [ -n "$id" ]; then echo "updating $1 (#$id)"; api PUT "/monitor/$id" "$2" | head -c 120; echo; return; fi
+  api POST "/monitor" "$2" | head -c 120; echo
 }
 create_monitor "Evnelo host stopped reporting" "$(cat <<JSON
 {
@@ -108,8 +111,8 @@ create_monitor "Evnelo disk above 80%" "$(cat <<JSON
 {
   "name": "Evnelo disk above 80%",
   "type": "query alert",
-  "query": "avg(last_15m):avg:system.disk.in_use{host:${DD_HOSTNAME},device:/dev/root} > 0.8",
-  "message": "The root disk on ${DD_HOSTNAME} is {{value}} full. Old Docker images (\`docker system prune\`) and MySQL backups are the usual culprits. ${DD_NOTIFY}",
+  "query": "avg(last_15m):max:system.disk.in_use{host:${DD_HOSTNAME},device:/dev/nvme*} by {device} > 0.8",
+  "message": "Disk {{device.name}} on ${DD_HOSTNAME} is {{value}} full. Old Docker images (\`docker system prune\`) and MySQL backups are the usual culprits. ${DD_NOTIFY}",
   "tags": ["service:evnelo", "env:production"],
   "priority": 2,
   "options": { "thresholds": { "critical": 0.8, "warning": 0.7 }, "notify_no_data": false, "renotify_interval": 1440 }

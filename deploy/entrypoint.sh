@@ -4,6 +4,6 @@
 # DD_AGENT_HOST the process runs untouched.
 set -e
 if [ -n "${DD_AGENT_HOST:-}" ]; then
-  export NODE_OPTIONS="--require /app/dd/node_modules/dd-trace/init ${NODE_OPTIONS:-}"
+  export NODE_OPTIONS="--require /app/dd-init.js ${NODE_OPTIONS:-}"
 fi
 exec node apps/web/server.js

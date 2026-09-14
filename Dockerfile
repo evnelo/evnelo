@@ -38,6 +38,7 @@ COPY --from=build --chown=node:node /app/apps/web/.next/static ./apps/web/.next/
 COPY --from=build --chown=node:node /app/apps/web/public ./apps/web/public
 COPY --from=build --chown=node:node /app/packages/db/drizzle ./packages/db/drizzle
 COPY --chown=node:node deploy/entrypoint.sh ./entrypoint.sh
+COPY --chown=node:node deploy/dd-init.js ./dd-init.js
 # Datadog APM tracer, installed whole and apart from the traced bundle (its plugins load lazily, so
 # file tracing would miss them). deploy/entrypoint.sh preloads it only when DD_AGENT_HOST is set.
 RUN npm install --omit=dev --no-audit --no-fund --prefix /app/dd dd-trace@6.16.0 && chown -R node:node /app/dd

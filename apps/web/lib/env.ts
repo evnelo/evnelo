@@ -45,14 +45,16 @@ const schema = z.object({
   // leave unset for buckets with ACLs disabled, where sending an ACL makes the upload fail
   S3_UPLOAD_ACL: z.enum(["public-read"]).optional(),
   CLOUDFRONT_DOMAIN: z.string().optional(),
-  // error reporting (optional): server DSN is read at runtime; the browser DSN (NEXT_PUBLIC_SENTRY_DSN) is inlined at build time
   ABUSE_EMAIL: z.string().email().optional(),
   // bot check on sign-in, registration, waitlist and report forms; off until all three are set
   CAPTCHA_PROVIDER: z.enum(["turnstile", "recaptcha"]).optional(),
   CAPTCHA_SITE_KEY: z.string().optional(),
   CAPTCHA_SECRET_KEY: z.string().optional(), // abuse reports from public event pages are emailed here when set
-  SENTRY_DSN: z.string().url().optional(),
-  SENTRY_ENVIRONMENT: z.string().optional(),
+  // PostHog (optional): errors, product analytics, logs and traces. The server reads POSTHOG_KEY at runtime
+  // (falls back to the browser token); NEXT_PUBLIC_POSTHOG_KEY is inlined into the browser bundle at build time.
+  POSTHOG_KEY: z.string().optional(),
+  POSTHOG_HOST: z.string().url().default("https://us.i.posthog.com"),
+  POSTHOG_ENVIRONMENT: z.string().optional(),
   // Google sign-in (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
@@ -69,6 +71,8 @@ const schema = z.object({
 
 // .env files often carry `KEY=` placeholders: treat empty values as unset so optional URLs/enums validate.
 export const env = schema.parse(Object.fromEntries(Object.entries(process.env).map(([k, v]) => [k, v === "" ? undefined : v])));
+if (!env.POSTHOG_KEY && process.env.NEXT_PUBLIC_POSTHOG_KEY) env.POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+if (process.env.NEXT_PUBLIC_POSTHOG_HOST && !process.env.POSTHOG_HOST) env.POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST;
 // Auth.js derives magic-link and callback URLs from the request host unless AUTH_URL is set; in
 // production that must come from the operator, never from an attacker-controlled Host header.
 const building = process.env.NEXT_PHASE === "phase-production-build"; // `next build` loads page modules with NODE_ENV=production and no deployment env
@@ -78,5 +82,6 @@ export const smsAuthMode: "application" | "basic" | null =
   env.VONAGE_APPLICATION_ID && env.VONAGE_PRIVATE_KEY ? "application" : env.VONAGE_API_KEY && env.VONAGE_API_SECRET ? "basic" : null;
 export const smsConfigured = smsAuthMode !== null;
 export const emailConfigured = Boolean(env.RESEND_API_KEY);
+export const posthogConfigured = Boolean(env.POSTHOG_KEY);
 export const appleWalletConfigured = Boolean(env.APPLE_PASS_TYPE_ID && env.APPLE_TEAM_ID && env.APPLE_PASS_CERT && env.APPLE_PASS_KEY && env.APPLE_WWDR_CERT);
 export const googleWalletConfigured = Boolean(env.GOOGLE_WALLET_ISSUER_ID && env.GOOGLE_WALLET_SERVICE_ACCOUNT);

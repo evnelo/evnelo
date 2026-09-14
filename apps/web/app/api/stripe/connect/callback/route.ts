@@ -10,6 +10,8 @@ import { stripeConnectConfigured } from "@/lib/stripe-connect";
 import { CONNECT_COOKIE, CONNECT_MAX_AGE, verifyConnectState } from "@/lib/stripe-connect-state";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { captureError } from "@/lib/observability";
+import { EVENTS } from "@/lib/analytics-events";
+import { track } from "@/lib/posthog-server";
 
 export const runtime = "nodejs";
 
@@ -48,6 +50,7 @@ export async function GET(req: Request) {
     // Prove the platform can access this account before persisting the binding; tokens stay out of storage.
     const account = await stripe.accounts.retrieve(token.stripe_user_id);
     if (!(await connectOrganizationStripe(db, context.orgId, user.id, token.stripe_user_id, account.charges_enabled))) return finish("failed", context.orgId);
+    track(EVENTS.stripeConnected, { distinctId: user.id, organizationId: context.orgId, properties: { chargesEnabled: Boolean(account.charges_enabled) } });
     return finish("success", context.orgId);
   } catch {
     // OAuth errors can contain the authorization code or response tokens; never log the raw error.

@@ -4,12 +4,14 @@
  */
 import { captureError } from "@/lib/observability";
 import type Stripe from "stripe";
-import { orders, type Order } from "@evnelo/db";
+import { events, orders, type Order } from "@evnelo/db";
 import { eq } from "drizzle-orm";
 import * as svc from "@evnelo/core/services";
 import { db } from "./db";
 import { env } from "./env";
 import { stripe } from "./stripe";
+import { EVENTS } from "@/lib/analytics-events";
+import { track } from "@/lib/posthog-server";
 
 export const markOrderPaid = (paymentIntentId: string) => svc.markOrderPaid(db, paymentIntentId);
 export const markOrderProcessing = (paymentIntentId: string) => svc.markOrderProcessing(db, paymentIntentId);
@@ -62,18 +64,29 @@ export async function settlePaymentIntent(pi: Pick<Stripe.PaymentIntent, "id" | 
       await recordPayment(pi, stripeAccountId);
       const result = await markOrderPaid(pi.id);
       if (result === "expired") await refundLatePayment(pi.id, stripeAccountId); // seats were already released: the rare race
+      if (result === "paid") await trackOrder(pi.id, EVENTS.paymentSucceeded);
       return result;
     }
     case "processing":
       return markOrderProcessing(pi.id);
-    case "canceled":
-      return (await releaseOrderByPaymentIntent(pi.id, "failed")) ? "failed" : "ignored";
+    case "canceled": {
+      const released = await releaseOrderByPaymentIntent(pi.id, "failed");
+      if (released) await trackOrder(pi.id, EVENTS.paymentFailed, { reason: "canceled" });
+      return released ? "failed" : "ignored";
+    }
     case "requires_payment_method":
       // a delayed method was verified and then bounced; a card decline before the hold lapses stays retryable
       return (await releaseOrderByPaymentIntent(pi.id, "failed", ["processing"])) ? "failed" : "ignored";
     default:
       return "ignored"; // requires_action / requires_confirmation / requires_capture: still in flight
   }
+}
+
+/** The anonymous checkout funnel keys on the order id; the organization is the group. */
+async function trackOrder(paymentIntentId: string, event: typeof EVENTS.paymentSucceeded | typeof EVENTS.paymentFailed, properties?: Record<string, unknown>) {
+  const [row] = await db.select({ id: orders.id, eventId: orders.eventId, totalMinor: orders.totalMinor, currency: orders.currency, organizationId: events.organizationId })
+    .from(orders).innerJoin(events, eq(orders.eventId, events.id)).where(eq(orders.stripePaymentIntentId, paymentIntentId)).limit(1);
+  if (row) track(event, { distinctId: row.id, anonymous: true, organizationId: row.organizationId, properties: { eventId: row.eventId, amountMinor: row.totalMinor, currency: row.currency, ...properties } });
 }
 
 /**

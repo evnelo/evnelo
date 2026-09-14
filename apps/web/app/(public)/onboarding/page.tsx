@@ -9,6 +9,8 @@ import { ORG_COOKIE, requireUser } from "@/lib/auth/session";
 import { FormMessage } from "@/components/ui/form-field";
 import { NarrowPage } from "@/components/narrow-page";
 import { OnboardingForm } from "@/components/onboarding-form";
+import { EVENTS } from "@/lib/analytics-events";
+import { track } from "@/lib/posthog-server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("auth.onboarding");
@@ -30,6 +32,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
       redirect(`/onboarding?error=${encodeURIComponent(parsed.error.issues[0]?.message ?? ta("checkForm"))}`);
     }
     const org = await createOrganization(db, { ...parsed.data, ownerUserId: u.id });
+    track(EVENTS.organizationCreated, { distinctId: u.id, organizationId: org.id });
     (await cookies()).set(ORG_COOKIE, org.id, { path: "/", httpOnly: true, sameSite: "lax", maxAge: 365 * 86400 });
     redirect("/dashboard");
   }

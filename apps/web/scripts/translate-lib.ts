@@ -28,7 +28,7 @@ export type Token = { placeholder: string; original: string };
 export const DO_NOT_TRANSLATE = [
   "Apple Wallet", "Google Wallet", "Google Calendar", "Stripe Connect", "Next.js", "Node.js",
   "Evnelo", "InEvent", "Stripe", "Resend", "Vonage", "MySQL", "Apache", "Docker", "GitHub",
-  "Cloudflare", "Turnstile", "reCAPTCHA", "Sentry", "CloudFront", "Zapier", "OpenAPI", "Scalar",
+  "Cloudflare", "Turnstile", "reCAPTCHA", "PostHog", "CloudFront", "Zapier", "OpenAPI", "Scalar",
   "TypeScript", "JavaScript", "Drizzle", "Tailwind", "Photon", "Mapbox", "Telnyx", "Luma",
   "Eventbrite", "PostHog", "Slack", "Webhook", "webhook",
 ].sort((a, b) => b.length - a.length);

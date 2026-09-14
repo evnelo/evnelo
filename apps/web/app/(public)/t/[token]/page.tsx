@@ -9,6 +9,8 @@ import { cn, formatDateRange } from "@/lib/utils";
 import { publicEventPath } from "@/lib/urls";
 import { calendarPath } from "@/lib/calendar";
 import { buttonVariants } from "@/components/ui/button";
+import { EVENTS } from "@/lib/analytics-events";
+import { Track } from "@/components/analytics";
 
 export const metadata = { robots: "noindex,nofollow" };
 
@@ -43,6 +45,7 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
       {cancelled && (
         <p role="alert" className="mb-6 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">{t("ticket.cancelled")}</p>
       )}
+      <Track event={EVENTS.ticketViewed} properties={{ eventId: event.id, status: attendee.status, cancelled }} />
       <p className="print-hide eyebrow mb-5 text-center">{t("ticket.eyebrow")}</p>
 
       <div className={cn("ticket animate-rise grid sm:grid-cols-[minmax(0,1fr)_16rem]", cancelled && "opacity-80 grayscale")}>

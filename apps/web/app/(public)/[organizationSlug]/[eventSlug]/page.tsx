@@ -13,6 +13,8 @@ import { eventAccess } from "@/lib/event-access";
 import { waitlistOffer } from "@/lib/waitlist-access";
 import { activeWaitlistHolds, liveAttendeeCount } from "@evnelo/core/services";
 import { db } from "@/lib/db";
+import { EVENTS } from "@/lib/analytics-events";
+import { Track } from "@/components/analytics";
 
 type Params = { params: Promise<{ organizationSlug: string; eventSlug: string }> };
 
@@ -95,6 +97,7 @@ export default async function EventPage({ params }: Params) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />
       )}
 
+      <Track event={EVENTS.eventPageViewed} properties={{ eventId: event.id, organizationId: org.id, status: event.status, locationType: event.locationType, visibility: event.visibility }} />
       {hasCover && (
         <div className="relative isolate aspect-[3/2] max-h-[36rem] w-full overflow-hidden bg-muted sm:aspect-[16/7]">
           <img src={event.coverImageUrl!} alt="" className="absolute inset-0 size-full object-cover" />

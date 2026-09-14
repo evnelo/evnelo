@@ -13,9 +13,13 @@ RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install
 
 FROM deps AS build
 COPY . .
-# NEXT_PUBLIC_* values are inlined at build time; pass them as build args when you want browser error reporting
-ARG NEXT_PUBLIC_SENTRY_DSN
-ARG NEXT_PUBLIC_SENTRY_ENVIRONMENT
+# NEXT_PUBLIC_* values are inlined at build time: pass the PostHog browser token and host as build args for
+# analytics and error reporting; POSTHOG_API_KEY + POSTHOG_PROJECT_ID additionally upload source maps.
+ARG NEXT_PUBLIC_POSTHOG_KEY
+ARG NEXT_PUBLIC_POSTHOG_HOST
+ARG POSTHOG_API_KEY
+ARG POSTHOG_PROJECT_ID
+ARG APP_VERSION
 # lib/env.ts validates the environment when a page module loads, which happens while `next build`
 # collects page data. These placeholders satisfy it; nothing connects to a database during the
 # build, and the runner stage does not inherit them.

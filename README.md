@@ -109,7 +109,8 @@ Everything is read from the environment (the root `.env` in development). Empty 
 | `API_TRUSTED_PROXY_HEADER` | production | The header your proxy writes (`cf-connecting-ip`, `x-real-ip` or `x-forwarded-for`). Enables per-client rate limits on registration, sign-in and the public API. |
 | `JOBS_INLINE` | no | `true` (default) runs the job loop inside the web process; `false` for serverless, then call `POST /api/jobs/run` with `Authorization: Bearer $AUTH_SECRET` every minute. |
 | `MIGRATE_ON_START` | no | Apply migrations at boot (the Docker image sets it). |
-| `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ENVIRONMENT` | no | Error reporting. The public DSN is inlined at build time. |
+| `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, `POSTHOG_KEY`, `POSTHOG_ENVIRONMENT` | no | PostHog: error tracking, product analytics, logs and traces. The browser token is inlined at build time (Docker build arg); the server falls back to it when `POSTHOG_KEY` is unset. Enable cookieless server hash mode in the PostHog project: public pages track without cookies, the dashboard identifies signed-in users by id. |
+| `POSTHOG_API_KEY`, `POSTHOG_PROJECT_ID` | build only | Personal API key and project id for uploading source maps during `next build`. |
 | `GOOGLE_TRANSLATE_API_KEY` | maintainers only | Used by `pnpm --filter @evnelo/web translate` to regenerate the 19 non-English message files from `messages/en`. The running app never needs it. |
 | `ABUSE_EMAIL` | no | Where "Report this event" submissions are emailed. They are always stored. |
 | `CAPTCHA_PROVIDER`, `CAPTCHA_SITE_KEY`, `CAPTCHA_SECRET_KEY` | production | Bot check on sign-in links, registrations, waitlist joins and abuse reports. `turnstile` (Cloudflare, free, invisible for most people) or `recaptcha` (Google reCAPTCHA v3). Off until all three are set. |
@@ -187,7 +188,7 @@ To exercise flows by hand: `pnpm db:seed` gives you events with paid and free ti
 The Dockerfile produces a self-contained image (Next standalone server, traced production dependencies, static assets, migrations), about 300 MB, running as the unprivileged `node` user:
 
 ```bash
-docker build -t evnelo .                      # add --build-arg NEXT_PUBLIC_SENTRY_DSN=… for browser error reporting
+docker build -t evnelo .                      # add --build-arg NEXT_PUBLIC_POSTHOG_KEY=… for analytics and error reporting
 docker run -d -p 3000:3000 --env-file .env -e APP_URL=https://tickets.example.com evnelo
 ```
 
@@ -225,7 +226,7 @@ Serverless hosts (Vercel and similar) work with `JOBS_INLINE=false` plus a sched
 - **Abuse limits:** registration, sign-in links, waitlist joins, discount previews and abuse reports are limited per identity and per event through one MySQL-backed limiter that holds across replicas. With `CAPTCHA_*` set, the four forms that send mail or hold inventory also need a Turnstile or reCAPTCHA token, verified server-side; a verification outage rejects rather than admits.
 - **Navigation feedback:** a thin progress bar along the top edge shows while a clicked link is loading (`components/navigation-progress.tsx`).
 - **Security headers:** every response carries a CSP allowing Stripe, your upload origin and the configured bot-check widget, `frame-ancestors 'none'`, nosniff, referrer and permissions policies, and HSTS on https. Built per request from the runtime environment in `apps/web/middleware.ts` and `lib/security-headers.js`.
-- **Errors:** unexpected failures go through one helper that logs with a stable `[scope]` prefix and forwards to Sentry when configured. Notification retries are warnings; only a notification that exhausts its retries is an error.
+- **Observability:** unexpected failures go through one helper that writes a structured JSON log line and forwards the exception to PostHog error tracking when configured; server logs also ship to PostHog Logs over OTLP, the job loop and Stripe webhooks are traced, and product events (checkout funnel, host actions) are captured with ids only, never names or emails. Notification retries are warnings; only a notification that exhausts its retries is an error.
 - **Moderation:** "Report this event" on public pages stores a row and emails `ABUSE_EMAIL`.
 - **Known follow-ups:** a sweep for registration files uploaded but never submitted, and authenticated production validation of the payment and organizer flows.
 

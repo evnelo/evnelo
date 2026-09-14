@@ -8,6 +8,8 @@ import { events, ticketTypes } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { clientAddress, readJsonBody } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
+import { EVENTS } from "@/lib/analytics-events";
+import { track } from "@/lib/posthog-server";
 
 export const runtime = "nodejs";
 
@@ -22,12 +24,13 @@ export async function POST(request: Request) {
   const address = clientAddress(request);
   const allowed = await Promise.all([address ? consumeSharedRateLimit("discount:client", address, 30, 10 * 60_000) : true, consumeSharedRateLimit("discount:event", eventId, 1_000, 60_000)]);
   if (allowed.includes(false)) return NextResponse.json({ error: t("errors.tooManyAttempts") }, { status: 429, headers: { "Retry-After": "60" } });
-  const [row] = await db.select({ feePassThrough: events.feePassThrough, tt: ticketTypes }).from(ticketTypes).innerJoin(events, eq(events.id, ticketTypes.eventId))
+  const [row] = await db.select({ feePassThrough: events.feePassThrough, organizationId: events.organizationId, tt: ticketTypes }).from(ticketTypes).innerJoin(events, eq(events.id, ticketTypes.eventId))
     .where(and(eq(ticketTypes.id, ticketTypeId), eq(ticketTypes.eventId, eventId), eq(events.status, "published"))).limit(1);
   if (!row) return NextResponse.json({ error: t("errors.ticketUnavailable") }, { status: 404 });
   const dc = await findDiscountCode(db, eventId, code);
   const problem = discountProblem(dc);
   if (problem) return NextResponse.json({ error: t(`discount.problem.${problem}`) }, { status: 404 });
   const fees = computeOrder([{ unitPriceMinor: row.tt.priceMinor, quantity, taxRateBps: row.tt.taxRateBps }], { edition: currentEdition(), feePassThrough: row.feePassThrough, discount: toDiscount(dc!) });
+  track(EVENTS.discountApplied, { distinctId: dc!.id, anonymous: true, organizationId: row.organizationId, properties: { eventId, kind: dc!.kind, discountMinor: fees.discountMinor, free: fees.totalMinor === 0 } });
   return NextResponse.json({ code: dc!.code, kind: dc!.kind, value: dc!.value, discountMinor: fees.discountMinor, totalMinor: fees.totalMinor, currency: row.tt.currency }, { headers: { "Cache-Control": "no-store" } });
 }

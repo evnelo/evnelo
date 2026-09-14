@@ -1,15 +1,23 @@
-import * as Sentry from "@sentry/nextjs";
 import { env } from "./env";
+import { log } from "./log";
+import { posthogServer } from "./posthog-server";
 
-export const errorReportingConfigured = Boolean(env.SENTRY_DSN);
+export const errorReportingConfigured = Boolean(env.POSTHOG_KEY);
 
 /**
- * The one place unexpected failures go. Always logs (structured enough to grep in container
- * output); forwards to Sentry when SENTRY_DSN is set. `scope` is a stable dotted tag such as
- * "jobs.expireHolds" so alerts group by code path. Keep PII out of `context`: ids, not emails.
+ * The one place unexpected failures go. Always logs (a structured line, greppable in container
+ * output and searchable in PostHog Logs); forwards the exception to PostHog error tracking when
+ * POSTHOG_KEY is set. `scope` is a stable dotted tag such as "jobs.expireHolds" so issues group by
+ * code path. Keep PII out of `context`: ids, not emails.
  */
 export function captureError(scope: string, error: unknown, context?: Record<string, unknown>) {
   const err = error instanceof Error ? error : new Error(typeof error === "string" ? error : JSON.stringify(error));
-  console.error(`[${scope}] ${err.message}`, context ? JSON.stringify(context) : "", err.stack ? `\n${err.stack}` : "");
-  if (errorReportingConfigured) Sentry.captureException(err, { tags: { scope }, extra: context });
+  log.error(scope, err.message, { ...flatten(context), stack: err.stack });
+  posthogServer()?.captureException(err, undefined, { scope, ...context });
+}
+
+function flatten(context?: Record<string, unknown>) {
+  const out: Record<string, string | number | boolean> = {};
+  for (const [k, v] of Object.entries(context ?? {})) out[k] = typeof v === "string" || typeof v === "number" || typeof v === "boolean" ? v : JSON.stringify(v);
+  return out;
 }

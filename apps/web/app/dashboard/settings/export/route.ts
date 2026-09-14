@@ -2,13 +2,16 @@ import { NextResponse } from "next/server";
 import { exportOrganizationData } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { requireOrg } from "@/lib/auth/session";
+import { EVENTS } from "@/lib/analytics-events";
+import { track } from "@/lib/posthog-server";
 
 export const runtime = "nodejs";
 
 /** Organization takeout: one JSON file with everything the organization owns (no secrets). Owners/admins only. */
 export async function GET() {
-  const { org } = await requireOrg("manage_org", "/dashboard/settings");
+  const { org, user } = await requireOrg("manage_org", "/dashboard/settings");
   const data = await exportOrganizationData(db, org.id);
+  track(EVENTS.exportDownloaded, { distinctId: user.id, organizationId: org.id, properties: { kind: "organization_takeout" } });
   return new NextResponse(JSON.stringify(data, null, 2), {
     headers: { "content-type": "application/json", "content-disposition": `attachment; filename="evnelo-${org.slug}-${new Date().toISOString().slice(0, 10)}.json"`, "cache-control": "private, no-store" },
   });

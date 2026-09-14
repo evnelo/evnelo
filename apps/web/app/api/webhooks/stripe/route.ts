@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import type Stripe from "stripe";
 import { eq } from "drizzle-orm";
 import { smsUnlocks } from "@evnelo/db";
 import { updateStripeAccountStatus } from "@evnelo/core/services";
@@ -7,6 +8,7 @@ import { env } from "@/lib/env";
 import { verifyStripeWebhook } from "@/lib/stripe-webhook";
 import { connectedAccountStatus } from "@/lib/stripe-connect";
 import { applyRefund, settlePaymentIntent } from "@/lib/orders";
+import { span } from "@/lib/posthog-server";
 
 export const runtime = "nodejs";
 
@@ -30,6 +32,11 @@ export async function POST(req: Request) {
   const live = /^(sk|rk)_live_/.test(env.STRIPE_SECRET_KEY ?? "");
   if (event.livemode !== live) return NextResponse.json({ received: true });
 
+  await span(`stripe.webhook ${event.type}`, () => handle(event), { "stripe.event_id": event.id, "stripe.livemode": event.livemode });
+  return NextResponse.json({ received: true });
+}
+
+async function handle(event: Stripe.Event) {
   switch (event.type) {
     case "account.updated":
     case "account.application.deauthorized": {
@@ -58,5 +65,4 @@ export async function POST(req: Request) {
       await applyRefund(event.data.object);
       break;
   }
-  return NextResponse.json({ received: true });
 }

@@ -11,6 +11,8 @@ import { calendarPath } from "@/lib/calendar";
 import { paymentMethodName } from "@/lib/payment-flow";
 import { buttonVariants } from "@/components/ui/button";
 import { PrintButton } from "@/components/print-button";
+import { EVENTS } from "@/lib/analytics-events";
+import { Track } from "@/components/analytics";
 
 export const metadata = { robots: "noindex,nofollow" };
 
@@ -63,6 +65,7 @@ export default async function OrderPage({ params }: { params: Promise<{ token: s
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:py-16">
+      <Track event={EVENTS.orderPageViewed} properties={{ eventId: event.id, organizationId: org.id, orderStatus: order.status, tickets: live.length }} />
       <p className="print-hide eyebrow mb-3 text-center">{t("order.eyebrow")}</p>
       <h1 className="display text-center text-4xl sm:text-5xl">{awaitingApproval && !live.length ? t("order.titleApproval") : t("order.title")}</h1>
       <p className="mx-auto mt-3 max-w-md text-center text-muted-foreground">

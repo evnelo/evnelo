@@ -25,6 +25,8 @@ import WaitlistOffer, { waitlistOfferSubject } from "@/emails/waitlist-offer";
 import { formatDateRange } from "@/lib/utils";
 import { publicEventPath } from "@/lib/urls";
 import { calendarPath } from "@/lib/calendar";
+import { EVENTS } from "@/lib/analytics-events";
+import { track } from "@/lib/posthog-server";
 
 export type ActionResult = { ok: true; message?: string; id?: string } | { ok: false; error: string; issues?: { path: (string | number)[]; message: string }[] };
 
@@ -82,6 +84,7 @@ export async function saveEventAction(input: unknown, eventId?: string): Promise
     }
     const ctx = await requireOrg("edit_events");
     const event = await svc.createEvent(db, ctx.org.id, parsed.data);
+    track(EVENTS.eventCreated, { distinctId: ctx.user.id, organizationId: ctx.org.id, properties: { eventId: event.id, locationType: parsed.data.locationType, visibility: parsed.data.visibility } });
     return { ok: true, id: event.id };
   } catch (e) {
     return fail(e);
@@ -89,8 +92,9 @@ export async function saveEventAction(input: unknown, eventId?: string): Promise
 }
 
 export async function publishEventAction(eventId: string) {
-  await requireEvent(eventId, "edit_events");
+  const { user, org } = await requireEvent(eventId, "edit_events");
   await svc.publishEvent(db, eventId);
+  track(EVENTS.eventPublished, { distinctId: user.id, organizationId: org.id, properties: { eventId } });
   revalidatePath(`/dashboard/events/${eventId}`);
 }
 export async function unpublishEventAction(eventId: string) {
@@ -167,9 +171,10 @@ export async function saveFieldsAction(eventId: string, input: unknown): Promise
 const ids = z.array(z.string().length(26)).min(1);
 
 export async function approveAttendeesAction(eventId: string, formData: FormData) {
-  await requireEvent(eventId, "manage_attendees");
+  const { user, org } = await requireEvent(eventId, "manage_attendees");
   const list = ids.parse(formData.getAll("id"));
   await svc.approveAttendees(db, eventId, list);
+  track(EVENTS.attendeeApproved, { distinctId: user.id, organizationId: org.id, properties: { eventId, count: list.length } });
   revalidatePath(`/dashboard/events/${eventId}/attendees`);
 }
 export async function rejectAttendeesAction(eventId: string, formData: FormData) {
@@ -186,7 +191,7 @@ export async function cancelAttendeesAction(eventId: string, formData: FormData)
 /** Full refund through Stripe; the charge.refunded webhook then cancels the party and returns seats. */
 export async function refundOrderAction(eventId: string, orderId: string): Promise<ActionResult> {
   try {
-    await requireEvent(eventId, "refund");
+    const { user, org } = await requireEvent(eventId, "refund");
     const t = await messages();
     const order = await svc.getOrder(db, eventId, orderId);
     if (!order?.stripePaymentIntentId) return { ok: false, error: t("actions.refund.noPayment") };
@@ -195,6 +200,7 @@ export async function refundOrderAction(eventId: string, orderId: string): Promi
       { payment_intent: order.stripePaymentIntentId },
       env.EDITION === "cloud" && order.stripeAccountId ? { stripeAccount: order.stripeAccountId } : undefined,
     );
+    track(EVENTS.refundRequested, { distinctId: user.id, organizationId: org.id, properties: { eventId, orderId, amountMinor: order.totalMinor, currency: order.currency } });
     revalidatePath(`/dashboard/events/${eventId}/orders`);
     return { ok: true, message: t("actions.refund.requested") };
   } catch (e) {
@@ -272,8 +278,9 @@ export async function createApiKeyAction(formData: FormData): Promise<ActionResu
     .safeParse({ name: formData.get("name"), scopes: formData.getAll("scopes") });
   if (!parsed.success) return zodFail(parsed.error);
   try {
-    const { org } = await requireOrg("manage_org");
+    const { org, user } = await requireOrg("manage_org");
     const key = await svc.createApiKey(db, { organizationId: org.id, ...parsed.data });
+    track(EVENTS.apiKeyCreated, { distinctId: user.id, organizationId: org.id, properties: { scopes: parsed.data.scopes } });
     revalidatePath("/dashboard/settings");
     return { ok: true, id: key.id, secret: key.secret, message: (await messages())("actions.apiKeyCreated") };
   } catch (e) {
@@ -418,8 +425,9 @@ export async function createWebhookAction(input: unknown): Promise<ActionResult 
   const parsed = svc.webhookInput.safeParse(input);
   if (!parsed.success) return zodFail(parsed.error);
   try {
-    const { org } = await requireOrg("manage_org");
+    const { org, user } = await requireOrg("manage_org");
     const row = await svc.createWebhook(db, org.id, parsed.data);
+    track(EVENTS.webhookAdded, { distinctId: user.id, organizationId: org.id, properties: { events: parsed.data.events } });
     revalidatePath("/dashboard/settings");
     return { ok: true, id: row.id, secret: row.secret, message: (await messages())("actions.webhook.created") };
   } catch (e) {

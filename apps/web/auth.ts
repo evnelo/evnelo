@@ -8,6 +8,8 @@ import { emailConfigured, env } from "@/lib/env";
 import { drizzleAdapter } from "@/lib/auth/adapter";
 import { emailLocale, emailTranslator, renderEmail, sendEmail } from "@/lib/email";
 import MagicLink, { magicLinkSubject } from "@/emails/magic-link";
+import { EVENTS } from "@/lib/analytics-events";
+import { track } from "@/lib/posthog-server";
 
 export const googleEnabled = Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET);
 
@@ -42,6 +44,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
     ...(googleEnabled ? [Google({ clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET, allowDangerousEmailAccountLinking: true })] : []),
   ],
+  events: {
+    signIn({ user, account, isNewUser }) {
+      if (user.id) track(EVENTS.signedIn, { distinctId: user.id, properties: { provider: account?.provider ?? "email", newUser: Boolean(isNewUser) } });
+    },
+  },
   callbacks: {
     jwt({ token, user }) {
       if (user?.id) token.uid = user.id;

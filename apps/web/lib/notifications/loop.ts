@@ -1,4 +1,6 @@
 import { captureError } from "@/lib/observability";
+import { log } from "@/lib/log";
+import { span } from "@/lib/posthog-server";
 import { env } from "@/lib/env";
 import { runJobs } from "./worker";
 
@@ -21,10 +23,12 @@ export function startJobLoop() {
     if (g.__otJobRunning) return;
     g.__otJobRunning = true;
     try {
-      const r = await runJobs();
+      const r = await span("jobs.tick", () => runJobs());
       g.__otJobLastRunAt = new Date();
       g.__otJobLastError = undefined;
-      if (r.sent || r.failed || r.retried || r.skipped || r.requeued || r.expiredHolds || r.expiredOffers || r.reconciled || r.webhooks.delivered || r.webhooks.retried || r.webhooks.failed) console.log("[jobs]", JSON.stringify(r));
+      if (r.sent || r.failed || r.retried || r.skipped || r.requeued || r.expiredHolds || r.expiredOffers || r.reconciled || r.webhooks.delivered || r.webhooks.retried || r.webhooks.failed) {
+        log.info("jobs.tick", "jobs ran", { sent: r.sent, failed: r.failed, retried: r.retried, skipped: r.skipped, requeued: r.requeued, expiredHolds: r.expiredHolds, expiredOffers: r.expiredOffers, reconciled: r.reconciled, webhooksDelivered: r.webhooks.delivered, webhooksRetried: r.webhooks.retried, webhooksFailed: r.webhooks.failed });
+      }
     } catch (e) {
       g.__otJobLastError = (e as Error).message;
       captureError("jobs.loop", e);
@@ -35,5 +39,5 @@ export function startJobLoop() {
   g.__otJobLoop = setInterval(tick, TICK_MS);
   g.__otJobLoop.unref?.();
   setTimeout(tick, 2_000).unref?.();
-  console.log(`[jobs] in-process loop every ${TICK_MS / 1000}s`);
+  log.info("jobs.loop", "in-process job loop started", { everySeconds: TICK_MS / 1000 });
 }

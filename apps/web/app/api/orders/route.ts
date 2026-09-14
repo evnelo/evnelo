@@ -21,6 +21,8 @@ import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { verifyCaptcha } from "@/lib/captcha";
 import { verifyRegistrationFile } from "@/lib/storage";
 import { requestLocale } from "@/lib/locale";
+import { EVENTS } from "@/lib/analytics-events";
+import { track } from "@/lib/posthog-server";
 
 export const runtime = "nodejs";
 const HOLD_MINUTES = 10;
@@ -210,6 +212,7 @@ export async function POST(req: Request) {
   if ("inviteExhausted" in result) return NextResponse.json({ error: t("errors.inviteExhausted") }, { status: 409 });
   if ("soldOut" in result) return NextResponse.json({ error: quantity > 1 ? t("errors.notEnoughTickets") : t("errors.justSoldOut") }, { status: 409 });
 
+  track(EVENTS.registrationSubmitted, { distinctId: orderId, anonymous: true, organizationId: event.organizationId, properties: { eventId: event.id, quantity, free: isFree, discount: Boolean(discountCode), requiresApproval: event.requiresApproval, edition } });
   if (isFree) {
     await fulfilFreeOrder(orderId);
     return NextResponse.json({ orderId, orderUrl: orderPath(accessToken) });
@@ -231,6 +234,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: t("errors.paymentsUnavailable") }, { status: 503 });
   }
   await db.update(orders).set({ stripePaymentIntentId: pi.id }).where(eq(orders.id, orderId));
+  track(EVENTS.paymentStarted, { distinctId: orderId, anonymous: true, organizationId: event.organizationId, properties: { eventId: event.id, amountMinor: fees.totalMinor, currency: tt.currency, connected: Boolean(stripeAccountId) } });
   const resumeToken = await signPaymentResume({ orderId, eventId: event.id, expiresAt: new Date(now.getTime() + 24 * 60 * 60_000) }, env.AUTH_SECRET);
   return NextResponse.json({ orderId, clientSecret: pi.client_secret, stripeAccountId, holdExpiresAt: holdExpiresAt!.toISOString(), resumeToken });
 }

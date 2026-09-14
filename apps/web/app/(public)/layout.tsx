@@ -24,8 +24,9 @@ export default async function PublicLayout({ children }: { children: React.React
             <GithubBadge />
           </div>
           <div className="col-start-2 row-start-2 flex items-center justify-end gap-1 text-sm sm:gap-2">
+            {/* the dashboard link is a plain <a> on purpose: analytics runs cookieless out here and identified in the dashboard (instrumentation-client.ts) */}
             {user ? (
-              <Link href="/dashboard" className={cn(buttonVariants({ variant: "outline", size: "pill" }))}>{t("nav.dashboard")}</Link>
+              <a href="/dashboard" className={cn(buttonVariants({ variant: "outline", size: "pill" }))}>{t("nav.dashboard")}</a>
             ) : (
               <>
                 <Link href="/login" className="press rounded-full px-3 py-2 hover:bg-muted/80">{t("nav.signIn")}</Link>

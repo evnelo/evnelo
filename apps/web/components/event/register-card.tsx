@@ -14,6 +14,8 @@ import { SuccessStep } from "./success-step";
 import { cn, formatMoney } from "@/lib/utils";
 import { paymentHold, paymentOutcome, registrationSuccessMessage, type PaymentOutcome } from "@/lib/payment-flow";
 import type { Edition } from "@evnelo/core";
+import { EVENTS } from "@/lib/analytics-events";
+import { track } from "@/components/analytics";
 
 type Props = {
   eventId: string; eventName: string; ticketTypes: TicketType[]; fields: RegistrationField[];
@@ -192,8 +194,9 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
   // closing the dialog after success moves the outcome onto the card
   const changeOpen = useCallback((next: boolean) => {
     if (!next && success) { setDone(success); setSuccess(undefined); }
+    if (next) track(EVENTS.registrationOpened, { eventId, paid: paidPossible, requiresApproval });
     setOpen(next);
-  }, [success]);
+  }, [success, eventId, paidPossible, requiresApproval]);
 
   function startAgain() {
     setCanRegisterAgain(false);

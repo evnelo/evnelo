@@ -223,7 +223,7 @@ Serverless hosts (Vercel and similar) work with `JOBS_INLINE=false` plus a sched
 
 ## Operations
 
-Infrastructure monitoring for the one-VM setup is one script: `DD_API_KEY=… DD_APP_KEY=… ./deploy/datadog-setup.sh` on the server installs the Datadog agent (system, disk and Docker metrics; `DD_LOGS=true` also ships container logs), creates a Synthetics uptime check on `/api/health` from three regions, and three monitors: host stopped reporting, fewer than three containers running, root disk above 80%. It is idempotent. Application errors, product analytics, logs and traces live in PostHog (see Configuration).
+Infrastructure monitoring for the one-VM setup is one script: `DD_API_KEY=… DD_APP_KEY=… ./deploy/datadog-setup.sh` on the server installs the Datadog agent (system, disk and Docker metrics; `DD_LOGS=true` also ships container logs), creates a Synthetics uptime check on `/api/health` from three regions, and three monitors: host stopped reporting, fewer than three containers running, root disk above 80%. It is idempotent. With `DD_AGENT_HOST=host.docker.internal` in `.env` the app container also sends APM traces (every request, MySQL query and outbound call) to the agent. Application errors, product analytics and logs live in PostHog (see Configuration).
 
 
 - **Health:** `GET /api/health` returns `200` when the database answers within two seconds and the job loop ticked in the last two minutes (or jobs run externally), else `503`. Unauthenticated and terse.

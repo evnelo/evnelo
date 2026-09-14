@@ -37,6 +37,10 @@ instances:
   - url: "unix://var/run/docker.sock"
     collect_container_size: true
 YAML
+# APM: the app container sends traces to the agent over the Docker bridge (DD_AGENT_HOST=host.docker.internal in .env)
+if ! sudo grep -q '^apm_config:' /etc/datadog-agent/datadog.yaml; then
+  printf 'apm_config:\n  enabled: true\n  apm_non_local_traffic: true\n' | sudo tee -a /etc/datadog-agent/datadog.yaml >/dev/null
+fi
 if [ "$DD_LOGS" = "true" ]; then
   sudo sed -i 's/^# *logs_enabled:.*/logs_enabled: true/' /etc/datadog-agent/datadog.yaml
   grep -q '^logs_config:' /etc/datadog-agent/datadog.yaml || printf 'logs_config:\n  container_collect_all: true\n' | sudo tee -a /etc/datadog-agent/datadog.yaml >/dev/null
@@ -125,3 +129,4 @@ create_monitor "Evnelo disk above 80%" "$(cat <<JSON
 JSON
 )"
 echo "== done"
+grep -q '^DD_AGENT_HOST=' .env 2>/dev/null || echo "APM: add DD_AGENT_HOST=host.docker.internal to .env and run docker compose --env-file .env -f deploy/docker-compose.prod.yml up -d app"

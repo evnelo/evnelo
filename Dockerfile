@@ -37,7 +37,11 @@ COPY --from=build --chown=node:node /app/apps/web/.next/standalone ./
 COPY --from=build --chown=node:node /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build --chown=node:node /app/apps/web/public ./apps/web/public
 COPY --from=build --chown=node:node /app/packages/db/drizzle ./packages/db/drizzle
+COPY --chown=node:node deploy/entrypoint.sh ./entrypoint.sh
+# Datadog APM tracer, installed whole and apart from the traced bundle (its plugins load lazily, so
+# file tracing would miss them). deploy/entrypoint.sh preloads it only when DD_AGENT_HOST is set.
+RUN npm install --omit=dev --no-audit --no-fund --prefix /app/dd dd-trace@6.16.0 && chown -R node:node /app/dd
 USER node
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 CMD wget -qO- http://127.0.0.1:3000/api/health >/dev/null || exit 1
-CMD ["node", "apps/web/server.js"]
+CMD ["./entrypoint.sh"]

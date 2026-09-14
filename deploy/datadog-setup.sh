@@ -84,7 +84,7 @@ create_monitor "Evnelo host stopped reporting" "$(cat <<JSON
 {
   "name": "Evnelo host stopped reporting",
   "type": "service check",
-  "query": "\"datadog.agent.up\".over(\"host:${DD_HOSTNAME}\").last(2).count_by_status()",
+  "query": "\"datadog.agent.up\".over(\"host:${DD_HOSTNAME}\").by(\"host\").last(2).count_by_status()",
   "message": "The Datadog agent on ${DD_HOSTNAME} has not reported for 10 minutes: the VM may be down. ${DD_NOTIFY}",
   "tags": ["service:evnelo", "env:production"],
   "priority": 1,

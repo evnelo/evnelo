@@ -125,11 +125,14 @@ The feel: excellent infrastructure that happens to be beautiful. Precise, welcom
 
 When you ship or change behaviour, update in the same commit: the README (features, configuration, operations, deploying) and this file's conventions, design rules and gaps sections.
 
-## Known gaps (as of 2026-09-12)
+## Known gaps (as of 2026-09-14)
 
-Everything planned for v1 has shipped and is live on evnelo.com. Remaining work, in order:
+Everything planned for v1 has shipped; the code for the go-live plan (PostHog observability, first-party host analytics, chargebacks, Apple Pay domains, upload sweep, legal pages) is on master. What remains is outside the code or waiting on a decision:
 
-- **Authenticated production testing.** The unauthenticated surface has been exercised end to end on evnelo.com. Paid checkout, webhook fulfilment, ticket email, check-in, refunds, invites, waitlist, discount codes, API keys and export have only been tested locally and in unit tests.
-- **Translations are machine-generated.** English in `messages/en/` is the only hand-written catalogue; the other 19 come from `pnpm --filter @evnelo/web translate`. They parse and carry the right ICU arguments (`i18n/messages.test.ts`), and the home page has had one manual pass, but no native speaker has reviewed the rest. Corrections belong in the target catalogue (they survive until the English source changes) or in `messages/glossary.json` when a word is consistently wrong.
+- **Authenticated production testing.** Paid checkout, webhook fulfilment, ticket email, check-in, refunds, invites, waitlist, discount codes, API keys and export have only been tested locally and in unit tests. Before switching Stripe to live keys: clear the sandbox account binding on prod (`connectOrganizationStripe` refuses to replace a bound account), run one full test-mode purchase on evnelo.com, then swap all five Stripe variables together.
+- **PostHog project settings.** Public pages send cookieless events, which PostHog drops until "cookieless server hash mode" is enabled in the project. Source maps upload only when `POSTHOG_API_KEY` and `POSTHOG_PROJECT_ID` are given at build time.
+- **Infrastructure monitoring.** Nothing watches the host itself (containers, MySQL, disk, uptime). The plan is the Datadog agent on the prod box plus one uptime check and three monitors; it needs a Datadog API key.
+- **Legal review.** The documents under `/legal` are drafts; the facts in `apps/web/lib/legal.ts` (entity, contact address, governing law) must be confirmed before launch. Refunds currently keep the 0.99% platform fee (`refund_application_fee` is not sent); the Refund Policy says so and changes if that decision does.
+- **Translations are machine-generated.** English in `messages/en/` is the only hand-written catalogue; the other 19 come from `pnpm --filter @evnelo/web translate`. They parse and carry the right ICU arguments (`i18n/messages.test.ts`), and the home page has had one manual pass, but no native speaker has reviewed the rest. Corrections belong in the target catalogue (they survive until the English source changes) or in `messages/glossary.json` when a word is consistently wrong. Legal pages are English only by design.
 
 Ticket QR codes are rendered locally at `/t/{token}/qr` (SVG). Calendar files come from `/api/calendar/{slug}.ics` for public and unlisted events only. Wallet passes: `/t/{token}/wallet/apple` and `/t/{token}/wallet/google`.

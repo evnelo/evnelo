@@ -9,12 +9,13 @@ const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root
     <CheckboxPrimitive.Root
       ref={ref}
       className={cn(
-        "peer size-4 shrink-0 rounded-[5px] border border-input bg-card transition-colors data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary disabled:opacity-50",
+        "t-check peer size-4 shrink-0 rounded-[5px] border border-input bg-card transition-[background-color,border-color] duration-(--duration-quick) ease-smooth-out data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary disabled:opacity-50",
         className,
       )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
+      {/* always mounted so the tick can draw in and retract (globals.css .t-check) */}
+      <CheckboxPrimitive.Indicator forceMount className="flex items-center justify-center text-current">
         <Check className="size-3.5" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

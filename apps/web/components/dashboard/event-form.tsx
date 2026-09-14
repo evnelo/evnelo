@@ -294,7 +294,7 @@ const SECTION_GRID = "grid gap-x-10 gap-y-5 md:grid-cols-[13.5rem_minmax(0,1fr)]
 /**
  * Same card and two-column rhythm as `Section`, folded away until needed. The header is one
  * button: title, a short hint of what is inside while closed, and a ringed chevron that turns.
- * The body animates open with a grid-row transition and is `inert` while closed, so hidden
+ * The body opens with the accordion recipe (grid rows, cross-fade) and is `inert` while closed, so hidden
  * fields are neither tabbable nor validated; a field that fails validation opens its section.
  */
 function CollapsibleSection({ title, description, hint, children, defaultOpen = false }: { title: string; description?: string; hint?: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -313,12 +313,12 @@ function CollapsibleSection({ title, description, hint, children, defaultOpen = 
           <span className="block text-sm font-medium">{title}</span>
           <span className={`block text-sm leading-relaxed text-muted-foreground transition-opacity ${open ? "mt-1.5" : "mt-0.5"}`}>{open ? description : hint ?? description}</span>
         </span>
-        <span className={`flex size-8 shrink-0 items-center justify-center rounded-full border transition-[transform,background-color,border-color] duration-200 ${open ? "rotate-180 border-foreground bg-foreground text-background" : "border-border text-muted-foreground"}`} aria-hidden>
+        <span className={`flex size-8 shrink-0 items-center justify-center rounded-full border transition-[transform,background-color,border-color] duration-(--duration-fast) ease-smooth-out ${open ? "rotate-180 border-foreground bg-foreground text-background" : "border-border text-muted-foreground"}`} aria-hidden>
           <ChevronDown className="size-4" />
         </span>
       </button>
-      <div id={id} inert={!open} className={`grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-        <div className="min-h-0 overflow-hidden">
+      <div id={id} inert={!open} data-open={open} className="t-acc-panel">
+        <div className="t-acc-panel-inner">
           <div className={`${SECTION_GRID} px-5 pb-5 sm:px-6 sm:pb-6`}>
             <span aria-hidden className="hidden md:block" />
             <div className="hairline min-w-0 pt-5 md:border-t-0 md:pt-0">{children}</div>

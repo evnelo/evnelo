@@ -36,8 +36,9 @@ function Steps({ current }: { current: 1 | 2 }) {
     const done = n < current, active = n === current;
     return (
       <li className={cn("flex items-center gap-2", active ? "text-foreground" : "text-muted-foreground")} aria-current={active ? "step" : undefined}>
-        <span className={cn("flex size-6 items-center justify-center rounded-full border text-[11px] font-semibold tabular-nums", active && "border-event bg-event text-event-foreground", done && "border-event text-event")}>
-          {done ? <Check className="size-3.5" aria-hidden /> : n}
+        <span className={cn("t-icon-swap size-6 rounded-full border text-[11px] font-semibold tabular-nums transition-[background-color,border-color,color] duration-(--duration-fast) ease-smooth-out", active && "border-event bg-event text-event-foreground", done && "border-event text-event")} data-state={done ? "b" : "a"}>
+          <span className="t-icon" data-icon="a">{n}</span>
+          <Check className="t-icon size-3.5" data-icon="b" aria-hidden />
         </span>
         <span className="text-xs font-medium">{label}</span>
       </li>
@@ -46,10 +47,19 @@ function Steps({ current }: { current: 1 | 2 }) {
   return (
     <ol className="mb-4 flex items-center gap-3 pe-8" aria-label={t("register.steps")}>
       {step(1, t("register.stepDetails"))}
-      <span aria-hidden className="h-px w-8 bg-border" />
+      <span aria-hidden className={cn("h-px w-8 transition-colors duration-(--duration-fast) ease-smooth-out", current === 2 ? "bg-event" : "bg-border")} />
       {step(2, t("register.stepPayment"))}
     </ol>
   );
+}
+
+/**
+ * The dialog body. Each change of stage (form, payment, verifying) slides the new content in from the end side,
+ * the page-slide recipe; the stage the dialog opened on and the success step (which has its own entrance) do not.
+ */
+function StepPane({ stage, children }: { stage: "form" | "payment" | "resuming" | "success"; children: React.ReactNode }) {
+  const initial = useRef(stage);
+  return <div key={stage} className={cn(stage !== "success" && "mt-5", stage !== "success" && stage !== initial.current && "animate-step")}>{children}</div>;
 }
 
 export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectPhone, requiresApproval, soldOut, guestsEnabled, maxGuests, stripePublishableKey, pricing, waitlist }: Props) {
@@ -248,7 +258,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
             {paidPossible && !success && <Steps current={payment || resuming ? 2 : 1} />}
             {!success && <DialogTitle>{payment ? t("register.dialogPayTitle") : eventName}</DialogTitle>}
             {!success && <DialogDescription>{payment ? t("register.dialogPayDescription") : t("register.dialogDescription")}</DialogDescription>}
-            <div className={success ? undefined : "mt-5"}>
+            <StepPane stage={success ? "success" : payment && stripePublishableKey ? "payment" : resuming ? "resuming" : "form"}>
               {success ? (
                 <SuccessStep title={success.title} message={success.detail} orderUrl={success.orderUrl} celebrate={success.celebrate} />
               ) : payment && stripePublishableKey ? (
@@ -273,7 +283,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
                     }
                   }} />
               )}
-            </div>
+            </StepPane>
           </DialogContent>
         </Dialog>
       )}

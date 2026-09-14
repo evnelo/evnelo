@@ -6,6 +6,9 @@ import { Camera, CameraOff, Search, Undo2, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { PopNumber } from "@/components/pop-number";
+import { SuccessCheck } from "@/components/success-check";
+import { Segmented } from "@/components/ui/segmented";
 import { parseTicketToken } from "@/lib/ticket-token";
 
 /**
@@ -226,28 +229,20 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
           <div className="min-w-0">
             <p className="eyebrow">{t("scanner.checkedIn")}</p>
             <p className="mt-1 flex items-baseline gap-2 font-display leading-none">
-              <span className="text-5xl tabular-nums">{manifest.stats.checkedIn}</span>
+              <PopNumber value={String(manifest.stats.checkedIn)} className="text-5xl tabular-nums" />
               <span className="text-xl tabular-nums text-muted-foreground">{t("scanner.ofConfirmed", { confirmed: manifest.stats.confirmed })}</span>
             </p>
           </div>
-          <div className="flex shrink-0 rounded-full border border-border/80 bg-muted/50 p-1" role="group" aria-label={t("scanner.mode")}>
-            <button
-              type="button"
-              onClick={() => setMode("scan")}
-              aria-pressed={mode === "scan"}
-              className={cn("press inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm", mode === "scan" ? "bg-card font-medium text-foreground shadow-card" : "text-muted-foreground")}
-            >
-              <Camera className="size-4" /> {t("scanner.scan")}
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("search")}
-              aria-pressed={mode === "search"}
-              className={cn("press inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm", mode === "search" ? "bg-card font-medium text-foreground shadow-card" : "text-muted-foreground")}
-            >
-              <Search className="size-4" /> {tc("actions.search")}
-            </button>
-          </div>
+          <Segmented
+            className="shrink-0"
+            value={mode}
+            onChange={setMode}
+            label={t("scanner.mode")}
+            options={[
+              { value: "scan", label: <><Camera className="size-4" /> {t("scanner.scan")}</> },
+              { value: "search", label: <><Search className="size-4" /> {tc("actions.search")}</> },
+            ]}
+          />
         </div>
         <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-muted" aria-hidden>
           <div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: `${pct}%` }} />
@@ -259,10 +254,12 @@ export function CheckInScanner({ eventId, initial }: { eventId: string; initial:
       </div>
 
       {result && (
-        <div role="status" aria-live="assertive" className={cn("overflow-hidden rounded-xl shadow-lift", TONE[tone ?? "bad"].panel)}>
+        // keyed on the scan so every verdict rises in fresh; a refusal shakes, a welcome draws its check
+        <div key={result.at} role="status" aria-live="assertive" className={cn("t-toast-in overflow-hidden rounded-xl shadow-lift", TONE[tone ?? "bad"].panel)}>
           <div className={cn("h-2 w-full", TONE[tone ?? "bad"].band)} aria-hidden />
-          <div className="flex items-start justify-between gap-3 p-4 sm:p-5">
-            <div className="min-w-0">
+          <div className={cn("flex items-start justify-between gap-3 p-4 sm:p-5", tone === "bad" && "t-shake")}>
+            {tone === "ok" && <SuccessCheck className="mt-0.5 size-10 shrink-0 bg-ink text-lime" iconSize={22} />}
+            <div className="min-w-0 flex-1">
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] opacity-80">{t(`scanner.outcome.${result.outcome}`)}</p>
               {result.name && result.outcome !== "error" && (
                 <p className="mt-1 font-display text-3xl leading-tight">

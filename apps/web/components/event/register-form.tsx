@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RegistrationFileField } from "@/components/event/registration-file-field";
 import { cn, formatMoney } from "@/lib/utils";
+import { PopNumber } from "@/components/pop-number";
 import { DiscountCodeField, type AppliedDiscount } from "./discount-code-field";
 
 type Props = {
@@ -43,6 +44,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
   const [answers, setAnswers] = useState<Answers>({});
   const [guestAnswers, setGuestAnswers] = useState<Answers[]>([]);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [errorSeq, setErrorSeq] = useState(0); // replays the shake when the same error comes back
   const [discount, setDiscount] = useState<AppliedDiscount | null>(null);
 
   const forTicket = (f: RegistrationField) => !f.ticketTypeIds || f.ticketTypeIds.includes(ticketTypeId);
@@ -108,6 +110,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
     });
     if (!res.ok) {
       setServerError((await res.json().catch(() => ({})))?.error ?? tc("errors.generic"));
+      setErrorSeq((n) => n + 1);
       return;
     }
     onSubmitted?.({ ...(await res.json()), partySize: 1 + values.guests.length });
@@ -285,7 +288,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
       {selected && selected.priceMinor > 0 && (
         <DiscountCodeField key={`${ticketTypeId}:${partySize}`} eventId={eventId} ticketTypeId={ticketTypeId} quantity={partySize} applied={discount} onChange={setDiscount} />
       )}
-      {serverError && <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">{serverError}</p>}
+      {serverError && <p key={errorSeq} role="alert" className="t-shake rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">{serverError}</p>}
 
       <div className="sticky bottom-0 -mx-5 -mb-5 mt-2 border-t border-border/70 bg-card/95 px-5 pb-5 pt-4 backdrop-blur sm:static sm:mx-0 sm:mb-0 sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none">
         {selected && (listMinor > 0 || partySize > 1) && (
@@ -302,7 +305,7 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
               <span className="text-muted-foreground">{itemised ? t("form.total") : partySize > 1 ? t("form.lineItem", { count: partySize, name: selected.name }) : selected.name}</span>
               <span className="font-display text-xl tabular-nums">
                 {breakdown.discountMinor > 0 && undiscounted.totalMinor !== totalMinor && <s className="me-2 text-sm text-muted-foreground">{formatMoney(undiscounted.totalMinor, selected.currency, locale)}</s>}
-                {totalMinor === 0 ? tc("labels.free") : formatMoney(totalMinor, selected.currency, locale)}
+                <PopNumber value={totalMinor === 0 ? tc("labels.free") : formatMoney(totalMinor, selected.currency, locale)} />
               </span>
             </div>
           </div>

@@ -12,12 +12,13 @@ const DialogClose = DialogPrimitive.Close;
 
 /**
  * Centered panel on desktop; on small screens it becomes a bottom sheet with a grab handle so
- * long forms (registration) feel native. Motion is CSS keyframes keyed off Radix's data-state.
+ * long forms (registration) feel native. Motion is CSS keyframes keyed off Radix's data-state:
+ * the panel opens in 250ms and closes in 150ms, the sheet 400/350, the overlay fades with them.
  */
 const DialogContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Content>, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>>(
   ({ className, children, ...props }, ref) => (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-[rgb(23_23_15/0.45)] backdrop-blur-[2px] data-[state=open]:animate-fade" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-[rgb(23_23_15/0.45)] backdrop-blur-[2px] data-[state=open]:animate-fade data-[state=closed]:animate-fade-out" />
       <DialogPrimitive.Content
         ref={ref}
         className={cn(

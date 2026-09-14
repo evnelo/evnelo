@@ -55,6 +55,27 @@
   --radius: 0.75rem;
   --shadow-card: 0 1px 2px rgb(20 21 26 / 0.04), 0 8px 24px rgb(20 21 26 / 0.06);
   --shadow-lift: 0 2px 4px rgb(20 21 26 / 0.05), 0 16px 32px -12px rgb(20 21 26 / 0.18);
+
+  /* motion tokens (the transitions.dev scale; usage notes in AGENTS.md). Pick by what the motion does, not the nearest number. */
+  --duration-stagger: 40ms; /* per-item stagger offset */
+  --duration-micro: 80ms; /* intent delay, shake leg, stagger between large items */
+  --duration-quick: 150ms; /* modal close, text swap, press, tooltip appear */
+  --duration-fast: 250ms; /* modal open, icon swap, tabs, step slide, accordion, hover in */
+  --duration-medium: 350ms; /* sheet close, toast, toggle travel, check draw, hover out */
+  --duration-slow: 400ms; /* sheet open, skeleton reveal */
+  --duration-very-slow: 500ms; /* emphasis: success check, text reveal, digit pop */
+  --distance-micro: 4px; /* text swap, shake overshoot */
+  --distance-small: 6px; /* shake */
+  --distance-base: 8px; /* page/step slide, digit pop */
+  --distance-medium: 12px; /* text reveal */
+  --distance-large: 30px; /* success check bob */
+  --scale-large: 0.96; /* modal open and close */
+  --scale-medium: 0.97; /* dropdown and toast open */
+  --scale-small: 0.98; /* press, tooltip */
+  --scale-tiny: 0.99; /* dropdown close */
+  --blur-small: 2px; /* icon swap, accordion body, digit pop */
+  --blur-medium: 3px; /* page slide, text reveal */
+  --blur-large: 8px; /* success check */
 }
 
 .dark {
@@ -89,6 +110,10 @@
 }
 
 @theme inline {
+  /* motion easings (utilities: ease-smooth-out, ease-bounce, ease-bounce-strong) */
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1); /* every open, close, slide and resize */
+  --ease-bounce: cubic-bezier(0.34, 1.36, 0.64, 1); /* entrances only: badge pop, digit pop, toggle */
+  --ease-bounce-strong: cubic-bezier(0.34, 3.85, 0.64, 1); /* springy hover-out */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -213,7 +238,7 @@
   .sponsor-logo {
     filter: grayscale(1) contrast(0.9);
     opacity: 0.7;
-    transition: filter 150ms, opacity 150ms;
+    transition: filter var(--duration-quick) var(--ease-smooth-out), opacity var(--duration-quick) var(--ease-smooth-out);
   }
   .sponsor-logo:hover, .sponsor-logo:focus-visible {
     filter: none;
@@ -229,17 +254,19 @@
     border-top: 1px dotted var(--border);
   }
   .press {
-    transition: transform 120ms ease, background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    transition: transform var(--duration-quick) var(--ease-smooth-out), background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
   }
   .press:active {
-    transform: scale(0.98);
+    transform: scale(var(--scale-small));
   }
+  /* hover in is quick and direct; the way back is longer and springy so the card settles instead of snapping */
   .lift {
-    transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 200ms ease;
+    transition: transform var(--duration-medium) var(--ease-bounce-strong), box-shadow var(--duration-medium) ease;
   }
   .lift:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lift);
+    transition: transform var(--duration-fast) var(--ease-smooth-out), box-shadow var(--duration-fast) ease;
   }
   .scrim {
     background: linear-gradient(to top, rgb(23 23 15 / 0.72) 0%, rgb(23 23 15 / 0.28) 45%, transparent 100%);
@@ -358,21 +385,27 @@
   }
 }
 
+/* Entrances animate from a keyframe to the element's own resting style (no `to`, fill backwards), so nothing
+   stays transformed or filtered once they finish. rise = text reveal, step = page slide, both from transitions.dev. */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(var(--distance-medium)); filter: blur(var(--blur-medium)); }
+}
+@keyframes step-in {
+  from { opacity: 0; transform: translateX(var(--step-from)); filter: blur(var(--blur-medium)); }
 }
 @keyframes fade {
   from { opacity: 0; }
-  to { opacity: 1; }
+}
+@keyframes fade-out {
+  to { opacity: 0; }
 }
 @keyframes panel-in {
-  from { opacity: 0; transform: translate(-50%, calc(-50% + 8px)) scale(0.985); }
+  from { opacity: 0; transform: translate(-50%, -50%) scale(var(--scale-large)); }
   to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 @keyframes panel-out {
   from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  to { opacity: 0; transform: translate(-50%, calc(-50% + 6px)) scale(0.99); }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(var(--scale-large)); }
 }
 @keyframes sheet-in {
   from { opacity: 0; transform: translateY(24px); }
@@ -384,16 +417,22 @@
 }
 @layer utilities {
   .animate-rise {
-    animation: rise 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    animation-delay: calc(var(--stagger, 0) * 40ms);
+    animation: rise var(--duration-very-slow) ease-in-out backwards;
+    /* 40ms per item, capped so the last of a long list is never more than ~300ms late */
+    animation-delay: min(calc(var(--stagger, 0) * var(--duration-stagger)), 280ms);
   }
-  .animate-fade {
-    animation: fade 200ms ease both;
+  .animate-step {
+    --step-from: var(--distance-base);
+    animation: step-in var(--duration-fast) var(--ease-smooth-out) backwards;
   }
-  .animate-panel-in { animation: panel-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .animate-panel-out { animation: panel-out 120ms ease-in both; }
-  .animate-sheet-in { animation: sheet-in 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .animate-sheet-out { animation: sheet-out 140ms ease-in both; }
+  [dir="rtl"] .animate-step { --step-from: calc(-1 * var(--distance-base)); }
+  .animate-fade { animation: fade var(--duration-fast) var(--ease-smooth-out) backwards; }
+  .animate-fade-out { animation: fade-out var(--duration-quick) var(--ease-smooth-out) forwards; }
+  /* dialogs: open 250ms, close 150ms (closes get out of the way); the phone sheet is a panel: 400ms in, 350ms out */
+  .animate-panel-in { animation: panel-in var(--duration-fast) var(--ease-smooth-out) both; }
+  .animate-panel-out { animation: panel-out var(--duration-quick) var(--ease-smooth-out) both; }
+  .animate-sheet-in { animation: sheet-in var(--duration-slow) var(--ease-smooth-out) both; }
+  .animate-sheet-out { animation: sheet-out var(--duration-medium) var(--ease-smooth-out) both; }
 }
 
 @layer components {
@@ -422,22 +461,116 @@
 /* reCAPTCHA v3 badge: hidden as Google allows when its notice is shown next to the form (components/captcha.tsx). */
 .grecaptcha-badge { visibility: hidden; }
 
-/* registration success: the check pops in and draws itself; confetti fans out from the top centre */
-.success-check {
-  animation: success-pop 420ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+/* transitions.dev recipes (t-* classes). The global prefers-reduced-motion rule above collapses all of them. */
+
+/* success check (10): fade + rotate + blur + bob run together, then the path draws after an 80ms beat.
+   --check-len is the path length rounded up; set it per icon (components/success-check.tsx). */
+.t-success-check {
+  transform-origin: center;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+  animation:
+    t-check-fade var(--duration-very-slow) var(--ease-smooth-out) forwards,
+    t-check-rotate var(--duration-very-slow) var(--ease-smooth-out) forwards,
+    t-check-blur var(--duration-very-slow) var(--ease-smooth-out) forwards,
+    t-check-bob var(--duration-very-slow) var(--ease-bounce) forwards;
 }
-.success-check path {
-  stroke-dasharray: 24;
-  stroke-dashoffset: 24;
-  animation: success-draw 320ms 240ms ease-out forwards;
+.t-success-check svg { display: block; overflow: visible; }
+.t-success-check svg path {
+  stroke-dasharray: var(--check-len, 21);
+  stroke-dashoffset: var(--check-len, 21);
+  animation: t-check-draw var(--duration-very-slow) var(--ease-smooth-out) var(--duration-micro) forwards;
 }
-@keyframes success-pop {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: none; opacity: 1; }
+@keyframes t-check-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes t-check-rotate { from { transform: rotate(80deg); } to { transform: rotate(0deg); } }
+@keyframes t-check-blur { from { filter: blur(var(--blur-large)); } to { filter: blur(0); } }
+@keyframes t-check-bob { from { translate: 0 var(--distance-large); } to { translate: 0 0; } }
+@keyframes t-check-draw { to { stroke-dashoffset: 0; } }
+
+/* error shake (12): four legs (80, 60, 80, 60ms), each on its own curve. Add the class to replay; remove it on animationend. */
+.t-shake {
+  animation: t-shake 280ms linear;
 }
-@keyframes success-draw {
-  to { stroke-dashoffset: 0; }
+@keyframes t-shake {
+  0% { transform: translateX(0); animation-timing-function: var(--ease-smooth-out); }
+  28.57% { transform: translateX(var(--distance-small)); animation-timing-function: var(--ease-smooth-out); }
+  57.14% { transform: translateX(calc(var(--distance-small) * -1)); animation-timing-function: var(--ease-smooth-out); }
+  78.57% { transform: translateX(var(--distance-micro)); animation-timing-function: var(--ease-smooth-out); }
+  100% { transform: translateX(0); }
 }
+
+/* accordion (21): grid rows 0fr to 1fr, the body cross-fades with a small blur; symmetric 250ms. Padding goes on
+   the content inside .t-acc-panel-inner, never on the track, or the panel never fully closes. */
+.t-acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-fast) var(--ease-smooth-out);
+}
+.t-acc-panel[data-open="true"] { grid-template-rows: 1fr; }
+.t-acc-panel-inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  filter: blur(var(--blur-small));
+  transition: opacity var(--duration-fast) var(--ease-smooth-out), filter var(--duration-fast) var(--ease-smooth-out);
+}
+.t-acc-panel[data-open="true"] .t-acc-panel-inner { opacity: 1; filter: blur(0); }
+
+/* icon swap (09): two icons in one grid cell; data-state="a" | "b" on the wrapper picks which one is up. */
+.t-icon-swap { display: inline-grid; place-items: center; }
+.t-icon-swap > .t-icon {
+  grid-area: 1 / 1;
+  transition: opacity var(--duration-fast) ease-in-out, filter var(--duration-fast) ease-in-out, transform var(--duration-fast) ease-in-out;
+  will-change: opacity, filter, transform;
+}
+.t-icon-swap[data-state="a"] > .t-icon[data-icon="a"],
+.t-icon-swap[data-state="b"] > .t-icon[data-icon="b"] { opacity: 1; filter: blur(0); transform: scale(1); }
+.t-icon-swap[data-state="a"] > .t-icon[data-icon="b"],
+.t-icon-swap[data-state="b"] > .t-icon[data-icon="a"] { opacity: 0; filter: blur(var(--blur-small)); transform: scale(0.25); }
+
+/* checkbox check (25): the box fills, then the tick strokes itself in; unchecking retracts it quickly. */
+.t-check svg path {
+  stroke-dasharray: var(--check-len, 24);
+  stroke-dashoffset: var(--check-len, 24);
+  transition: stroke-dashoffset var(--duration-quick) var(--ease-smooth-out);
+}
+.t-check[data-state="checked"] svg path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--duration-medium) var(--ease-smooth-out);
+}
+
+/* tabs sliding (16): the pill's transform and width are written inline by components/ui/segmented.tsx. */
+.t-tabs { position: relative; }
+.t-tabs > .t-tab { position: relative; z-index: 1; transition: color var(--duration-fast) var(--ease-smooth-out); }
+.t-tabs-pill {
+  position: absolute;
+  inset-block: 4px;
+  left: 0;
+  width: 0;
+  transform: translateX(0);
+  transition: transform var(--duration-fast) var(--ease-smooth-out), width var(--duration-fast) var(--ease-smooth-out);
+  will-change: transform, width;
+  pointer-events: none;
+}
+
+/* number pop-in (02): each character re-enters with a blurred slide when the value changes; the last two ride in behind. */
+.t-digit-group { display: inline-flex; align-items: baseline; }
+.t-digit { display: inline-block; white-space: pre; will-change: transform, opacity, filter; }
+.t-digit-group.is-animating .t-digit { animation: t-digit-pop-in var(--duration-very-slow) cubic-bezier(0.34, 1.45, 0.64, 1) both; }
+.t-digit-group.is-animating .t-digit[data-stagger="1"] { animation-delay: 70ms; }
+.t-digit-group.is-animating .t-digit[data-stagger="2"] { animation-delay: 140ms; }
+@keyframes t-digit-pop-in {
+  0% { transform: translateY(var(--distance-base)); opacity: 0; filter: blur(var(--blur-small)); }
+  100% { transform: translateY(0); opacity: 1; filter: blur(0); }
+}
+
+/* toast (22): rises from below with a fade and a small blur; used for panels that announce a result. */
+.t-toast-in { animation: t-toast-in var(--duration-medium) var(--ease-smooth-out) backwards; }
+@keyframes t-toast-in {
+  from { opacity: 0; transform: translateY(16px) scale(var(--scale-medium)); filter: blur(var(--blur-small)); }
+}
+
+/* registration success: confetti fans out from the top centre around the check */
 .confetti i {
   position: absolute;
   left: 50%;

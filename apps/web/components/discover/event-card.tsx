@@ -58,7 +58,7 @@ export function EventCard({ event, variant = "default", className }: { event: Ca
     return (
       <Link href={href} className={cn(focusRing, className)}>
         <article className="lift relative isolate flex aspect-[4/3] h-full flex-col justify-end overflow-hidden rounded-xl bg-muted shadow-card sm:aspect-[16/9] lg:aspect-auto lg:min-h-[30rem]">
-          {event.coverImageUrl && <img src={event.coverImageUrl} alt="" className="absolute inset-0 -z-10 size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />}
+          {event.coverImageUrl && <img src={event.coverImageUrl} alt="" className="absolute inset-0 -z-10 size-full object-cover transition-transform duration-(--duration-fast) ease-smooth-out group-hover:scale-[1.03]" />}
           <div className="scrim absolute inset-0 -z-10" aria-hidden />
           <div className="date-leaf absolute start-5 top-5 border-transparent shadow-lift"><span>{month}</span><span>{day}</span></div>
           <div className="flex items-end justify-between gap-6 p-5 text-white sm:p-7">
@@ -86,7 +86,7 @@ export function EventCard({ event, variant = "default", className }: { event: Ca
         <div className={cn("relative aspect-[4/3] shrink-0", compact && "lg:aspect-auto lg:w-[36%]")}>
           <div className="absolute inset-0 overflow-hidden bg-muted">
             {event.coverImageUrl ? (
-              <img src={event.coverImageUrl} alt="" className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy" />
+              <img src={event.coverImageUrl} alt="" className="size-full object-cover transition-transform duration-(--duration-fast) ease-smooth-out group-hover:scale-[1.03]" loading="lazy" />
             ) : (
               <div className="flex size-full items-center justify-center font-display text-7xl text-muted-foreground/30" aria-hidden>{day}</div>
             )}

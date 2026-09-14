@@ -19,7 +19,7 @@ export function Field({ label, htmlFor, help, error, optional, className, childr
 }
 
 export function FormMessage({ error, success }: { error?: string | null; success?: string | null }) {
-  if (error) return <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">{error}</p>;
+  if (error) return <p role="alert" className="t-shake rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">{error}</p>;
   if (success) return <p role="status" className="rounded-md border border-success/60 bg-success/40 px-3 py-2 text-sm text-success-foreground">{success}</p>;
   return null;
 }

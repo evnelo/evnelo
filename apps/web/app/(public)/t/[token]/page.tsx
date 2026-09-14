@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 import { appleWalletConfigured, googleWalletConfigured } from "@/lib/env";
 import { cn, formatDateRange } from "@/lib/utils";
 import { publicEventPath } from "@/lib/urls";
-import { calendarPath } from "@/lib/calendar";
+import { ticketCalendarPath } from "@/lib/calendar";
 import { buttonVariants } from "@/components/ui/button";
 import { EVENTS } from "@/lib/analytics-events";
 import { Track } from "@/components/analytics";
@@ -88,7 +88,7 @@ export default async function TicketPage({ params }: { params: Promise<{ token: 
             <Video /> {t("ticket.joinOnline")}
           </a>
         )}
-        <a href={calendarPath(row.organizationSlug, event.slug)} className={pill}><CalendarPlus /> {t("ticket.addToCalendar")}</a>
+        <a href={ticketCalendarPath(token)} className={pill}><CalendarPlus /> {t("ticket.addToCalendar")}</a>
         <a href={publicEventPath(row.organizationSlug, event.slug)} className={pill}>{t("ticket.eventPage")} <ArrowUpRight className="rtl:-scale-x-100" /></a>
         {appleWalletConfigured && (
           <a href={`/t/${token}/wallet/apple`} className={cn(buttonVariants({ size: "pill" }), "h-11 bg-black px-5 text-white hover:bg-black/85")}>{t("ticket.appleWallet")}</a>

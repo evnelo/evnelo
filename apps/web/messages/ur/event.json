@@ -24,7 +24,9 @@
     "online": "آن لائن"
   },
   "calendar": {
-    "online": "آن لائن"
+    "online": "آن لائن",
+    "ticket": "آپ کا ٹکٹ",
+    "order": "آپ کے ٹکٹ"
   },
   "social": {
     "website": "ویب سائٹ",

@@ -9,7 +9,7 @@ import { sms, smsTemplates } from "@/lib/sms";
 import { formatDateRange, formatMoney } from "@/lib/utils";
 import { orderPath, publicEventPath } from "@/lib/urls";
 import { paymentMethodName } from "@/lib/payment-flow";
-import { calendarPath } from "@/lib/calendar";
+import { calendarPath, orderCalendarPath, ticketCalendarPath } from "@/lib/calendar";
 import { unsubscribeUrl } from "./unsubscribe";
 import type { EmailBrand, EmailEvent, EmailReceipt, EmailTicket, EmailTranslator } from "@/emails/layout";
 import RegistrationConfirmation, { registrationConfirmationSubject } from "@/emails/registration-confirmation";
@@ -60,11 +60,14 @@ async function loadContext(n: Notification) {
   const { locale, t } = i18n;
   const brand: EmailBrand = { orgName: org.name, orgLogoUrl: org.logoUrl, accent: org.accentColor, appUrl: env.APP_URL };
   const eventUrl = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
+  const firstTicket = party[0]?.ticket;
+  // the calendar entry links back to the tickets, since a QR cannot ride in a calendar
+  const calendarUrl = order.accessToken ? orderCalendarPath(order.accessToken) : firstTicket ? ticketCalendarPath(firstTicket.token) : calendarPath(org.slug, event.slug);
   const emailEvent: EmailEvent = {
     name: event.name, url: eventUrl, when: formatDateRange(event.startsAt, event.endsAt, event.timezone, locale),
     where: event.locationType === "online" ? t("layout.online") : [event.venueName, event.address, event.city].filter(Boolean).join(", "),
     onlineUrl: event.locationType !== "in_person" && attendee.status === "confirmed" ? event.onlineUrl : null,
-    calendarUrl: `${env.APP_URL}${calendarPath(org.slug, event.slug)}`,
+    calendarUrl: `${env.APP_URL}${calendarUrl}`,
   };
   const emailTickets: EmailTicket[] = party
     .sort((a, b) => (a.attendee.guestOfAttendeeId ? 1 : 0) - (b.attendee.guestOfAttendeeId ? 1 : 0))
@@ -73,7 +76,7 @@ async function loadContext(n: Notification) {
       url: `${env.APP_URL}/t/${p.ticket.token}`, qrUrl: `${env.APP_URL}/t/${p.ticket.token}/qr?format=png`,
       guestOf: p.attendee.guestOfAttendeeId ? hostNames.get(p.attendee.guestOfAttendeeId) ?? null : null,
     }));
-  const first = party[0]?.ticket;
+  const first = firstTicket;
   const wallet = first
     ? { apple: appleWalletConfigured ? `${env.APP_URL}/t/${first.token}/wallet/apple` : undefined, google: googleWalletConfigured ? `${env.APP_URL}/t/${first.token}/wallet/google` : undefined }
     : null;

@@ -24,7 +24,9 @@
     "online": "Çevrimiçi"
   },
   "calendar": {
-    "online": "Çevrimiçi"
+    "online": "Çevrimiçi",
+    "ticket": "Biletiniz",
+    "order": "Biletleriniz"
   },
   "social": {
     "website": "Web sitesi",

@@ -24,7 +24,9 @@
     "online": "Trực tuyến"
   },
   "calendar": {
-    "online": "Trực tuyến"
+    "online": "Trực tuyến",
+    "ticket": "Vé của bạn",
+    "order": "Vé của bạn"
   },
   "social": {
     "website": "Trang web",

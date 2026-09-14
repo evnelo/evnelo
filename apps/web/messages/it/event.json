@@ -24,7 +24,9 @@
     "online": "Online"
   },
   "calendar": {
-    "online": "Online"
+    "online": "Online",
+    "ticket": "Il tuo biglietto",
+    "order": "I tuoi biglietti"
   },
   "social": {
     "website": "Sito web",

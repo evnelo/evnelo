@@ -24,7 +24,9 @@
     "online": "ऑनलाइन"
   },
   "calendar": {
-    "online": "ऑनलाइन"
+    "online": "ऑनलाइन",
+    "ticket": "आपका टिकट",
+    "order": "आपके टिकट"
   },
   "social": {
     "website": "वेबसाइट",

@@ -24,7 +24,9 @@
     "online": "On line"
   },
   "calendar": {
-    "online": "On line"
+    "online": "On line",
+    "ticket": "Tiket Anda",
+    "order": "Tiket Anda"
   },
   "social": {
     "website": "Situs web",

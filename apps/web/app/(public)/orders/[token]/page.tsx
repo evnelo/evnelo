@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 import { appleWalletConfigured, googleWalletConfigured } from "@/lib/env";
 import { cn, formatDateRange, formatMoney } from "@/lib/utils";
 import { publicEventPath } from "@/lib/urls";
-import { calendarPath } from "@/lib/calendar";
+import { orderCalendarPath } from "@/lib/calendar";
 import { paymentMethodName } from "@/lib/payment-flow";
 import { buttonVariants } from "@/components/ui/button";
 import { PrintButton } from "@/components/print-button";
@@ -111,7 +111,7 @@ export default async function OrderPage({ params }: { params: Promise<{ token: s
             ))}
           </ul>
           <div className="print-hide mt-5 flex flex-wrap items-center gap-2.5">
-            <a href={calendarPath(org.slug, event.slug)} className={pill}><CalendarPlus /> {t("order.addToCalendar")}</a>
+            <a href={orderCalendarPath(token)} className={pill}><CalendarPlus /> {t("order.addToCalendar")}</a>
             {first && appleWalletConfigured && (
               <a href={`/t/${first.token}/wallet/apple`} className={cn(buttonVariants({ size: "pill" }), "h-11 bg-black px-5 text-white hover:bg-black/85")}>{t("ticket.appleWallet")}</a>
             )}

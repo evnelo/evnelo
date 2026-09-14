@@ -24,7 +24,9 @@
     "online": "Онлайн"
   },
   "calendar": {
-    "online": "Онлайн"
+    "online": "Онлайн",
+    "ticket": "Ваш билет",
+    "order": "Ваши билеты"
   },
   "social": {
     "website": "Веб-сайт",

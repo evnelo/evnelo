@@ -24,7 +24,9 @@
     "online": "متصل"
   },
   "calendar": {
-    "online": "متصل"
+    "online": "متصل",
+    "ticket": "تذكرتك",
+    "order": "تذاكركم"
   },
   "social": {
     "website": "موقع إلكتروني",

@@ -24,7 +24,9 @@
     "online": "在线的"
   },
   "calendar": {
-    "online": "在线的"
+    "online": "在线的",
+    "ticket": "您的门票",
+    "order": "您的门票"
   },
   "social": {
     "website": "网站",

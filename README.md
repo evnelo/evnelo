@@ -11,7 +11,7 @@ Brought to you by [InEvent](https://inevent.com). Conventions for contributors a
 **For attendees**
 - Event pages at `/{organization}/{event}` with cover, schedule, venue and map link, hosts, sponsors, and a share card generated for every event.
 - Registration in a dialog: ticket tiers, custom questions (conditional, per ticket type, per guest), guests (+1s) with their own tickets, discount codes, Stripe Payment Element for cards, Apple Pay, Google Pay, Pix and other local methods.
-- Tickets with a QR code at `/t/{token}`, a calendar file, Apple Wallet and Google Wallet passes, and the join link for online events once confirmed. After checkout, an order page at `/orders/{token}` with every ticket in the party and a printable receipt (items, discount, tax, service fee, card used); the same receipt goes out with the ticket email.
+- Tickets with a QR code at `/t/{token}`, a calendar file whose entry links back to the ticket, Apple Wallet and Google Wallet passes, and the join link for online events once confirmed. After checkout, an order page at `/orders/{token}` with every ticket in the party and a printable receipt (items, discount, tax, service fee, card used); the same receipt goes out with the ticket email.
 - Waitlist when an event sells out, with timed offers when a seat frees up. Private events by invitation link.
 - Discovery at `/discover`: search, city, tag, date, price and format filters, a calendar view, near-me, and a sitemap for public events only.
 - Transactional email (React Email) and SMS: confirmation, approval, refund, reminders at 24h and 1h, event changes and cancellations, with STOP handling and an unsubscribe link.

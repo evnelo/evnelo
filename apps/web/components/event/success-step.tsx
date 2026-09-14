@@ -28,7 +28,8 @@ export function SuccessStep({ title, message, orderUrl, celebrate }: { title: st
         </div>
       )}
       <SuccessCheck className="size-16 bg-success text-success-foreground" iconSize={32} />
-      <DialogTitle className="display animate-rise mt-5 text-2xl" style={{ "--stagger": 2 } as React.CSSProperties}>{title}</DialogTitle>
+      {/* pe-0: the base title pads for the close button, which would pull a centred title off the check */}
+      <DialogTitle className="display animate-rise mt-5 pe-0 text-2xl" style={{ "--stagger": 2 } as React.CSSProperties}>{title}</DialogTitle>
       <DialogDescription className="animate-rise mt-2 max-w-sm text-sm text-muted-foreground" style={{ "--stagger": 4 } as React.CSSProperties}>{message}</DialogDescription>
       {/* one action: the order page is the destination; the X in the corner is the way back */}
       {orderUrl ? (

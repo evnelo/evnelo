@@ -26,16 +26,16 @@ export function Funnel({ steps }: { steps: { label: string; count: number }[] })
 export function BreakdownTable({ rows, columns, empty }: { rows: (string | number)[][]; columns: string[]; empty: string }) {
   if (!rows.length) return <p className="mt-3 text-sm text-muted-foreground">{empty}</p>;
   return (
-    <table className="mt-3 w-full text-sm">
+    <table className="mt-3 w-full table-fixed text-sm">
       <thead>
         <tr className="text-start text-xs text-muted-foreground">
-          {columns.map((c, i) => <th key={c} scope="col" className={cn("pb-2 font-medium", i === 0 ? "text-start" : "text-end")}>{c}</th>)}
+          {columns.map((c, i) => <th key={c} scope="col" className={cn("pb-2 font-medium", i === 0 ? "text-start" : "w-24 whitespace-nowrap ps-4 text-end")}>{c}</th>)}
         </tr>
       </thead>
       <tbody>
         {rows.map((r, i) => (
           <tr key={i} className="border-t border-border/70">
-            {r.map((cell, j) => <td key={j} className={cn("py-2", j === 0 ? "truncate pe-3" : "text-end tabular-nums")}>{typeof cell === "number" ? cell.toLocaleString() : cell}</td>)}
+            {r.map((cell, j) => <td key={j} className={cn("py-2", j === 0 ? "truncate" : "ps-4 text-end tabular-nums")}>{typeof cell === "number" ? cell.toLocaleString() : cell}</td>)}
           </tr>
         ))}
       </tbody>

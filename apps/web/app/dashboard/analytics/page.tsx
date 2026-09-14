@@ -77,27 +77,28 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
 
         <Card className="p-5">
           <p className="eyebrow">{t("topEvents.title")}</p>
+          {/* fixed layout: the numeric columns keep their width and the event name takes what is left */}
           {report.topEvents.length === 0 ? (
             <p className="mt-3 text-sm text-muted-foreground">{t("noData.title")}</p>
           ) : (
-            <table className="mt-3 w-full text-sm">
+            <table className="mt-3 w-full table-fixed text-sm">
               <thead>
                 <tr className="text-xs text-muted-foreground">
                   <th scope="col" className="pb-2 text-start font-medium">{t("topEvents.event")}</th>
-                  <th scope="col" className="pb-2 text-end font-medium">{t("topEvents.registrations")}</th>
-                  <th scope="col" className="hidden pb-2 text-end font-medium sm:table-cell">{t("topEvents.visitors")}</th>
-                  <th scope="col" className="pb-2 text-end font-medium">{t("topEvents.revenue")}</th>
-                  <th scope="col" className="hidden pb-2 text-end font-medium sm:table-cell">{t("topEvents.checkedIn")}</th>
+                  <th scope="col" className="w-28 whitespace-nowrap pb-2 ps-4 text-end font-medium">{t("topEvents.registrations")}</th>
+                  <th scope="col" className="hidden w-24 whitespace-nowrap pb-2 ps-4 text-end font-medium sm:table-cell">{t("topEvents.visitors")}</th>
+                  <th scope="col" className="w-28 whitespace-nowrap pb-2 ps-4 text-end font-medium">{t("topEvents.revenue")}</th>
+                  <th scope="col" className="hidden w-28 whitespace-nowrap pb-2 ps-4 text-end font-medium sm:table-cell">{t("topEvents.checkedIn")}</th>
                 </tr>
               </thead>
               <tbody>
                 {report.topEvents.map((e) => (
                   <tr key={e.id} className="border-t border-border/70">
-                    <td className="w-full py-2.5 pe-3"><Link href={`/dashboard/events/${e.id}/analytics?days=${periodKey}`} className="press block max-w-md truncate rounded underline decoration-dotted underline-offset-4 hover:text-primary">{e.name}</Link></td>
-                    <td className="py-2.5 text-end tabular-nums">{e.registrations.toLocaleString(locale)}</td>
-                    <td className="hidden py-2.5 text-end tabular-nums sm:table-cell">{e.visitors.toLocaleString(locale)}</td>
-                    <td className="py-2.5 text-end tabular-nums">{formatMoney(e.revenue, e.currency, locale)}</td>
-                    <td className="hidden py-2.5 text-end tabular-nums sm:table-cell">{e.checkedIn.toLocaleString(locale)}</td>
+                    <td className="py-2.5"><Link href={`/dashboard/events/${e.id}/analytics?days=${periodKey}`} className="press block truncate rounded underline decoration-dotted underline-offset-4 hover:text-primary">{e.name}</Link></td>
+                    <td className="py-2.5 ps-4 text-end tabular-nums">{e.registrations.toLocaleString(locale)}</td>
+                    <td className="hidden py-2.5 ps-4 text-end tabular-nums sm:table-cell">{e.visitors.toLocaleString(locale)}</td>
+                    <td className="whitespace-nowrap py-2.5 ps-4 text-end tabular-nums">{formatMoney(e.revenue, e.currency, locale)}</td>
+                    <td className="hidden py-2.5 ps-4 text-end tabular-nums sm:table-cell">{e.checkedIn.toLocaleString(locale)}</td>
                   </tr>
                 ))}
               </tbody>

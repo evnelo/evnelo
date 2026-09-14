@@ -193,6 +193,22 @@ export async function applyRefund(db: Database, refund: { paymentIntentId: strin
   });
 }
 
+/**
+ * A chargeback. The money is already held back from the host, so the party loses its tickets the
+ * moment the dispute lands (seats returned, no email: the disputing buyer knows) and the order is
+ * marked so the dashboard shows it. Later updates only track Stripe's status; a dispute the host
+ * wins does not re-issue tickets by itself.
+ */
+export async function applyDispute(db: Database, dispute: { paymentIntentId: string; status: string }) {
+  await db.transaction(async (tx) => {
+    const [order] = await tx.select().from(orders).where(eq(orders.stripePaymentIntentId, dispute.paymentIntentId)).for("update");
+    if (!order) return;
+    const first = !order.disputedAt;
+    await tx.update(orders).set({ disputedAt: order.disputedAt ?? new Date(), disputeStatus: dispute.status.slice(0, 40) }).where(eq(orders.id, order.id));
+    if (first && (order.status === "paid" || order.status === "partially_refunded")) await cancelParty(tx, order.id, order.organizationId, true, null);
+  });
+}
+
 /** Revoke a whole order's tickets, cancel its attendees, return seats, queue one email. */
 export async function cancelParty(tx: DbOrTx, orderId: string, organizationId: string, returnSeats: boolean, template: string | null) {
   const party = await tx.select().from(attendees).where(and(eq(attendees.orderId, orderId), isNull(attendees.deletedAt)));

@@ -203,7 +203,8 @@
         "description": "हर पंजीकरण, चाहे वह निःशुल्क हो या सशुल्क, यहां एकत्रित की गई राशि के साथ प्रदर्शित होता है।"
       },
       "people": "{count, plural, one {# व्यक्ति} other {# लोग}}",
-      "refunded": "{amount} वापस कर दिया गया"
+      "refunded": "{amount} वापस कर दिया गया",
+      "disputed": "विवादित · {status}"
     }
   },
   "settings": {

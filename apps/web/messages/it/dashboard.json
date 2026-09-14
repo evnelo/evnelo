@@ -203,7 +203,8 @@
         "description": "Ogni registrazione, gratuita o a pagamento, viene visualizzata qui insieme ai dati raccolti."
       },
       "people": "{count, plural, one {# persona} other {# persone}}",
-      "refunded": "{amount} rimborsato"
+      "refunded": "{amount} rimborsato",
+      "disputed": "Contestato · {status}"
     }
   },
   "settings": {

@@ -203,7 +203,8 @@
         "description": "ہر رجسٹریشن، مفت یا معاوضہ، جمع کی گئی چیزوں کے ساتھ یہاں ظاہر ہوتا ہے۔"
       },
       "people": "{count, plural, one {# شخص} other {# لوگ}}",
-      "refunded": "{amount} واپس کر دیا گیا۔"
+      "refunded": "{amount} واپس کر دیا گیا۔",
+      "disputed": "متنازعہ · {status}"
     }
   },
   "settings": {

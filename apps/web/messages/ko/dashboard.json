@@ -203,7 +203,8 @@
         "description": "무료든 유료든 모든 등록 내역과 수집된 정보가 여기에 표시됩니다."
       },
       "people": "{count, plural, one {# 명} other {# 명}}",
-      "refunded": "{amount} 환불됨"
+      "refunded": "{amount} 환불됨",
+      "disputed": "논쟁 중 · {status}"
     }
   },
   "settings": {

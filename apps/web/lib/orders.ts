@@ -139,6 +139,13 @@ export async function applyRefund(charge: Stripe.Charge) {
   await svc.applyRefund(db, { paymentIntentId: piId, amountRefunded: charge.amount_refunded, amount: charge.amount });
 }
 
+/** A chargeback opened, updated or closed at Stripe; the service revokes the party the first time. */
+export async function applyDispute(dispute: Stripe.Dispute) {
+  const piId = typeof dispute.payment_intent === "string" ? dispute.payment_intent : dispute.payment_intent?.id;
+  if (!piId) return;
+  await svc.applyDispute(db, { paymentIntentId: piId, status: dispute.status });
+}
+
 export type RefundRequest =
   | { ok: true; order: Order }
   | { ok: false; reason: "not_found" | "no_payment" | "not_refundable"; message: string };

@@ -11,6 +11,8 @@ vi.mock("@/lib/shared-rate-limit", () => ({ consumeSharedRateLimit: mocks.claim 
 vi.mock("@/lib/stripe", () => ({ stripe: { oauth: { token: mocks.token }, accounts: { retrieve: mocks.retrieve } } }));
 vi.mock("@/lib/stripe-connect", () => ({ stripeConnectConfigured: true }));
 vi.mock("@/lib/observability", () => ({ captureError: vi.fn() }));
+vi.mock("@/lib/apple-pay", () => ({ ensureApplePayDomain: vi.fn() }));
+vi.mock("@/lib/posthog-server", () => ({ track: vi.fn() }));
 import { GET } from "./route";
 
 describe("Stripe OAuth callback", () => {

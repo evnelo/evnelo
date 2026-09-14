@@ -203,7 +203,8 @@
         "description": "İster ücretsiz ister ücretli olsun, her kayıt işlemi ve toplanan veriler burada gösterilmektedir."
       },
       "people": "{count, plural, one {# kişi} other {# kişi}}",
-      "refunded": "{amount} iade edildi"
+      "refunded": "{amount} iade edildi",
+      "disputed": "Tartışmalı · {status}"
     }
   },
   "settings": {

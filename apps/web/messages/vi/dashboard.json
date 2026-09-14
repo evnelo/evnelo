@@ -203,7 +203,8 @@
         "description": "Mọi lượt đăng ký, dù miễn phí hay trả phí, đều hiển thị ở đây cùng với những thông tin đã được thu thập."
       },
       "people": "{count, plural, one {người #} other {# người}}",
-      "refunded": "{amount} đã được hoàn tiền"
+      "refunded": "{amount} đã được hoàn tiền",
+      "disputed": "Tranh chấp · {status}"
     }
   },
   "settings": {

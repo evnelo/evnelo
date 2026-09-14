@@ -5,7 +5,7 @@ import { and, eq, inArray, isNull, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { attendees, events, orders, orderItems, organizations, registrationFields, ticketTypes } from "@evnelo/db";
 import { buildAnswersSchema, computeOrder, currentEdition, newId } from "@evnelo/core";
-import { capacityAllows, consumeDiscountCode, consumeEventInvite, consumeWaitlistOffer, discountProblem, findDiscountCode, markVisitMilestone, toDiscount, newAccessToken, utcDay, visitorHash } from "@evnelo/core/services";
+import { capacityAllows, claimRegistrationUploads, consumeDiscountCode, consumeEventInvite, consumeWaitlistOffer, discountProblem, findDiscountCode, markVisitMilestone, toDiscount, newAccessToken, utcDay, visitorHash } from "@evnelo/core/services";
 import { eventAccess } from "@/lib/event-access";
 import { waitlistOffer } from "@/lib/waitlist-access";
 import { db } from "@/lib/db";
@@ -212,6 +212,8 @@ export async function POST(req: Request) {
   if ("inviteExhausted" in result) return NextResponse.json({ error: t("errors.inviteExhausted") }, { status: 409 });
   if ("soldOut" in result) return NextResponse.json({ error: quantity > 1 ? t("errors.notEnoughTickets") : t("errors.justSoldOut") }, { status: 409 });
 
+  // the files are now referenced by a registration: the orphan sweep must leave them alone
+  if (fileAnswers.length) await claimRegistrationUploads(db, fileAnswers.map((a) => String(a.key))).catch((e) => captureError("orders.claimUploads", e, { eventId: event.id }));
   // the first-party funnel's last step; the view came in through components/visit-beacon.tsx
   {
     const day = utcDay();

@@ -203,7 +203,8 @@
         "description": "Jede Registrierung, ob kostenlos oder kostenpflichtig, wird hier zusammen mit den gesammelten Daten angezeigt."
       },
       "people": "{count, plural, one {# Person} other {# Personen}}",
-      "refunded": "{amount} erstattet"
+      "refunded": "{amount} erstattet",
+      "disputed": "Umstritten · {status}"
     }
   },
   "settings": {

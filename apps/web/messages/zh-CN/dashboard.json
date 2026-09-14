@@ -203,7 +203,8 @@
         "description": "所有注册信息，无论是免费的还是付费的，都会在这里显示出来，以及收集到的信息。"
       },
       "people": "{count, plural, one {#人} other {#人}}",
-      "refunded": "{amount}已退款"
+      "refunded": "{amount}已退款",
+      "disputed": "有争议 · {status}"
     }
   },
   "settings": {

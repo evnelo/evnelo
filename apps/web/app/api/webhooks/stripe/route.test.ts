@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ event: {} as Record<string, unknown>, verify: vi.fn(), settle: vi.fn(), refund: vi.fn(), status: vi.fn(), updateStatus: vi.fn(), update: vi.fn() }));
 vi.mock("@/lib/env", () => ({ env: { EDITION: "cloud", STRIPE_SECRET_KEY: "sk_live_example", STRIPE_WEBHOOK_SECRET: "whsec_platform", STRIPE_CONNECT_WEBHOOK_SECRET: "whsec_connect" } }));
 vi.mock("@/lib/stripe-webhook", () => ({ verifyStripeWebhook: mocks.verify }));
-vi.mock("@/lib/orders", () => ({ settlePaymentIntent: mocks.settle, applyRefund: mocks.refund }));
+vi.mock("@/lib/orders", () => ({ settlePaymentIntent: mocks.settle, applyRefund: mocks.refund, applyDispute: vi.fn() }));
 vi.mock("@/lib/stripe-connect", () => ({ connectedAccountStatus: mocks.status }));
 vi.mock("@evnelo/core/services", () => ({ updateStripeAccountStatus: mocks.updateStatus }));
 vi.mock("@/lib/db", () => ({ db: { update: mocks.update } }));

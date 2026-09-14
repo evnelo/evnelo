@@ -3,7 +3,7 @@ import { Receipt } from "lucide-react";
 import { listOrders } from "@evnelo/core/services";
 import { can } from "@evnelo/core";
 import { db } from "@/lib/db";
-import { requireEvent, statusVariant } from "@/lib/dashboard";
+import { requireEvent, statusLabel, statusVariant } from "@/lib/dashboard";
 import { formatMoney } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
@@ -48,7 +48,7 @@ export default async function OrdersPage({ params }: { params: Promise<{ id: str
             <TR key={o.id}>
               <TD><div className="font-medium">{buyerName ?? o.email}</div><div className="text-xs text-muted-foreground">{o.email} · {t("event.orders.people", { count: attendeeCount })}</div></TD>
               <TD className="text-muted-foreground">{items}</TD>
-              <TD><Badge variant={statusVariant[o.status]}>{t(`status.order.${o.status}`)}</Badge>{o.refundedMinor > 0 && o.status === "partially_refunded" && <div className="mt-0.5 text-xs tabular-nums text-muted-foreground">{t("event.orders.refunded", { amount: formatMoney(o.refundedMinor, o.currency, locale) })}</div>}</TD>
+              <TD><Badge variant={statusVariant[o.status]}>{t(`status.order.${o.status}`)}</Badge>{o.disputedAt && <Badge variant="destructive" className="ms-1">{t("event.orders.disputed", { status: statusLabel(o.disputeStatus ?? "") })}</Badge>}{o.refundedMinor > 0 && o.status === "partially_refunded" && <div className="mt-0.5 text-xs tabular-nums text-muted-foreground">{t("event.orders.refunded", { amount: formatMoney(o.refundedMinor, o.currency, locale) })}</div>}</TD>
               <TD className="text-end tabular-nums">{o.totalMinor === 0 ? tc("labels.free") : formatMoney(o.totalMinor, o.currency, locale)}</TD>
               <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{fmt(o.createdAt)}</TD>
               {refundable && <TD className="text-end">{(o.status === "paid" || o.status === "partially_refunded") && o.stripePaymentIntentId && <RefundButton eventId={id} orderId={o.id} amount={formatMoney(o.totalMinor - o.refundedMinor, o.currency, locale)} />}</TD>}

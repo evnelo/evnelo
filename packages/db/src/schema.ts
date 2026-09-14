@@ -291,6 +291,8 @@ export const orders = mysqlTable(
     stripeReceiptUrl: varchar("stripe_receipt_url", { length: 500 }),
     holdExpiresAt: datetime("hold_expires_at", { fsp: 3 }),
     paidAt: datetime("paid_at", { fsp: 3 }),
+    disputedAt: datetime("disputed_at", { fsp: 3 }), // a chargeback was opened; the party lost its tickets when it landed
+    disputeStatus: varchar("dispute_status", { length: 40 }), // Stripe's dispute status, kept current by the webhook
     answers: json("answers").$type<Record<string, unknown>>().notNull().default({}), // order-scope fields
     createdAt: createdAt(),
     updatedAt: updatedAt(),
@@ -533,6 +535,22 @@ export const webhookDeliveries = mysqlTable(
     createdAt: createdAt(),
   },
   (t) => [index("wd_pending").on(t.deliveredAt, t.nextAttemptAt)],
+);
+
+/**
+ * Registration file uploads that were presigned but not yet submitted. A row is written when the
+ * browser asks for an upload URL and removed when a registration that references the key is stored;
+ * the job loop deletes the object and the row for anything still here after a day (an abandoned form).
+ */
+export const registrationUploads = mysqlTable(
+  "registration_uploads",
+  {
+    id: id(),
+    eventId: ref("event_id").notNull(),
+    objectKey: varchar("object_key", { length: 255 }).notNull().unique(),
+    createdAt: createdAt(),
+  },
+  (t) => [index("ru_stale").on(t.createdAt)],
 );
 
 /** Abuse reports from the public event page (moderation queue; emailed to ABUSE_EMAIL when set). */

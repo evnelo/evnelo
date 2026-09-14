@@ -203,7 +203,8 @@
         "description": "無料登録、有料登録に関わらず、すべての登録情報と収集されたデータがここに表示されます。"
       },
       "people": "{count, plural, one {#人} other {#人}}",
-      "refunded": "{amount}返金"
+      "refunded": "{amount}返金",
+      "disputed": "異議あり · {status}"
     }
   },
   "settings": {

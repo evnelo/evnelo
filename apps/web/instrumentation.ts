@@ -11,6 +11,11 @@ export async function register() {
     await migrateOnStart(); // throws on failure: better a container that does not start than one on the wrong schema
     const { startJobLoop } = await import("./lib/notifications/loop");
     startJobLoop();
+    // self-hosted: the operator's own Stripe account takes the charges, so register this domain for Apple Pay once
+    if (process.env.EDITION !== "cloud" && process.env.STRIPE_SECRET_KEY) {
+      const { ensureApplePayDomain } = await import("./lib/apple-pay");
+      void ensureApplePayDomain(null);
+    }
     // flush the last batch of events and logs when the container is stopped
     const drain = () => { void Promise.all([shutdownPosthog(), stopLogExport()]).finally(() => process.exit(0)); };
     process.once("SIGTERM", drain);

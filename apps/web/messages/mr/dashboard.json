@@ -203,7 +203,8 @@
         "description": "प्रत्येक नोंदणी, विनामूल्य असो वा सशुल्क, गोळा केलेल्या माहितीसह येथे दिसते."
       },
       "people": "{count, plural, one {# व्यक्ती} other {# लोक}}",
-      "refunded": "{amount} परतावा दिला"
+      "refunded": "{amount} परतावा दिला",
+      "disputed": "विवादित · {status}"
     }
   },
   "settings": {

@@ -16,6 +16,7 @@ import {
   planRegistrationUpload,
 } from "@/lib/registration-uploads";
 import { presignRegistrationUpload, storageConfigured } from "@/lib/storage";
+import { trackRegistrationUpload } from "@evnelo/core/services";
 
 export const runtime = "nodejs";
 
@@ -76,6 +77,8 @@ export async function POST(request: Request) {
 
   try {
     const presigned = await presignRegistrationUpload(event.id, plan.contentType);
+    // remembered so the sweep can delete it if no registration ever claims it
+    await trackRegistrationUpload(db, { eventId: event.id, key: presigned.key }).catch((e) => captureError("uploads.track", e, { eventId: event.id }));
     return NextResponse.json({ ...presigned, ...capability }, { status: 201, headers: { "cache-control": "no-store" } });
   } catch (error) {
     captureError("uploads.registration.presign", error, { eventId: event.id });

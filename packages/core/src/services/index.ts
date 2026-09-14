@@ -20,3 +20,4 @@ export * from "./listings";
 export * from "./webhook-payloads";
 export * from "./privacy";
 export * from "./analytics";
+export * from "./uploads";

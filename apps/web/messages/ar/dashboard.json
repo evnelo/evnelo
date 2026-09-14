@@ -203,7 +203,8 @@
         "description": "تظهر هنا جميع عمليات التسجيل، سواء كانت مجانية أو مدفوعة، مع البيانات التي تم جمعها."
       },
       "people": "{count, plural, one {# شخص} other {# أشخاص}}",
-      "refunded": "تم استرداد المبلغ {amount}"
+      "refunded": "تم استرداد المبلغ {amount}",
+      "disputed": "محل نزاع · {status}"
     }
   },
   "settings": {

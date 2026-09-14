@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { verifyStripeWebhook } from "@/lib/stripe-webhook";
 import { connectedAccountStatus } from "@/lib/stripe-connect";
-import { applyRefund, settlePaymentIntent } from "@/lib/orders";
+import { applyDispute, applyRefund, settlePaymentIntent } from "@/lib/orders";
 import { span } from "@/lib/posthog-server";
 
 export const runtime = "nodejs";
@@ -63,6 +63,11 @@ async function handle(event: Stripe.Event) {
       break;
     case "charge.refunded":
       await applyRefund(event.data.object);
+      break;
+    case "charge.dispute.created":
+    case "charge.dispute.updated":
+    case "charge.dispute.closed":
+      await applyDispute(event.data.object);
       break;
   }
 }

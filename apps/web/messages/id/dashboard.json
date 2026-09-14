@@ -203,7 +203,8 @@
         "description": "Setiap pendaftaran, baik gratis maupun berbayar, akan ditampilkan di sini beserta data yang telah dikumpulkan."
       },
       "people": "{count, plural, one {# orang} other {# orang}}",
-      "refunded": "{amount} dikembalikan"
+      "refunded": "{amount} dikembalikan",
+      "disputed": "Disengketakan · {status}"
     }
   },
   "settings": {

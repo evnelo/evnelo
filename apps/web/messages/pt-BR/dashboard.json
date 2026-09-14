@@ -203,7 +203,8 @@
         "description": "Todos os cadastros, gratuitos ou pagos, aparecem aqui com as informações coletadas."
       },
       "people": "{count, plural, one {# pessoa} other {# pessoas}}",
-      "refunded": "{amount} reembolsado"
+      "refunded": "{amount} reembolsado",
+      "disputed": "Disputado · {status}"
     }
   },
   "settings": {

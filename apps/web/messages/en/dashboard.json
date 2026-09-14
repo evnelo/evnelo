@@ -203,7 +203,8 @@
         "description": "Every registration, free or paid, shows up here with what was collected."
       },
       "people": "{count, plural, one {# person} other {# people}}",
-      "refunded": "{amount} refunded"
+      "refunded": "{amount} refunded",
+      "disputed": "Disputed · {status}"
     }
   },
   "settings": {

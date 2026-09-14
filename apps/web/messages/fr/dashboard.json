@@ -203,7 +203,8 @@
         "description": "Chaque inscription, gratuite ou payante, apparaît ici avec les sommes collectées."
       },
       "people": "{count, plural, one {# personne} other {# personnes}}",
-      "refunded": "{amount} remboursé"
+      "refunded": "{amount} remboursé",
+      "disputed": "Contesté · {status}"
     }
   },
   "settings": {

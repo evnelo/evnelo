@@ -6,7 +6,8 @@ import { NOTIFICATION_RETRY_LIMIT, STUCK_SENDING_MS, newId, reminderDedupeKey, r
 import { db } from "@/lib/db";
 import { deliver } from "./deliver";
 import { expireHolds, reconcileProcessingOrders } from "@/lib/orders";
-import { expireWaitlistOffers, purgeApiHousekeeping, purgeEventVisits } from "@evnelo/core/services";
+import { expireWaitlistOffers, forgetRegistrationUpload, purgeApiHousekeeping, purgeEventVisits, staleRegistrationUploads } from "@evnelo/core/services";
+import { deleteRegistrationFile, storageConfigured } from "@/lib/storage";
 
 /**
  * The job runner. No Redis: everything is rows in `notifications`, claimed with a
@@ -110,6 +111,17 @@ const SCHEDULE_EVERY_MS = 60_000;
 let lastScheduled = 0;
 
 /** One pass of everything. Safe to call from a timer, a cron hit, or a test. Reminder scheduling runs at most once a minute. */
+/** Files uploaded for a registration that never came: the object goes first, then the row, so a failed delete is retried next hour. */
+async function sweepRegistrationUploads() {
+  if (!storageConfigured) return 0;
+  const stale = await staleRegistrationUploads(db);
+  for (const row of stale) {
+    await deleteRegistrationFile(row.objectKey);
+    await forgetRegistrationUpload(db, row.id);
+  }
+  return stale.length;
+}
+
 export async function runJobs(opts: { force?: boolean } = {}) {
   // lapsed checkout holds: cancel the PaymentIntent at Stripe, then give the seats back
   const expiredHolds = await expireHolds().catch((e) => { captureError("jobs.expireHolds", e); return 0; });
@@ -122,6 +134,7 @@ export async function runJobs(opts: { force?: boolean } = {}) {
     reconciled = await reconcileProcessingOrders().catch((e) => { captureError("jobs.reconcileProcessingOrders", e); return 0; });
     await purgeApiHousekeeping(db).catch((e) => captureError("jobs.purgeApiHousekeeping", e));
     await purgeEventVisits(db).catch((e) => captureError("jobs.purgeEventVisits", e));
+    await sweepRegistrationUploads().catch((e) => captureError("jobs.sweepRegistrationUploads", e));
     lastScheduled = Date.now();
   }
   const processed = await processNotifications();

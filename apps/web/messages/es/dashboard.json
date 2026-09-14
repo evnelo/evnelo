@@ -203,7 +203,8 @@
         "description": "Aquí aparece cada registro, ya sea gratuito o de pago, junto con la información recopilada."
       },
       "people": "{count, plural, one {# persona} other {# personas}}",
-      "refunded": "{amount} reembolsado"
+      "refunded": "{amount} reembolsado",
+      "disputed": "Disputado · {status}"
     }
   },
   "settings": {

@@ -76,11 +76,16 @@ JSON
 else echo "exists"; fi
 
 echo "== monitors"
-create_monitor() { # name json: creates the monitor, or updates it in place when one with that title exists
-  local found id
-  found=$(api GET "/monitor/search?query=title:%22$(printf '%s' "$1" | sed 's/ /%20/g')%22")
-  id=$(printf '%s' "$found" | grep -o "{\"id\":[0-9]*,\"name\":\"$1\"" | grep -o '[0-9]*' | head -1 || true) # no match is the normal first run
-  if [ -n "$id" ]; then echo "updating $1 (#$id)"; api PUT "/monitor/$id" "$2" | head -c 120; echo; return; fi
+create_monitor() { # name json: creates the monitor, updates it in place when the title exists, deletes any duplicate of it
+  local ids id extra
+  # the list endpoint filters by substring, so keep only exact titles; monitor objects start with their id
+  ids=$(api GET "/monitor?name=$(printf '%s' "$1" | sed 's/ /%20/g;s/%/%25/g')" | grep -o "{\"id\":[0-9]*,\"org_id\":[0-9]*,\"type\":\"[a-z ]*\",\"name\":\"$1\"" | grep -o '"id":[0-9]*' | grep -o '[0-9]*' || true)
+  id=$(printf '%s\n' "$ids" | head -1)
+  if [ -n "$id" ]; then
+    echo "updating $1 (#$id)"; api PUT "/monitor/$id" "$2" | head -c 120; echo
+    for extra in $(printf '%s\n' "$ids" | tail -n +2); do echo "deleting duplicate #$extra"; api DELETE "/monitor/$extra" >/dev/null; done
+    return
+  fi
   api POST "/monitor" "$2" | head -c 120; echo
 }
 create_monitor "Evnelo host stopped reporting" "$(cat <<JSON

@@ -33,16 +33,16 @@ export function SuccessStep({ title, message, orderUrl, celebrate }: { title: st
       </span>
       <DialogTitle className="display mt-5 text-2xl">{title}</DialogTitle>
       <DialogDescription className="mt-2 max-w-sm text-sm text-muted-foreground">{message}</DialogDescription>
-      <div className="mt-6 flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:justify-center">
-        {orderUrl && (
-          <Button asChild variant="event" size="lg">
-            <a href={orderUrl}>{t("success.viewTickets")}</a>
-          </Button>
-        )}
+      {/* one action: the order page is the destination; the X in the corner is the way back */}
+      {orderUrl ? (
+        <Button asChild variant="event" size="lg" className="mt-6">
+          <a href={orderUrl}>{t("success.viewTickets")}</a>
+        </Button>
+      ) : (
         <DialogClose asChild>
-          <Button variant="outline" size="lg">{t("success.done")}</Button>
+          <Button variant="outline" size="lg" className="mt-6">{t("success.done")}</Button>
         </DialogClose>
-      </div>
+      )}
     </div>
   );
 }

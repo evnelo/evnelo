@@ -345,7 +345,8 @@
         "invalid": "Liên kết kết nối này đã hết hạn hoặc không thể xác minh. Vui lòng bắt đầu lại từ cài đặt Thanh toán.",
         "failed": "Chúng tôi không thể hoàn tất kết nối Stripe. Hãy thử lại với cùng tài khoản Stripe nếu tổ chức này đã được kết nối.",
         "unconfigured": "Stripe Connect chưa được cấu hình trên nền tảng này. Vui lòng liên hệ với nhà điều hành nền tảng để kích hoạt vé trả phí."
-      }
+      },
+      "legal": "Các khoản thanh toán vào ngày Evnelo phải tuân theo<terms>Điều khoản dịch vụ</terms>."
     },
     "danger": {
       "title": "Dữ liệu và xóa",

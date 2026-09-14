@@ -125,6 +125,9 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
                   <form action={google}><SubmitButton variant="outline" size="lg" className="w-full">{t("google")}</SubmitButton></form>
                 </>
               )}
+              <p className="text-xs text-muted-foreground">
+                {t.rich("legal", { terms: (c) => <a href="/legal/terms" className="underline underline-offset-4">{c}</a>, privacy: (c) => <a href="/legal/privacy" className="underline underline-offset-4">{c}</a> })}
+              </p>
             </div>
           )}
         </div>

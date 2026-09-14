@@ -345,7 +345,8 @@
         "invalid": "Bu bağlantı süresi doldu veya doğrulanamadı. Ödeme ayarlarından tekrar deneyin.",
         "failed": "Stripe bağlantısı tamamlanamadı. Bu kuruluş zaten bağlıysa, aynı Stripe hesapla tekrar deneyin.",
         "unconfigured": "Stripe Connect bu platformda yapılandırılmamıştır. Ücretli biletleri etkinleştirmek için platform operatörüyle iletişime geçin."
-      }
+      },
+      "legal": "Evnelo tarihindeki ödemeler aşağıdaki şartlara tabidir:<terms>Hizmet Şartları</terms>."
     },
     "danger": {
       "title": "Veri ve silme",

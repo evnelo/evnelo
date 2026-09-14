@@ -158,7 +158,8 @@
     "registerFreeWithCode": "కోడ్‌తో ఉచితంగా నమోదు చేసుకోండి",
     "registerPeopleFreeWithCode": "కోడ్‌తో ఉచితంగా {count} మందిని నమోదు చేసుకోండి",
     "registerPeople": "{count} మంది నమోదు చేసుకోండి",
-    "register": "నమోదు చేసుకోండి"
+    "register": "నమోదు చేసుకోండి",
+    "legal": "నమోదు చేసుకోవడం ద్వారా మీరు దీనికి అంగీకరిస్తున్నారు<terms>సేవా నిబంధనలు</terms> మరియు<privacy>గోప్యతా విధానం</privacy>."
   },
   "discount": {
     "invalid": "ఆ కోడ్ చెల్లదు.",

@@ -158,7 +158,8 @@
     "registerFreeWithCode": "使用代码免费注册",
     "registerPeopleFreeWithCode": "使用代码免费注册{count}人",
     "registerPeople": "登记{count}人",
-    "register": "登记"
+    "register": "登记",
+    "legal": "注册即表示您同意以下条款：<terms>服务条款</terms>以及<privacy>隐私政策</privacy>。"
   },
   "discount": {
     "invalid": "这段代码无效。",

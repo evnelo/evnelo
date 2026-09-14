@@ -345,7 +345,8 @@
         "invalid": "此连接链接已过期或无法验证。请从“付款设置”重新开始。",
         "failed": "我们无法完成Stripe连接。如果该组织已连接，请使用相同的Stripe帐户重试。",
         "unconfigured": "此平台未配置Stripe Connect 。请联系平台运营商以启用付费票务功能。"
-      }
+      },
+      "legal": "Evnelo的付款须遵守以下规定<terms>服务条款</terms>。"
     },
     "danger": {
       "title": "数据和删除",

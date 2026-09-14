@@ -9,7 +9,10 @@
     "signIn": "Giriş yap",
     "host": "Bir etkinlik düzenleyin",
     "hostShort": "Ev sahibi",
-    "api": "API"
+    "api": "API",
+    "terms": "Şartlar",
+    "privacy": "Mahremiyet",
+    "refunds": "Geri ödemeler"
   },
   "footer": {
     "tagline": "Hareket halindeki etkinlikler. Açık etkinlik altyapısı: ücretsiz etkinlikler ücretsizdir, ücretli etkinlikler ise ev sahibine %0,99 maliyet getirir.",
@@ -367,5 +370,22 @@
     "body": "Sayfada bir hata oluştu. Tekrar denemek genellikle işe yarar; eğer bu durum devam ederse, sunucuya bildirim gönderilmiştir.",
     "reference": "Referans {digest}",
     "home": "Eve git"
+  },
+  "legal": {
+    "eyebrow": "Yasal",
+    "title": "Şartlar, gizlilik ve iadeler",
+    "intro": "{entity} tarafından işletilen barındırma hizmeti olan Evnelo yöneten üç belge. Bunlar, bilerek sade bir dille yazılmıştır.",
+    "updated": "Son değişiklik {date}",
+    "englishOnly": "Bu belge İngilizce'dir.",
+    "docs": {
+      "terms": "Hizmet Şartları",
+      "privacy": "Gizlilik Politikası",
+      "refunds": "Geri Ödeme Politikası"
+    },
+    "summary": {
+      "terms": "Ev sahipleri ve katılımcıların üzerinde anlaştığı hususlar, ücretler, ödemeler ve sorumluluklar.",
+      "privacy": "Neleri topluyoruz, neden, kimler görüyor ve haklarınız neler?",
+      "refunds": "Geri ödemelere kim karar veriyor, nasıl ödeniyor ve ücretlere ne oluyor?"
+    }
   }
 }

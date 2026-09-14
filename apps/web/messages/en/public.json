@@ -9,7 +9,10 @@
     "signIn": "Sign in",
     "host": "Host an event",
     "hostShort": "Host",
-    "api": "API"
+    "api": "API",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "refunds": "Refunds"
   },
   "footer": {
     "tagline": "Events, in motion. Open event infrastructure: free events are free, paid events cost the host 0.99%.",
@@ -367,5 +370,22 @@
     "body": "The page hit an error. Trying again usually works; if it keeps happening, the host has been notified.",
     "reference": "Reference {digest}",
     "home": "Go home"
+  },
+  "legal": {
+    "eyebrow": "Legal",
+    "title": "Terms, privacy and refunds",
+    "intro": "The three documents that govern Evnelo, the hosted service run by {entity}. They are written in plain English on purpose.",
+    "updated": "Last changed {date}",
+    "englishOnly": "This document is in English",
+    "docs": {
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "refunds": "Refund Policy"
+    },
+    "summary": {
+      "terms": "What hosts and attendees agree to, fees, payments and liability.",
+      "privacy": "What we collect, why, who sees it and your rights.",
+      "refunds": "Who decides refunds, how they are paid and what happens to fees."
+    }
   }
 }

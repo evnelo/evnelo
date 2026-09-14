@@ -158,7 +158,8 @@
     "registerFreeWithCode": "سجل مجاناً باستخدام الرمز",
     "registerPeopleFreeWithCode": "سجل {count} شخصًا مجانًا باستخدام الرمز",
     "registerPeople": "سجل {count} شخصًا",
-    "register": "يسجل"
+    "register": "يسجل",
+    "legal": "بالتسجيل، فإنك توافق على<terms>شروط الخدمة</terms> و<privacy>سياسة الخصوصية</privacy>."
   },
   "discount": {
     "invalid": "هذا الرمز غير صالح.",

@@ -158,7 +158,8 @@
     "registerFreeWithCode": "رجسٹر کریں، کوڈ کے ساتھ مفت",
     "registerPeopleFreeWithCode": "{count} لوگوں کو رجسٹر کریں، کوڈ کے ساتھ مفت",
     "registerPeople": "{count} لوگوں کو رجسٹر کریں۔",
-    "register": "رجسٹر کریں۔"
+    "register": "رجسٹر کریں۔",
+    "legal": "رجسٹر کر کے آپ اس سے اتفاق کرتے ہیں۔<terms>سروس کی شرائط</terms> اور<privacy>رازداری کی پالیسی</privacy>."
   },
   "discount": {
     "invalid": "وہ کوڈ درست نہیں ہے۔",

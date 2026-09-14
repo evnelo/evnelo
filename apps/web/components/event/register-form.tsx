@@ -311,6 +311,9 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
           </div>
         )}
         <CaptchaField action="register" />
+        <p className="mb-3 text-xs text-muted-foreground">
+          {t.rich("form.legal", { terms: (c) => <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{c}</a>, privacy: (c) => <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{c}</a> })}
+        </p>
         <Button type="submit" variant="event" size="lg" className="w-full" pending={form.formState.isSubmitting} disabled={!selected}>
           {totalMinor > 0
             ? (partySize > 1 ? t("form.continueToPaymentFor", { price: formatMoney(totalMinor, selected!.currency, locale), count: partySize }) : t("form.continueToPayment", { price: formatMoney(totalMinor, selected!.currency, locale) }))

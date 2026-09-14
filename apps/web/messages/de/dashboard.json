@@ -345,7 +345,8 @@
         "invalid": "Diese Verbindung ist abgelaufen oder konnte nicht verifiziert werden. Bitte versuchen Sie es erneut in den Zahlungseinstellungen.",
         "failed": "Die Stripe konnte nicht hergestellt werden. Versuchen Sie es erneut mit Stripe Konto, falls diese Organisation bereits verbunden ist.",
         "unconfigured": "Stripe Connect ist auf dieser Plattform nicht konfiguriert. Wenden Sie sich an den Plattformbetreiber, um kostenpflichtige Tickets zu aktivieren."
-      }
+      },
+      "legal": "Zahlungen am Evnelo unterliegen den<terms>Nutzungsbedingungen</terms> Die"
     },
     "danger": {
       "title": "Daten und Löschung",

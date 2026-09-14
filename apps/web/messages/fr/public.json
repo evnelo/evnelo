@@ -9,7 +9,10 @@
     "signIn": "Se connecter",
     "host": "Organisez un événement",
     "hostShort": "Hôte",
-    "api": "API"
+    "api": "API",
+    "terms": "Termes",
+    "privacy": "Confidentialité",
+    "refunds": "Remboursements"
   },
   "footer": {
     "tagline": "Des événements en mouvement. Une infrastructure événementielle ouverte: les événements gratuits sont gratuits, les événements payants coûtent 0,99 % à l’organisateur.",
@@ -367,5 +370,22 @@
     "body": "La page a rencontré une erreur. En général, réessayer résout le problème; si l’erreur persiste, l’hébergeur en a été informé.",
     "reference": "Référence {digest}",
     "home": "Rentrez chez vous"
+  },
+  "legal": {
+    "eyebrow": "Légal",
+    "title": "Conditions générales, confidentialité et remboursements",
+    "intro": "Les trois documents qui régissent Evnelo, le service hébergé géré par {entity}. Ils sont rédigés en anglais clair à dessein.",
+    "updated": "Dernière modification {date}",
+    "englishOnly": "Ce document est en anglais",
+    "docs": {
+      "terms": "Conditions d'utilisation",
+      "privacy": "politique de confidentialité",
+      "refunds": "Politique de remboursement"
+    },
+    "summary": {
+      "terms": "Ce à quoi conviennent les hôtes et les participants: frais, paiements et responsabilité.",
+      "privacy": "Quelles données nous collectons, pourquoi, qui y a accès et quels sont vos droits.",
+      "refunds": "Qui décide des remboursements, des modalités de paiement et du sort des frais?"
+    }
   }
 }

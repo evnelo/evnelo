@@ -345,7 +345,8 @@
         "invalid": "This connection link expired or could not be verified. Start again from Payments settings.",
         "failed": "We could not complete the Stripe connection. Try again with the same Stripe account if this organization is already connected.",
         "unconfigured": "Stripe Connect is not configured on this platform. Contact the platform operator to enable paid tickets."
-      }
+      },
+      "legal": "Payments on Evnelo are subject to the <terms>Terms of Service</terms>."
     },
     "danger": {
       "title": "Data and deletion",

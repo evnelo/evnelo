@@ -9,7 +9,10 @@
     "signIn": "anmelden",
     "host": "Veranstalten Sie ein Event",
     "hostShort": "Gastgeber",
-    "api": "API"
+    "api": "API",
+    "terms": "Bedingungen",
+    "privacy": "Datenschutz",
+    "refunds": "Rückerstattungen"
   },
   "footer": {
     "tagline": "Veranstaltungen in Bewegung. Offene Veranstaltungsinfrastruktur: Kostenlose Veranstaltungen sind kostenlos, kostenpflichtige Veranstaltungen kosten den Veranstalter 0,99 %.",
@@ -367,5 +370,22 @@
     "body": "Auf der Seite ist ein Fehler aufgetreten. Ein erneuter Versuch behebt das Problem in der Regel; sollte der Fehler weiterhin auftreten, wurde der Host benachrichtigt.",
     "reference": "Referenz {digest}",
     "home": "Nach Hause gehen"
+  },
+  "legal": {
+    "eyebrow": "Recht",
+    "title": "Nutzungsbedingungen, Datenschutz und Rückerstattungen",
+    "intro": "Die drei Dokumente, die Evnelo regeln, den von {entity} betriebenen Hosting-Dienst. Sie sind absichtlich in einfachem Englisch verfasst.",
+    "updated": "Zuletzt geändert {date}",
+    "englishOnly": "Dieses Dokument ist in englischer Sprache.",
+    "docs": {
+      "terms": "Nutzungsbedingungen",
+      "privacy": "Datenschutzrichtlinie",
+      "refunds": "Rückerstattungsrichtlinie"
+    },
+    "summary": {
+      "terms": "Vereinbarungen zwischen Veranstaltern und Teilnehmern, Gebühren, Zahlungen und Haftung.",
+      "privacy": "Was wir sammeln, warum, wer es sieht und Ihre Rechte.",
+      "refunds": "Wer entscheidet über Rückerstattungen, wie diese ausgezahlt werden und was mit den Gebühren geschieht?"
+    }
   }
 }

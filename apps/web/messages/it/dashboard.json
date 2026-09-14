@@ -345,7 +345,8 @@
         "invalid": "Il collegamento è scaduto o non è stato possibile verificarlo. Riavvia la procedura dalle impostazioni di pagamento.",
         "failed": "Non è stato possibile completare la connessione Stripe. Riprova con lo stesso account Stripe se questa organizzazione è già connessa.",
         "unconfigured": "Stripe Connect non è configurato su questa piattaforma. Contatta l'operatore della piattaforma per abilitare i biglietti a pagamento."
-      }
+      },
+      "legal": "I pagamenti su Evnelo sono soggetti a<terms>Termini di servizio</terms>."
     },
     "danger": {
       "title": "Dati ed eliminazione",

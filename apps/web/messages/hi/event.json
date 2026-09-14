@@ -158,7 +158,8 @@
     "registerFreeWithCode": "कोड के साथ पंजीकरण निःशुल्क है",
     "registerPeopleFreeWithCode": "कोड के साथ {count} लोगों का पंजीकरण निःशुल्क है।",
     "registerPeople": "{count} लोगों का पंजीकरण करें",
-    "register": "पंजीकरण करवाना"
+    "register": "पंजीकरण करवाना",
+    "legal": "पंजीकरण करके आप निम्नलिखित शर्तों से सहमत होते हैं।<terms>सेवा की शर्तें</terms> और यह<privacy>गोपनीयता नीति</privacy>."
   },
   "discount": {
     "invalid": "वह कोड मान्य नहीं है।",

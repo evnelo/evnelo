@@ -87,7 +87,7 @@ async function CloudPayments({ accountId, canManage, result }: { accountId: stri
       <p className="text-sm text-muted-foreground">{accountId ? t("settings.payments.connected", { id: accountId }) : t("settings.payments.connectPrompt")}</p>
       {status === "restricted" && <p className="text-sm text-muted-foreground">{t("settings.payments.restrictedHelp")}</p>}
       {status === "unavailable" && <p className="text-sm text-muted-foreground">{t("settings.payments.unavailableHelp")}</p>}
-      <p className="text-sm text-muted-foreground">{t("settings.payments.fees")}</p>
+      <p className="text-sm text-muted-foreground">{t("settings.payments.fees")} {t.rich("settings.payments.legal", { terms: (c) => <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{c}</a> })}</p>
       {!stripeConnectConfigured && <p className="text-sm text-muted-foreground">{t("settings.payments.results.unconfigured")}</p>}
       {canManage ? (
         <div className="flex flex-wrap items-center gap-3">

@@ -345,7 +345,8 @@
         "invalid": "Este enlace de conexión ha caducado o no se ha podido verificar. Vuelve a intentarlo desde la configuración de Pagos.",
         "failed": "No pudimos completar la conexión con Stripe. Inténtalo de nuevo con la misma cuenta de Stripe si esta organización ya está conectada.",
         "unconfigured": "Stripe Connect no está configurado en esta plataforma. Ponte en contacto con el operador de la plataforma para habilitar las entradas de pago."
-      }
+      },
+      "legal": "Los pagos del Evnelo están sujetos a la<terms>Condiciones de servicio</terms>."
     },
     "danger": {
       "title": "Datos y eliminación",

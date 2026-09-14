@@ -345,7 +345,8 @@
         "invalid": "Este link de conexão expirou ou não pôde ser verificado. Comece de novo nas configurações de Pagamentos.",
         "failed": "Não foi possível concluir a conexão Stripe. Tente novamente com a mesma conta Stripe se esta organização já estiver conectada.",
         "unconfigured": "Stripe Connect não está configurado nesta plataforma. Entre em contato com o operador da plataforma para habilitar ingressos pagos."
-      }
+      },
+      "legal": "Os pagamentos em Evnelo estão sujeitos a<terms>Termos de Serviço</terms>."
     },
     "danger": {
       "title": "Dados e exclusão",

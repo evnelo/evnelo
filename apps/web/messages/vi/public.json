@@ -9,7 +9,10 @@
     "signIn": "Đăng nhập",
     "host": "Tổ chức một sự kiện",
     "hostShort": "Chủ nhà",
-    "api": "API"
+    "api": "API",
+    "terms": "Điều khoản",
+    "privacy": "Sự riêng tư",
+    "refunds": "Hoàn tiền"
   },
   "footer": {
     "tagline": "Các sự kiện đang diễn ra. Cơ sở hạ tầng sự kiện mở: sự kiện miễn phí thì hoàn toàn miễn phí, sự kiện trả phí khiến người tổ chức phải trả 0,99%.",
@@ -367,5 +370,22 @@
     "body": "Trang web gặp lỗi. Thử lại thường sẽ khắc phục được sự cố; nếu lỗi vẫn tiếp diễn, nhà cung cấp dịch vụ lưu trữ đã được thông báo.",
     "reference": "Tham chiếu {digest}",
     "home": "Về nhà"
+  },
+  "legal": {
+    "eyebrow": "Hợp pháp",
+    "title": "Điều khoản, chính sách bảo mật và hoàn tiền",
+    "intro": "Ba tài liệu này quy định việc vận hành Evnelo, dịch vụ lưu trữ do {entity} quản lý. Chúng được viết bằng tiếng Anh đơn giản một cách có chủ đích.",
+    "updated": "Lần cập nhật cuối cùng {date}",
+    "englishOnly": "Tài liệu này bằng tiếng Anh.",
+    "docs": {
+      "terms": "Điều khoản dịch vụ",
+      "privacy": "Chính sách bảo mật",
+      "refunds": "Chính sách hoàn tiền"
+    },
+    "summary": {
+      "terms": "Các điều khoản mà người tổ chức và người tham dự đồng ý, phí, phương thức thanh toán và trách nhiệm pháp lý.",
+      "privacy": "Chúng tôi thu thập những gì, tại sao, ai được xem thông tin đó và quyền của bạn.",
+      "refunds": "Ai là người quyết định việc hoàn tiền, cách thức thanh toán và số tiền phải trả sẽ được xử lý như thế nào?"
+    }
   }
 }

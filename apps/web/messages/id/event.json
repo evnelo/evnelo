@@ -158,7 +158,8 @@
     "registerFreeWithCode": "Daftar gratis dengan kode.",
     "registerPeopleFreeWithCode": "Daftarkan {count} orang, gratis dengan kode",
     "registerPeople": "Daftarkan {count} orang",
-    "register": "Daftar"
+    "register": "Daftar",
+    "legal": "Dengan mendaftar, Anda menyetujui hal-hal berikut:<terms>Ketentuan Layanan</terms> dan<privacy>Kebijakan Privasi</privacy>."
   },
   "discount": {
     "invalid": "Kode itu tidak valid.",

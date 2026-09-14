@@ -9,7 +9,10 @@
     "signIn": "Masuk",
     "host": "Menyelenggarakan acara",
     "hostShort": "Tuan rumah",
-    "api": "API"
+    "api": "API",
+    "terms": "Ketentuan",
+    "privacy": "Pribadi",
+    "refunds": "Pengembalian dana"
   },
   "footer": {
     "tagline": "Berbagai acara terus berlangsung. Infrastruktur acara terbuka: acara gratis tetap gratis, acara berbayar dikenakan biaya 0,99% kepada penyelenggara.",
@@ -367,5 +370,22 @@
     "body": "Halaman mengalami kesalahan. Mencoba lagi biasanya berhasil; jika terus terjadi, penyedia hosting telah diberi tahu.",
     "reference": "Referensi {digest}",
     "home": "Pulang"
+  },
+  "legal": {
+    "eyebrow": "Legal",
+    "title": "Syarat, kebijakan privasi, dan pengembalian dana",
+    "intro": "Tiga dokumen yang mengatur Evnelo, layanan yang dihosting oleh {entity}. Dokumen-dokumen ini sengaja ditulis dalam bahasa Inggris yang sederhana.",
+    "updated": "Terakhir diubah {date}",
+    "englishOnly": "Dokumen ini berbahasa Inggris.",
+    "docs": {
+      "terms": "Ketentuan Layanan",
+      "privacy": "Kebijakan Privasi",
+      "refunds": "Kebijakan Pengembalian Dana"
+    },
+    "summary": {
+      "terms": "Apa yang disepakati oleh penyelenggara dan peserta, biaya, pembayaran, dan tanggung jawab.",
+      "privacy": "Apa yang kami kumpulkan, mengapa, siapa yang melihatnya, dan hak-hak Anda.",
+      "refunds": "Siapa yang memutuskan pengembalian dana, bagaimana cara pembayarannya, dan apa yang terjadi dengan biaya-biaya tersebut."
+    }
   }
 }

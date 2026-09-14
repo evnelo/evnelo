@@ -158,7 +158,8 @@
     "registerFreeWithCode": "Registrati gratuitamente con il codice",
     "registerPeopleFreeWithCode": "Registra {count} persone, gratis con il codice",
     "registerPeople": "Registra {count} persone",
-    "register": "Registro"
+    "register": "Registro",
+    "legal": "Registrandoti accetti i termini e le condizioni.<terms>Termini di servizio</terms> e il<privacy>politica sulla riservatezza</privacy>."
   },
   "discount": {
     "invalid": "Quel codice non è valido.",

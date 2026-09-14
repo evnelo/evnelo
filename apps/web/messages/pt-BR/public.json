@@ -9,7 +9,10 @@
     "signIn": "Entrar",
     "host": "Organize um evento",
     "hostShort": "Hospedar",
-    "api": "API"
+    "api": "API",
+    "terms": "Termos",
+    "privacy": "Privacidade",
+    "refunds": "Reembolsos"
   },
   "footer": {
     "tagline": "Eventos em movimento. Infraestrutura aberta para eventos: eventos gratuitos são gratuitos, eventos pagos custam ao organizador 0,99%.",
@@ -367,5 +370,22 @@
     "body": "A página apresentou um erro. Tentar novamente geralmente resolve o problema; se o erro persistir, o servidor já foi notificado.",
     "reference": "Referência {digest}",
     "home": "Ir para casa"
+  },
+  "legal": {
+    "eyebrow": "Jurídico",
+    "title": "Termos, privacidade e reembolsos",
+    "intro": "Os três documentos que regem Evnelo, o serviço hospedado administrado por {entity}. Eles são escritos em inglês simples propositalmente.",
+    "updated": "Última alteração {date}",
+    "englishOnly": "Este documento está em inglês.",
+    "docs": {
+      "terms": "Termos de Serviço",
+      "privacy": "política de Privacidade",
+      "refunds": "Política de reembolso"
+    },
+    "summary": {
+      "terms": "O que os anfitriões e participantes concordam, taxas, pagamentos e responsabilidade.",
+      "privacy": "O que coletamos, por quê, quem tem acesso a essas informações e quais são os seus direitos.",
+      "refunds": "Quem decide sobre os reembolsos, como eles são pagos e o que acontece com as taxas?"
+    }
   }
 }

@@ -48,6 +48,9 @@ export default async function PublicLayout({ children }: { children: React.React
             <Link href="/discover" className="hover:text-foreground">{t("nav.discover")}</Link>
             <Link href="/login" className="hover:text-foreground">{t("nav.host")}</Link>
             <a href="/api/v1/docs" className="hover:text-foreground">{t("nav.api")}</a>
+            <Link href="/legal/terms" className="hover:text-foreground">{t("nav.terms")}</Link>
+            <Link href="/legal/privacy" className="hover:text-foreground">{t("nav.privacy")}</Link>
+            <Link href="/legal/refunds" className="hover:text-foreground">{t("nav.refunds")}</Link>
             <a href="https://evnelo.com" className="hover:text-foreground">evnelo.com</a>
           </div>
         </div>

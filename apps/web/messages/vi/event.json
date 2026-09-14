@@ -158,7 +158,8 @@
     "registerFreeWithCode": "Đăng ký miễn phí với mã giảm giá",
     "registerPeopleFreeWithCode": "Đăng ký {count} người, miễn phí với mã",
     "registerPeople": "Đăng ký {count} người",
-    "register": "Đăng ký"
+    "register": "Đăng ký",
+    "legal": "Bằng cách đăng ký, bạn đồng ý với các điều khoản sau:<terms>Điều khoản dịch vụ</terms> và<privacy>Chính sách bảo mật</privacy>."
   },
   "discount": {
     "invalid": "Mã đó không hợp lệ.",

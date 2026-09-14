@@ -158,7 +158,8 @@
     "registerFreeWithCode": "कोड वापरून मोफत नोंदणी करा.",
     "registerPeopleFreeWithCode": "कोड वापरून {count} लोकांची मोफत नोंदणी करा.",
     "registerPeople": "{count} लोकांची नोंदणी करा",
-    "register": "नोंदणी करा"
+    "register": "नोंदणी करा",
+    "legal": "नोंदणी करून तुम्ही यास सहमत आहात:<terms>सेवा अटी</terms> आणि<privacy>गोपनीयता धोरण</privacy>..."
   },
   "discount": {
     "invalid": "तो कोड वैध नाही.",

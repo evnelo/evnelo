@@ -345,7 +345,8 @@
         "invalid": "Tautan koneksi ini telah kedaluwarsa atau tidak dapat diverifikasi. Mulai lagi dari pengaturan Pembayaran.",
         "failed": "Kami tidak dapat menyelesaikan koneksi Stripe. Coba lagi dengan akun Stripe yang sama jika organisasi ini sudah terhubung.",
         "unconfigured": "Stripe Connect tidak dikonfigurasi pada platform ini. Hubungi operator platform untuk mengaktifkan tiket berbayar."
-      }
+      },
+      "legal": "Pembayaran pada Evnelo tunduk pada ketentuan berikut:<terms>Ketentuan Layanan</terms>."
     },
     "danger": {
       "title": "Data dan penghapusan",

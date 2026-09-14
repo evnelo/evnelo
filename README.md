@@ -136,17 +136,33 @@ Settings reads account readiness directly from Stripe; account webhooks refresh 
 
 **Paying with Apple Pay or Google Pay** needs no Evnelo configuration. Checkout uses Stripe's Payment Element with automatic payment methods, so both wallets appear as buttons above the card form whenever Stripe allows them: the site is on https, the browser has a card on file (Safari with a card in Apple Wallet; Chrome or Android with Google Pay), and the wallet is enabled under **Settings → Payment methods** on the Stripe account that takes the charge (the host's connected account on Cloud, where both are on by default). Apple Pay additionally requires the domain to be registered with that account; Evnelo does this itself, when an account connects and again at the first paid checkout after a restart, using the verification file it serves from `/.well-known/`. Test with a real card on the device: in Stripe test mode the wallet sheet completes without charging.
 
-**Apple Wallet passes** (`Add to Apple Wallet` on tickets and in the confirmation email) need a Pass Type ID certificate from the Apple Developer Program:
+**Apple Wallet passes** (`Add to Apple Wallet` on tickets and in the confirmation email) need a Pass Type ID certificate from the paid Apple Developer Program. Work in one folder on your machine; the steps alternate between the terminal and Apple's site.
 
-1. In [Certificates, Identifiers & Profiles](https://developer.apple.com/account/resources/identifiers/list/passTypeId) create a Pass Type ID such as `pass.com.evnelo.ticket`; that string is `APPLE_PASS_TYPE_ID`, and the Team ID on the membership page is `APPLE_TEAM_ID`.
-2. Make a key and a signing request, then upload the `.csr` under the Pass Type ID (**Create Certificate**) and download `pass.cer`:
+1. **Team ID.** Open [Membership details](https://developer.apple.com/account#MembershipDetailsCard) in your developer account. The ten-character code (letters and digits, like `A1B2C3D4E5`) is `APPLE_TEAM_ID`.
+2. **Pass Type ID.** In [Certificates, Identifiers & Profiles → Identifiers](https://developer.apple.com/account/resources/identifiers/list/passTypeId) click **+**, choose **Pass Type IDs**, give it a description and an identifier in reverse-domain form, `pass.com.evnelo.ticket`. The identifier you typed, exactly, is `APPLE_PASS_TYPE_ID`. Apple prefixes the Team ID in some listings; do not include that.
+3. **Key and signing request**, in the terminal. This creates the private key that will sign every pass; keep `pass.key` out of the repo and backed up, it cannot be downloaded again:
    ```bash
    openssl req -new -newkey rsa:2048 -nodes -keyout pass.key -out pass.csr -subj "/CN=Evnelo tickets/O=InEvent"
-   openssl x509 -inform DER -in pass.cer -out pass.pem
    ```
-3. Download the [Apple WWDR G4 certificate](https://www.apple.com/certificateauthority/) and convert it the same way: `openssl x509 -inform DER -in AppleWWDRCAG4.cer -out wwdr.pem`.
-4. Put the three PEM files in the environment. Each of `APPLE_PASS_CERT`, `APPLE_PASS_KEY` and `APPLE_WWDR_CERT` accepts the PEM contents, the contents base64-encoded (`base64 -i pass.pem | tr -d '\n'`, the safe form for a Docker `.env`), or a file path. `APPLE_PASS_KEY_PASSPHRASE` only if you exported an encrypted key from Keychain Access.
-5. Restart and open a ticket on an iPhone. The certificate lasts a year; repeat step 2 to renew.
+4. **Certificate from Apple.** Open the Pass Type ID from step 2, click **Create Certificate**, upload `pass.csr`, download the result into the same folder. It arrives as `pass.cer`.
+5. **WWDR certificate.** Download "Worldwide Developer Relations - G4" from [Apple's certificate authority page](https://www.apple.com/certificateauthority/) into the same folder as `AppleWWDRCAG4.cer`.
+6. **Convert both to PEM and check the pair.** The two hashes must be identical, otherwise the certificate was issued for a different request:
+   ```bash
+   openssl x509 -inform DER -in pass.cer -out pass.pem
+   openssl x509 -inform DER -in AppleWWDRCAG4.cer -out wwdr.pem
+   openssl x509 -noout -modulus -in pass.pem | openssl md5
+   openssl rsa  -noout -modulus -in pass.key | openssl md5
+   ```
+   If a conversion says "wrong tag" or "not enough data", that file is already PEM; rename it instead.
+7. **Environment.** Each of `APPLE_PASS_CERT`, `APPLE_PASS_KEY` and `APPLE_WWDR_CERT` accepts the PEM contents, the contents base64-encoded (the safe form for a Docker `.env`), or a file path. Print the lines and paste them into the server's `.env` together with the two ids from steps 1 and 2; leave `APPLE_PASS_KEY_PASSPHRASE` empty unless you exported an encrypted key from Keychain Access:
+   ```bash
+   echo "APPLE_PASS_CERT=$(base64 -i pass.pem | tr -d '\n')"
+   echo "APPLE_PASS_KEY=$(base64 -i pass.key | tr -d '\n')"
+   echo "APPLE_WWDR_CERT=$(base64 -i wwdr.pem | tr -d '\n')"
+   ```
+8. **Restart** (`docker compose --env-file .env -f deploy/docker-compose.prod.yml up -d app` on the evnelo.com setup) and open a ticket on an iPhone. The button now shows and the pass installs. If Wallet says the pass is invalid, the key and certificate do not match (step 6) or the WWDR certificate is not the G4 one.
+
+The pass certificate expires after one year. To renew, repeat steps 3 to 8 with a new key; passes already installed keep working.
 
 **Google Wallet passes** need an issuer account and a service account:
 

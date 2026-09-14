@@ -78,8 +78,8 @@ else echo "exists"; fi
 echo "== monitors"
 create_monitor() { # name json: creates the monitor, updates it in place when the title exists, deletes any duplicate of it
   local ids id extra
-  # the list endpoint filters by substring, so keep only exact titles; monitor objects start with their id
-  ids=$(api GET "/monitor?name=$(printf '%s' "$1" | sed 's/ /%20/g;s/%/%25/g')" | grep -o "{\"id\":[0-9]*,\"org_id\":[0-9]*,\"type\":\"[a-z ]*\",\"name\":\"$1\"" | grep -o '"id":[0-9]*' | grep -o '[0-9]*' || true)
+  # the list endpoint filters by substring; keep only exact titles, oldest first
+  ids=$(api GET "/monitor?name=$(printf '%s' "$1" | sed 's/%/%25/g;s/ /%20/g')" | MONITOR_NAME="$1" python3 -c 'import json,os,sys; ms=[m for m in json.load(sys.stdin) if m.get("name")==os.environ["MONITOR_NAME"]]; print("\n".join(str(m["id"]) for m in sorted(ms, key=lambda m: m["id"])))' || true)
   id=$(printf '%s\n' "$ids" | head -1)
   if [ -n "$id" ]; then
     echo "updating $1 (#$id)"; api PUT "/monitor/$id" "$2" | head -c 120; echo

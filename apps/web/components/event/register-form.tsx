@@ -7,7 +7,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { UserPlus, UserRound, X } from "lucide-react";
-import { buildAnswersSchema, visibleFieldKeys, type Answers } from "@evnelo/core";
+import { buildAnswersSchema, computeOrder, visibleFieldKeys, type Answers, type Edition } from "@evnelo/core";
 import type { RegistrationField, TicketType } from "@evnelo/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +25,8 @@ type Props = {
   collectPhone: boolean;
   guestsEnabled: boolean;
   maxGuests: number;
+  /** what POST /api/orders will charge on top of the list price: same computeOrder inputs as the server */
+  pricing: { edition: Edition; feePassThrough: boolean };
   onSubmitted?: (result: { orderId: string; clientSecret?: string; stripeAccountId?: string | null; holdExpiresAt?: string; resumeToken?: string; partySize: number }) => void;
 };
 
@@ -33,7 +35,7 @@ type Props = {
  * with their own ticket, at the same price as the host's ticket. Field visibility is
  * evaluated live from @evnelo/core and the same schema runs on the server.
  */
-export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guestsEnabled, maxGuests, onSubmitted }: Props) {
+export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guestsEnabled, maxGuests, pricing, onSubmitted }: Props) {
   const t = useTranslations("event");
   const tc = useTranslations("common");
   const locale = useLocale();
@@ -77,8 +79,13 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
   const selected = ticketTypes.find((t) => t.id === ticketTypeId);
   const partySize = 1 + guests.fields.length;
   const listMinor = (selected?.priceMinor ?? 0) * partySize;
-  // the applied discount was validated for this ticket type and party size; any change drops it
-  const totalMinor = discount ? discount.totalMinor : listMinor;
+  // the same breakdown the server charges: tax and the pass-through fee are part of the price the attendee agrees to.
+  // The applied discount was validated for this ticket type and party size; any change drops it.
+  const lines = selected ? [{ unitPriceMinor: selected.priceMinor, quantity: partySize, taxRateBps: selected.taxRateBps }] : [];
+  const undiscounted = computeOrder(lines, { edition: pricing.edition, feePassThrough: pricing.feePassThrough });
+  const breakdown = discount ? computeOrder(lines, { edition: pricing.edition, feePassThrough: pricing.feePassThrough, discount: { kind: discount.kind, value: discount.value } }) : undiscounted;
+  const totalMinor = breakdown.totalMinor;
+  const itemised = breakdown.discountMinor > 0 || breakdown.taxMinor > 0 || breakdown.serviceFeeMinor > 0;
 
   function addGuest() {
     setDiscount(null);
@@ -282,12 +289,22 @@ export function RegisterForm({ eventId, ticketTypes, fields, collectPhone, guest
 
       <div className="sticky bottom-0 -mx-5 -mb-5 mt-2 border-t border-border/70 bg-card/95 px-5 pb-5 pt-4 backdrop-blur sm:static sm:mx-0 sm:mb-0 sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none">
         {selected && (listMinor > 0 || partySize > 1) && (
-          <div className="mb-3 flex items-baseline justify-between gap-3 text-sm">
-            <span className="text-muted-foreground">{partySize > 1 ? t("form.lineItem", { count: partySize, name: selected.name }) : selected.name}</span>
-            <span className="font-display text-xl tabular-nums">
-              {discount && listMinor > 0 && discount.totalMinor !== listMinor && <s className="me-2 text-sm text-muted-foreground">{formatMoney(listMinor, selected.currency, locale)}</s>}
-              {totalMinor === 0 ? tc("labels.free") : formatMoney(totalMinor, selected.currency, locale)}
-            </span>
+          <div className="mb-3 text-sm">
+            {itemised && (
+              <dl className="mb-2 space-y-1 text-muted-foreground">
+                <div className="flex justify-between gap-3"><dt>{partySize > 1 ? t("form.lineItem", { count: partySize, name: selected.name }) : selected.name}</dt><dd className="tabular-nums">{formatMoney(breakdown.subtotalMinor, selected.currency, locale)}</dd></div>
+                {breakdown.discountMinor > 0 && <div className="flex justify-between gap-3"><dt>{t("form.discount", { code: discount!.code })}</dt><dd className="tabular-nums">−{formatMoney(breakdown.discountMinor, selected.currency, locale)}</dd></div>}
+                {breakdown.taxMinor > 0 && <div className="flex justify-between gap-3"><dt>{t("form.tax")}</dt><dd className="tabular-nums">{formatMoney(breakdown.taxMinor, selected.currency, locale)}</dd></div>}
+                {breakdown.serviceFeeMinor > 0 && <div className="flex justify-between gap-3"><dt>{t("form.serviceFee")}</dt><dd className="tabular-nums">{formatMoney(breakdown.serviceFeeMinor, selected.currency, locale)}</dd></div>}
+              </dl>
+            )}
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="text-muted-foreground">{itemised ? t("form.total") : partySize > 1 ? t("form.lineItem", { count: partySize, name: selected.name }) : selected.name}</span>
+              <span className="font-display text-xl tabular-nums">
+                {breakdown.discountMinor > 0 && undiscounted.totalMinor !== totalMinor && <s className="me-2 text-sm text-muted-foreground">{formatMoney(undiscounted.totalMinor, selected.currency, locale)}</s>}
+                {totalMinor === 0 ? tc("labels.free") : formatMoney(totalMinor, selected.currency, locale)}
+              </span>
+            </div>
           </div>
         )}
         <CaptchaField action="register" />

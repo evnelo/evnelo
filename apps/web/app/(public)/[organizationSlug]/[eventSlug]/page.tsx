@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowUpRight, Flag, Lock, MapPin, Video } from "lucide-react";
-import { canView, robotsFor } from "@evnelo/core";
+import { canView, robotsFor, currentEdition } from "@evnelo/core";
 import { getPublicEvent, getPublicEventByLegacySlug } from "@/lib/queries/events";
 import { cn, formatDateRange } from "@/lib/utils";
 import { organizationPath, publicEventPath, serializeJsonLd } from "@/lib/urls";
@@ -139,6 +139,7 @@ export default async function EventPage({ params }: Params) {
             <RegisterCard eventId={event.id} eventName={event.name} ticketTypes={offeredTypes} fields={fields}
               collectPhone={event.collectPhone} requiresApproval={event.requiresApproval} soldOut={soldOut}
               guestsEnabled={event.guestsEnabled && !offer} maxGuests={event.maxGuests} stripePublishableKey={env.STRIPE_PUBLISHABLE_KEY}
+              pricing={{ edition: currentEdition(), feePassThrough: event.feePassThrough }}
               waitlist={{ enabled: event.waitlistEnabled, offer: offer ? { email: offer.email, expiresAt: offer.holdExpiresAt.toISOString(), ticketTypeName: offeredTypes[0]?.name ?? "" } : null }} />
           </aside>
 

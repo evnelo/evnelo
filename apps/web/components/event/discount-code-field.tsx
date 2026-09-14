@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { formatMoney } from "@/lib/utils";
 
-export type AppliedDiscount = { code: string; discountMinor: number; totalMinor: number; currency: string };
+export type AppliedDiscount = { code: string; kind: "percent" | "fixed"; value: number; discountMinor: number; totalMinor: number; currency: string };
 
 /** "Have a code?" disclosure for paid tickets. Validates through the same rules checkout applies. */
 export function DiscountCodeField({ eventId, ticketTypeId, quantity, applied, onChange }: { eventId: string; ticketTypeId: string; quantity: number; applied: AppliedDiscount | null; onChange: (d: AppliedDiscount | null) => void }) {
@@ -27,7 +27,7 @@ export function DiscountCodeField({ eventId, ticketTypeId, quantity, applied, on
       const res = await fetch("/api/discounts/validate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ eventId, ticketTypeId, code, quantity }) });
       const data = (await res.json().catch(() => ({}))) as AppliedDiscount & { error?: string };
       if (!res.ok) { setError(data.error ?? t("discount.invalid")); onChange(null); return; }
-      onChange({ code: data.code, discountMinor: data.discountMinor, totalMinor: data.totalMinor, currency: data.currency });
+      onChange({ code: data.code, kind: data.kind, value: data.value, discountMinor: data.discountMinor, totalMinor: data.totalMinor, currency: data.currency });
     } catch { setError(tc("errors.network")); } finally { setBusy(false); }
   }
 

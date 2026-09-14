@@ -12,11 +12,13 @@ import { WaitlistJoin } from "./waitlist-join";
 import { PaymentStep } from "./payment-step";
 import { cn, formatMoney } from "@/lib/utils";
 import { paymentHold, paymentOutcome, registrationSuccessMessage, type PaymentOutcome } from "@/lib/payment-flow";
+import type { Edition } from "@evnelo/core";
 
 type Props = {
   eventId: string; eventName: string; ticketTypes: TicketType[]; fields: RegistrationField[];
   collectPhone: boolean; requiresApproval: boolean; soldOut: boolean; guestsEnabled: boolean; maxGuests: number;
   stripePublishableKey?: string | null;
+  pricing: { edition: Edition; feePassThrough: boolean };
   waitlist?: { enabled: boolean; offer: { email: string; expiresAt: string; ticketTypeName: string } | null };
 };
 type ResumeCredentials = { token: string; clientSecret: string };
@@ -47,7 +49,7 @@ function Steps({ current }: { current: 1 | 2 }) {
   );
 }
 
-export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectPhone, requiresApproval, soldOut, guestsEnabled, maxGuests, stripePublishableKey, waitlist }: Props) {
+export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectPhone, requiresApproval, soldOut, guestsEnabled, maxGuests, stripePublishableKey, pricing, waitlist }: Props) {
   const t = useTranslations("event");
   const tc = useTranslations("common");
   const locale = useLocale();
@@ -227,7 +229,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
                 <PaymentStep clientSecret={payment.clientSecret} stripeAccountId={payment.stripeAccountId} resumeToken={payment.token} holdExpiresAt={payment.holdExpiresAt} publishableKey={stripePublishableKey} onComplete={completePayment} />
               ) : (
                 <RegisterForm eventId={eventId} ticketTypes={ticketTypes} fields={fields} collectPhone={collectPhone}
-                  guestsEnabled={guestsEnabled} maxGuests={maxGuests}
+                  guestsEnabled={guestsEnabled} maxGuests={maxGuests} pricing={pricing}
                   onSubmitted={(result) => {
                     if (result.clientSecret && result.resumeToken && result.holdExpiresAt) {
                       const credentials = { token: result.resumeToken, clientSecret: result.clientSecret };

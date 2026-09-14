@@ -89,7 +89,19 @@
     "partyPaid": "Ödeme alındı. Hepiniz, yani {count} kişi, kayıt oldunuz. Biletler e-posta kutunuza gönderiliyor.",
     "party": "Hepiniz katıldınız {count} Biletler e-posta kutunuza gönderiliyor.",
     "singlePaid": "Ödeme alındı. Giriş yaptınız. Biletiniz e-posta kutunuza gönderiliyor.",
-    "single": "Giriş yaptınız. Biletiniz e-posta kutunuza gönderiliyor."
+    "single": "Giriş yaptınız. Biletiniz e-posta kutunuza gönderiliyor.",
+    "title": "İçeri girdiniz.",
+    "titleApproval": "İstek gönderildi.",
+    "viewTickets": "Biletlerinizi görüntüleyin",
+    "done": "Tamamlamak",
+    "detail": {
+      "approvalPaid": "Ödeme alındı. Ev sahibi isteğinizi onayladığında size bir e-posta gönderilecektir.",
+      "approval": "Ev sahibi isteğinizi onayladığında size bir e-posta gönderilecektir.",
+      "partyPaid": "Ödeme alındı. Hepinizin biletleri {count} posta kutunuza gönderiliyor.",
+      "party": "Hepinizin biletleri {count} posta kutunuza gönderiliyor.",
+      "singlePaid": "Ödeme alındı. Biletiniz e-posta kutunuza gönderiliyor.",
+      "single": "Destek talebiniz e-posta kutunuza gönderildi."
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "Bu etkinlik dosya talep etmiyor.",
     "tooManyUploads": "Şu anda çok fazla yükleme yapılıyor. Lütfen daha sonra tekrar deneyin.",
     "storageUnavailable": "Dosya depolama şu anda kullanılamıyor."
+  },
+  "order": {
+    "eyebrow": "Siparişiniz",
+    "title": "İçeri girdiniz.",
+    "titleApproval": "İstek gönderildi.",
+    "intro": "{count, plural, one {Biletiniz<link>{eventName}</link>.} other {# biletiniz için<link>{eventName}</link>.}}",
+    "introApproval": "Ev sahibi her kaydı inceliyor. Onaylandıktan sonra biletlerinizi e-posta ile alacaksınız.",
+    "emailed": "Bu sayfanın bir kopyası {email} adresine gönderildi.",
+    "tickets": "Biletler",
+    "openTicket": "Açık bilet",
+    "guestOf": "{name} 'ın misafiri",
+    "receipt": "Fiş",
+    "orderNumber": "Sipariş numarası",
+    "paidOn": "Ödeme yapıldı",
+    "paidWith": "Ödeme yapıldı",
+    "cardEnding": "{brand} {last4} ile biten",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Ara toplam",
+    "discount": "İndirim ({code})",
+    "tax": "Vergi",
+    "serviceFee": "Hizmet ücreti",
+    "total": "Toplam",
+    "refunded": "Para iadesi yapıldı",
+    "stripeReceipt": "Stripe makbuz",
+    "print": "Yazdır veya PDF olarak kaydet",
+    "addToCalendar": "Takvime ekle",
+    "eventPage": "Etkinlik sayfası",
+    "notCompleted": "Bu sipariş tamamlanmadığı için bilet bulunmamaktadır. Lütfen etkinlik sayfasından tekrar kayıt olun.",
+    "refundedNotice": "Bu siparişin ücreti iade edildi. Biletler artık kapıda okutulamıyor."
   }
 }

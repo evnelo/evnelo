@@ -282,6 +282,12 @@ export const orders = mysqlTable(
     discountCodeId: ref("discount_code_id"),
     stripePaymentIntentId: varchar("stripe_payment_intent_id", { length: 80 }),
     stripeAccountId: varchar("stripe_account_id", { length: 60 }),
+    accessToken: char("access_token", { length: 48 }).unique(), // /orders/{token}: the buyer's tickets and receipt
+    // from the charge, for the receipt: "card" + "visa" + "4242", or "pix" alone; never the full number
+    paymentMethodType: varchar("payment_method_type", { length: 40 }),
+    paymentMethodBrand: varchar("payment_method_brand", { length: 40 }),
+    paymentMethodLast4: varchar("payment_method_last4", { length: 4 }),
+    stripeReceiptUrl: varchar("stripe_receipt_url", { length: 500 }),
     holdExpiresAt: datetime("hold_expires_at", { fsp: 3 }),
     paidAt: datetime("paid_at", { fsp: 3 }),
     answers: json("answers").$type<Record<string, unknown>>().notNull().default({}), // order-scope fields

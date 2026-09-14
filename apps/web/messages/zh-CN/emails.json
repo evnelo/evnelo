@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType} ， {host}的客人",
     "openTicket": "打开工单",
     "qrAlt": "门票二维码",
-    "scanAtDoor": "门口扫描"
+    "scanAtDoor": "门口扫描",
+    "receipt": "收据",
+    "receiptMeta": "订单号{orderId} ，已付{paidOn}",
+    "paidWith": "已支付{method}",
+    "cardEnding": "以{brand}结尾的{last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "小计",
+    "discount": "折扣（{code}）",
+    "tax": "税",
+    "serviceFee": "服务费",
+    "total": "全部的",
+    "viewReceipt": "门票和收据",
+    "stripeReceipt": "Stripe收据"
   },
   "reminderWhen": {
     "tomorrow": "明天",
@@ -24,7 +36,8 @@
     "showQr": "请在门口出示手机上的二维码或打印出来的二维码。",
     "addToCalendar": "添加到日历",
     "questions": "有关活动的任何疑问？请回复此邮件联系{orgName} 。",
-    "cta": "查看活动详情"
+    "cta": "查看活动详情",
+    "allTickets": "所有票据和收据"
   },
   "approvalPending": {
     "subject": "收到请求，请求号为{eventName}",

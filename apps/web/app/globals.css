@@ -421,3 +421,40 @@
 
 /* reCAPTCHA v3 badge: hidden as Google allows when its notice is shown next to the form (components/captcha.tsx). */
 .grecaptcha-badge { visibility: hidden; }
+
+/* registration success: the check pops in and draws itself; confetti fans out from the top centre */
+.success-check {
+  animation: success-pop 420ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.success-check path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: success-draw 320ms 240ms ease-out forwards;
+}
+@keyframes success-pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes success-draw {
+  to { stroke-dashoffset: 0; }
+}
+.confetti i {
+  position: absolute;
+  left: 50%;
+  top: 32px;
+  width: 8px;
+  height: 12px;
+  margin-left: -4px;
+  border-radius: 2px;
+  background: var(--evnelo-pulse);
+  opacity: 0;
+  animation: confetti 1100ms var(--delay, 240ms) cubic-bezier(0.2, 0.7, 0.4, 1) forwards;
+}
+.confetti i:nth-child(4n + 1) { background: var(--evnelo-lime); }
+.confetti i:nth-child(4n + 2) { background: var(--evnelo-sky); }
+.confetti i:nth-child(4n + 3) { background: var(--evnelo-ink); }
+@keyframes confetti {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  55% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx), calc(var(--dy) + 170px)) rotate(var(--rot)); }
+}

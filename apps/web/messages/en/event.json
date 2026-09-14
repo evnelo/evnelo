@@ -89,7 +89,19 @@
     "partyPaid": "Payment received. You're in, all {count} of you. The tickets are on their way to your inbox.",
     "party": "You're in, all {count} of you. The tickets are on their way to your inbox.",
     "singlePaid": "Payment received. You're in. Your ticket is on its way to your inbox.",
-    "single": "You're in. Your ticket is on its way to your inbox."
+    "single": "You're in. Your ticket is on its way to your inbox.",
+    "title": "You're in.",
+    "titleApproval": "Request sent.",
+    "viewTickets": "View your tickets",
+    "done": "Done",
+    "detail": {
+      "approvalPaid": "Payment received. You'll get an email once the host approves your request.",
+      "approval": "You'll get an email once the host approves your request.",
+      "partyPaid": "Payment received. Tickets for all {count} of you are on their way to your inbox.",
+      "party": "Tickets for all {count} of you are on their way to your inbox.",
+      "singlePaid": "Payment received. Your ticket is on its way to your inbox.",
+      "single": "Your ticket is on its way to your inbox."
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "This event doesn't ask for a file.",
     "tooManyUploads": "Too many uploads right now. Try again later.",
     "storageUnavailable": "File storage is unavailable right now."
+  },
+  "order": {
+    "eyebrow": "Your order",
+    "title": "You're in.",
+    "titleApproval": "Request sent.",
+    "intro": "{count, plural, one {Your ticket for <link>{eventName}</link>.} other {Your # tickets for <link>{eventName}</link>.}}",
+    "introApproval": "The host reviews every registration. You'll get your tickets by email once it's approved.",
+    "emailed": "A copy of this page was sent to {email}.",
+    "tickets": "Tickets",
+    "openTicket": "Open ticket",
+    "guestOf": "Guest of {name}",
+    "receipt": "Receipt",
+    "orderNumber": "Order number",
+    "paidOn": "Paid on",
+    "paidWith": "Paid with",
+    "cardEnding": "{brand} ending in {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Subtotal",
+    "discount": "Discount ({code})",
+    "tax": "Tax",
+    "serviceFee": "Service fee",
+    "total": "Total",
+    "refunded": "Refunded",
+    "stripeReceipt": "Stripe receipt",
+    "print": "Print or save as PDF",
+    "addToCalendar": "Add to calendar",
+    "eventPage": "Event page",
+    "notCompleted": "This order was not completed, so it has no tickets. Register again from the event page.",
+    "refundedNotice": "This order was refunded. Its tickets no longer scan at the door."
   }
 }

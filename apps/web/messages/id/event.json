@@ -89,7 +89,19 @@
     "partyPaid": "Pembayaran telah diterima. Anda semua, {count} orang. Tiket sedang dalam perjalanan ke kotak masuk Anda.",
     "party": "Kalian semua, {count}, sudah terdaftar. Tiketnya sedang dalam perjalanan ke kotak masuk email kalian.",
     "singlePaid": "Pembayaran telah diterima. Anda telah terdaftar. Tiket Anda sedang dalam perjalanan ke kotak masuk email Anda.",
-    "single": "Anda sudah terdaftar. Tiket Anda sedang dalam perjalanan ke kotak masuk email Anda."
+    "single": "Anda sudah terdaftar. Tiket Anda sedang dalam perjalanan ke kotak masuk email Anda.",
+    "title": "Anda diterima.",
+    "titleApproval": "Permintaan terkirim.",
+    "viewTickets": "Lihat tiket Anda",
+    "done": "Selesai",
+    "detail": {
+      "approvalPaid": "Pembayaran telah diterima. Anda akan menerima email setelah penyedia hosting menyetujui permintaan Anda.",
+      "approval": "Anda akan menerima email setelah pihak penyelenggara menyetujui permintaan Anda.",
+      "partyPaid": "Pembayaran telah diterima. Tiket untuk Anda semua {count} ) sedang dalam perjalanan ke kotak masuk Anda.",
+      "party": "Tiket untuk Anda semua {count} sedang dalam perjalanan ke kotak masuk email Anda.",
+      "singlePaid": "Pembayaran telah diterima. Tiket Anda sedang dalam perjalanan ke kotak masuk Anda.",
+      "single": "Tiket Anda sedang dalam perjalanan ke kotak masuk Anda."
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "Acara ini tidak meminta file.",
     "tooManyUploads": "Terlalu banyak unggahan saat ini. Coba lagi nanti.",
     "storageUnavailable": "Penyimpanan file saat ini tidak tersedia."
+  },
+  "order": {
+    "eyebrow": "Pesanan Anda",
+    "title": "Anda diterima.",
+    "titleApproval": "Permintaan terkirim.",
+    "intro": "{count, plural, one {Tiket Anda untuk<link>{eventName}</link>.} other {Anda memiliki # tiket untuk<link>{eventName}</link>.}}",
+    "introApproval": "Penyelenggara akan meninjau setiap pendaftaran. Anda akan menerima tiket melalui email setelah disetujui.",
+    "emailed": "Salinan halaman ini telah dikirim ke {email}.",
+    "tickets": "Tiket",
+    "openTicket": "Buka tiket",
+    "guestOf": "Tamu dari {name}",
+    "receipt": "Kuitansi",
+    "orderNumber": "Nomor pesanan",
+    "paidOn": "Dibayar pada",
+    "paidWith": "Dibayar dengan",
+    "cardEnding": "{brand} berakhiran {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Subtotal",
+    "discount": "Diskon ({code})",
+    "tax": "Pajak",
+    "serviceFee": "Biaya layanan",
+    "total": "Total",
+    "refunded": "Dikembalikan",
+    "stripeReceipt": "tanda terima Stripe",
+    "print": "Cetak atau simpan sebagai PDF",
+    "addToCalendar": "Tambahkan ke kalender",
+    "eventPage": "Halaman acara",
+    "notCompleted": "Pesanan ini belum selesai, jadi tidak ada tiket. Daftar lagi dari halaman acara.",
+    "refundedNotice": "Pesanan ini telah dikembalikan dananya. Tiketnya tidak lagi dapat dipindai di pintu masuk."
   }
 }

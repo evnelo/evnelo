@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, tamu dari {host}",
     "openTicket": "Buka tiket",
     "qrAlt": "Kode QR tiket",
-    "scanAtDoor": "Pindai di pintu masuk"
+    "scanAtDoor": "Pindai di pintu masuk",
+    "receipt": "Kuitansi",
+    "receiptMeta": "Pesanan {orderId}, dibayar {paidOn}",
+    "paidWith": "dibayar dengan {method}",
+    "cardEnding": "{brand} berakhiran {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Subtotal",
+    "discount": "Diskon ({code})",
+    "tax": "Pajak",
+    "serviceFee": "Biaya layanan",
+    "total": "Total",
+    "viewReceipt": "Tiket dan tanda terima",
+    "stripeReceipt": "tanda terima Stripe"
   },
   "reminderWhen": {
     "tomorrow": "besok",
@@ -24,7 +36,8 @@
     "showQr": "Tunjukkan kode QR di pintu masuk, di ponsel Anda, atau yang sudah dicetak.",
     "addToCalendar": "Tambahkan ke kalender",
     "questions": "Ada pertanyaan tentang acara ini? Balas email ini untuk menghubungi {orgName}.",
-    "cta": "Lihat detail acara"
+    "cta": "Lihat detail acara",
+    "allTickets": "Semua tiket dan tanda terima"
   },
   "approvalPending": {
     "subject": "Permintaan diterima untuk {eventName}",

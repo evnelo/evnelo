@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType} ، ضيف {host}",
     "openTicket": "تذكرة مفتوحة",
     "qrAlt": "رمز الاستجابة السريعة للتذكرة",
-    "scanAtDoor": "امسح ضوئيًا عند الباب"
+    "scanAtDoor": "امسح ضوئيًا عند الباب",
+    "receipt": "إيصال",
+    "receiptMeta": "رقم الطلب {orderId} ، تم الدفع {paidOn}",
+    "paidWith": "تم الدفع بواسطة {method}",
+    "cardEnding": "{brand} تنتهي بـ {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "المجموع الفرعي",
+    "discount": "خصم ({code})",
+    "tax": "ضريبة",
+    "serviceFee": "رسوم الخدمة",
+    "total": "المجموع",
+    "viewReceipt": "التذاكر والإيصال",
+    "stripeReceipt": "إيصال رقم Stripe"
   },
   "reminderWhen": {
     "tomorrow": "غداً",
@@ -24,7 +36,8 @@
     "showQr": "أظهر رمز الاستجابة السريعة (QR code) عند الباب، على هاتفك أو مطبوعاً.",
     "addToCalendar": "أضف إلى التقويم",
     "questions": "هل لديك أسئلة حول الفعالية؟ يرجى الرد على هذه الرسالة الإلكترونية للتواصل مع {orgName}.",
-    "cta": "اطلع على تفاصيل الفعالية"
+    "cta": "اطلع على تفاصيل الفعالية",
+    "allTickets": "جميع التذاكر والإيصالات"
   },
   "approvalPending": {
     "subject": "تم استلام الطلب رقم {eventName}",

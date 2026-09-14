@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkoutStripeAccount, paymentHold, paymentOutcome, paymentsConfigured, registrationSuccessMessage } from "./payment-flow";
+import { checkoutStripeAccount, paymentHold, paymentOutcome, paymentsConfigured, registrationSuccessMessage, paymentMethodName } from "./payment-flow";
 
 describe("paid checkout state", () => {
   it("expires the payment UI at the inventory hold deadline", () => {
@@ -38,5 +38,16 @@ describe("paid checkout state", () => {
     expect(registrationSuccessMessage(true, 2, false)).toEqual({ messageKey: "success.approval", params: { count: 2 } });
     expect(registrationSuccessMessage(false, 1, false)).toEqual({ messageKey: "success.single", params: { count: 1 } });
     expect(registrationSuccessMessage(false, 4, false)).toEqual({ messageKey: "success.party", params: { count: 4 } });
+  });
+});
+
+describe("paymentMethodName", () => {
+  it("names cards by brand and last digits, other methods by type, nothing when unrecorded", () => {
+    expect(paymentMethodName({ paymentMethodType: "card", paymentMethodBrand: "visa", paymentMethodLast4: "4242" })).toEqual({ brand: "Visa", last4: "4242" });
+    expect(paymentMethodName({ paymentMethodType: "card", paymentMethodBrand: "amex", paymentMethodLast4: "0005" })).toEqual({ brand: "American Express", last4: "0005" });
+    expect(paymentMethodName({ paymentMethodType: "card", paymentMethodBrand: "elo", paymentMethodLast4: "1234" })).toEqual({ brand: "Elo", last4: "1234" });
+    expect(paymentMethodName({ paymentMethodType: "pix", paymentMethodBrand: null, paymentMethodLast4: null })).toEqual({ method: "Pix" });
+    expect(paymentMethodName({ paymentMethodType: "some_new_method", paymentMethodBrand: null, paymentMethodLast4: null })).toEqual({ method: "some new method" });
+    expect(paymentMethodName({ paymentMethodType: null, paymentMethodBrand: null, paymentMethodLast4: null })).toBeNull();
   });
 });

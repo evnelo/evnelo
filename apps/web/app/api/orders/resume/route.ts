@@ -10,6 +10,7 @@ import { stripe } from "@/lib/stripe";
 import { settlePaymentIntent } from "@/lib/orders";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { ApiHttpError, readJsonBody } from "@/lib/api-http";
+import { orderPath } from "@/lib/urls";
 
 export const runtime = "nodejs";
 const input = z.object({ token: z.string().min(1).max(1_000), clientSecret: z.string().min(1).max(500), eventId: z.string().length(26) });
@@ -60,6 +61,7 @@ export async function POST(request: Request) {
       requiresApproval: Number(pendingApproval?.value ?? 0) > 0,
       holdExpiresAt: orderStatus === "pending" ? current?.holdExpiresAt?.toISOString() ?? null : null,
       orderStatus,
+      orderUrl: orderStatus === "paid" && order.accessToken ? orderPath(order.accessToken) : null,
       paymentStatus: paymentIntent.status,
       // the seats had already been released when the payment landed; the charge is being returned
       refunded: paymentIntent.status === "succeeded" && orderStatus !== "paid",

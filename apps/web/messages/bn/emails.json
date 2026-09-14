@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, {host} এর অতিথি",
     "openTicket": "খোলা টিকিট",
     "qrAlt": "টিকিট কিউআর কোড",
-    "scanAtDoor": "দরজায় স্ক্যান করুন"
+    "scanAtDoor": "দরজায় স্ক্যান করুন",
+    "receipt": "রসিদ",
+    "receiptMeta": "অর্ডার {orderId}, পরিশোধিত {paidOn}",
+    "paidWith": "{method} দিয়ে পরিশোধ করা হয়েছে",
+    "cardEnding": "{brand} যার শেষে {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "উপমোট",
+    "discount": "ছাড় ({code})",
+    "tax": "কর",
+    "serviceFee": "পরিষেবা ফি",
+    "total": "মোট",
+    "viewReceipt": "টিকিট এবং রসিদ",
+    "stripeReceipt": "Stripe রসিদ"
   },
   "reminderWhen": {
     "tomorrow": "আগামীকাল",
@@ -24,7 +36,8 @@
     "showQr": "দরজায়, আপনার ফোনে অথবা প্রিন্ট করে কিউআর কোডটি দেখান।",
     "addToCalendar": "ক্যালেন্ডারে যোগ করুন",
     "questions": "অনুষ্ঠানটি সম্পর্কে কোনো প্রশ্ন আছে? {orgName} যোগাযোগ করতে এই ইমেইলের উত্তর দিন।",
-    "cta": "অনুষ্ঠানের বিবরণ দেখুন"
+    "cta": "অনুষ্ঠানের বিবরণ দেখুন",
+    "allTickets": "সমস্ত টিকিট এবং রসিদ"
   },
   "approvalPending": {
     "subject": "{eventName} এর জন্য অনুরোধ পাওয়া গেছে",

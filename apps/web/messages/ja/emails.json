@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType} 、 {host}のゲスト",
     "openTicket": "オープンチケット",
     "qrAlt": "チケットのQRコード",
-    "scanAtDoor": "ドアでスキャンしてください"
+    "scanAtDoor": "ドアでスキャンしてください",
+    "receipt": "レシート",
+    "receiptMeta": "注文番号{orderId} 、支払い金額{paidOn}",
+    "paidWith": "{method}で支払いました",
+    "cardEnding": "{brand}で終わる{last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "小計",
+    "discount": "割引（{code}）",
+    "tax": "税",
+    "serviceFee": "サービス料",
+    "total": "合計",
+    "viewReceipt": "チケットと領収書",
+    "stripeReceipt": "Stripeレシート"
   },
   "reminderWhen": {
     "tomorrow": "明日",
@@ -24,7 +36,8 @@
     "showQr": "スマートフォンの画面、または印刷したQRコードをドアで提示してください。",
     "addToCalendar": "カレンダーに追加",
     "questions": "イベントに関するご質問は、このメールに返信して{orgName}までご連絡ください。",
-    "cta": "イベントの詳細をご覧ください"
+    "cta": "イベントの詳細をご覧ください",
+    "allTickets": "すべてのチケットと領収書"
   },
   "approvalPending": {
     "subject": "{eventName}のリクエストを受信しました",

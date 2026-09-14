@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, {host} இன் விருந்தினர்",
     "openTicket": "திறந்த டிக்கெட்",
     "qrAlt": "டிக்கெட் QR குறியீடு",
-    "scanAtDoor": "கதவில் ஸ்கேன் செய்யவும்"
+    "scanAtDoor": "கதவில் ஸ்கேன் செய்யவும்",
+    "receipt": "ரசீது",
+    "receiptMeta": "ஆர்டர் {orderId}, பணம் செலுத்தப்பட்டது {paidOn}",
+    "paidWith": "{method} உடன் செலுத்தப்பட்டது",
+    "cardEnding": "{brand} {last4} இல் முடிவடைகிறது",
+    "lineItem": "{count} × {name}",
+    "subtotal": "மொத்த தொகை",
+    "discount": "தள்ளுபடி ({code})",
+    "tax": "வரி",
+    "serviceFee": "சேவைக் கட்டணம்",
+    "total": "மொத்தம்",
+    "viewReceipt": "டிக்கெட்டுகள் மற்றும் ரசீது",
+    "stripeReceipt": "Stripe ரசீது"
   },
   "reminderWhen": {
     "tomorrow": "நாளை",
@@ -24,7 +36,8 @@
     "showQr": "கதவருகில், உங்கள் கைப்பேசியில் அல்லது அச்சிட்டு QR குறியீட்டைக் காண்பிக்கவும்.",
     "addToCalendar": "நாட்காட்டியில் சேர்க்கவும்",
     "questions": "நிகழ்வைப் பற்றிய கேள்விகளா? {orgName} தொடர்புகொள்ள இந்த மின்னஞ்சலுக்குப் பதிலளிக்கவும்.",
-    "cta": "நிகழ்வு விவரங்களைக் காண்க"
+    "cta": "நிகழ்வு விவரங்களைக் காண்க",
+    "allTickets": "அனைத்து டிக்கெட்டுகள் மற்றும் ரசீது"
   },
   "approvalPending": {
     "subject": "{eventName} க்கான கோரிக்கை பெறப்பட்டது",

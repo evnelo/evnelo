@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, convidado de {host}",
     "openTicket": "Ingresso aberto",
     "qrAlt": "Código QR do ingresso",
-    "scanAtDoor": "Escaneie o código QR na porta."
+    "scanAtDoor": "Escaneie o código QR na porta.",
+    "receipt": "Recibo",
+    "receiptMeta": "Pedido {orderId}, pago {paidOn}",
+    "paidWith": "pago com {method}",
+    "cardEnding": "{brand} terminando em {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Subtotal",
+    "discount": "Desconto ({code})",
+    "tax": "Imposto",
+    "serviceFee": "Taxa de serviço",
+    "total": "Total",
+    "viewReceipt": "Ingressos e recibo",
+    "stripeReceipt": "recibo Stripe"
   },
   "reminderWhen": {
     "tomorrow": "amanhã",
@@ -24,7 +36,8 @@
     "showQr": "Mostre o código QR na porta, no seu celular ou impresso.",
     "addToCalendar": "Adicionar ao calendário",
     "questions": "Tem alguma dúvida sobre o evento? Responda a este e-mail para entrar em contato com {orgName}.",
-    "cta": "Veja os detalhes do evento"
+    "cta": "Veja os detalhes do evento",
+    "allTickets": "Todos os ingressos e recibos"
   },
   "approvalPending": {
     "subject": "Solicitação recebida para {eventName}",

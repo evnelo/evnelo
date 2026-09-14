@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, guest of {host}",
     "openTicket": "Open ticket",
     "qrAlt": "Ticket QR code",
-    "scanAtDoor": "Scan at the door"
+    "scanAtDoor": "Scan at the door",
+    "receipt": "Receipt",
+    "receiptMeta": "Order {orderId}, paid {paidOn}",
+    "paidWith": "paid with {method}",
+    "cardEnding": "{brand} ending in {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Subtotal",
+    "discount": "Discount ({code})",
+    "tax": "Tax",
+    "serviceFee": "Service fee",
+    "total": "Total",
+    "viewReceipt": "Tickets and receipt",
+    "stripeReceipt": "Stripe receipt"
   },
   "reminderWhen": {
     "tomorrow": "tomorrow",
@@ -24,7 +36,8 @@
     "showQr": "Show the QR code at the door, on your phone or printed.",
     "addToCalendar": "Add to calendar",
     "questions": "Questions about the event? Reply to this email to reach {orgName}.",
-    "cta": "See event details"
+    "cta": "See event details",
+    "allTickets": "All tickets and receipt"
   },
   "approvalPending": {
     "subject": "Request received for {eventName}",

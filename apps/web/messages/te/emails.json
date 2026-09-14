@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, {host} యొక్క అతిథి",
     "openTicket": "ఓపెన్ టికెట్",
     "qrAlt": "టికెట్ క్యూఆర్ కోడ్",
-    "scanAtDoor": "తలుపు వద్ద స్కాన్ చేయండి"
+    "scanAtDoor": "తలుపు వద్ద స్కాన్ చేయండి",
+    "receipt": "రసీదు",
+    "receiptMeta": "ఆర్డర్ {orderId}, చెల్లించినది {paidOn}",
+    "paidWith": "{method} చెల్లించబడింది",
+    "cardEnding": "{brand} తో ముగిసే {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "ఉపమొత్తం",
+    "discount": "తగ్గింపు ({code})",
+    "tax": "పన్ను",
+    "serviceFee": "సేవా రుసుము",
+    "total": "మొత్తం",
+    "viewReceipt": "టిక్కెట్లు మరియు రసీదు",
+    "stripeReceipt": "Stripe రసీదు"
   },
   "reminderWhen": {
     "tomorrow": "రేపు",
@@ -24,7 +36,8 @@
     "showQr": "తలుపు వద్ద, మీ ఫోన్‌లో లేదా ప్రింట్ చేసిన QR కోడ్‌ను చూపించండి.",
     "addToCalendar": "క్యాలెండర్‌కు జోడించండి",
     "questions": "ఈవెంట్ గురించి ప్రశ్నలు ఉన్నాయా? {orgName} సంప్రదించడానికి ఈ ఇమెయిల్‌కు ప్రత్యుత్తరం ఇవ్వండి.",
-    "cta": "ఈవెంట్ వివరాలను చూడండి"
+    "cta": "ఈవెంట్ వివరాలను చూడండి",
+    "allTickets": "అన్ని టిక్కెట్లు మరియు రసీదు"
   },
   "approvalPending": {
     "subject": "{eventName} కోసం అభ్యర్థన అందింది",

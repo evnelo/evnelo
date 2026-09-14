@@ -15,6 +15,15 @@ import { orderPayload } from "./webhook-payloads";
 export function newTicketToken() {
   return randomBytes(24).toString("base64url");
 }
+/** Same shape for /orders/{token}: the buyer's page with every ticket in the order and the receipt. */
+export const newAccessToken = newTicketToken;
+
+export type OrderPaymentDetails = { paymentMethodType: string | null; paymentMethodBrand: string | null; paymentMethodLast4: string | null; stripeReceiptUrl: string | null };
+
+/** What the buyer paid with, for the receipt. Written before markOrderPaid so the confirmation email never renders without it. */
+export async function recordOrderPayment(db: DbOrTx, paymentIntentId: string, details: OrderPaymentDetails) {
+  await db.update(orders).set(details).where(eq(orders.stripePaymentIntentId, paymentIntentId));
+}
 
 /** Queue one email per distinct address in `rows`, attributed to the first attendee with that address. */
 export async function queueEmailPerAddress(tx: DbOrTx, organizationId: string, template: string, rows: Attendee[], data?: Record<string, unknown>) {

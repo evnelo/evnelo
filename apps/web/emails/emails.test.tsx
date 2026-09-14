@@ -25,14 +25,22 @@ const tickets = [
   { attendeeName: "Rafael Lima", ticketTypeName: "General admission", url: "http://localhost:3000/t/b", qrUrl: "http://localhost:3000/t/b/qr", guestOf: "Ana Souza" },
 ];
 
+const receipt = {
+  orderId: "01M2ORDER", paidOn: "September 13, 2026", paidWith: "Visa ending in 4242",
+  lines: [{ label: "2 × General admission", amount: "$80.00" }],
+  totals: [{ label: "Subtotal", amount: "$80.00" }, { label: "Discount (EARLYBIRD)", amount: "−$8.00" }, { label: "Tax", amount: "$7.20" }, { label: "Total", amount: "$79.20", strong: true }],
+  url: "http://localhost:3000/orders/x", stripeReceiptUrl: null,
+};
+
 const text = (el: React.ReactElement) => render(el, { plainText: true });
 
 describe("email templates (English copy, extracted to messages/en/emails.json)", () => {
   it("renders every template with the English wording and translated subjects", async () => {
     const i18n = await emailTranslator("en");
     const cases: [React.ReactElement, string, string[]][] = [
-      [<RegistrationConfirmation {...i18n} brand={brand} event={event} tickets={tickets} wallet={{ apple: "#", google: "#" }} />, registrationConfirmationSubject({ ...i18n, brand, event, tickets }),
-        ["Your 2 tickets for Design Systems Meetup", "Here are your 2 tickets for Design Systems Meetup", "Show the QR code at the door, on your phone or printed.", "General admission, guest of Ana Souza", "Admit one", "Sent by Demo Collective through Evnelo"]],
+      [<RegistrationConfirmation {...i18n} brand={brand} event={event} tickets={tickets} wallet={{ apple: "#", google: "#" }} orderUrl="http://localhost:3000/orders/x" receipt={receipt} />, registrationConfirmationSubject({ ...i18n, brand, event, tickets }),
+        ["Your 2 tickets for Design Systems Meetup", "Here are your 2 tickets for Design Systems Meetup", "Show the QR code at the door, on your phone or printed.", "General admission, guest of Ana Souza", "Admit one", "All tickets and receipt",
+          "Order 01M2ORDER, paid September 13, 2026 · paid with Visa ending in 4242", "2 × General admission", "Discount (EARLYBIRD)", "Total", "$79.20", "Tickets and receipt", "Sent by Demo Collective through Evnelo"]],
       [<ApprovalPending {...i18n} brand={brand} event={event} attendeeName="Ana" partySize={2} />, approvalPendingSubject({ ...i18n, brand, event, attendeeName: "Ana", partySize: 2 }),
         ["Request received for Design Systems Meetup", "Hi Ana, Demo Collective reviews every registration for Design Systems Meetup", "Your request covers 2 people.", "You'll get your tickets by email as soon as it's approved."]],
       [<RefundIssued {...i18n} brand={brand} event={event} attendeeName="Ana" amount="$86.40" ticketCount={2} />, refundIssuedSubject({ ...i18n, brand, event, attendeeName: "Ana", amount: "$86.40", ticketCount: 2 }),

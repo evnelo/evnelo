@@ -4,7 +4,8 @@
  */
 import { captureError } from "@/lib/observability";
 import type Stripe from "stripe";
-import type { Order } from "@evnelo/db";
+import { orders, type Order } from "@evnelo/db";
+import { eq } from "drizzle-orm";
 import * as svc from "@evnelo/core/services";
 import { db } from "./db";
 import { env } from "./env";
@@ -28,12 +29,37 @@ export async function refundLatePayment(paymentIntentId: string, stripeAccountId
 export type SettleResult = "paid" | "processing" | "expired" | "failed" | "ignored";
 
 /**
+ * Card brand, last digits and Stripe's own receipt, for the buyer's receipt. Runs before
+ * markOrderPaid because that transaction queues the confirmation email. Best effort: a
+ * failed lookup never blocks fulfilment, and a replay (webhook after resume) skips the call.
+ */
+async function recordPayment(pi: Pick<Stripe.PaymentIntent, "id"> & { latest_charge?: Stripe.PaymentIntent["latest_charge"] }, stripeAccountId: string | null | undefined) {
+  const chargeId = typeof pi.latest_charge === "string" ? pi.latest_charge : pi.latest_charge?.id;
+  if (!chargeId) return;
+  try {
+    const [order] = await db.select({ recorded: orders.paymentMethodType }).from(orders).where(eq(orders.stripePaymentIntentId, pi.id)).limit(1);
+    if (!order || order.recorded) return;
+    const charge = typeof pi.latest_charge === "object" && pi.latest_charge ? pi.latest_charge : await stripe.charges.retrieve(chargeId, {}, on(stripeAccountId));
+    const details = charge.payment_method_details;
+    await svc.recordOrderPayment(db, pi.id, {
+      paymentMethodType: details?.type ?? null,
+      paymentMethodBrand: details?.card?.brand ?? null,
+      paymentMethodLast4: details?.card?.last4 ?? null,
+      stripeReceiptUrl: charge.receipt_url ?? null,
+    });
+  } catch (error) {
+    captureError("orders.recordPayment", error, { paymentIntentId: pi.id });
+  }
+}
+
+/**
  * Apply a PaymentIntent's current Stripe status to its order. The single place the webhook,
  * the resume endpoint, the hold sweep and reconciliation agree on what each status means.
  */
-export async function settlePaymentIntent(pi: Pick<Stripe.PaymentIntent, "id" | "status">, stripeAccountId: string | null | undefined): Promise<SettleResult> {
+export async function settlePaymentIntent(pi: Pick<Stripe.PaymentIntent, "id" | "status"> & { latest_charge?: Stripe.PaymentIntent["latest_charge"] }, stripeAccountId: string | null | undefined): Promise<SettleResult> {
   switch (pi.status) {
     case "succeeded": {
+      await recordPayment(pi, stripeAccountId);
       const result = await markOrderPaid(pi.id);
       if (result === "expired") await refundLatePayment(pi.id, stripeAccountId); // seats were already released: the rare race
       return result;

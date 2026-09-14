@@ -89,7 +89,19 @@
     "partyPaid": "Đã nhận được thanh toán. Tất cả các bạn đều đã được {count}. Vé đang được gửi đến hộp thư của bạn.",
     "party": "Tất cả các bạn đều đã {count}. Vé đang được gửi đến hộp thư của các bạn.",
     "singlePaid": "Đã nhận được thanh toán. Bạn đã đăng ký thành công. Vé của bạn đang được gửi đến hộp thư đến của bạn.",
-    "single": "Bạn đã trúng tuyển. Vé của bạn đang được gửi đến hộp thư điện tử của bạn."
+    "single": "Bạn đã trúng tuyển. Vé của bạn đang được gửi đến hộp thư điện tử của bạn.",
+    "title": "Bạn đã được chấp nhận.",
+    "titleApproval": "Yêu cầu đã được gửi.",
+    "viewTickets": "Xem vé của bạn",
+    "done": "Xong",
+    "detail": {
+      "approvalPaid": "Đã nhận được thanh toán. Bạn sẽ nhận được email sau khi chủ nhà chấp thuận yêu cầu của bạn.",
+      "approval": "Bạn sẽ nhận được email sau khi nhà cung cấp dịch vụ chấp thuận yêu cầu của bạn.",
+      "partyPaid": "Đã nhận được thanh toán. Vé cho tất cả {count} người trong số các bạn đang được gửi đến hộp thư đến của bạn.",
+      "party": "Vé cho tất cả {count} bạn đang được gửi đến hộp thư đến của mình.",
+      "singlePaid": "Đã nhận được thanh toán. Vé của bạn đang được gửi đến hộp thư đến của bạn.",
+      "single": "Vé của bạn đang được gửi đến hộp thư điện tử của bạn."
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "Sự kiện này không yêu cầu tệp tin.",
     "tooManyUploads": "Hiện tại có quá nhiều tệp đang được tải lên. Vui lòng thử lại sau.",
     "storageUnavailable": "Hiện tại, chức năng lưu trữ tệp không khả dụng."
+  },
+  "order": {
+    "eyebrow": "Đơn hàng của bạn",
+    "title": "Bạn đã được chấp nhận.",
+    "titleApproval": "Yêu cầu đã được gửi.",
+    "intro": "{count, plural, one {Vé của bạn cho<link>{eventName}</link>.} other {Vé của bạn cho #<link>{eventName}</link>.}}",
+    "introApproval": "Ban tổ chức sẽ xem xét mọi yêu cầu đăng ký. Bạn sẽ nhận được vé qua email sau khi được chấp thuận.",
+    "emailed": "Một bản sao của trang này đã được gửi đến {email}.",
+    "tickets": "Vé",
+    "openTicket": "Vé mở",
+    "guestOf": "Khách của {name}",
+    "receipt": "Biên lai",
+    "orderNumber": "Số đơn hàng",
+    "paidOn": "Đã thanh toán vào",
+    "paidWith": "Đã thanh toán bằng",
+    "cardEnding": "{brand} kết thúc bằng {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Tổng phụ",
+    "discount": "Giảm giá ({code})",
+    "tax": "Thuế",
+    "serviceFee": "Phí dịch vụ",
+    "total": "Tổng cộng",
+    "refunded": "Đã hoàn tiền",
+    "stripeReceipt": "Stripe biên lai",
+    "print": "In hoặc lưu dưới dạng PDF",
+    "addToCalendar": "Thêm vào lịch",
+    "eventPage": "Trang sự kiện",
+    "notCompleted": "Đơn hàng này chưa được hoàn tất nên không có vé. Vui lòng đăng ký lại từ trang sự kiện.",
+    "refundedNotice": "Đơn hàng này đã được hoàn tiền. Vé của đơn hàng này hiện không còn quét được ở cửa nữa."
   }
 }

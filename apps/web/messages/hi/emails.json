@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, {host} के अतिथि",
     "openTicket": "ओपन टिकट",
     "qrAlt": "टिकट क्यूआर कोड",
-    "scanAtDoor": "दरवाजे पर स्कैन करें"
+    "scanAtDoor": "दरवाजे पर स्कैन करें",
+    "receipt": "रसीद",
+    "receiptMeta": "ऑर्डर {orderId}, भुगतान {paidOn}",
+    "paidWith": "{method} से भुगतान किया गया",
+    "cardEnding": "{brand} जो {last4} पर समाप्त होता है",
+    "lineItem": "{count} × {name}",
+    "subtotal": "उप-योग",
+    "discount": "छूट ({code})",
+    "tax": "कर",
+    "serviceFee": "सेवा शुल्क",
+    "total": "कुल",
+    "viewReceipt": "टिकट और रसीद",
+    "stripeReceipt": "Stripe रसीद"
   },
   "reminderWhen": {
     "tomorrow": "कल",
@@ -24,7 +36,8 @@
     "showQr": "दरवाजे पर, अपने फोन पर या प्रिंट किए हुए क्यूआर कोड को दिखाएं।",
     "addToCalendar": "कैलेंडर में जोड़ें",
     "questions": "इस आयोजन के बारे में कोई प्रश्न हैं? {orgName} पर संपर्क करने के लिए इस ईमेल का उत्तर दें।",
-    "cta": "कार्यक्रम का विवरण देखें"
+    "cta": "कार्यक्रम का विवरण देखें",
+    "allTickets": "सभी टिकट और रसीद"
   },
   "approvalPending": {
     "subject": "{eventName} के लिए अनुरोध प्राप्त हुआ",

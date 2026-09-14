@@ -5,7 +5,7 @@ import { and, eq, inArray, isNull, notInArray, sql } from "drizzle-orm";
 import { z } from "zod";
 import { attendees, events, orders, orderItems, organizations, registrationFields, ticketTypes } from "@evnelo/db";
 import { buildAnswersSchema, computeOrder, currentEdition, newId } from "@evnelo/core";
-import { capacityAllows, consumeDiscountCode, consumeEventInvite, consumeWaitlistOffer, discountProblem, findDiscountCode, toDiscount } from "@evnelo/core/services";
+import { capacityAllows, consumeDiscountCode, consumeEventInvite, consumeWaitlistOffer, discountProblem, findDiscountCode, toDiscount, newAccessToken } from "@evnelo/core/services";
 import { eventAccess } from "@/lib/event-access";
 import { waitlistOffer } from "@/lib/waitlist-access";
 import { db } from "@/lib/db";
@@ -15,6 +15,7 @@ import { connectedAccountStatus } from "@/lib/stripe-connect";
 import { fulfilFreeOrder, releaseOrder } from "@/lib/orders";
 import { checkoutStripeAccount, paymentsConfigured } from "@/lib/payment-flow";
 import { signPaymentResume } from "@/lib/payment-resume";
+import { orderPath } from "@/lib/urls";
 import { clientAddress } from "@/lib/api-http";
 import { consumeSharedRateLimit } from "@/lib/shared-rate-limit";
 import { verifyCaptcha } from "@/lib/captcha";
@@ -147,6 +148,7 @@ export async function POST(req: Request) {
     if (account !== "ready") return NextResponse.json({ error: t(account === "unavailable" ? "errors.paymentsUnavailable" : "errors.paymentsNotConfigured") }, { status: 503 });
   }
   const orderId = newId();
+  const accessToken = newAccessToken();
   const holdExpiresAt = isFree ? null : new Date(now.getTime() + HOLD_MINUTES * 60_000);
   const status = event.requiresApproval ? ("pending_approval" as const) : ("confirmed" as const);
 
@@ -182,7 +184,7 @@ export async function POST(req: Request) {
       subtotalMinor: fees.subtotalMinor, discountMinor: fees.discountMinor, discountCodeId: discountCode?.id ?? null, taxMinor: fees.taxMinor, serviceFeeMinor: fees.serviceFeeMinor,
       totalMinor: fees.totalMinor, platformFeeMinor: fees.platformFeeMinor,
       holdExpiresAt,
-      paidAt: isFree ? now : null, answers: ord.data, stripeAccountId,
+      paidAt: isFree ? now : null, answers: ord.data, stripeAccountId, accessToken,
     });
     await tx.insert(orderItems).values({ id: newId(), orderId, ticketTypeId: tt.id, quantity, unitPriceMinor: tt.priceMinor });
     const hostId = newId();
@@ -210,7 +212,7 @@ export async function POST(req: Request) {
 
   if (isFree) {
     await fulfilFreeOrder(orderId);
-    return NextResponse.json({ orderId });
+    return NextResponse.json({ orderId, orderUrl: orderPath(accessToken) });
   }
 
   let pi;

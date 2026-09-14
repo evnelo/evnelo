@@ -89,7 +89,19 @@
     "partyPaid": "Paiement reçu. C'est bon, vous êtes tous {count}! Vos billets sont en route vers votre boîte mail.",
     "party": "Vous êtes tous {count}! Vos billets sont en route pour votre boîte mail.",
     "singlePaid": "Paiement reçu. Votre place est confirmée. Votre billet est en route vers votre boîte mail.",
-    "single": "Vous avez votre place. Votre billet est en route vers votre boîte mail."
+    "single": "Vous avez votre place. Votre billet est en route vers votre boîte mail.",
+    "title": "Vous êtes inscrit.",
+    "titleApproval": "Requête envoyée.",
+    "viewTickets": "Consultez vos billets",
+    "done": "Fait",
+    "detail": {
+      "approvalPaid": "Paiement reçu. Vous recevrez un courriel dès que l'hôte aura approuvé votre demande.",
+      "approval": "Vous recevrez un courriel une fois que l'hôte aura approuvé votre demande.",
+      "partyPaid": "Paiement reçu. Vos billets pour chacun d' {count} vous sont en route vers votre boîte de réception.",
+      "party": "Vos billets pour {count} tous sont en route vers votre boîte de réception.",
+      "singlePaid": "Paiement reçu. Votre billet est en route vers votre boîte de réception.",
+      "single": "Votre billet est en route vers votre boîte de réception."
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "Cet événement ne nécessite pas de fichier.",
     "tooManyUploads": "Trop de chargements en ce moment. Veuillez réessayer plus tard.",
     "storageUnavailable": "Le stockage de fichiers est actuellement indisponible."
+  },
+  "order": {
+    "eyebrow": "Votre commande",
+    "title": "Vous êtes inscrit.",
+    "titleApproval": "Requête envoyée.",
+    "intro": "{count, plural, one {Votre billet pour<link>{eventName}</link>.} other {Vos # billets pour<link>{eventName}</link>.}}",
+    "introApproval": "L'organisateur examine chaque inscription. Vous recevrez vos billets par courriel une fois votre inscription approuvée.",
+    "emailed": "Une copie de cette page a été envoyée à {email}.",
+    "tickets": "Billets",
+    "openTicket": "Billet ouvert",
+    "guestOf": "Invité de {name}",
+    "receipt": "Reçu",
+    "orderNumber": "Numéro de commande",
+    "paidOn": "Payé le",
+    "paidWith": "Payé avec",
+    "cardEnding": "{brand} se terminant par {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Total",
+    "discount": "Remise ({code})",
+    "tax": "Impôt",
+    "serviceFee": "Frais de service",
+    "total": "Total",
+    "refunded": "Remboursé",
+    "stripeReceipt": "reçu Stripe",
+    "print": "Imprimer ou enregistrer au format PDF",
+    "addToCalendar": "Ajouter au calendrier",
+    "eventPage": "page de l'événement",
+    "notCompleted": "Cette commande n'a pas pu être finalisée et ne comporte donc aucun billet. Veuillez vous réinscrire sur la page de l'événement.",
+    "refundedNotice": "Cette commande a été remboursée. Ses billets ne sont plus valides à l'entrée."
   }
 }

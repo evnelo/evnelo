@@ -13,3 +13,6 @@ export function publicEventPath(organizationSlug: string, eventSlug: string) {
 export function serializeJsonLd(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
+
+/** The buyer's order page: every ticket in the order plus the receipt. Token is `orders.access_token`. */
+export const orderPath = (accessToken: string) => `/orders/${accessToken}`;

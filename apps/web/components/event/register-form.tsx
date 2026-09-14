@@ -27,7 +27,7 @@ type Props = {
   maxGuests: number;
   /** what POST /api/orders will charge on top of the list price: same computeOrder inputs as the server */
   pricing: { edition: Edition; feePassThrough: boolean };
-  onSubmitted?: (result: { orderId: string; clientSecret?: string; stripeAccountId?: string | null; holdExpiresAt?: string; resumeToken?: string; partySize: number }) => void;
+  onSubmitted?: (result: { orderId: string; orderUrl?: string | null; clientSecret?: string; stripeAccountId?: string | null; holdExpiresAt?: string; resumeToken?: string; partySize: number }) => void;
 };
 
 /**

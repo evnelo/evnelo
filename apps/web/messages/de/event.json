@@ -89,7 +89,19 @@
     "partyPaid": "Zahlung erhalten. Ihr seid dabei, alle {count} von euch. Die Tickets sind unterwegs zu eurem Posteingang.",
     "party": "Ihr seid dabei, alle {count} von euch. Die Tickets sind auf dem Weg in euren Posteingang.",
     "singlePaid": "Zahlung erhalten. Sie sind dabei. Ihr Ticket ist auf dem Weg zu Ihrer E-Mail-Adresse.",
-    "single": "Sie sind dabei. Ihr Ticket ist auf dem Weg in Ihren Posteingang."
+    "single": "Sie sind dabei. Ihr Ticket ist auf dem Weg in Ihren Posteingang.",
+    "title": "Du bist dabei.",
+    "titleApproval": "Anfrage gesendet.",
+    "viewTickets": "Sehen Sie sich Ihre Tickets an",
+    "done": "Erledigt",
+    "detail": {
+      "approvalPaid": "Zahlung erhalten. Sie erhalten eine E-Mail, sobald der Gastgeber Ihre Anfrage genehmigt hat.",
+      "approval": "Sie erhalten eine E-Mail, sobald der Gastgeber Ihre Anfrage genehmigt hat.",
+      "partyPaid": "Zahlung erhalten. Tickets für alle {count} von Ihnen sind auf dem Weg in Ihren Posteingang.",
+      "party": "Tickets für alle {count} von euch sind auf dem Weg in eure E-Mail-Adresse.",
+      "singlePaid": "Zahlung erhalten. Ihr Ticket ist auf dem Weg zu Ihrer E-Mail-Adresse.",
+      "single": "Ihr Ticket ist auf dem Weg in Ihren Posteingang."
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "Für diese Veranstaltung wird keine Datei benötigt.",
     "tooManyUploads": "Momentan gibt es zu viele Uploads. Bitte versuchen Sie es später erneut.",
     "storageUnavailable": "Der Dateispeicher ist momentan nicht verfügbar."
+  },
+  "order": {
+    "eyebrow": "Ihre Bestellung",
+    "title": "Du bist dabei.",
+    "titleApproval": "Anfrage gesendet.",
+    "intro": "{count, plural, one {Ihre Eintrittskarte für<link>{eventName}</link> Die} other {Ihre # Tickets für<link>{eventName}</link> Die}}",
+    "introApproval": "Der Veranstalter prüft jede Anmeldung. Nach der Genehmigung erhalten Sie Ihre Tickets per E-Mail.",
+    "emailed": "Eine Kopie dieser Seite wurde an {email} gesendet.",
+    "tickets": "Tickets",
+    "openTicket": "Ticket öffnen",
+    "guestOf": "Gast von {name}",
+    "receipt": "Quittung",
+    "orderNumber": "Bestellnummer",
+    "paidOn": "Bezahlt am",
+    "paidWith": "Bezahlt mit",
+    "cardEnding": "{brand} endet mit {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Zwischensumme",
+    "discount": "Rabatt ({code})",
+    "tax": "Steuer",
+    "serviceFee": "Servicegebühr",
+    "total": "Gesamt",
+    "refunded": "Rückerstattung",
+    "stripeReceipt": "Stripe Quittung",
+    "print": "Drucken oder als PDF speichern",
+    "addToCalendar": "Zum Kalender hinzufügen",
+    "eventPage": "Veranstaltungsseite",
+    "notCompleted": "Diese Bestellung wurde nicht abgeschlossen, daher sind keine Tickets vorhanden. Bitte registrieren Sie sich erneut auf der Veranstaltungsseite.",
+    "refundedNotice": "Diese Bestellung wurde storniert. Die Tickets können am Eingang nicht mehr gescannt werden."
   }
 }

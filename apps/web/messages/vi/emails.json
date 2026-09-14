@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, khách của {host}",
     "openTicket": "Vé mở",
     "qrAlt": "Mã QR vé",
-    "scanAtDoor": "Quét mã tại cửa"
+    "scanAtDoor": "Quét mã tại cửa",
+    "receipt": "Biên lai",
+    "receiptMeta": "Đơn hàng {orderId}, đã thanh toán {paidOn}",
+    "paidWith": "đã thanh toán bằng {method}",
+    "cardEnding": "{brand} kết thúc bằng {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Tổng phụ",
+    "discount": "Giảm giá ({code})",
+    "tax": "Thuế",
+    "serviceFee": "Phí dịch vụ",
+    "total": "Tổng cộng",
+    "viewReceipt": "Vé và biên lai",
+    "stripeReceipt": "Stripe biên lai"
   },
   "reminderWhen": {
     "tomorrow": "Ngày mai",
@@ -24,7 +36,8 @@
     "showQr": "Hãy hiển thị mã QR tại cửa, trên điện thoại hoặc bản in.",
     "addToCalendar": "Thêm vào lịch",
     "questions": "Bạn có thắc mắc gì về sự kiện? Vui lòng trả lời email này để liên hệ với {orgName}.",
-    "cta": "Xem chi tiết sự kiện"
+    "cta": "Xem chi tiết sự kiện",
+    "allTickets": "Tất cả vé và biên lai"
   },
   "approvalPending": {
     "subject": "Yêu cầu đã được nhận cho {eventName}",

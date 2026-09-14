@@ -30,8 +30,14 @@ const tickets = [
   { attendeeName: "Ana Souza", ticketTypeName: "General admission", url: "http://localhost:3000/t/sample", qrUrl: qr, guestOf: null },
   { attendeeName: "Rafael Lima", ticketTypeName: "General admission", url: "http://localhost:3000/t/sample2", qrUrl: qr, guestOf: "Ana Souza" },
 ];
+const receipt = {
+  orderId: "01M2SAMPLEORDER000000000000", paidOn: "September 13, 2026", paidWith: "Visa ending in 4242",
+  lines: [{ label: "2 × General admission", amount: "$80.00" }],
+  totals: [{ label: "Subtotal", amount: "$80.00" }, { label: "Discount (EARLYBIRD)", amount: "−$8.00" }, { label: "Tax", amount: "$7.20" }, { label: "Total", amount: "$79.20", strong: true }],
+  url: "http://localhost:3000/orders/sample", stripeReceiptUrl: "#",
+};
 const samples = (i18n: EmailI18n): Record<string, () => React.ReactElement> => ({
-  registration_confirmation: () => React.createElement(RegistrationConfirmation, { ...i18n, brand, event, tickets, wallet: { apple: "#", google: "#" } }),
+  registration_confirmation: () => React.createElement(RegistrationConfirmation, { ...i18n, brand, event, tickets, wallet: { apple: "#", google: "#" }, orderUrl: "http://localhost:3000/orders/sample", receipt }),
   approval_pending: () => React.createElement(ApprovalPending, { ...i18n, brand, event, attendeeName: "Ana", partySize: 2 }),
   refund_issued: () => React.createElement(RefundIssued, { ...i18n, brand, event, attendeeName: "Ana", amount: "$86.40", ticketCount: 2 }),
   reminder: () => React.createElement(EventReminder, { ...i18n, brand, event: { ...event, onlineUrl: "https://meet.example.com/abc" }, when: "tomorrow", tickets, unsubscribeUrl: "#" }),

@@ -89,7 +89,19 @@
     "partyPaid": "Pagamento ricevuto. Siete tutti dentro, {count}. I biglietti sono in arrivo nella vostra casella di posta.",
     "party": "Siete dentro, tutti {count}. I biglietti sono in arrivo nella vostra casella di posta.",
     "singlePaid": "Pagamento ricevuto. La tua iscrizione è confermata. Il tuo biglietto è in arrivo nella tua casella di posta.",
-    "single": "Hai effettuato l'accesso. Il tuo biglietto è in arrivo nella tua casella di posta."
+    "single": "Hai effettuato l'accesso. Il tuo biglietto è in arrivo nella tua casella di posta.",
+    "title": "Sei dentro.",
+    "titleApproval": "Richiesta inviata.",
+    "viewTickets": "Visualizza i tuoi biglietti",
+    "done": "Fatto",
+    "detail": {
+      "approvalPaid": "Pagamento ricevuto. Riceverai un'email non appena l'host approverà la tua richiesta.",
+      "approval": "Riceverai un'email non appena l'host approverà la tua richiesta.",
+      "partyPaid": "Pagamento ricevuto. I biglietti per tutti voi {count} sono in arrivo nella vostra casella di posta.",
+      "party": "I biglietti per tutti voi {count} sono in arrivo nella vostra casella di posta.",
+      "singlePaid": "Pagamento ricevuto. Il tuo biglietto è in arrivo nella tua casella di posta.",
+      "single": "Il tuo biglietto è in arrivo nella tua casella di posta."
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "Questo evento non richiede alcun file.",
     "tooManyUploads": "Troppi caricamenti in corso. Riprova più tardi.",
     "storageUnavailable": "Al momento lo spazio di archiviazione dei file non è disponibile."
+  },
+  "order": {
+    "eyebrow": "Il tuo ordine",
+    "title": "Sei dentro.",
+    "titleApproval": "Richiesta inviata.",
+    "intro": "{count, plural, one {Il tuo biglietto per<link>{eventName}</link>.} other {I tuoi # biglietti per<link>{eventName}</link>.}}",
+    "introApproval": "L'organizzatore esamina ogni registrazione. Riceverai i biglietti via e-mail una volta che la registrazione sarà stata approvata.",
+    "emailed": "Una copia di questa pagina è stata inviata a {email}.",
+    "tickets": "Biglietti",
+    "openTicket": "Biglietto aperto",
+    "guestOf": "Ospite di {name}",
+    "receipt": "Ricevuta",
+    "orderNumber": "Numero d'ordine",
+    "paidOn": "Pagato su",
+    "paidWith": "Pagato con",
+    "cardEnding": "{brand} che termina con {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Subtotale",
+    "discount": "Sconto ({code})",
+    "tax": "Tassare",
+    "serviceFee": "Costo del servizio",
+    "total": "Totale",
+    "refunded": "Rimborso effettuato",
+    "stripeReceipt": "Stripe ricevuta",
+    "print": "Stampa o salva come PDF",
+    "addToCalendar": "Aggiungi al calendario",
+    "eventPage": "Pagina dell'evento",
+    "notCompleted": "L'ordine non è stato completato, pertanto non sono disponibili biglietti. Registrati nuovamente dalla pagina dell'evento.",
+    "refundedNotice": "Questo ordine è stato rimborsato. I biglietti non vengono più convalidati all'ingresso."
   }
 }

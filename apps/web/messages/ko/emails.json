@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, {host} 의 손님",
     "openTicket": "티켓 열기",
     "qrAlt": "티켓 QR 코드",
-    "scanAtDoor": "입구에서 스캔하세요"
+    "scanAtDoor": "입구에서 스캔하세요",
+    "receipt": "영수증",
+    "receiptMeta": "주문 번호 {orderId}, 결제 금액 {paidOn}",
+    "paidWith": "{method} 으로 결제됨",
+    "cardEnding": "{brand} {last4} 로 끝남",
+    "lineItem": "{count} × {name}",
+    "subtotal": "소계",
+    "discount": "할인 ({code})",
+    "tax": "세",
+    "serviceFee": "서비스 수수료",
+    "total": "총",
+    "viewReceipt": "티켓 및 영수증",
+    "stripeReceipt": "Stripe 영수증"
   },
   "reminderWhen": {
     "tomorrow": "내일",
@@ -24,7 +36,8 @@
     "showQr": "입구에서 QR 코드를 휴대폰이나 인쇄된 이미지로 보여주세요.",
     "addToCalendar": "캘린더에 추가",
     "questions": "이벤트 관련 문의사항이 있으신가요? 이메일에 회신하여 {orgName} 으로 연락주세요.",
-    "cta": "이벤트 세부 정보를 확인하세요"
+    "cta": "이벤트 세부 정보를 확인하세요",
+    "allTickets": "모든 티켓 및 영수증"
   },
   "approvalPending": {
     "subject": "{eventName} 에 대한 요청이 접수되었습니다.",

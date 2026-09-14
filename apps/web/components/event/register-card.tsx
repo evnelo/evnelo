@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, Clock } from "lucide-react";
+import { Check, Clock, LoaderCircle } from "lucide-react";
 import type { RegistrationField, TicketType } from "@evnelo/db";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { RegisterForm } from "./register-form";
 import { WaitlistJoin } from "./waitlist-join";
 import { PaymentStep } from "./payment-step";
+import { SuccessStep } from "./success-step";
 import { cn, formatMoney } from "@/lib/utils";
 import { paymentHold, paymentOutcome, registrationSuccessMessage, type PaymentOutcome } from "@/lib/payment-flow";
 import type { Edition } from "@evnelo/core";
@@ -25,6 +26,8 @@ type ResumeCredentials = { token: string; clientSecret: string };
 type PaymentState = ResumeCredentials & {
   orderId: string; stripeAccountId?: string | null; holdExpiresAt: string; partySize: number; requiresApproval: boolean;
 };
+/** The settled outcome, shown inside the dialog first and summarised on the card once it closes. */
+type SuccessState = { title: string; detail: string; message: string; orderUrl: string | null; celebrate: boolean };
 
 /** Details → Payment, shown at the top of the dialog whenever a paid ticket is on offer. */
 function Steps({ current }: { current: 1 | 2 }) {
@@ -54,7 +57,8 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
   const tc = useTranslations("common");
   const locale = useLocale();
   const [open, setOpen] = useState(false);
-  const [done, setDone] = useState<string>();
+  const [done, setDone] = useState<SuccessState>();
+  const [success, setSuccess] = useState<SuccessState>();
   const [payment, setPayment] = useState<PaymentState>();
   const [resumeCredentials, setResumeCredentials] = useState<ResumeCredentials>();
   const [resumeError, setResumeError] = useState<string>();
@@ -84,6 +88,12 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
     clearPaymentQuery();
   }, [clearPaymentQuery, storageKey]);
 
+  const settled = useCallback((requiresApproval: boolean, partySize: number, paid: boolean, orderUrl: string | null | undefined): SuccessState => {
+    const m = registrationSuccessMessage(requiresApproval, partySize, paid);
+    const detailKey = m.messageKey.replace("success.", "success.detail.") as `success.detail.${string}`;
+    return { title: t(requiresApproval ? "success.titleApproval" : "success.title"), detail: t(detailKey, m.params), message: t(m.messageKey, m.params), orderUrl: orderUrl ?? null, celebrate: !requiresApproval };
+  }, [t]);
+
   const restorePayment = useCallback(async (credentials: ResumeCredentials) => {
     setResuming(true);
     setResumeError(undefined);
@@ -98,8 +108,9 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
       const outcome = paymentOutcome(result.paymentStatus);
       if (outcome.state === "complete" && result.orderStatus === "paid") {
         setProcessing(false);
-        const success = registrationSuccessMessage(result.requiresApproval, result.partySize, true);
-        setDone(t(success.messageKey, success.params));
+        setPayment(undefined);
+        setSuccess(settled(result.requiresApproval, result.partySize, true, result.orderUrl));
+        setOpen(true);
         clearResume();
         return;
       }
@@ -111,6 +122,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
       }
       if (result.orderStatus !== "pending" || !result.holdExpiresAt || paymentHold(result.holdExpiresAt).expired) {
         setPayment(undefined);
+        setOpen(false);
         setProcessing(false);
         setCanRegisterAgain(true);
         setResumeError(result.refunded ? t("payment.refundedLapsed") : t("payment.reservationClosed"));
@@ -124,11 +136,13 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
       });
       setOpen(true);
     } catch (error) {
+      setPayment(undefined);
+      setOpen(false);
       setResumeError(error instanceof Error ? error.message : t("errors.paymentNotVerified"));
     } finally {
       setResuming(false);
     }
-  }, [clearResume, eventId, t]);
+  }, [clearResume, eventId, settled, t]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -157,13 +171,19 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
   useEffect(() => { if (done) doneRef.current?.focus(); }, [done]);
 
   // Stripe's client-side result is a hint only: the server settles the order and reports back.
+  // A completed payment stays in the dialog ("verifying", then the success step); anything else closes it.
   const completePayment = useCallback((outcome: PaymentOutcome) => {
     if (!payment) return;
-    if (outcome.state === "processing") setProcessing(true);
     setPayment(undefined);
-    setOpen(false);
+    if (outcome.state === "processing") { setProcessing(true); setOpen(false); }
     void restorePayment({ token: payment.token, clientSecret: payment.clientSecret });
   }, [payment, restorePayment]);
+
+  // closing the dialog after success moves the outcome onto the card
+  const changeOpen = useCallback((next: boolean) => {
+    if (!next && success) { setDone(success); setSuccess(undefined); }
+    setOpen(next);
+  }, [success]);
 
   function startAgain() {
     setCanRegisterAgain(false);
@@ -191,10 +211,14 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
         </p>
       )}
       {done ? (
-        <p ref={doneRef} tabIndex={-1} aria-live="polite" className="mt-4 flex items-start gap-2 rounded-lg bg-accent/70 px-3 py-3 text-sm text-accent-foreground">
-          <Check className="mt-0.5 size-4 shrink-0" aria-hidden />
-          <span>{done}</span>
-        </p>
+        <div ref={doneRef} tabIndex={-1} aria-live="polite" className="mt-4 rounded-lg bg-accent/70 px-3 py-3 text-sm text-accent-foreground">
+          <p className="flex items-start gap-2"><Check className="mt-0.5 size-4 shrink-0" aria-hidden /><span>{done.message}</span></p>
+          {done.orderUrl && (
+            <Button asChild variant="event" size="sm" className="mt-3">
+              <a href={done.orderUrl}>{t("success.viewTickets")}</a>
+            </Button>
+          )}
+        </div>
       ) : soldOut && waitlist?.enabled ? (
         <WaitlistJoin eventId={eventId} eventName={eventName} />
       ) : processing ? (
@@ -214,19 +238,25 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
           </div>
         </div>
       ) : (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={changeOpen}>
           <DialogTrigger asChild>
             <Button variant="event" size="lg" className="mt-5 w-full" disabled={soldOut || !ticketTypes.length}>
               {soldOut ? tc("labels.soldOut") : requiresApproval ? t("register.buttonApproval") : t("register.button")}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-h-[90dvh] overflow-y-auto">
-            {paidPossible && <Steps current={payment ? 2 : 1} />}
-            <DialogTitle>{payment ? t("register.dialogPayTitle") : eventName}</DialogTitle>
-            <DialogDescription>{payment ? t("register.dialogPayDescription") : t("register.dialogDescription")}</DialogDescription>
-            <div className="mt-5">
-              {payment && stripePublishableKey ? (
+            {paidPossible && !success && <Steps current={payment || resuming ? 2 : 1} />}
+            {!success && <DialogTitle>{payment ? t("register.dialogPayTitle") : eventName}</DialogTitle>}
+            {!success && <DialogDescription>{payment ? t("register.dialogPayDescription") : t("register.dialogDescription")}</DialogDescription>}
+            <div className={success ? undefined : "mt-5"}>
+              {success ? (
+                <SuccessStep title={success.title} message={success.detail} orderUrl={success.orderUrl} celebrate={success.celebrate} />
+              ) : payment && stripePublishableKey ? (
                 <PaymentStep clientSecret={payment.clientSecret} stripeAccountId={payment.stripeAccountId} resumeToken={payment.token} holdExpiresAt={payment.holdExpiresAt} publishableKey={stripePublishableKey} onComplete={completePayment} />
+              ) : resuming ? (
+                <p className="flex items-center justify-center gap-2 py-10 text-sm text-muted-foreground" aria-live="polite">
+                  <LoaderCircle className="size-4 animate-spin" aria-hidden /> {t("payment.verifying")}
+                </p>
               ) : (
                 <RegisterForm eventId={eventId} ticketTypes={ticketTypes} fields={fields} collectPhone={collectPhone}
                   guestsEnabled={guestsEnabled} maxGuests={maxGuests} pricing={pricing}
@@ -236,9 +266,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
                       persistResume(credentials);
                       setPayment({ ...credentials, orderId: result.orderId, stripeAccountId: result.stripeAccountId, holdExpiresAt: result.holdExpiresAt, partySize: result.partySize, requiresApproval });
                     } else if (!result.clientSecret) {
-                      const success = registrationSuccessMessage(requiresApproval, result.partySize, false);
-                      setDone(t(success.messageKey, success.params));
-                      setOpen(false);
+                      setSuccess(settled(requiresApproval, result.partySize, false, result.orderUrl));
                     } else {
                       setResumeError(t("payment.couldNotStart"));
                       setOpen(false);

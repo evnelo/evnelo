@@ -1,16 +1,17 @@
 import * as React from "react";
 import { and, eq, inArray, isNull, sql } from "drizzle-orm";
-import { attendees, events, notifications, orders, organizations, smsUnlocks, ticketTypes, tickets, type Notification } from "@evnelo/db";
+import { attendees, discountCodes, events, notifications, orderItems, orders, organizations, smsUnlocks, ticketTypes, tickets, type Notification } from "@evnelo/db";
 import { currentEdition, smsGate } from "@evnelo/core";
 import { db } from "@/lib/db";
 import { appleWalletConfigured, env, googleWalletConfigured, smsConfigured } from "@/lib/env";
 import { emailLocale, emailTranslator, renderEmail, sendEmail } from "@/lib/email";
 import { sms, smsTemplates } from "@/lib/sms";
 import { formatDateRange, formatMoney } from "@/lib/utils";
-import { publicEventPath } from "@/lib/urls";
+import { orderPath, publicEventPath } from "@/lib/urls";
+import { paymentMethodName } from "@/lib/payment-flow";
 import { calendarPath } from "@/lib/calendar";
 import { unsubscribeUrl } from "./unsubscribe";
-import type { EmailBrand, EmailEvent, EmailTicket, EmailTranslator } from "@/emails/layout";
+import type { EmailBrand, EmailEvent, EmailReceipt, EmailTicket, EmailTranslator } from "@/emails/layout";
 import RegistrationConfirmation, { registrationConfirmationSubject } from "@/emails/registration-confirmation";
 import ApprovalPending, { approvalPendingSubject } from "@/emails/approval-pending";
 import RefundIssued, { refundIssuedSubject } from "@/emails/refund-issued";
@@ -76,18 +77,48 @@ async function loadContext(n: Notification) {
   const wallet = first
     ? { apple: appleWalletConfigured ? `${env.APP_URL}/t/${first.token}/wallet/apple` : undefined, google: googleWalletConfigured ? `${env.APP_URL}/t/${first.token}/wallet/google` : undefined }
     : null;
-  return { attendee, event, org, order, party, brand, emailEvent, emailTickets, wallet, i18n, locale, t };
+  const orderUrl = order.accessToken ? `${env.APP_URL}${orderPath(order.accessToken)}` : null;
+  return { attendee, event, org, order, party, brand, emailEvent, emailTickets, wallet, orderUrl, i18n, locale, t };
+}
+
+/** The buyer's receipt: only for the address that paid, only once money changed hands. */
+async function loadReceipt(ctx: Awaited<ReturnType<typeof loadContext>>): Promise<EmailReceipt | null> {
+  const { order, attendee, event, orderUrl, locale, t } = ctx;
+  const paid = (order.status === "paid" || order.status === "partially_refunded") && order.totalMinor > 0 && order.paidAt;
+  if (!paid || !orderUrl || attendee.email !== order.email) return null;
+  const [items, [code]] = await Promise.all([
+    db.select({ quantity: orderItems.quantity, unitPriceMinor: orderItems.unitPriceMinor, name: ticketTypes.name })
+      .from(orderItems).innerJoin(ticketTypes, eq(orderItems.ticketTypeId, ticketTypes.id)).where(eq(orderItems.orderId, order.id)),
+    order.discountCodeId ? db.select({ code: discountCodes.code }).from(discountCodes).where(eq(discountCodes.id, order.discountCodeId)).limit(1) : Promise.resolve([] as { code: string }[]),
+  ]);
+  const money = (minor: number) => formatMoney(minor, order.currency, locale);
+  const method = paymentMethodName(order);
+  const totals: EmailReceipt["totals"] = [];
+  if (order.discountMinor > 0 || order.taxMinor > 0 || order.serviceFeeMinor > 0) totals.push({ label: t("layout.subtotal"), amount: money(order.subtotalMinor) });
+  if (order.discountMinor > 0) totals.push({ label: t("layout.discount", { code: code?.code ?? "" }), amount: `−${money(order.discountMinor)}` });
+  if (order.taxMinor > 0) totals.push({ label: t("layout.tax"), amount: money(order.taxMinor) });
+  if (order.serviceFeeMinor > 0) totals.push({ label: t("layout.serviceFee"), amount: money(order.serviceFeeMinor) });
+  totals.push({ label: t("layout.total"), amount: money(order.totalMinor), strong: true });
+  return {
+    orderId: order.id,
+    paidOn: new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: event.timezone }).format(order.paidAt!),
+    paidWith: method ? ("last4" in method ? t("layout.cardEnding", { brand: method.brand, last4: method.last4 }) : method.method) : null,
+    lines: items.map((i) => ({ label: t("layout.lineItem", { count: i.quantity, name: i.name }), amount: money(i.unitPriceMinor * i.quantity) })),
+    totals,
+    url: orderUrl,
+    stripeReceiptUrl: order.stripeReceiptUrl,
+  };
 }
 
 async function deliverEmail(n: Notification): Promise<DeliveryResult> {
   const ctx = await loadContext(n);
-  const { attendee, event, order, brand, emailEvent, emailTickets, wallet, i18n, locale, t } = ctx;
+  const { attendee, event, order, brand, emailEvent, emailTickets, wallet, orderUrl, i18n, locale, t } = ctx;
   let element: React.ReactElement;
   let subject: string;
   switch (n.template) {
     case "registration_confirmation": {
       if (!emailTickets.length) return { skipped: true, reason: "no live tickets for this email" };
-      const props = { ...i18n, brand, event: emailEvent, tickets: emailTickets, wallet };
+      const props = { ...i18n, brand, event: emailEvent, tickets: emailTickets, wallet, orderUrl, receipt: await loadReceipt(ctx) };
       element = React.createElement(RegistrationConfirmation, props); subject = registrationConfirmationSubject(props); break;
     }
     case "approval_pending": {

@@ -89,7 +89,19 @@
     "partyPaid": "已收到付款。你们都成功入场了， {count} 。门票正在发送到你们的邮箱中。",
     "party": "你们都入选了，所有{count} 。门票正在发送到你们的邮箱中。",
     "singlePaid": "已收到付款。您已成功预订。您的电子票正在发送至您的邮箱。",
-    "single": "您已成功登录。您的电子票正在发送到您的邮箱中。"
+    "single": "您已成功登录。您的电子票正在发送到您的邮箱中。",
+    "title": "你入选了。",
+    "titleApproval": "请求已发送。",
+    "viewTickets": "查看您的门票",
+    "done": "完毕",
+    "detail": {
+      "approvalPaid": "已收到付款。房东批准您的请求后，您将收到一封电子邮件。",
+      "approval": "房东批准您的请求后，您将收到一封电子邮件。",
+      "partyPaid": "已收到付款。所有{count}人的门票正在发送到您的邮箱中。",
+      "party": "你们{count}的门票都已发送到你们的邮箱。",
+      "singlePaid": "已收到付款。您的电子票正在发送至您的邮箱。",
+      "single": "您的工单正在发送到您的邮箱中。"
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "此活动不需要文件。",
     "tooManyUploads": "目前上传文件过多，请稍后再试。",
     "storageUnavailable": "文件存储目前不可用。"
+  },
+  "order": {
+    "eyebrow": "您的订单",
+    "title": "你入选了。",
+    "titleApproval": "请求已发送。",
+    "intro": "{count, plural, one {您的机票<link>{eventName}</link> 。} other {您的#门票<link>{eventName}</link> 。}}",
+    "introApproval": "主办方会审核每一份报名信息。审核通过后，您将通过电子邮件收到门票。",
+    "emailed": "此页面的副本已发送至{email} 。",
+    "tickets": "门票",
+    "openTicket": "打开工单",
+    "guestOf": "{name}的客人",
+    "receipt": "收据",
+    "orderNumber": "订单号",
+    "paidOn": "已支付",
+    "paidWith": "已支付",
+    "cardEnding": "以{brand}结尾的{last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "小计",
+    "discount": "折扣（{code}）",
+    "tax": "税",
+    "serviceFee": "服务费",
+    "total": "全部的",
+    "refunded": "已退款",
+    "stripeReceipt": "Stripe收据",
+    "print": "打印或另存为 PDF",
+    "addToCalendar": "添加到日历",
+    "eventPage": "活动页面",
+    "notCompleted": "此订单未完成，因此没有门票。请从活动页面重新注册。",
+    "refundedNotice": "此订单已退款。此订单的门票已无法在门口扫描。"
   }
 }

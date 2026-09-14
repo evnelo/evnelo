@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, {host} in misafiri",
     "openTicket": "Açık bilet",
     "qrAlt": "Bilet QR kodu",
-    "scanAtDoor": "Kapıda tarama yapın"
+    "scanAtDoor": "Kapıda tarama yapın",
+    "receipt": "Fiş",
+    "receiptMeta": "Sipariş {orderId}, ödenen {paidOn}",
+    "paidWith": "{method} ile ödendi",
+    "cardEnding": "{brand} {last4} ile biten",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Ara toplam",
+    "discount": "İndirim ({code})",
+    "tax": "Vergi",
+    "serviceFee": "Hizmet ücreti",
+    "total": "Toplam",
+    "viewReceipt": "Biletler ve makbuzlar",
+    "stripeReceipt": "Stripe makbuz"
   },
   "reminderWhen": {
     "tomorrow": "Yarın",
@@ -24,7 +36,8 @@
     "showQr": "QR kodunu kapıda, telefonunuzda veya çıktısını alarak gösterin.",
     "addToCalendar": "Takvime ekle",
     "questions": "Etkinlikle ilgili sorularınız mı var? {orgName} adresine ulaşmak için bu e-postaya yanıt verin.",
-    "cta": "Etkinlik detaylarına bakın."
+    "cta": "Etkinlik detaylarına bakın.",
+    "allTickets": "Tüm biletler ve makbuzlar"
   },
   "approvalPending": {
     "subject": "{eventName} için istek alındı.",

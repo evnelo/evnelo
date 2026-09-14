@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, ospite di {host}",
     "openTicket": "Biglietto aperto",
     "qrAlt": "Codice QR del biglietto",
-    "scanAtDoor": "Controllo all'ingresso"
+    "scanAtDoor": "Controllo all'ingresso",
+    "receipt": "Ricevuta",
+    "receiptMeta": "Ordine {orderId}, pagato {paidOn}",
+    "paidWith": "pagato con {method}",
+    "cardEnding": "{brand} che termina con {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Subtotale",
+    "discount": "Sconto ({code})",
+    "tax": "Tassare",
+    "serviceFee": "Costo del servizio",
+    "total": "Totale",
+    "viewReceipt": "Biglietti e ricevuta",
+    "stripeReceipt": "Stripe ricevuta"
   },
   "reminderWhen": {
     "tomorrow": "Domani",
@@ -24,7 +36,8 @@
     "showQr": "Mostra il codice QR all'ingresso, sul tuo telefono o stampato.",
     "addToCalendar": "Aggiungi al calendario",
     "questions": "Domande sull'evento? Rispondi a questa email per contattare {orgName}.",
-    "cta": "Visualizza i dettagli dell'evento"
+    "cta": "Visualizza i dettagli dell'evento",
+    "allTickets": "Tutti i biglietti e le ricevute"
   },
   "approvalPending": {
     "subject": "Richiesta ricevuta per {eventName}",

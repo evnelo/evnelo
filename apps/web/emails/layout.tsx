@@ -140,3 +140,38 @@ export function TicketCard({ ticket, accent, t }: { ticket: EmailTicket; accent?
     </Section>
   );
 }
+
+export type EmailReceipt = {
+  orderId: string; paidOn: string; paidWith?: string | null;
+  lines: { label: string; amount: string }[];
+  totals: { label: string; amount: string; strong?: boolean }[];
+  url: string; stripeReceiptUrl?: string | null;
+};
+
+/** The receipt under the tickets: what was bought, what it came to, what paid for it. */
+export function ReceiptBlock({ receipt, t }: { receipt: EmailReceipt; t: EmailTranslator }) {
+  const cell = (strong?: boolean): React.CSSProperties => ({ padding: "5px 0", fontSize: 14, lineHeight: "20px", color: strong ? colors.ink : colors.muted, fontWeight: strong ? 600 : 400 });
+  return (
+    <Section style={{ margin: "20px 0 0", padding: "16px 18px", border: `1px solid ${colors.border}`, borderRadius: 12, backgroundColor: colors.card }}>
+      <Text style={{ margin: 0, fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: colors.muted }}>{t("layout.receipt")}</Text>
+      <Text style={{ margin: "4px 0 10px", fontSize: 13, lineHeight: "19px", color: colors.muted }}>
+        {t("layout.receiptMeta", { orderId: receipt.orderId, paidOn: receipt.paidOn })}
+        {receipt.paidWith ? ` · ${t("layout.paidWith", { method: receipt.paidWith })}` : null}
+      </Text>
+      <table role="presentation" width="100%" cellPadding={0} cellSpacing={0} style={{ borderCollapse: "collapse" }}>
+        <tbody>
+          {receipt.lines.map((line, i) => (
+            <tr key={`l${i}`} style={{ borderTop: `1px solid ${colors.border}` }}><td style={cell(true)}>{line.label}</td><td align="right" style={cell(true)}>{line.amount}</td></tr>
+          ))}
+          {receipt.totals.map((row, i) => (
+            <tr key={`t${i}`} style={row.strong ? { borderTop: `1px solid ${colors.border}` } : undefined}><td style={cell(row.strong)}>{row.label}</td><td align="right" style={cell(row.strong)}>{row.amount}</td></tr>
+          ))}
+        </tbody>
+      </table>
+      <Text style={{ margin: "12px 0 0", fontSize: 13 }}>
+        <Link href={receipt.url} style={{ color: colors.accent }}>{t("layout.viewReceipt")}</Link>
+        {receipt.stripeReceiptUrl ? <> · <Link href={receipt.stripeReceiptUrl} style={{ color: colors.accent }}>{t("layout.stripeReceipt")}</Link></> : null}
+      </Text>
+    </Section>
+  );
+}

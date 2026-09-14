@@ -1,18 +1,22 @@
 import * as React from "react";
-import { ButtonLink, Divider, EmailLayout, EventBlock, Para, PillLink, TicketCard, Title, emailI18n, linkTo, type EmailBrand, type EmailEvent, type EmailI18n, type EmailTicket } from "./layout";
+import { ButtonLink, Divider, EmailLayout, EventBlock, Para, PillLink, ReceiptBlock, TicketCard, Title, emailI18n, linkTo, type EmailBrand, type EmailEvent, type EmailI18n, type EmailReceipt, type EmailTicket } from "./layout";
 
 export type RegistrationConfirmationProps = EmailI18n & {
   brand: EmailBrand;
   event: EmailEvent;
   tickets: EmailTicket[];
   wallet?: { apple?: string; google?: string } | null;
+  /** the order page: every ticket in the order and the receipt */
+  orderUrl?: string | null;
+  /** only on the buyer's copy of a paid order */
+  receipt?: EmailReceipt | null;
 };
 
 export const registrationConfirmationSubject = (p: RegistrationConfirmationProps) =>
   emailI18n(p).t("registrationConfirmation.subject", { count: p.tickets.length, eventName: p.event.name });
 
 export default function RegistrationConfirmation(props: RegistrationConfirmationProps) {
-  const { brand, event, tickets, wallet } = props;
+  const { brand, event, tickets, wallet, orderUrl, receipt } = props;
   const { locale, t } = emailI18n(props);
   const count = tickets.length;
   return (
@@ -27,7 +31,9 @@ export default function RegistrationConfirmation(props: RegistrationConfirmation
         <PillLink href={event.calendarUrl}>{t("registrationConfirmation.addToCalendar")}</PillLink>
         {wallet?.apple && <PillLink href={wallet.apple}>Apple Wallet</PillLink>}
         {wallet?.google && <PillLink href={wallet.google}>Google Wallet</PillLink>}
+        {orderUrl && <PillLink href={orderUrl}>{t("registrationConfirmation.allTickets")}</PillLink>}
       </Para>
+      {receipt && <ReceiptBlock receipt={receipt} t={t} />}
       <Divider />
       <Para muted style={{ margin: 0, fontSize: 13 }}>
         {t("registrationConfirmation.questions", { orgName: brand.orgName })}

@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, {host} चा पाहुणा",
     "openTicket": "तिकीट उघडा",
     "qrAlt": "तिकीट क्यूआर कोड",
-    "scanAtDoor": "दारावर स्कॅन करा"
+    "scanAtDoor": "दारावर स्कॅन करा",
+    "receipt": "पावती",
+    "receiptMeta": "ऑर्डर {orderId}, पेड {paidOn}",
+    "paidWith": "{method} ने पैसे दिले",
+    "cardEnding": "{brand} शेवट {last4} ने होतो",
+    "lineItem": "{count} × {name}",
+    "subtotal": "उपएकूण",
+    "discount": "सवलत ({code})",
+    "tax": "कर",
+    "serviceFee": "सेवा शुल्क",
+    "total": "एकूण",
+    "viewReceipt": "तिकिटे आणि पावती",
+    "stripeReceipt": "Stripe पावती"
   },
   "reminderWhen": {
     "tomorrow": "उद्या",
@@ -24,7 +36,8 @@
     "showQr": "दारावर, तुमच्या फोनवर किंवा प्रिंट केलेला QR कोड दाखवा.",
     "addToCalendar": "कॅलेंडरमध्ये जोडा",
     "questions": "कार्यक्रमाबद्दल प्रश्न आहेत? {orgName} यांच्याशी संपर्क साधण्यासाठी या ईमेलला उत्तर द्या.",
-    "cta": "कार्यक्रमाचा तपशील पहा"
+    "cta": "कार्यक्रमाचा तपशील पहा",
+    "allTickets": "सर्व तिकिटे आणि पावती"
   },
   "approvalPending": {
     "subject": "{eventName} साठी विनंती प्राप्त झाली.",

@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType}, гость {host}",
     "openTicket": "Открыть тикет",
     "qrAlt": "QR-код билета",
-    "scanAtDoor": "Просканируйте на входе"
+    "scanAtDoor": "Просканируйте на входе",
+    "receipt": "Квитанция",
+    "receiptMeta": "Заказ {orderId} оплачен {paidOn}",
+    "paidWith": "оплачено {method}",
+    "cardEnding": "{brand} заканчивающийся на {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Итого",
+    "discount": "Скидка ({code})",
+    "tax": "Налог",
+    "serviceFee": "сервисный сбор",
+    "total": "Общий",
+    "viewReceipt": "Билеты и квитанция",
+    "stripeReceipt": "Stripe квитанция"
   },
   "reminderWhen": {
     "tomorrow": "завтра",
@@ -24,7 +36,8 @@
     "showQr": "Покажите QR-код на входе, на телефоне или в распечатанном виде.",
     "addToCalendar": "Добавить в календарь",
     "questions": "Есть вопросы о мероприятии? Ответьте на это письмо, чтобы связаться с {orgName}.",
-    "cta": "Подробности мероприятия смотрите здесь."
+    "cta": "Подробности мероприятия смотрите здесь.",
+    "allTickets": "Все билеты и квитанция"
   },
   "approvalPending": {
     "subject": "Получен запрос на {eventName}",

@@ -9,7 +9,19 @@
     "ticketTypeGuestOf": "{ticketType} ، {host} کا مہمان",
     "openTicket": "اوپن ٹکٹ",
     "qrAlt": "ٹکٹ کیو آر کوڈ",
-    "scanAtDoor": "دروازے پر اسکین کریں۔"
+    "scanAtDoor": "دروازے پر اسکین کریں۔",
+    "receipt": "رسید",
+    "receiptMeta": "آرڈر {orderId} ، ادا کیا گیا {paidOn}",
+    "paidWith": "{method} کے ساتھ ادائیگی",
+    "cardEnding": "{brand} ختم ہونے والا {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "ذیلی کل",
+    "discount": "رعایت ({code})",
+    "tax": "ٹیکس",
+    "serviceFee": "سروس فیس",
+    "total": "کل",
+    "viewReceipt": "ٹکٹ اور رسید",
+    "stripeReceipt": "Stripe رسید"
   },
   "reminderWhen": {
     "tomorrow": "کل",
@@ -24,7 +36,8 @@
     "showQr": "دروازے پر، اپنے فون پر یا پرنٹ شدہ کیو آر کوڈ دکھائیں۔",
     "addToCalendar": "کیلنڈر میں شامل کریں۔",
     "questions": "تقریب کے بارے میں سوالات؟ {orgName} تک پہنچنے کے لیے اس ای میل کا جواب دیں۔",
-    "cta": "ایونٹ کی تفصیلات دیکھیں"
+    "cta": "ایونٹ کی تفصیلات دیکھیں",
+    "allTickets": "تمام ٹکٹ اور رسید"
   },
   "approvalPending": {
     "subject": "{eventName} کے لیے درخواست موصول ہوئی",

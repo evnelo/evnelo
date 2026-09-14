@@ -89,7 +89,19 @@
     "partyPaid": "Pago recibido. Ya están dentro, todos {count}. Las entradas están en camino a su bandeja de entrada.",
     "party": "Están dentro, todos {count}. Las entradas están en camino a su bandeja de entrada.",
     "singlePaid": "Pago recibido. ¡Ya estás dentro! Tu entrada está en camino a tu correo electrónico.",
-    "single": "¡Ya estás dentro! Tu entrada está en camino a tu bandeja de entrada."
+    "single": "¡Ya estás dentro! Tu entrada está en camino a tu bandeja de entrada.",
+    "title": "Estás dentro.",
+    "titleApproval": "Solicitud enviada.",
+    "viewTickets": "Ver tus entradas",
+    "done": "Hecho",
+    "detail": {
+      "approvalPaid": "Pago recibido. Recibirás un correo electrónico cuando el anfitrión apruebe tu solicitud.",
+      "approval": "Recibirás un correo electrónico una vez que el anfitrión apruebe tu solicitud.",
+      "partyPaid": "Pago recibido. Las entradas para todos {count} están en camino a su bandeja de entrada.",
+      "party": "Las entradas para todos {count} están en camino a su bandeja de entrada.",
+      "singlePaid": "Pago recibido. Su boleto está en camino a su bandeja de entrada.",
+      "single": "Su entrada está en camino a su bandeja de entrada."
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "Este evento no solicita ningún archivo.",
     "tooManyUploads": "Hay demasiadas subidas en este momento. Inténtalo de nuevo más tarde.",
     "storageUnavailable": "El almacenamiento de archivos no está disponible en este momento."
+  },
+  "order": {
+    "eyebrow": "Tu pedido",
+    "title": "Estás dentro.",
+    "titleApproval": "Solicitud enviada.",
+    "intro": "{count, plural, one {Tu boleto para<link>{eventName}</link>.} other {Tus # entradas para<link>{eventName}</link>.}}",
+    "introApproval": "El organizador revisa todas las inscripciones. Recibirás tus entradas por correo electrónico una vez que se aprueben.",
+    "emailed": "Se envió una copia de esta página a {email}.",
+    "tickets": "Entradas",
+    "openTicket": "Entrada abierta",
+    "guestOf": "Invitado de {name}",
+    "receipt": "Recibo",
+    "orderNumber": "Número de orden",
+    "paidOn": "Pagado el",
+    "paidWith": "Pagado con",
+    "cardEnding": "{brand} terminando en {last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "Total parcial",
+    "discount": "Descuento ({code})",
+    "tax": "Impuesto",
+    "serviceFee": "Tarifa de servicio",
+    "total": "Total",
+    "refunded": "Reintegrado",
+    "stripeReceipt": "recibo Stripe",
+    "print": "Imprimir o guardar como PDF",
+    "addToCalendar": "Añadir al calendario",
+    "eventPage": "Página del evento",
+    "notCompleted": "Este pedido no se ha completado, por lo que no tiene entradas. Regístrese de nuevo desde la página del evento.",
+    "refundedNotice": "Este pedido fue reembolsado. Sus entradas ya no se pueden escanear en la puerta."
   }
 }

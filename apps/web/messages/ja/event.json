@@ -89,7 +89,19 @@
     "partyPaid": "お支払い確認済みです。お一人様{count} ）とも参加完了です。チケットはメールにてお送りいたします。",
     "party": "皆さん、おめでとう{count}ます！チケットはメールでお送りします。",
     "singlePaid": "お支払い確認済みです。参加登録完了です。チケットはメールで送信されます。",
-    "single": "ご登録完了です。チケットはメールでお送りいたします。"
+    "single": "ご登録完了です。チケットはメールでお送りいたします。",
+    "title": "合格です。",
+    "titleApproval": "リクエストを送信しました。",
+    "viewTickets": "チケットを表示する",
+    "done": "終わり",
+    "detail": {
+      "approvalPaid": "お支払いを確認いたしました。ホストがリクエストを承認すると、メールが届きます。",
+      "approval": "ホストがリクエストを承認すると、メールが届きます。",
+      "partyPaid": "お支払いを確認いたしました。皆様{count}名様）のチケットをメールにてお送りいたします。",
+      "party": "{count}名様分のチケットが、まもなく皆様の受信トレイに送信されます。",
+      "singlePaid": "お支払いを確認いたしました。チケットはお客様のメールアドレス宛に送信されました。",
+      "single": "チケットはお客様のメールボックスに送信されます。"
+    }
   },
   "payment": {
     "outcome": {
@@ -227,5 +239,34 @@
     "noFileField": "このイベントではファイルは要求されません。",
     "tooManyUploads": "現在、アップロードが集中しています。しばらくしてからもう一度お試しください。",
     "storageUnavailable": "現在、ファイルストレージはご利用いただけません。"
+  },
+  "order": {
+    "eyebrow": "ご注文内容",
+    "title": "合格です。",
+    "titleApproval": "リクエストを送信しました。",
+    "intro": "{count, plural, one {あなたのチケットは<link>{eventName}</link> 。} other {あなたの#チケット<link>{eventName}</link> 。}}",
+    "introApproval": "主催者がすべての登録内容を確認します。承認され次第、チケットはメールで送付されます。",
+    "emailed": "このページのコピーが{email}に送信されました。",
+    "tickets": "チケット",
+    "openTicket": "オープンチケット",
+    "guestOf": "{name}のゲスト",
+    "receipt": "レシート",
+    "orderNumber": "注文番号",
+    "paidOn": "支払日",
+    "paidWith": "支払い方法",
+    "cardEnding": "{brand}で終わる{last4}",
+    "lineItem": "{count} × {name}",
+    "subtotal": "小計",
+    "discount": "割引（{code}）",
+    "tax": "税",
+    "serviceFee": "サービス料",
+    "total": "合計",
+    "refunded": "返金済み",
+    "stripeReceipt": "Stripeレシート",
+    "print": "印刷またはPDFとして保存",
+    "addToCalendar": "カレンダーに追加",
+    "eventPage": "イベントページ",
+    "notCompleted": "この注文は完了していないため、チケットは発行されていません。イベントページから再度登録してください。",
+    "refundedNotice": "この注文は払い戻しされました。チケットは入場口でスキャンできなくなりました。"
   }
 }

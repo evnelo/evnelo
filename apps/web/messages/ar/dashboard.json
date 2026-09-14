@@ -10,7 +10,8 @@
   "nav": {
     "events": "الفعاليات",
     "checkin": "تحقق في",
-    "settings": "إعدادات"
+    "settings": "إعدادات",
+    "analytics": "التحليلات"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "الحضور",
       "waitlist": "قائمة الانتظار",
       "orders": "طلبات",
-      "checkin": "تحقق في"
+      "checkin": "تحقق في",
+      "analytics": "التحليلات"
     },
     "new": {
       "title": "حدث جديد",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "لا يمكن حذف المؤسسة إلا من قبل المالك.",
       "confirmSlug": "اكتب عنوان URL الخاص بالمنظمة ( {slug} ) للتأكيد."
+    }
+  },
+  "analytics": {
+    "title": "التحليلات",
+    "description": "كيف يعثر الناس على فعاليات {org} ، وماذا يفعلون بعد ذلك.",
+    "period": {
+      "7": "7 أيام",
+      "30": "30 يومًا",
+      "90": "90 يومًا",
+      "label": "فترة",
+      "all": "على مر العصور"
+    },
+    "cards": {
+      "visitors": "الزوار",
+      "views": "{count, plural, one {# عرض} other {# مشاهدة}}",
+      "registrationRate": "معدل التسجيل",
+      "registeredCount": "{count, plural, one {# مسجل} other {# مسجل}}",
+      "openedRate": "فتح النموذج",
+      "openedCount": "{count, plural, one {# شخص} other {# أشخاص}}",
+      "bounceRate": "معدل الارتداد",
+      "bounceHint": "غادر دون فتح النموذج",
+      "registrations": "التسجيلات",
+      "eventsHint": "عير {count, plural, one {حدث #} other {# أحداث}}",
+      "revenue": "ربح",
+      "revenueHint": "بعد عمليات رد الأموال",
+      "checkInRate": "معدل تسجيل الوصول",
+      "checkInHint": "تم تأكيد {checkedIn} من {confirmed}"
+    },
+    "funnel": {
+      "title": "من المنظر إلى التذكرة",
+      "visitors": "الزوار",
+      "opened": "فتح النموذج",
+      "registered": "مسجل"
+    },
+    "byDay": "عدد الزوار خلال النهار",
+    "registrationsByDay": "التسجيلات حسب اليوم",
+    "revenueByMonth": "الإيرادات حسب الشهر",
+    "chart": {
+      "peak": "ذروة {max} /يوم",
+      "peakMonth": "أفضل شهر {max}",
+      "summary": "{total} انتهى {days, plural, one {اليوم #} other {# أيام}}",
+      "monthsSummary": "{total} انتهى {months, plural, one {# شهر} other {# أشهر}}",
+      "aria": "يومياً. ذروة {max} في يوم واحد، {total} إجمالاً.",
+      "revenueAria": "الإيرادات الشهرية.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "من أين يأتي الزوار",
+      "source": "مصدر",
+      "direct": "مباشر أو غير معروف",
+      "visitors": "الزوار",
+      "registered": "مسجل",
+      "empty": "لم يتم العثور على أي جهات إحالة حتى الآن."
+    },
+    "campaigns": {
+      "title": "الحملات",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "أضف utm_source و utm_medium و utm_campaign إلى الروابط التي تشاركها وستظهر هنا."
+    },
+    "audience": {
+      "countries": "بلدان",
+      "country": "دولة",
+      "devices": "الأجهزة",
+      "device": "جهاز",
+      "desktop": "سطح المكتب",
+      "mobile": "هاتف",
+      "empty": "لا جديد حتى الآن."
+    },
+    "email": {
+      "title": "صحة البريد الإلكتروني",
+      "sent": "مرسل",
+      "delivered": "تم التوصيل",
+      "opened": "تم الافتتاح",
+      "clicked": "تم النقر",
+      "bounced": "تم رفضها أو فشلت",
+      "hint": "يجب تفعيل خاصية تتبع عمليات فتح الرسائل والنقر عليها لدى مزود خدمة البريد الإلكتروني؛ أما عمليات الارتداد والتسليم فتُحتسب دائماً."
+    },
+    "topEvents": {
+      "title": "الفعاليات",
+      "event": "حدث",
+      "registrations": "التسجيلات",
+      "visitors": "الزوار",
+      "revenue": "ربح",
+      "checkedIn": "تم تسجيل الوصول"
+    },
+    "export": "تصدير ملف CSV",
+    "noData": {
+      "title": "لا شيء في هذه الفترة",
+      "registrations": "تظهر التسجيلات هنا فور ورودها.",
+      "revenue": "تظهر الطلبات المدفوعة هنا بمجرد وصول أول طلب."
+    },
+    "empty": {
+      "title": "لم يتم تسجيل أي زيارات حتى الآن",
+      "description": "كل زيارة لصفحة الفعالية تُحتسب من الآن فصاعدًا، بدون ملفات تعريف الارتباط. شارك الرابط وستظهر الأرقام الأولى هنا."
+    },
+    "orgEmpty": {
+      "title": "لا توجد فعاليات حتى الآن",
+      "description": "ستظهر الإحصائيات بمجرد نشر أول حدث لك."
     }
   }
 }

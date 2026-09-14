@@ -10,7 +10,8 @@
   "nav": {
     "events": "Sự kiện",
     "checkin": "Đăng ký vào",
-    "settings": "Cài đặt"
+    "settings": "Cài đặt",
+    "analytics": "Phân tích"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "Người tham dự",
       "waitlist": "Danh sách chờ",
       "orders": "Đơn đặt hàng",
-      "checkin": "Đăng ký vào"
+      "checkin": "Đăng ký vào",
+      "analytics": "Phân tích"
     },
     "new": {
       "title": "Sự kiện mới",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "Chỉ chủ sở hữu mới có thể xóa tổ chức.",
       "confirmSlug": "Nhập URL của tổ chức ( {slug} ) để xác nhận."
+    }
+  },
+  "analytics": {
+    "title": "Phân tích",
+    "description": "Cách mọi người tìm thấy các sự kiện của {org} và những hành động tiếp theo của họ.",
+    "period": {
+      "7": "7 ngày",
+      "30": "30 ngày",
+      "90": "90 ngày",
+      "label": "Giai đoạn",
+      "all": "Mọi thời đại"
+    },
+    "cards": {
+      "visitors": "Khách tham quan",
+      "views": "{count, plural, one {# lượt xem} other {# lượt xem}}",
+      "registrationRate": "Tỷ lệ đăng ký",
+      "registeredCount": "{count, plural, one {# đã đăng ký} other {# đã đăng ký}}",
+      "openedRate": "Đã mở biểu mẫu",
+      "openedCount": "{count, plural, one {người #} other {# người}}",
+      "bounceRate": "Tỷ lệ thoát trang",
+      "bounceHint": "rời đi mà không mở biểu mẫu",
+      "registrations": "Đăng ký",
+      "eventsHint": "sang {count, plural, one {sự kiện #} other {sự kiện #}}",
+      "revenue": "Doanh thu",
+      "revenueHint": "sau khi hoàn tiền",
+      "checkInRate": "Giá nhận phòng",
+      "checkInHint": "{checkedIn} trong số {confirmed} đã được xác nhận"
+    },
+    "funnel": {
+      "title": "Từ khung cảnh đến vé",
+      "visitors": "Khách tham quan",
+      "opened": "Đã mở biểu mẫu",
+      "registered": "Đăng ký"
+    },
+    "byDay": "Lượng khách tham quan mỗi ngày",
+    "registrationsByDay": "Đăng ký theo ngày",
+    "revenueByMonth": "Doanh thu theo tháng",
+    "chart": {
+      "peak": "Đỉnh điểm {max} /ngày",
+      "peakMonth": "Tháng tốt nhất {max}",
+      "summary": "{total} trên {days, plural, one {# ngày} other {# ngày}}",
+      "monthsSummary": "{total} trên {months, plural, one {# tháng} other {# tháng}}",
+      "aria": "Mỗi ngày. Cao điểm {max} trong một ngày, tổng cộng {total}.",
+      "revenueAria": "Doanh thu mỗi tháng.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "Khách du lịch đến từ đâu",
+      "source": "Nguồn",
+      "direct": "Trực tiếp hoặc không xác định",
+      "visitors": "Khách tham quan",
+      "registered": "Đăng ký",
+      "empty": "Chưa có người giới thiệu nào."
+    },
+    "campaigns": {
+      "title": "Chiến dịch",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "Thêm utm_source, utm_medium và utm_campaign vào các liên kết bạn chia sẻ và chúng sẽ hiển thị ở đây."
+    },
+    "audience": {
+      "countries": "Các quốc gia",
+      "country": "Quốc gia",
+      "devices": "Thiết bị",
+      "device": "Thiết bị",
+      "desktop": "Máy tính để bàn",
+      "mobile": "Điện thoại",
+      "empty": "Chưa có gì cả."
+    },
+    "email": {
+      "title": "Sức khỏe qua email",
+      "sent": "Đã gửi",
+      "delivered": "Đã giao hàng",
+      "opened": "Đã mở",
+      "clicked": "Đã nhấp chuột",
+      "bounced": "Bị trả lại hoặc thất bại",
+      "hint": "Việc theo dõi lượt mở và lượt nhấp chuột cần được bật tại nhà cung cấp dịch vụ email; lượt gửi bị trả lại và lượt gửi thành công luôn được tính."
+    },
+    "topEvents": {
+      "title": "Sự kiện",
+      "event": "Sự kiện",
+      "registrations": "Đăng ký",
+      "visitors": "Khách tham quan",
+      "revenue": "Doanh thu",
+      "checkedIn": "Đã nhận phòng"
+    },
+    "export": "Xuất CSV",
+    "noData": {
+      "title": "Không có gì trong giai đoạn này.",
+      "registrations": "Thông tin đăng ký sẽ được hiển thị ở đây khi có.",
+      "revenue": "Các đơn hàng đã thanh toán sẽ hiển thị ở đây sau khi đơn hàng đầu tiên được xử lý."
+    },
+    "empty": {
+      "title": "Chưa có lượt truy cập nào được ghi nhận.",
+      "description": "Từ giờ trở đi, mỗi lượt truy cập vào trang sự kiện đều được tính, ngay cả khi không sử dụng cookie. Hãy chia sẻ liên kết và những con số đầu tiên sẽ xuất hiện ở đây."
+    },
+    "orgEmpty": {
+      "title": "Chưa có sự kiện nào",
+      "description": "Dữ liệu phân tích sẽ được cập nhật sau khi sự kiện đầu tiên của bạn được đăng tải."
     }
   }
 }

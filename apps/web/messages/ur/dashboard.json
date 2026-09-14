@@ -10,7 +10,8 @@
   "nav": {
     "events": "ایونٹس",
     "checkin": "چیک ان",
-    "settings": "ترتیبات"
+    "settings": "ترتیبات",
+    "analytics": "تجزیات"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "حاضرین",
       "waitlist": "انتظار کی فہرست",
       "orders": "احکامات",
-      "checkin": "چیک ان"
+      "checkin": "چیک ان",
+      "analytics": "تجزیات"
     },
     "new": {
       "title": "نیا ایونٹ",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "صرف ایک مالک ہی تنظیم کو حذف کر سکتا ہے۔",
       "confirmSlug": "تصدیق کرنے کے لیے تنظیم کا URL ( {slug} ) ٹائپ کریں۔"
+    }
+  },
+  "analytics": {
+    "title": "تجزیات",
+    "description": "لوگ {org} کے ایونٹس کو کیسے تلاش کرتے ہیں، اور وہ آگے کیا کرتے ہیں۔",
+    "period": {
+      "7": "7 دن",
+      "30": "30 دن",
+      "90": "90 دن",
+      "label": "مدت",
+      "all": "ہر وقت"
+    },
+    "cards": {
+      "visitors": "زائرین",
+      "views": "{count, plural, one {# منظر} other {# ملاحظات}}",
+      "registrationRate": "رجسٹریشن کی شرح",
+      "registeredCount": "{count, plural, one {# رجسٹرڈ} other {# رجسٹرڈ}}",
+      "openedRate": "فارم کھولا۔",
+      "openedCount": "{count, plural, one {# شخص} other {# لوگ}}",
+      "bounceRate": "اچھال کی شرح",
+      "bounceHint": "فارم کھولے بغیر چلا گیا۔",
+      "registrations": "رجسٹریشنز",
+      "eventsHint": "اس پار {count, plural, one {# ایونٹ} other {# ایونٹس}}",
+      "revenue": "آمدنی",
+      "revenueHint": "رقم کی واپسی کے بعد",
+      "checkInRate": "چیک ان کی شرح",
+      "checkInHint": "{checkedIn} از {confirmed} تصدیق شدہ"
+    },
+    "funnel": {
+      "title": "دیکھنے سے ٹکٹ تک",
+      "visitors": "زائرین",
+      "opened": "فارم کھولا۔",
+      "registered": "رجسٹرڈ"
+    },
+    "byDay": "دن کے حساب سے زائرین",
+    "registrationsByDay": "دن کے حساب سے رجسٹریشن",
+    "revenueByMonth": "ماہانہ آمدنی",
+    "chart": {
+      "peak": "چوٹی {max} / دن",
+      "peakMonth": "بہترین مہینہ {max}",
+      "summary": "{total} ختم {days, plural, one {# دن} other {# دن}}",
+      "monthsSummary": "{total} ختم {months, plural, one {# مہینہ} other {# مہینے}}",
+      "aria": "فی دن. چوٹی {max} ایک ہی دن، کل {total} ۔",
+      "revenueAria": "ماہانہ آمدنی۔",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "جہاں سے زائرین آتے ہیں۔",
+      "source": "ماخذ",
+      "direct": "براہ راست یا نامعلوم",
+      "visitors": "زائرین",
+      "registered": "رجسٹرڈ",
+      "empty": "ابھی تک کوئی حوالہ دینے والا نہیں۔"
+    },
+    "campaigns": {
+      "title": "مہمات",
+      "campaign": "utm_source / میڈیم / مہم",
+      "empty": "آپ جن لنکس کا اشتراک کرتے ہیں ان میں utm_source، utm_medium اور utm_campaign شامل کریں اور وہ یہاں دکھائی دیتے ہیں۔"
+    },
+    "audience": {
+      "countries": "ممالک",
+      "country": "ملک",
+      "devices": "آلات",
+      "device": "ڈیوائس",
+      "desktop": "ڈیسک ٹاپ",
+      "mobile": "فون",
+      "empty": "ابھی تک کچھ نہیں"
+    },
+    "email": {
+      "title": "ای میل صحت",
+      "sent": "بھیجا",
+      "delivered": "پہنچایا",
+      "opened": "کھول دیا",
+      "clicked": "کلک کیا۔",
+      "bounced": "اچھال یا ناکام",
+      "hint": "کھولنے اور کلکس کے لیے ای میل فراہم کنندہ پر ٹریکنگ کو فعال کرنے کی ضرورت ہے۔ باؤنس اور ڈیلیوری ہمیشہ شمار ہوتی ہے۔"
+    },
+    "topEvents": {
+      "title": "ایونٹس",
+      "event": "ایونٹ",
+      "registrations": "رجسٹریشنز",
+      "visitors": "زائرین",
+      "revenue": "آمدنی",
+      "checkedIn": "چیک ان کیا۔"
+    },
+    "export": "CSV برآمد کریں۔",
+    "noData": {
+      "title": "اس عرصے میں کچھ نہیں۔",
+      "registrations": "اندراجات یہاں آتے ہی دکھائی دیتے ہیں۔",
+      "revenue": "پہلا آرڈر آنے کے بعد ادا شدہ آرڈرز یہاں دکھائے جاتے ہیں۔"
+    },
+    "empty": {
+      "title": "ابھی تک کوئی وزٹ ریکارڈ نہیں ہوا۔",
+      "description": "ایونٹ کے صفحہ کا ہر دورہ اب سے بغیر کوکیز کے شمار ہوتا ہے۔ لنک کا اشتراک کریں اور پہلے نمبر یہاں ظاہر ہوں گے۔"
+    },
+    "orgEmpty": {
+      "title": "ابھی تک کوئی ایونٹس نہیں ہیں۔",
+      "description": "آپ کا پہلا ایونٹ شائع ہونے کے بعد تجزیات پُر کریں۔"
     }
   }
 }

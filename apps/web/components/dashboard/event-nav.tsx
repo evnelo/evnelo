@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { ClipboardList, Clock3, Gauge, Mail, Receipt, ScanLine, SlidersHorizontal, Ticket, Users } from "lucide-react";
+import { BarChart3, ClipboardList, Clock3, Gauge, Mail, Receipt, ScanLine, SlidersHorizontal, Ticket, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Tab = { href: string; label: string; icon: typeof Gauge; count?: number; absolute?: (id: string) => string };
@@ -15,6 +15,7 @@ export function EventNav({ id, counts }: { id: string; counts?: { attendees?: nu
   const base = `/dashboard/events/${id}`;
   const tabs: Tab[] = [
     { href: "", label: t("event.nav.overview"), icon: Gauge },
+    { href: "/analytics", label: t("event.nav.analytics"), icon: BarChart3 },
     { href: "/edit", label: tc("actions.edit"), icon: SlidersHorizontal },
     { href: "/tickets", label: t("event.nav.tickets"), icon: Ticket },
     { href: "/form", label: t("event.nav.form"), icon: ClipboardList },

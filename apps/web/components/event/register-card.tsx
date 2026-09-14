@@ -16,6 +16,7 @@ import { paymentHold, paymentOutcome, registrationSuccessMessage, type PaymentOu
 import type { Edition } from "@evnelo/core";
 import { EVENTS } from "@/lib/analytics-events";
 import { track } from "@/components/analytics";
+import { sendVisit } from "@/components/visit-beacon";
 
 type Props = {
   eventId: string; eventName: string; ticketTypes: TicketType[]; fields: RegistrationField[];
@@ -194,7 +195,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
   // closing the dialog after success moves the outcome onto the card
   const changeOpen = useCallback((next: boolean) => {
     if (!next && success) { setDone(success); setSuccess(undefined); }
-    if (next) track(EVENTS.registrationOpened, { eventId, paid: paidPossible, requiresApproval });
+    if (next) { track(EVENTS.registrationOpened, { eventId, paid: paidPossible, requiresApproval }); sendVisit(eventId, "opened"); }
     setOpen(next);
   }, [success, eventId, paidPossible, requiresApproval]);
 

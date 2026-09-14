@@ -10,7 +10,8 @@
   "nav": {
     "events": "Olaylar",
     "checkin": "Giriş",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "analytics": "Analitik"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "Katılımcılar",
       "waitlist": "Bekleme listesi",
       "orders": "Siparişler",
-      "checkin": "Giriş"
+      "checkin": "Giriş",
+      "analytics": "Analitik"
     },
     "new": {
       "title": "Yeni etkinlik",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "Kuruluşu yalnızca sahibi silebilir.",
       "confirmSlug": "Onaylamak için kuruluşun URL'sini ( {slug} ) yazın."
+    }
+  },
+  "analytics": {
+    "title": "Analitik",
+    "description": "İnsanlar {org} 'ın etkinliklerini nasıl buluyor ve sonrasında ne yapıyorlar?",
+    "period": {
+      "7": "7 gün",
+      "30": "30 gün",
+      "90": "90 gün",
+      "label": "Dönem",
+      "all": "Tüm zamanlar"
+    },
+    "cards": {
+      "visitors": "Ziyaretçiler",
+      "views": "{count, plural, one {# görünüm} other {# görüntüleme}}",
+      "registrationRate": "Kayıt ücreti",
+      "registeredCount": "{count, plural, one {# kayıtlı} other {# kayıtlı}}",
+      "openedRate": "Formu açtım.",
+      "openedCount": "{count, plural, one {# kişi} other {# kişi}}",
+      "bounceRate": "Sıçrama oranı",
+      "bounceHint": "Formu açmadan ayrıldım.",
+      "registrations": "Kayıtlar",
+      "eventsHint": "karşısında {count, plural, one {# etkinliği} other {# etkinlik}}",
+      "revenue": "Hasılat",
+      "revenueHint": "geri ödemelerden sonra",
+      "checkInRate": "Giriş ücreti",
+      "checkInHint": "{confirmed} kişiden {checkedIn} onaylandı"
+    },
+    "funnel": {
+      "title": "Görüntülemeden bilete kadar",
+      "visitors": "Ziyaretçiler",
+      "opened": "Formu açtım.",
+      "registered": "Kayıtlı"
+    },
+    "byDay": "Günlük ziyaretçiler",
+    "registrationsByDay": "Günlük kayıtlar",
+    "revenueByMonth": "Aylık gelirler",
+    "chart": {
+      "peak": "Zirve {max} /gün",
+      "peakMonth": "En iyi ay {max}",
+      "summary": "{total} üzerinde {days, plural, one {# gün} other {# gün}}",
+      "monthsSummary": "{total} üzerinde {months, plural, one {# ay} other {# ay}}",
+      "aria": "Günlük. Tek bir günde en yüksek değer {max}, toplamda {total}.",
+      "revenueAria": "Aylık gelir.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "Ziyaretçilerin nereden geldiği",
+      "source": "Kaynak",
+      "direct": "Doğrudan veya bilinmeyen",
+      "visitors": "Ziyaretçiler",
+      "registered": "Kayıtlı",
+      "empty": "Henüz yönlendiren yok."
+    },
+    "campaigns": {
+      "title": "Kampanyalar",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "Paylaştığınız bağlantılara utm_source, utm_medium ve utm_campaign etiketlerini ekleyin, böylece bu bağlantılar burada görünecektir."
+    },
+    "audience": {
+      "countries": "Ülkeler",
+      "country": "Ülke",
+      "devices": "Cihazlar",
+      "device": "Cihaz",
+      "desktop": "Masaüstü",
+      "mobile": "Telefon",
+      "empty": "Henüz bir şey yok."
+    },
+    "email": {
+      "title": "E-posta sağlığı",
+      "sent": "Gönderilmiş",
+      "delivered": "Teslim edilmiş",
+      "opened": "Açıldı",
+      "clicked": "Tıklandı",
+      "bounced": "Geri döndü veya başarısız oldu",
+      "hint": "E-posta sağlayıcınızda açılma ve tıklama sayılarının izlenmesi etkinleştirilmelidir; geri dönen e-postalar ve teslim edilen e-postalar her zaman sayılır."
+    },
+    "topEvents": {
+      "title": "Olaylar",
+      "event": "Etkinlik",
+      "registrations": "Kayıtlar",
+      "visitors": "Ziyaretçiler",
+      "revenue": "Hasılat",
+      "checkedIn": "Giriş yapıldı."
+    },
+    "export": "CSV olarak dışa aktar",
+    "noData": {
+      "title": "Bu dönemde hiçbir şey yok.",
+      "registrations": "Kayıtlar geldikçe burada gösterilecektir.",
+      "revenue": "İlk sipariş teslim edildikten sonra, ödemesi yapılmış siparişler burada görünecektir."
+    },
+    "empty": {
+      "title": "Henüz hiçbir ziyaret kaydedilmedi.",
+      "description": "Bundan böyle, çerezler olmadan etkinlik sayfasına yapılan her ziyaret sayılacak. Bağlantıyı paylaşın ve ilk sayılar burada görünecektir."
+    },
+    "orgEmpty": {
+      "title": "Henüz hiçbir etkinlik yok.",
+      "description": "İlk etkinliğiniz yayınlandıktan sonra analiz verileri doldurulacaktır."
     }
   }
 }

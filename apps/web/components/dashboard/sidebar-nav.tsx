@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, ScanLine, Settings } from "lucide-react";
+import { BarChart3, CalendarDays, ScanLine, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // icon names, not components: this list comes from a server component and functions cannot cross that boundary
-const ICONS = { events: CalendarDays, checkin: ScanLine, settings: Settings } as const;
+const ICONS = { events: CalendarDays, analytics: BarChart3, checkin: ScanLine, settings: Settings } as const;
 export type SidebarItem = { href: string; label: string; icon: keyof typeof ICONS; exact?: boolean };
 
 export function SidebarNav({ items }: { items: SidebarItem[] }) {

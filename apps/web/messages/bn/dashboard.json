@@ -10,7 +10,8 @@
   "nav": {
     "events": "ইভেন্টগুলি",
     "checkin": "চেক-ইন",
-    "settings": "সেটিংস"
+    "settings": "সেটিংস",
+    "analytics": "বিশ্লেষণ"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "উপস্থিত ব্যক্তিরা",
       "waitlist": "অপেক্ষমাণ তালিকা",
       "orders": "আদেশ",
-      "checkin": "চেক-ইন"
+      "checkin": "চেক-ইন",
+      "analytics": "বিশ্লেষণ"
     },
     "new": {
       "title": "নতুন ইভেন্ট",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "শুধুমাত্র মালিকই সংস্থাটি মুছে ফেলতে পারেন।",
       "confirmSlug": "নিশ্চিত করতে প্রতিষ্ঠানের URL ( {slug} ) টাইপ করুন।"
+    }
+  },
+  "analytics": {
+    "title": "বিশ্লেষণ",
+    "description": "লোকেরা কীভাবে {org} এর ইভেন্টগুলো খুঁজে পায় এবং এরপর তারা কী করে।",
+    "period": {
+      "7": "৭ দিন",
+      "30": "৩০ দিন",
+      "90": "৯০ দিন",
+      "label": "সময়কাল",
+      "all": "সর্বকালের"
+    },
+    "cards": {
+      "visitors": "দর্শনার্থীদের",
+      "views": "{count, plural, one {# দৃশ্য} other {# টি ভিউ}}",
+      "registrationRate": "নিবন্ধন হার",
+      "registeredCount": "{count, plural, one {# নিবন্ধিত} other {# নিবন্ধিত}}",
+      "openedRate": "ফর্মটি খোলা হয়েছে",
+      "openedCount": "{count, plural, one {# ব্যক্তি} other {# জন}}",
+      "bounceRate": "বাউন্স রেট",
+      "bounceHint": "ফর্মটি না খুলেই চলে গেল",
+      "registrations": "নিবন্ধন",
+      "eventsHint": "জুড়ে {count, plural, one {# ইভেন্ট} other {# টি ইভেন্ট}}",
+      "revenue": "রাজস্ব",
+      "revenueHint": "ফেরতের পরে",
+      "checkInRate": "চেক-ইন রেট",
+      "checkInHint": "{confirmed} এর মধ্যে {checkedIn} নিশ্চিত করা হয়েছে"
+    },
+    "funnel": {
+      "title": "দৃশ্য থেকে টিকিট পর্যন্ত",
+      "visitors": "দর্শনার্থীদের",
+      "opened": "ফর্মটি খোলা হয়েছে",
+      "registered": "নিবন্ধিত"
+    },
+    "byDay": "দিনের বেলায় দর্শনার্থীরা",
+    "registrationsByDay": "দিনের ভিত্তিতে নিবন্ধন",
+    "revenueByMonth": "মাসিক আয়",
+    "chart": {
+      "peak": "সর্বোচ্চ {max} /দিন",
+      "peakMonth": "সেরা মাস {max}",
+      "summary": "{total} ওভার {days, plural, one {# দিন} other {# দিন}}",
+      "monthsSummary": "{total} ওভার {months, plural, one {# মাস} other {# মাস}}",
+      "aria": "প্রতিদিন। একদিনে সর্বোচ্চ {max}, মোট {total} ।",
+      "revenueAria": "মাসিক আয়।",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "দর্শনার্থীরা কোথা থেকে আসেন",
+      "source": "উৎস",
+      "direct": "সরাসরি বা অজানা",
+      "visitors": "দর্শনার্থীদের",
+      "registered": "নিবন্ধিত",
+      "empty": "এখনো কোনো রেফারার নেই।"
+    },
+    "campaigns": {
+      "title": "প্রচারণা",
+      "campaign": "ইউটিএম_সোর্স / মিডিয়াম / ক্যাম্পেইন",
+      "empty": "আপনার শেয়ার করা লিঙ্কগুলিতে utm_source, utm_medium এবং utm_campaign যোগ করুন, তাহলে সেগুলি এখানে দেখা যাবে।"
+    },
+    "audience": {
+      "countries": "দেশগুলি",
+      "country": "দেশ",
+      "devices": "ডিভাইস",
+      "device": "ডিভাইস",
+      "desktop": "ডেস্কটপ",
+      "mobile": "ফোন",
+      "empty": "এখনো কিছু হয়নি।"
+    },
+    "email": {
+      "title": "ইমেইল স্বাস্থ্য",
+      "sent": "পাঠানো হয়েছে",
+      "delivered": "বিতরণ করা হয়েছে",
+      "opened": "খোলা",
+      "clicked": "ক্লিক করা হয়েছে",
+      "bounced": "বাউন্স করেছে বা ব্যর্থ হয়েছে",
+      "hint": "ইমেল প্রদানকারীর কাছে ইমেল খোলা এবং ক্লিকের ট্র্যাকিং চালু করা প্রয়োজন; বাউন্স এবং ডেলিভারিও সর্বদা গণনা করা হয়।"
+    },
+    "topEvents": {
+      "title": "ইভেন্টগুলি",
+      "event": "অনুষ্ঠান",
+      "registrations": "নিবন্ধন",
+      "visitors": "দর্শনার্থীদের",
+      "revenue": "রাজস্ব",
+      "checkedIn": "চেক ইন করা হয়েছে"
+    },
+    "export": "CSV রপ্তানি করুন",
+    "noData": {
+      "title": "এই সময়ে কিছুই না",
+      "registrations": "নিবন্ধনগুলো আসা মাত্রই এখানে দেখানো হয়।",
+      "revenue": "প্রথম অর্ডারটি আসার পর পরিশোধিত অর্ডারগুলো এখানে দেখানো হবে।"
+    },
+    "empty": {
+      "title": "এখনো কোনো পরিদর্শনের তথ্য নথিভুক্ত করা হয়নি।",
+      "description": "এখন থেকে কুকি ছাড়াই ইভেন্ট পেজের প্রতিটি ভিজিট গণনা করা হবে। লিঙ্কটি শেয়ার করুন এবং প্রথম সংখ্যাগুলো এখানে দেখা যাবে।"
+    },
+    "orgEmpty": {
+      "title": "এখনো কোনো অনুষ্ঠান নেই",
+      "description": "আপনার প্রথম ইভেন্টটি প্রকাশিত হলে অ্যানালিটিক্স পূরণ হয়ে যাবে।"
     }
   }
 }

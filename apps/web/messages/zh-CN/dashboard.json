@@ -10,7 +10,8 @@
   "nav": {
     "events": "活动",
     "checkin": "报到",
-    "settings": "设置"
+    "settings": "设置",
+    "analytics": "分析"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "与会者",
       "waitlist": "候补名单",
       "orders": "订单",
-      "checkin": "报到"
+      "checkin": "报到",
+      "analytics": "分析"
     },
     "new": {
       "title": "新活动",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "只有所有者才能删除组织。",
       "confirmSlug": "输入组织网址（ {slug} ）进行确认。"
+    }
+  },
+  "analytics": {
+    "title": "分析",
+    "description": "人们如何找到{org}的活动，以及他们接下来会做什么。",
+    "period": {
+      "7": "7天",
+      "30": "30天",
+      "90": "90天",
+      "label": "时期",
+      "all": "所有时间"
+    },
+    "cards": {
+      "visitors": "访客",
+      "views": "{count, plural, one {#视图} other {#浏览}}",
+      "registrationRate": "注册率",
+      "registeredCount": "{count, plural, one {#已注册} other {#已注册}}",
+      "openedRate": "打开表格",
+      "openedCount": "{count, plural, one {#人} other {#人}}",
+      "bounceRate": "跳出率",
+      "bounceHint": "未打开表格就离开了",
+      "registrations": "注册",
+      "eventsHint": "穿过 {count, plural, one {#活动} other {#活动}}",
+      "revenue": "收入",
+      "revenueHint": "退款后",
+      "checkInRate": "入住率",
+      "checkInHint": "{checkedIn}中的{confirmed}已确认"
+    },
+    "funnel": {
+      "title": "从视野到门票",
+      "visitors": "访客",
+      "opened": "打开表格",
+      "registered": "挂号的"
+    },
+    "byDay": "日间访客",
+    "registrationsByDay": "按日统计的注册人数",
+    "revenueByMonth": "按月收入",
+    "chart": {
+      "peak": "峰值{max} /天",
+      "peakMonth": "最佳月份{max}",
+      "summary": "{total}超过 {days, plural, one {#天} other {#天}}",
+      "monthsSummary": "{total}超过 {months, plural, one {#月} other {#月}}",
+      "aria": "每日峰值{max} ，总峰值{total} 。",
+      "revenueAria": "月收入。",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "游客来自哪里",
+      "source": "来源",
+      "direct": "直接或未知",
+      "visitors": "访客",
+      "registered": "挂号的",
+      "empty": "目前还没有推荐人。"
+    },
+    "campaigns": {
+      "title": "竞选活动",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "在您分享的链接中添加 utm_source、utm_medium 和 utm_campaign，它们就会显示在这里。"
+    },
+    "audience": {
+      "countries": "国家",
+      "country": "国家",
+      "devices": "设备",
+      "device": "设备",
+      "desktop": "桌面",
+      "mobile": "电话",
+      "empty": "目前还没有消息。"
+    },
+    "email": {
+      "title": "电子邮件健康状况",
+      "sent": "发送",
+      "delivered": "发表",
+      "opened": "已打开",
+      "clicked": "点击",
+      "bounced": "退回或失败",
+      "hint": "需要在电子邮件服务提供商处启用邮件打开和点击跟踪功能；退信和送达始终会被计入。"
+    },
+    "topEvents": {
+      "title": "活动",
+      "event": "活动",
+      "registrations": "注册",
+      "visitors": "访客",
+      "revenue": "收入",
+      "checkedIn": "已办理入住"
+    },
+    "export": "导出 CSV 文件",
+    "noData": {
+      "title": "此期间无任何内容",
+      "registrations": "注册信息会在此处实时显示。",
+      "revenue": "首单到货后，已付款订单将显示在此处。"
+    },
+    "empty": {
+      "title": "暂无访问记录",
+      "description": "从现在开始，每次访问活动页面都会计入统计，无需使用 Cookie。分享链接，第一批统计结果就会显示在这里。"
+    },
+    "orgEmpty": {
+      "title": "目前还没有活动",
+      "description": "您的第一个活动发布后，分析数据就会开始填充。"
     }
   }
 }

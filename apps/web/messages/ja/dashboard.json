@@ -10,7 +10,8 @@
   "nav": {
     "events": "イベント",
     "checkin": "チェックイン",
-    "settings": "設定"
+    "settings": "設定",
+    "analytics": "分析"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "出席者",
       "waitlist": "待機リスト",
       "orders": "注文",
-      "checkin": "チェックイン"
+      "checkin": "チェックイン",
+      "analytics": "分析"
     },
     "new": {
       "title": "新しいイベント",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "組織を削除できるのは所有者のみです。",
       "confirmSlug": "確認のため、組織のURL（ {slug} ）を入力してください。"
+    }
+  },
+  "analytics": {
+    "title": "分析",
+    "description": "人々が{org}のイベントをどのように見つけ、次に何をするか。",
+    "period": {
+      "7": "7日間",
+      "30": "30日間",
+      "90": "90日間",
+      "label": "期間",
+      "all": "歴代"
+    },
+    "cards": {
+      "visitors": "訪問者",
+      "views": "{count, plural, one {#ビュー} other {#ビュー}}",
+      "registrationRate": "登録率",
+      "registeredCount": "{count, plural, one {#登録済み} other {#登録済み}}",
+      "openedRate": "フォームを開きました",
+      "openedCount": "{count, plural, one {#人} other {#人}}",
+      "bounceRate": "直帰率",
+      "bounceHint": "フォームを開かずに左に進みました",
+      "registrations": "登録",
+      "eventsHint": "横切って {count, plural, one {#イベント} other {#イベント}}",
+      "revenue": "収益",
+      "revenueHint": "返金後",
+      "checkInRate": "チェックイン料金",
+      "checkInHint": "{checkedIn} {confirmed}確認済み"
+    },
+    "funnel": {
+      "title": "眺めからチケットまで",
+      "visitors": "訪問者",
+      "opened": "フォームを開きました",
+      "registered": "登録済み"
+    },
+    "byDay": "日中の訪問者",
+    "registrationsByDay": "日別登録者数",
+    "revenueByMonth": "月別収益",
+    "chart": {
+      "peak": "ピーク時{max} /日",
+      "peakMonth": "最高の月{max}",
+      "summary": "{total}以上 {days, plural, one {#日} other {#日}}",
+      "monthsSummary": "{total}以上 {months, plural, one {#ヶ月} other {#ヶ月}}",
+      "aria": "1日あたり。1日あたりのピークは{max} 、合計は{total} 。",
+      "revenueAria": "月間収益。",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "訪問者の出身地",
+      "source": "ソース",
+      "direct": "直接的か不明か",
+      "visitors": "訪問者",
+      "registered": "登録済み",
+      "empty": "紹介者はまだいません。"
+    },
+    "campaigns": {
+      "title": "キャンペーン",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "共有するリンクにutm_source、utm_medium、utm_campaignを追加すると、ここに表示されます。"
+    },
+    "audience": {
+      "countries": "国々",
+      "country": "国",
+      "devices": "デバイス",
+      "device": "デバイス",
+      "desktop": "デスクトップ",
+      "mobile": "電話",
+      "empty": "まだ何も起きていない。"
+    },
+    "email": {
+      "title": "メールヘルス",
+      "sent": "送信済み",
+      "delivered": "配達済み",
+      "opened": "オープンしました",
+      "clicked": "クリックしました",
+      "bounced": "バウンスまたは失敗",
+      "hint": "開封数とクリック数は、メールプロバイダー側でトラッキングを有効にする必要があります。バウンス数と配信数は常にカウントされます。"
+    },
+    "topEvents": {
+      "title": "イベント",
+      "event": "イベント",
+      "registrations": "登録",
+      "visitors": "訪問者",
+      "revenue": "収益",
+      "checkedIn": "チェックインしました"
+    },
+    "export": "CSVをエクスポート",
+    "noData": {
+      "title": "この期間には何もありません",
+      "registrations": "登録情報は、到着次第こちらに表示されます。",
+      "revenue": "お支払い済みの注文は、最初の注文が到着するとここに表示されます。"
+    },
+    "empty": {
+      "title": "まだ訪問記録はありません",
+      "description": "今後は、Cookieを使用せずにイベントページへのアクセスがすべてカウントされます。リンクを共有すると、最初のアクセス数がここに表示されます。"
+    },
+    "orgEmpty": {
+      "title": "イベントはまだありません",
+      "description": "最初のイベントが公開されると、分析データが自動的に入力されます。"
     }
   }
 }

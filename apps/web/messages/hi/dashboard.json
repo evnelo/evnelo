@@ -10,7 +10,8 @@
   "nav": {
     "events": "कार्यक्रम",
     "checkin": "चेक इन",
-    "settings": "सेटिंग्स"
+    "settings": "सेटिंग्स",
+    "analytics": "एनालिटिक्स"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "सहभागी",
       "waitlist": "प्रतीक्षा सूची",
       "orders": "आदेश",
-      "checkin": "चेक इन"
+      "checkin": "चेक इन",
+      "analytics": "एनालिटिक्स"
     },
     "new": {
       "title": "नई इवैंट",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "संगठन को केवल मालिक ही हटा सकता है।",
       "confirmSlug": "पुष्टि करने के लिए संगठन का यूआरएल ( {slug} ) टाइप करें।"
+    }
+  },
+  "analytics": {
+    "title": "एनालिटिक्स",
+    "description": "लोग {org} की घटनाओं को कैसे खोजते हैं, और उसके बाद वे क्या करते हैं।",
+    "period": {
+      "7": "7 दिन",
+      "30": "30 दिन",
+      "90": "90 दिन",
+      "label": "अवधि",
+      "all": "पूरे समय"
+    },
+    "cards": {
+      "visitors": "आगंतुकों",
+      "views": "{count, plural, one {# दृश्य} other {# दृश्य}}",
+      "registrationRate": "पंजीकरण दर",
+      "registeredCount": "{count, plural, one {# पंजीकृत} other {# पंजीकृत}}",
+      "openedRate": "फॉर्म खोला",
+      "openedCount": "{count, plural, one {# व्यक्ति} other {# लोग}}",
+      "bounceRate": "बाउंस दर",
+      "bounceHint": "फॉर्म खोले बिना ही चले गए।",
+      "registrations": "पंजीकरण",
+      "eventsHint": "आर-पार {count, plural, one {# घटना} other {# घटनाएँ}}",
+      "revenue": "आय",
+      "revenueHint": "रिफंड के बाद",
+      "checkInRate": "चेक-इन दर",
+      "checkInHint": "{confirmed} में से {checkedIn} पुष्टि हुई"
+    },
+    "funnel": {
+      "title": "दृश्य से लेकर टिकट तक",
+      "visitors": "आगंतुकों",
+      "opened": "फॉर्म खोला",
+      "registered": "दर्ज कराई"
+    },
+    "byDay": "दिन के समय आने वाले आगंतुक",
+    "registrationsByDay": "प्रतिदिन के हिसाब से पंजीकरण",
+    "revenueByMonth": "मासिक राजस्व",
+    "chart": {
+      "peak": "शिखर {max} /दिन",
+      "peakMonth": "सर्वश्रेष्ठ महीना {max}",
+      "summary": "{total} से अधिक {days, plural, one {# दिन} other {# दिन}}",
+      "monthsSummary": "{total} से अधिक {months, plural, one {# महीना} other {# महीने}}",
+      "aria": "प्रति दिन। एक दिन में अधिकतम {max}, कुल मिलाकर {total} ।",
+      "revenueAria": "प्रति माह राजस्व।",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "जहां से आगंतुक आते हैं",
+      "source": "स्रोत",
+      "direct": "प्रत्यक्ष या अज्ञात",
+      "visitors": "आगंतुकों",
+      "registered": "दर्ज कराई",
+      "empty": "अभी तक कोई सिफारिशकर्ता नहीं मिला है।"
+    },
+    "campaigns": {
+      "title": "अभियान",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "आपके द्वारा साझा किए जाने वाले लिंक में utm_source, utm_medium और utm_campaign जोड़ें और वे यहां दिखाई देंगे।"
+    },
+    "audience": {
+      "countries": "देशों",
+      "country": "देश",
+      "devices": "उपकरण",
+      "device": "उपकरण",
+      "desktop": "डेस्कटॉप",
+      "mobile": "फ़ोन",
+      "empty": "अभी तक कुछ भी नहीं।"
+    },
+    "email": {
+      "title": "ईमेल स्वास्थ्य",
+      "sent": "भेजा",
+      "delivered": "पहुंचा दिया",
+      "opened": "खोला गया",
+      "clicked": "क्लिक किए गए",
+      "bounced": "बाउंस हो गया या असफल हो गया",
+      "hint": "ईमेल प्रदाता पर ओपन और क्लिक ट्रैकिंग सक्षम होनी चाहिए; बाउंस और डिलीवरी हमेशा मायने रखती हैं।"
+    },
+    "topEvents": {
+      "title": "कार्यक्रम",
+      "event": "आयोजन",
+      "registrations": "पंजीकरण",
+      "visitors": "आगंतुकों",
+      "revenue": "आय",
+      "checkedIn": "आगमन की सूचना दिया"
+    },
+    "export": "CSV निर्यात करें",
+    "noData": {
+      "title": "इस अवधि में कुछ भी नहीं",
+      "registrations": "यहां पंजीकरण आते ही प्रदर्शित हो जाते हैं।",
+      "revenue": "पहला ऑर्डर प्राप्त होने के बाद भुगतान किए गए ऑर्डर यहां दिखाई देंगे।"
+    },
+    "empty": {
+      "title": "अभी तक कोई विज़िट दर्ज नहीं की गई है",
+      "description": "अब से इवेंट पेज पर आने वाली हर विज़िट गिनी जाएगी, बिना कुकीज़ के। लिंक शेयर करें और शुरुआती आंकड़े यहां दिखाई देंगे।"
+    },
+    "orgEmpty": {
+      "title": "अभी तक कोई कार्यक्रम नहीं",
+      "description": "पहला इवेंट प्रकाशित होने के बाद एनालिटिक्स अपने आप भर जाएंगे।"
     }
   }
 }

@@ -15,6 +15,7 @@ import { activeWaitlistHolds, liveAttendeeCount } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { EVENTS } from "@/lib/analytics-events";
 import { Track } from "@/components/analytics";
+import { VisitBeacon } from "@/components/visit-beacon";
 
 type Params = { params: Promise<{ organizationSlug: string; eventSlug: string }> };
 
@@ -97,6 +98,7 @@ export default async function EventPage({ params }: Params) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />
       )}
 
+      <VisitBeacon eventId={event.id} />
       <Track event={EVENTS.eventPageViewed} properties={{ eventId: event.id, organizationId: org.id, status: event.status, locationType: event.locationType, visibility: event.visibility }} />
       {hasCover && (
         <div className="relative isolate aspect-[3/2] max-h-[36rem] w-full overflow-hidden bg-muted sm:aspect-[16/7]">

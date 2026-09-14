@@ -10,7 +10,8 @@
   "nav": {
     "events": "Events",
     "checkin": "Check-in",
-    "settings": "Settings"
+    "settings": "Settings",
+    "analytics": "Analytics"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "Attendees",
       "waitlist": "Waitlist",
       "orders": "Orders",
-      "checkin": "Check-in"
+      "checkin": "Check-in",
+      "analytics": "Analytics"
     },
     "new": {
       "title": "New event",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "Only an owner can delete the organization.",
       "confirmSlug": "Type the organization URL ({slug}) to confirm."
+    }
+  },
+  "analytics": {
+    "title": "Analytics",
+    "description": "How people find {org}'s events, and what they do next.",
+    "period": {
+      "label": "Period",
+      "7": "7 days",
+      "30": "30 days",
+      "90": "90 days",
+      "all": "All time"
+    },
+    "cards": {
+      "visitors": "Visitors",
+      "views": "{count, plural, one {# view} other {# views}}",
+      "registrationRate": "Registration rate",
+      "registeredCount": "{count, plural, one {# registered} other {# registered}}",
+      "openedRate": "Opened the form",
+      "openedCount": "{count, plural, one {# person} other {# people}}",
+      "bounceRate": "Bounce rate",
+      "bounceHint": "left without opening the form",
+      "registrations": "Registrations",
+      "eventsHint": "across {count, plural, one {# event} other {# events}}",
+      "revenue": "Revenue",
+      "revenueHint": "after refunds",
+      "checkInRate": "Check-in rate",
+      "checkInHint": "{checkedIn} of {confirmed} confirmed"
+    },
+    "funnel": {
+      "title": "From view to ticket",
+      "visitors": "Visitors",
+      "opened": "Opened the form",
+      "registered": "Registered"
+    },
+    "byDay": "Visitors by day",
+    "registrationsByDay": "Registrations by day",
+    "revenueByMonth": "Revenue by month",
+    "chart": {
+      "peak": "Peak {max}/day",
+      "peakMonth": "Best month {max}",
+      "summary": "{total} over {days, plural, one {# day} other {# days}}",
+      "monthsSummary": "{total} over {months, plural, one {# month} other {# months}}",
+      "aria": "Per day. Peak {max} on a single day, {total} in total.",
+      "revenueAria": "Revenue per month.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "Where visitors come from",
+      "source": "Source",
+      "direct": "Direct or unknown",
+      "visitors": "Visitors",
+      "registered": "Registered",
+      "empty": "No referrers yet."
+    },
+    "campaigns": {
+      "title": "Campaigns",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "Add utm_source, utm_medium and utm_campaign to the links you share and they show up here."
+    },
+    "audience": {
+      "countries": "Countries",
+      "country": "Country",
+      "devices": "Devices",
+      "device": "Device",
+      "desktop": "Desktop",
+      "mobile": "Phone",
+      "empty": "Nothing yet."
+    },
+    "email": {
+      "title": "Email health",
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "opened": "Opened",
+      "clicked": "Clicked",
+      "bounced": "Bounced or failed",
+      "hint": "Opens and clicks need tracking enabled at the email provider; bounces and deliveries always count."
+    },
+    "topEvents": {
+      "title": "Events",
+      "event": "Event",
+      "registrations": "Registrations",
+      "visitors": "Visitors",
+      "revenue": "Revenue",
+      "checkedIn": "Checked in"
+    },
+    "export": "Export CSV",
+    "noData": {
+      "title": "Nothing in this period",
+      "registrations": "Registrations show here as they come in.",
+      "revenue": "Paid orders show here once the first one lands."
+    },
+    "empty": {
+      "title": "No visits recorded yet",
+      "description": "Every visit to the event page counts from now on, without cookies. Share the link and the first numbers appear here."
+    },
+    "orgEmpty": {
+      "title": "No events yet",
+      "description": "Analytics fill in once your first event is published."
     }
   }
 }

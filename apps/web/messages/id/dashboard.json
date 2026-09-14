@@ -10,7 +10,8 @@
   "nav": {
     "events": "Acara",
     "checkin": "Check-in",
-    "settings": "Pengaturan"
+    "settings": "Pengaturan",
+    "analytics": "Analisis"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "Peserta",
       "waitlist": "Daftar Tunggu",
       "orders": "Pesanan",
-      "checkin": "Check-in"
+      "checkin": "Check-in",
+      "analytics": "Analisis"
     },
     "new": {
       "title": "Acara baru",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "Hanya pemilik yang dapat menghapus organisasi.",
       "confirmSlug": "Ketik URL organisasi ( {slug} ) untuk konfirmasi."
+    }
+  },
+  "analytics": {
+    "title": "Analisis",
+    "description": "Bagaimana orang menemukan acara {org}, dan apa yang mereka lakukan selanjutnya.",
+    "period": {
+      "7": "7 hari",
+      "30": "30 hari",
+      "90": "90 hari",
+      "label": "Periode",
+      "all": "Sepanjang masa"
+    },
+    "cards": {
+      "visitors": "Pengunjung",
+      "views": "{count, plural, one {tampilan #} other {# tayangan}}",
+      "registrationRate": "Tingkat pendaftaran",
+      "registeredCount": "{count, plural, one {# terdaftar} other {# terdaftar}}",
+      "openedRate": "Formulir telah dibuka.",
+      "openedCount": "{count, plural, one {# orang} other {# orang}}",
+      "bounceRate": "Rasio pentalan",
+      "bounceHint": "pergi tanpa membuka formulir",
+      "registrations": "Pendaftaran",
+      "eventsHint": "lintas {count, plural, one {acara #} other {# peristiwa}}",
+      "revenue": "Pendapatan",
+      "revenueHint": "setelah pengembalian dana",
+      "checkInRate": "Tarif check-in",
+      "checkInHint": "{checkedIn} dari {confirmed} dikonfirmasi"
+    },
+    "funnel": {
+      "title": "Dari pemandangan hingga tiket",
+      "visitors": "Pengunjung",
+      "opened": "Formulir telah dibuka.",
+      "registered": "Terdaftar"
+    },
+    "byDay": "Pengunjung di siang hari",
+    "registrationsByDay": "Pendaftaran per hari",
+    "revenueByMonth": "Pendapatan per bulan",
+    "chart": {
+      "peak": "Puncak {max} /hari",
+      "peakMonth": "Bulan terbaik {max}",
+      "summary": "{total} lebih dari {days, plural, one {hari #} other {# hari}}",
+      "monthsSummary": "{total} lebih dari {months, plural, one {bulan #} other {# bulan}}",
+      "aria": "Per hari. Puncak {max} dalam satu hari, {total} secara total.",
+      "revenueAria": "Pendapatan per bulan.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "Dari mana pengunjung berasal",
+      "source": "Sumber",
+      "direct": "Langsung atau tidak diketahui",
+      "visitors": "Pengunjung",
+      "registered": "Terdaftar",
+      "empty": "Belum ada perujuk."
+    },
+    "campaigns": {
+      "title": "Kampanye",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "Tambahkan utm_source, utm_medium, dan utm_campaign ke tautan yang Anda bagikan, dan tautan tersebut akan muncul di sini."
+    },
+    "audience": {
+      "countries": "Negara-negara",
+      "country": "Negara",
+      "devices": "Perangkat",
+      "device": "Perangkat",
+      "desktop": "Desktop",
+      "mobile": "Telepon",
+      "empty": "Belum ada apa-apa."
+    },
+    "email": {
+      "title": "Email kesehatan",
+      "sent": "Terkirim",
+      "delivered": "Terkirim",
+      "opened": "Dibuka",
+      "clicked": "Diklik",
+      "bounced": "Ditolak atau gagal",
+      "hint": "Pelacakan pembukaan dan klik perlu diaktifkan di penyedia email; email yang gagal terkirim dan pengiriman selalu dihitung."
+    },
+    "topEvents": {
+      "title": "Acara",
+      "event": "Peristiwa",
+      "registrations": "Pendaftaran",
+      "visitors": "Pengunjung",
+      "revenue": "Pendapatan",
+      "checkedIn": "Sudah check-in"
+    },
+    "export": "Ekspor CSV",
+    "noData": {
+      "title": "Tidak ada apa pun dalam periode ini",
+      "registrations": "Data pendaftaran akan ditampilkan di sini seiring masuknya data.",
+      "revenue": "Pesanan yang sudah dibayar akan muncul di sini setelah pesanan pertama masuk."
+    },
+    "empty": {
+      "title": "Belum ada kunjungan yang tercatat.",
+      "description": "Setiap kunjungan ke halaman acara akan dihitung mulai sekarang, tanpa cookie. Bagikan tautannya dan angka pertama akan muncul di sini."
+    },
+    "orgEmpty": {
+      "title": "Belum ada acara yang berlangsung",
+      "description": "Data analitik akan terisi setelah acara pertama Anda dipublikasikan."
     }
   }
 }

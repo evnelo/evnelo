@@ -10,7 +10,8 @@
   "nav": {
     "events": "कार्यक्रम",
     "checkin": "चेक-इन",
-    "settings": "सेटिंग्ज"
+    "settings": "सेटिंग्ज",
+    "analytics": "विश्लेषण"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "उपस्थित",
       "waitlist": "प्रतीक्षा यादी",
       "orders": "ऑर्डर",
-      "checkin": "चेक-इन"
+      "checkin": "चेक-इन",
+      "analytics": "विश्लेषण"
     },
     "new": {
       "title": "नवीन कार्यक्रम",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "फक्त मालकच संस्था हटवू शकतो.",
       "confirmSlug": "पुष्टी करण्यासाठी संस्थेचा URL ( {slug} ) टाईप करा."
+    }
+  },
+  "analytics": {
+    "title": "विश्लेषण",
+    "description": "लोक {org} चे कार्यक्रम कसे शोधतात आणि त्यानंतर ते काय करतात.",
+    "period": {
+      "7": "७ दिवस",
+      "30": "३० दिवस",
+      "90": "९० दिवस",
+      "label": "कालावधी",
+      "all": "सर्वकाळ"
+    },
+    "cards": {
+      "visitors": "अभ्यागत",
+      "views": "{count, plural, one {# दृश्य} other {# दृश्ये}}",
+      "registrationRate": "नोंदणी दर",
+      "registeredCount": "{count, plural, one {# नोंदणीकृत} other {# नोंदणीकृत}}",
+      "openedRate": "फॉर्म उघडला",
+      "openedCount": "{count, plural, one {# व्यक्ती} other {# लोक}}",
+      "bounceRate": "बाउन्स दर",
+      "bounceHint": "फॉर्म न उघडता निघून गेले",
+      "registrations": "नोंदणी",
+      "eventsHint": "ओलांडून {count, plural, one {# घटना} other {# घटना}}",
+      "revenue": "महसूल",
+      "revenueHint": "परतावा मिळाल्यानंतर",
+      "checkInRate": "चेक-इन दर",
+      "checkInHint": "{confirmed} पैकी {checkedIn} ची पुष्टी झाली."
+    },
+    "funnel": {
+      "title": "दृश्यापासून तिकिटापर्यंत",
+      "visitors": "अभ्यागत",
+      "opened": "फॉर्म उघडला",
+      "registered": "नोंदणीकृत"
+    },
+    "byDay": "दिवसा भेट देणारे अभ्यागत",
+    "registrationsByDay": "दिवसानुसार नोंदणी",
+    "revenueByMonth": "मासिक महसूल",
+    "chart": {
+      "peak": "शिखर {max} /दिवस",
+      "peakMonth": "सर्वोत्तम महिना {max}",
+      "summary": "{total} पेक्षा जास्त {days, plural, one {# दिवस} other {# दिवस}}",
+      "monthsSummary": "{total} पेक्षा जास्त {months, plural, one {# महिना} other {# महिने}}",
+      "aria": "प्रति दिन. एका दिवसात सर्वाधिक {max}, एकूण {total}.",
+      "revenueAria": "मासिक उत्पन्न.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "अभ्यागत कुठून येतात",
+      "source": "स्रोत",
+      "direct": "थेट किंवा अज्ञात",
+      "visitors": "अभ्यागत",
+      "registered": "नोंदणीकृत",
+      "empty": "अद्याप कोणीही शिफारस करणारे नाहीत."
+    },
+    "campaigns": {
+      "title": "मोहिमा",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "तुम्ही शेअर केलेल्या लिंक्समध्ये utm_source, utm_medium आणि utm_campaign जोडा म्हणजे त्या येथे दिसतील."
+    },
+    "audience": {
+      "countries": "देश",
+      "country": "देश",
+      "devices": "उपकरणे",
+      "device": "डिव्हाइस",
+      "desktop": "डेस्कटॉप",
+      "mobile": "फोन",
+      "empty": "अजून काही नाही."
+    },
+    "email": {
+      "title": "ईमेल आरोग्य",
+      "sent": "पाठवले",
+      "delivered": "वितरित केले",
+      "opened": "उघडले",
+      "clicked": "क्लिक केले",
+      "bounced": "बाउन्स झाले किंवा अयशस्वी झाले",
+      "hint": "ईमेल प्रोव्हायडरकडे ओपन आणि क्लिक्सचे ट्रॅकिंग सक्षम करणे आवश्यक आहे; बाऊन्स आणि डिलिव्हरी नेहमीच गणल्या जातात."
+    },
+    "topEvents": {
+      "title": "कार्यक्रम",
+      "event": "कार्यक्रम",
+      "registrations": "नोंदणी",
+      "visitors": "अभ्यागत",
+      "revenue": "महसूल",
+      "checkedIn": "चेक इन केले"
+    },
+    "export": "CSV निर्यात करा",
+    "noData": {
+      "title": "या काळात काहीही नाही",
+      "registrations": "नोंदणी जशा येतील तशा येथे दाखवल्या जातात.",
+      "revenue": "पहिली ऑर्डर मिळाल्यानंतर, पैसे भरलेल्या ऑर्डर्स येथे दिसतात."
+    },
+    "empty": {
+      "title": "अद्याप कोणत्याही भेटींची नोंद झालेली नाही.",
+      "description": "आतापासून इव्हेंट पेजला दिलेली प्रत्येक भेट कुकीजशिवाय मोजली जाईल. लिंक शेअर करा आणि पहिले आकडे येथे दिसतील."
+    },
+    "orgEmpty": {
+      "title": "अद्याप कोणतेही कार्यक्रम नाहीत",
+      "description": "तुमचा पहिला इव्हेंट प्रकाशित झाल्यावर विश्लेषण माहिती भरली जाते."
     }
   }
 }

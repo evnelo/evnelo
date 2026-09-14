@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { notifications } from "@evnelo/db";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
@@ -35,6 +35,9 @@ export async function POST(req: Request) {
   const event = JSON.parse(body) as { type: string; data?: { email_id?: string; bounce?: { message?: string } } };
   const status = statusFor[event.type];
   const id = event.data?.email_id;
+  // engagement (needs open/click tracking on the sending domain at Resend); only the first time counts
+  if (id && event.type === "email.opened") await db.update(notifications).set({ openedAt: sql`coalesce(${notifications.openedAt}, CURRENT_TIMESTAMP(3))` }).where(eq(notifications.providerMessageId, id));
+  if (id && event.type === "email.clicked") await db.update(notifications).set({ clickedAt: sql`coalesce(${notifications.clickedAt}, CURRENT_TIMESTAMP(3))` }).where(eq(notifications.providerMessageId, id));
   if (status && id) {
     await db.update(notifications)
       .set({ status, error: status === "bounced" ? (event.data?.bounce?.message ?? event.type).slice(0, 300) : null })

@@ -3,6 +3,7 @@ import {
   bigint,
   boolean,
   char,
+  date,
   datetime,
   index,
   int,
@@ -364,6 +365,35 @@ export const checkIns = mysqlTable(
 );
 
 /**
+ * First-party event page analytics: one row per visitor, event and day. The visitor hash is
+ * sha256(hmac(secret, day) + address + user agent), so no IP or cookie is ever stored and the salt
+ * changes daily; a row cannot be tied back to a person afterwards. The milestones flip as the same
+ * visitor opens the registration dialog and registers, which gives hosts a funnel and a bounce rate
+ * without any third-party script. Rows older than 400 days are purged by the job loop.
+ */
+export const eventVisits = mysqlTable(
+  "event_visits",
+  {
+    id: id(),
+    eventId: ref("event_id").notNull(),
+    day: date("day", { mode: "string" }).notNull(),
+    visitorHash: char("visitor_hash", { length: 64 }).notNull(),
+    views: int("views").notNull().default(1),
+    referrerHost: varchar("referrer_host", { length: 255 }),
+    utmSource: varchar("utm_source", { length: 100 }),
+    utmMedium: varchar("utm_medium", { length: 100 }),
+    utmCampaign: varchar("utm_campaign", { length: 100 }),
+    country: char("country", { length: 2 }),
+    device: mysqlEnum("device", ["desktop", "mobile"]),
+    openedRegistration: boolean("opened_registration").notNull().default(false),
+    registered: boolean("registered").notNull().default(false),
+    firstAt: datetime("first_at", { fsp: 3 }).notNull().default(sql`CURRENT_TIMESTAMP(3)`),
+    lastAt: datetime("last_at", { fsp: 3 }).notNull().default(sql`CURRENT_TIMESTAMP(3)`),
+  },
+  (t) => [uniqueIndex("ev_visit_day").on(t.eventId, t.day, t.visitorHash), index("ev_visit_event").on(t.eventId, t.day)],
+);
+
+/**
  * Waitlist. Joining stores name + email. Promotion reserves one seat (`ticket_types.held` + 1,
  * counted against event capacity), mints a token for the offer link, and sets `hold_expires_at`;
  * registering through the offer converts the held seat; the job loop releases lapsed offers
@@ -412,6 +442,8 @@ export const notifications = mysqlTable(
     error: varchar("error", { length: 300 }),
     scheduledFor: datetime("scheduled_for", { fsp: 3 }).notNull().default(sql`CURRENT_TIMESTAMP(3)`),
     sentAt: datetime("sent_at", { fsp: 3 }),
+    openedAt: datetime("opened_at", { fsp: 3 }), // first open reported by the email provider (needs open tracking on the sending domain)
+    clickedAt: datetime("clicked_at", { fsp: 3 }),
     createdAt: createdAt(),
   },
   (t) => [

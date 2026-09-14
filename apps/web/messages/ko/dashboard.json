@@ -10,7 +10,8 @@
   "nav": {
     "events": "이벤트",
     "checkin": "체크인",
-    "settings": "설정"
+    "settings": "설정",
+    "analytics": "해석학"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "참석자",
       "waitlist": "대기자 명단",
       "orders": "명령",
-      "checkin": "체크인"
+      "checkin": "체크인",
+      "analytics": "해석학"
     },
     "new": {
       "title": "새로운 이벤트",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "조직을 삭제할 수 있는 권한은 소유자에게만 있습니다.",
       "confirmSlug": "확인하려면 조직 URL( {slug} )을 입력하세요."
+    }
+  },
+  "analytics": {
+    "title": "해석학",
+    "description": "사람들이 {org} 의 이벤트를 어떻게 찾고, 그 후에 무엇을 하는지.",
+    "period": {
+      "7": "7일",
+      "30": "30일",
+      "90": "90일",
+      "label": "기간",
+      "all": "역대"
+    },
+    "cards": {
+      "visitors": "방문객들",
+      "views": "{count, plural, one {# 보기} other {조회수 # 회}}",
+      "registrationRate": "등록률",
+      "registeredCount": "{count, plural, one {# 등록됨} other {# 등록됨}}",
+      "openedRate": "양식을 열었습니다",
+      "openedCount": "{count, plural, one {# 명} other {# 명}}",
+      "bounceRate": "이탈률",
+      "bounceHint": "양식을 열지 않고 떠났습니다.",
+      "registrations": "등록",
+      "eventsHint": "가로질러 {count, plural, one {# 이벤트} other {# 이벤트}}",
+      "revenue": "수익",
+      "revenueHint": "환불 후",
+      "checkInRate": "체크인 요금",
+      "checkInHint": "{checkedIn} {confirmed} 확인됨"
+    },
+    "funnel": {
+      "title": "보기부터 티켓까지",
+      "visitors": "방문객들",
+      "opened": "양식을 열었습니다",
+      "registered": "등기"
+    },
+    "byDay": "낮 시간 방문객 수",
+    "registrationsByDay": "일별 등록 현황",
+    "revenueByMonth": "월별 매출액",
+    "chart": {
+      "peak": "최대 {max} /일",
+      "peakMonth": "최고의 달 {max}",
+      "summary": "{total} 이상 {days, plural, one {# 일} other {# 일}}",
+      "monthsSummary": "{total} 이상 {months, plural, one {# 개월} other {# 개월}}",
+      "aria": "하루 기준. 하루 최대 {max}, 총 {total}.",
+      "revenueAria": "월별 수익.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "방문객들이 오는 곳",
+      "source": "원천",
+      "direct": "직접적이든 알 수 없든",
+      "visitors": "방문객들",
+      "registered": "등기",
+      "empty": "아직 추천인이 없습니다."
+    },
+    "campaigns": {
+      "title": "캠페인",
+      "campaign": "utm_source / medium / 캠페인",
+      "empty": "공유하는 링크에 utm_source, utm_medium, utm_campaign을 추가하면 여기에 표시됩니다."
+    },
+    "audience": {
+      "countries": "국가",
+      "country": "국가",
+      "devices": "기기",
+      "device": "장치",
+      "desktop": "데스크톱",
+      "mobile": "핸드폰",
+      "empty": "아직 아무것도 없습니다."
+    },
+    "email": {
+      "title": "이메일 건강",
+      "sent": "전송된",
+      "delivered": "배송 완료",
+      "opened": "열림",
+      "clicked": "클릭됨",
+      "bounced": "반송되었거나 실패했습니다.",
+      "hint": "이메일 제공업체에서 열람 및 클릭 추적 기능을 활성화해야 합니다. 반송 및 전송 건수는 항상 집계됩니다."
+    },
+    "topEvents": {
+      "title": "이벤트",
+      "event": "이벤트",
+      "registrations": "등록",
+      "visitors": "방문객들",
+      "revenue": "수익",
+      "checkedIn": "체크인 완료"
+    },
+    "export": "CSV 내보내기",
+    "noData": {
+      "title": "이 기간에는 아무것도 없습니다.",
+      "registrations": "등록 현황은 접수되는 대로 여기에 표시됩니다.",
+      "revenue": "결제 완료된 주문은 첫 번째 주문이 접수되는 즉시 여기에 표시됩니다."
+    },
+    "empty": {
+      "title": "아직 방문 기록이 없습니다.",
+      "description": "이제부터 쿠키 없이도 이벤트 페이지 방문 횟수가 집계됩니다. 링크를 공유하면 첫 번째 방문 횟수가 여기에 표시됩니다."
+    },
+    "orgEmpty": {
+      "title": "아직 이벤트가 없습니다.",
+      "description": "첫 번째 이벤트가 게시되면 분석 데이터가 자동으로 채워집니다."
     }
   }
 }

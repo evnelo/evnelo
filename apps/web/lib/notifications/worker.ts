@@ -6,7 +6,7 @@ import { NOTIFICATION_RETRY_LIMIT, STUCK_SENDING_MS, newId, reminderDedupeKey, r
 import { db } from "@/lib/db";
 import { deliver } from "./deliver";
 import { expireHolds, reconcileProcessingOrders } from "@/lib/orders";
-import { expireWaitlistOffers, purgeApiHousekeeping } from "@evnelo/core/services";
+import { expireWaitlistOffers, purgeApiHousekeeping, purgeEventVisits } from "@evnelo/core/services";
 
 /**
  * The job runner. No Redis: everything is rows in `notifications`, claimed with a
@@ -121,6 +121,7 @@ export async function runJobs(opts: { force?: boolean } = {}) {
     scheduled = await scheduleReminders();
     reconciled = await reconcileProcessingOrders().catch((e) => { captureError("jobs.reconcileProcessingOrders", e); return 0; });
     await purgeApiHousekeeping(db).catch((e) => captureError("jobs.purgeApiHousekeeping", e));
+    await purgeEventVisits(db).catch((e) => captureError("jobs.purgeEventVisits", e));
     lastScheduled = Date.now();
   }
   const processed = await processNotifications();

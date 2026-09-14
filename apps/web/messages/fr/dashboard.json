@@ -10,7 +10,8 @@
   "nav": {
     "events": "Événements",
     "checkin": "Enregistrement",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "analytics": "Analytique"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "Participants",
       "waitlist": "Liste d'attente",
       "orders": "Ordres",
-      "checkin": "Enregistrement"
+      "checkin": "Enregistrement",
+      "analytics": "Analytique"
     },
     "new": {
       "title": "Nouvel événement",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "Seul le propriétaire peut supprimer l'organisation.",
       "confirmSlug": "Saisissez l'URL de l'organisation ( {slug} ) pour confirmer."
+    }
+  },
+  "analytics": {
+    "title": "Analytique",
+    "description": "Comment les gens découvrent les événements de {org}, et que font-ils ensuite.",
+    "period": {
+      "7": "7 jours",
+      "30": "30 jours",
+      "90": "90 jours",
+      "label": "Période",
+      "all": "Tout le temps"
+    },
+    "cards": {
+      "visitors": "Visiteurs",
+      "views": "{count, plural, one {# vue} other {# vues}}",
+      "registrationRate": "taux d'inscription",
+      "registeredCount": "{count, plural, one {# inscrits} other {# inscrits}}",
+      "openedRate": "J'ai ouvert le formulaire.",
+      "openedCount": "{count, plural, one {# personne} other {# personnes}}",
+      "bounceRate": "Taux de rebond",
+      "bounceHint": "parti sans ouvrir le formulaire",
+      "registrations": "Inscriptions",
+      "eventsHint": "à travers {count, plural, one {# événement} other {# événements}}",
+      "revenue": "Revenu",
+      "revenueHint": "après remboursement",
+      "checkInRate": "tarif d'enregistrement",
+      "checkInHint": "{checkedIn} sur {confirmed} confirmé"
+    },
+    "funnel": {
+      "title": "De la vue au billet",
+      "visitors": "Visiteurs",
+      "opened": "J'ai ouvert le formulaire.",
+      "registered": "Inscrit"
+    },
+    "byDay": "Visiteurs en journée",
+    "registrationsByDay": "Inscriptions par jour",
+    "revenueByMonth": "Revenus par mois",
+    "chart": {
+      "peak": "Pic {max} /jour",
+      "peakMonth": "Meilleur mois {max}",
+      "summary": "{total} sur {days, plural, one {# jour} other {# jours}}",
+      "monthsSummary": "{total} sur {months, plural, one {# mois} other {# mois}}",
+      "aria": "Par jour. Pic {max} sur une seule journée, {total} au total.",
+      "revenueAria": "Revenu mensuel.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "D'où viennent les visiteurs?",
+      "source": "Source",
+      "direct": "Direct ou inconnu",
+      "visitors": "Visiteurs",
+      "registered": "Inscrit",
+      "empty": "Aucun référent pour l'instant."
+    },
+    "campaigns": {
+      "title": "Campagnes",
+      "campaign": "utm_source / medium / campagne",
+      "empty": "Ajoutez utm_source, utm_medium et utm_campaign aux liens que vous partagez et ils apparaîtront ici."
+    },
+    "audience": {
+      "countries": "Pays",
+      "country": "Pays",
+      "devices": "Appareils",
+      "device": "Appareil",
+      "desktop": "Ordinateur de bureau",
+      "mobile": "Téléphone",
+      "empty": "Rien pour l'instant."
+    },
+    "email": {
+      "title": "Santé par courriel",
+      "sent": "Envoyé",
+      "delivered": "Livré",
+      "opened": "Ouvert",
+      "clicked": "Clic",
+      "bounced": "Rebondi ou échec",
+      "hint": "Les ouvertures et les clics doivent être suivis par le fournisseur de messagerie; les rebonds et les livraisons sont toujours comptabilisés."
+    },
+    "topEvents": {
+      "title": "Événements",
+      "event": "Événement",
+      "registrations": "Inscriptions",
+      "visitors": "Visiteurs",
+      "revenue": "Revenu",
+      "checkedIn": "Enregistrement effectué"
+    },
+    "export": "Exporter au format CSV",
+    "noData": {
+      "title": "Rien durant cette période",
+      "registrations": "Les inscriptions s'affichent ici au fur et à mesure de leur arrivée.",
+      "revenue": "Les commandes payées apparaissent ici une fois la première réceptionnée."
+    },
+    "empty": {
+      "title": "Aucune visite enregistrée pour le moment",
+      "description": "Désormais, chaque visite sur la page de l'événement est comptabilisée, même sans cookies. Partagez le lien et les premiers résultats s'afficheront ici."
+    },
+    "orgEmpty": {
+      "title": "Aucun événement pour le moment",
+      "description": "Les données analytiques se remplissent une fois votre premier événement publié."
     }
   }
 }

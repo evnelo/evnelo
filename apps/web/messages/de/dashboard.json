@@ -10,7 +10,8 @@
   "nav": {
     "events": "Veranstaltungen",
     "checkin": "Einchecken",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "analytics": "Analysen"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "Teilnehmer",
       "waitlist": "Warteliste",
       "orders": "Bestellungen",
-      "checkin": "Einchecken"
+      "checkin": "Einchecken",
+      "analytics": "Analysen"
     },
     "new": {
       "title": "Neues Ereignis",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "Nur ein Inhaber kann die Organisation löschen.",
       "confirmSlug": "Geben Sie die Organisations-URL ( {slug} ) zur Bestätigung ein."
+    }
+  },
+  "analytics": {
+    "title": "Analysen",
+    "description": "Wie Menschen Veranstaltungen von {org} finden und was sie anschließend tun.",
+    "period": {
+      "7": "7 Tage",
+      "30": "30 Tage",
+      "90": "90 Tage",
+      "label": "Zeitraum",
+      "all": "Alle Zeiten"
+    },
+    "cards": {
+      "visitors": "Besucher",
+      "views": "{count, plural, one {# Ansicht} other {# Aufrufe}}",
+      "registrationRate": "Registrierungsrate",
+      "registeredCount": "{count, plural, one {# registriert} other {# registriert}}",
+      "openedRate": "Das Formular wurde geöffnet",
+      "openedCount": "{count, plural, one {# Person} other {# Personen}}",
+      "bounceRate": "Absprungrate",
+      "bounceHint": "Das Formular wurde nicht geöffnet.",
+      "registrations": "Anmeldungen",
+      "eventsHint": "über {count, plural, one {# Ereignis} other {# Ereignisse}}",
+      "revenue": "Einnahmen",
+      "revenueHint": "nach Rückerstattungen",
+      "checkInRate": "Check-in-Rate",
+      "checkInHint": "{checkedIn} von {confirmed} bestätigt"
+    },
+    "funnel": {
+      "title": "Vom Ausblick zum Ticket",
+      "visitors": "Besucher",
+      "opened": "Das Formular wurde geöffnet",
+      "registered": "Eingetragen"
+    },
+    "byDay": "Besucher pro Tag",
+    "registrationsByDay": "Anmeldungen pro Tag",
+    "revenueByMonth": "Umsatz pro Monat",
+    "chart": {
+      "peak": "Spitzenwert {max} /Tag",
+      "peakMonth": "Bester Monat {max}",
+      "summary": "{total} über {days, plural, one {# Tag} other {# Tage}}",
+      "monthsSummary": "{total} über {months, plural, one {# Monat} other {# Monate}}",
+      "aria": "Pro Tag. Höchstwert {max} an einem einzelnen Tag, {total} insgesamt.",
+      "revenueAria": "Umsatz pro Monat.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "Woher die Besucher kommen",
+      "source": "Quelle",
+      "direct": "Direkt oder unbekannt",
+      "visitors": "Besucher",
+      "registered": "Eingetragen",
+      "empty": "Bisher keine Empfehlungsgeber."
+    },
+    "campaigns": {
+      "title": "Kampagnen",
+      "campaign": "utm_source / Medium / Kampagne",
+      "empty": "Fügen Sie utm_source, utm_medium und utm_campaign zu den von Ihnen geteilten Links hinzu, und sie werden hier angezeigt."
+    },
+    "audience": {
+      "countries": "Länder",
+      "country": "Land",
+      "devices": "Geräte",
+      "device": "Gerät",
+      "desktop": "Desktop",
+      "mobile": "Telefon",
+      "empty": "Noch nichts."
+    },
+    "email": {
+      "title": "E-Mail-Gesundheit",
+      "sent": "Gesendet",
+      "delivered": "Geliefert",
+      "opened": "Geöffnet",
+      "clicked": "Angeklickt",
+      "bounced": "Abgewiesen oder fehlgeschlagen",
+      "hint": "Öffnungen und Klicks müssen beim E-Mail-Anbieter erfasst werden; Bounces und Zustellungen werden immer gezählt."
+    },
+    "topEvents": {
+      "title": "Veranstaltungen",
+      "event": "Ereignis",
+      "registrations": "Anmeldungen",
+      "visitors": "Besucher",
+      "revenue": "Einnahmen",
+      "checkedIn": "Eingecheckt"
+    },
+    "export": "CSV exportieren",
+    "noData": {
+      "title": "Nichts in diesem Zeitraum",
+      "registrations": "Die Anmeldungen werden hier in der Reihenfolge ihres Eingangs angezeigt.",
+      "revenue": "Bezahlte Bestellungen werden hier angezeigt, sobald die erste Bestellung eingegangen ist."
+    },
+    "empty": {
+      "title": "Bisher wurden keine Besuche registriert.",
+      "description": "Ab sofort zählt jeder Besuch der Veranstaltungsseite, auch ohne Cookies. Teilen Sie den Link, und die ersten Zahlen erscheinen hier."
+    },
+    "orgEmpty": {
+      "title": "Noch keine Veranstaltungen",
+      "description": "Die Analysedaten werden nach Veröffentlichung Ihres ersten Events ausgefüllt."
     }
   }
 }

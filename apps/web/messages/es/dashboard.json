@@ -10,7 +10,8 @@
   "nav": {
     "events": "Eventos",
     "checkin": "Registrarse",
-    "settings": "Ajustes"
+    "settings": "Ajustes",
+    "analytics": "Analítica"
   },
   "status": {
     "event": {
@@ -98,7 +99,8 @@
       "attendees": "Asistentes",
       "waitlist": "Lista de espera",
       "orders": "Órdenes",
-      "checkin": "Registrarse"
+      "checkin": "Registrarse",
+      "analytics": "Analítica"
     },
     "new": {
       "title": "Nuevo evento",
@@ -425,6 +427,104 @@
     "deleteOrg": {
       "ownerOnly": "Solo el propietario puede eliminar la organización.",
       "confirmSlug": "Escriba la URL de la organización ( {slug} ) para confirmar."
+    }
+  },
+  "analytics": {
+    "title": "Analítica",
+    "description": "Cómo la gente descubre los eventos de {org} y qué hacen después.",
+    "period": {
+      "7": "7 días",
+      "30": "30 días",
+      "90": "90 días",
+      "label": "Período",
+      "all": "Todos los tiempos"
+    },
+    "cards": {
+      "visitors": "Visitantes",
+      "views": "{count, plural, one {# vista} other {# vistas}}",
+      "registrationRate": "Tasa de inscripción",
+      "registeredCount": "{count, plural, one {# registrado} other {# registrado}}",
+      "openedRate": "Abrí el formulario",
+      "openedCount": "{count, plural, one {# persona} other {# personas}}",
+      "bounceRate": "Tasa de rebote",
+      "bounceHint": "se marchó sin abrir el formulario",
+      "registrations": "Registros",
+      "eventsHint": "al otro lado de {count, plural, one {evento #} other {# eventos}}",
+      "revenue": "Ganancia",
+      "revenueHint": "después de los reembolsos",
+      "checkInRate": "Tasa de registro de entrada",
+      "checkInHint": "{checkedIn} de {confirmed} confirmado"
+    },
+    "funnel": {
+      "title": "Desde la vista hasta el boleto",
+      "visitors": "Visitantes",
+      "opened": "Abrí el formulario",
+      "registered": "Registrado"
+    },
+    "byDay": "Visitantes durante el día",
+    "registrationsByDay": "Inscripciones por día",
+    "revenueByMonth": "Ingresos mensuales",
+    "chart": {
+      "peak": "Pico {max} /día",
+      "peakMonth": "Mejor mes {max}",
+      "summary": "{total} sobre {days, plural, one {# día} other {# días}}",
+      "monthsSummary": "{total} sobre {months, plural, one {# mes} other {# meses}}",
+      "aria": "Por día. Pico {max} en un solo día, {total} en total.",
+      "revenueAria": "Ingresos mensuales.",
+      "tooltip": "{date}: {count}"
+    },
+    "sources": {
+      "title": "De dónde vienen los visitantes",
+      "source": "Fuente",
+      "direct": "Directo o desconocido",
+      "visitors": "Visitantes",
+      "registered": "Registrado",
+      "empty": "Aún no hay referentes."
+    },
+    "campaigns": {
+      "title": "Campañas",
+      "campaign": "utm_source / medium / campaign",
+      "empty": "Añade utm_source, utm_medium y utm_campaign a los enlaces que compartas y aparecerán aquí."
+    },
+    "audience": {
+      "countries": "Países",
+      "country": "País",
+      "devices": "Dispositivos",
+      "device": "Dispositivo",
+      "desktop": "De oficina",
+      "mobile": "Teléfono",
+      "empty": "Nada todavía."
+    },
+    "email": {
+      "title": "Salud del correo electrónico",
+      "sent": "Enviado",
+      "delivered": "Entregado",
+      "opened": "Abierto",
+      "clicked": "Clic",
+      "bounced": "Rebotó o falló",
+      "hint": "Las aperturas y los clics deben tener habilitado el seguimiento en el proveedor de correo electrónico; los rebotes y las entregas siempre cuentan."
+    },
+    "topEvents": {
+      "title": "Eventos",
+      "event": "Evento",
+      "registrations": "Registros",
+      "visitors": "Visitantes",
+      "revenue": "Ganancia",
+      "checkedIn": "Me registré"
+    },
+    "export": "Exportar CSV",
+    "noData": {
+      "title": "Nada en este período",
+      "registrations": "Las inscripciones se muestran aquí a medida que se reciben.",
+      "revenue": "Los pedidos pagados se muestran aquí una vez que llega el primero."
+    },
+    "empty": {
+      "title": "Aún no se han registrado visitas.",
+      "description": "A partir de ahora, cada visita a la página del evento contará, sin necesidad de cookies. Comparte el enlace y las primeras cifras aparecerán aquí."
+    },
+    "orgEmpty": {
+      "title": "Aún no hay eventos.",
+      "description": "Los datos analíticos se completarán una vez que se publique su primer evento."
     }
   }
 }

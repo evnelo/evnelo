@@ -20,6 +20,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const [{ user, org, role, memberships }, t, tc] = await Promise.all([requireOrg(undefined, "/dashboard"), getTranslations("dashboard"), getTranslations("common")]);
   const items: SidebarItem[] = [
     ...(can(role, "view_events") ? [{ href: "/dashboard", label: t("nav.events"), icon: "events" as const }] : []),
+    ...(can(role, "view_events") ? [{ href: "/dashboard/analytics", label: t("nav.analytics"), icon: "analytics" as const }] : []),
     ...(can(role, "check_in") ? [{ href: "/dashboard/checkin", label: t("nav.checkin"), icon: "checkin" as const }] : []),
     ...(can(role, "view_events") ? [{ href: "/dashboard/settings", label: t("nav.settings"), icon: "settings" as const }] : []),
   ];

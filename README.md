@@ -246,7 +246,14 @@ docker compose --env-file .env -f deploy/docker-compose.prod.yml up -d --build
 docker compose --env-file .env -f deploy/docker-compose.prod.yml logs -f app   # "ready" after migrations
 ```
 
-`SITE_ADDRESS` in `.env` overrides the domain (default `evnelo.com`). Caddy obtains and renews the certificate from Let's Encrypt over port 80, so no certificate is installed by hand; with Cloudflare in front use SSL mode "Full (strict)" and leave "Always Use HTTPS" off (Caddy does that redirect). The stack defaults `API_TRUSTED_PROXY_HEADER` to `x-forwarded-for` because Caddy appends the client address to that header; behind Cloudflare's proxy set it to `cf-connecting-ip` in `.env` and restrict ports 80/443 to Cloudflare's IP ranges. To ship a new version: pull or sync the sources, run the same `up -d --build`; migrations apply on boot. `deploy/backup-db.sh` dumps the database nightly from cron and optionally copies it to S3.
+`SITE_ADDRESS` in `.env` overrides the domain (default `evnelo.com`). Caddy obtains and renews the certificate from Let's Encrypt over port 80, so no certificate is installed by hand; with Cloudflare in front use SSL mode "Full (strict)" and leave "Always Use HTTPS" off (Caddy does that redirect). The stack defaults `API_TRUSTED_PROXY_HEADER` to `x-forwarded-for` because Caddy appends the client address to that header; behind Cloudflare's proxy set it to `cf-connecting-ip` in `.env` and restrict ports 80/443 to Cloudflare's IP ranges. To ship a new version run `./deploy/deploy.sh`: it pulls, builds with the commit hash baked in (Datadog shows the version and links traces to the commit), restarts the app and removes the previous image; migrations apply on boot.
+
+Back up the database from cron. `deploy/backup-db.sh` dumps MySQL into `backups/` (14 days kept) and, when `BACKUP_S3_URI` is set in `.env` (for example `s3://my-backups/evnelo`), copies the dump there with the app's `S3_*` credentials through the `amazon/aws-cli` image, so nothing is installed on the host. Give that bucket a lifecycle rule and keep it separate from the uploads bucket. Install it once:
+
+```bash
+(crontab -l 2>/dev/null; echo "15 3 * * * cd $HOME/evnelo && ./deploy/backup-db.sh >> $HOME/evnelo-backup.log 2>&1") | crontab -
+./deploy/backup-db.sh     # run one now and check the file exists
+```
 
 Production checklist:
 
@@ -256,13 +263,13 @@ Production checklist:
 4. Configure the S3 bucket (CORS from `APP_URL`, public read on `evnelo/uploads/`, CloudFront optional).
 5. Serve over HTTPS. HSTS, a Content Security Policy and the other security headers are set automatically when `APP_URL` is `https://`.
 6. Several replicas: keep `MIGRATE_ON_START=true` (the lock handles it) and either leave `JOBS_INLINE=true` on one replica only or set it to `false` everywhere and hit `POST /api/jobs/run` from a cron.
-7. Back up MySQL. Uploads live in your bucket; the database holds everything else.
+7. Back up MySQL from cron as above. Uploads live in your bucket; the database holds everything else.
 
 Serverless hosts (Vercel and similar) work with `JOBS_INLINE=false` plus a scheduled call to `/api/jobs/run`; the standalone image is for VMs, Fly, Railway, ECS, Kubernetes and the like.
 
 ## Operations
 
-Infrastructure monitoring for the one-VM setup is one script: `DD_API_KEY=… DD_APP_KEY=… ./deploy/datadog-setup.sh` on the server installs the Datadog agent (system, disk and Docker metrics; `DD_LOGS=true` also ships container logs), creates a Synthetics uptime check on `/api/health` from three regions, and three monitors: host stopped reporting, fewer than three containers running, root disk above 80%. It is idempotent. With `DD_AGENT_HOST=host.docker.internal` in `.env` the app container also sends APM traces (every request, MySQL query and outbound call) to the agent. Application errors, product analytics and logs live in PostHog (see Configuration).
+Infrastructure monitoring for the one-VM setup is one script: `DD_API_KEY=… DD_APP_KEY=… ./deploy/datadog-setup.sh` on the server installs the Datadog agent (system, disk and Docker metrics; `DD_LOGS=true` also ships container logs), creates a Synthetics uptime check on `/api/health` from three regions, and three monitors: host stopped reporting, fewer than three containers running, root disk above 80%. It is idempotent. With `DD_AGENT_HOST=host.docker.internal` in `.env` the app container also sends APM traces to the agent: one span per incoming request plus its MySQL queries, tagged with the deployed commit; the PostHog relay, static assets and the health check are not traced. Application errors, product analytics and logs live in PostHog (see Configuration).
 
 
 - **Health:** `GET /api/health` returns `200` when the database answers within two seconds and the job loop ticked in the last two minutes (or jobs run externally), else `503`. Unauthenticated and terse.

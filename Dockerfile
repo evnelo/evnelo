@@ -32,6 +32,10 @@ FROM node:22-alpine AS runner
 ENV NODE_ENV=production PORT=3000 HOSTNAME=0.0.0.0 NEXT_TELEMETRY_DISABLED=1
 # Defaults for a single-container deployment; override in your orchestrator
 ENV MIGRATE_ON_START=true JOBS_INLINE=true
+# Datadog links traces to the commit that produced the image (deploy/deploy.sh passes both).
+ARG GIT_SHA
+ARG APP_VERSION
+ENV DD_GIT_COMMIT_SHA=$GIT_SHA DD_GIT_REPOSITORY_URL=https://github.com/evnelo/evnelo DD_VERSION=$APP_VERSION
 WORKDIR /app
 COPY --from=build --chown=node:node /app/apps/web/.next/standalone ./
 COPY --from=build --chown=node:node /app/apps/web/.next/static ./apps/web/.next/static

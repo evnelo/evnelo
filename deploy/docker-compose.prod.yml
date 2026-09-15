@@ -29,6 +29,7 @@ services:
         POSTHOG_API_KEY: ${POSTHOG_API_KEY:-}
         POSTHOG_PROJECT_ID: ${POSTHOG_PROJECT_ID:-}
         APP_VERSION: ${APP_VERSION:-}
+        GIT_SHA: ${GIT_SHA:-}
     restart: unless-stopped
     env_file: ../.env
     # the Datadog agent runs on the host; DD_AGENT_HOST=host.docker.internal in .env turns APM on
@@ -38,7 +39,6 @@ services:
       DATABASE_URL: mysql://evnelo:${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}@db:3306/evnelo
       DD_SERVICE: evnelo-web
       DD_ENV: production
-      DD_VERSION: ${APP_VERSION:-}
       # Caddy appends the client address to X-Forwarded-For and the app reads the last entry. Behind
       # Cloudflare's proxy that entry is a Cloudflare edge: set API_TRUSTED_PROXY_HEADER=cf-connecting-ip
       # in .env instead (and restrict ports 80/443 to Cloudflare's IP ranges so it cannot be spoofed).

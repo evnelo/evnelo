@@ -407,6 +407,14 @@
   from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   to { opacity: 0; transform: translate(-50%, -50%) scale(var(--scale-large)); }
 }
+@keyframes menu-in {
+  from { opacity: 0; transform: scale(var(--scale-medium)); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes menu-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(var(--scale-tiny)); }
+}
 @keyframes sheet-in {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
@@ -415,25 +423,28 @@
   from { opacity: 1; transform: translateY(0); }
   to { opacity: 0; transform: translateY(16px); }
 }
-@layer utilities {
-  .animate-rise {
-    animation: rise var(--duration-very-slow) ease-in-out backwards;
-    /* 40ms per item, capped so the last of a long list is never more than ~300ms late */
-    animation-delay: min(calc(var(--stagger, 0) * var(--duration-stagger)), 280ms);
-  }
-  .animate-step {
-    --step-from: var(--distance-base);
-    animation: step-in var(--duration-fast) var(--ease-smooth-out) backwards;
-  }
-  [dir="rtl"] .animate-step { --step-from: calc(-1 * var(--distance-base)); }
-  .animate-fade { animation: fade var(--duration-fast) var(--ease-smooth-out) backwards; }
-  .animate-fade-out { animation: fade-out var(--duration-quick) var(--ease-smooth-out) forwards; }
-  /* dialogs: open 250ms, close 150ms (closes get out of the way); the phone sheet is a panel: 400ms in, 350ms out */
-  .animate-panel-in { animation: panel-in var(--duration-fast) var(--ease-smooth-out) both; }
-  .animate-panel-out { animation: panel-out var(--duration-quick) var(--ease-smooth-out) both; }
-  .animate-sheet-in { animation: sheet-in var(--duration-slow) var(--ease-smooth-out) both; }
-  .animate-sheet-out { animation: sheet-out var(--duration-medium) var(--ease-smooth-out) both; }
+/* Entrance/exit animations as real utilities (@utility, not @layer) so Tailwind variants such as
+   data-[state=closed]:animate-panel-out apply; Radix keeps the element mounted while one runs. */
+@utility animate-rise {
+  animation: rise var(--duration-very-slow) ease-in-out backwards;
+  /* 40ms per item, capped so the last of a long list is never more than ~300ms late */
+  animation-delay: min(calc(var(--stagger, 0) * var(--duration-stagger)), 280ms);
 }
+@utility animate-step {
+  --step-from: var(--distance-base);
+  animation: step-in var(--duration-fast) var(--ease-smooth-out) backwards;
+}
+[dir="rtl"] .animate-step { --step-from: calc(-1 * var(--distance-base)); }
+@utility animate-fade { animation: fade var(--duration-fast) var(--ease-smooth-out) backwards; }
+@utility animate-fade-out { animation: fade-out var(--duration-quick) var(--ease-smooth-out) forwards; }
+/* dialogs: open 250ms, close 150ms (closes get out of the way); the phone sheet is a panel: 400ms in, 350ms out */
+@utility animate-panel-in { animation: panel-in var(--duration-fast) var(--ease-smooth-out) both; }
+@utility animate-panel-out { animation: panel-out var(--duration-quick) var(--ease-smooth-out) both; }
+@utility animate-sheet-in { animation: sheet-in var(--duration-slow) var(--ease-smooth-out) both; }
+@utility animate-sheet-out { animation: sheet-out var(--duration-medium) var(--ease-smooth-out) both; }
+/* transitions.dev menu dropdown: grows from the trigger corner, softer and quicker on the way out */
+@utility animate-menu-in { animation: menu-in var(--duration-fast) var(--ease-smooth-out) both; }
+@utility animate-menu-out { animation: menu-out var(--duration-quick) var(--ease-smooth-out) both; }
 
 @layer components {
   /* Flow Line: the brand's motif, a rounded line through checkpoints. Use sparingly (hero, ticket, empty states). */

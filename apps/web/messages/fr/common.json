@@ -22,7 +22,8 @@
     "restore": "Restaurer",
     "signIn": "Se connecter",
     "signOut": "se déconnecter",
-    "loading": "Chargement…"
+    "loading": "Chargement…",
+    "more": "Plus d'actions"
   },
   "labels": {
     "optional": "facultatif",

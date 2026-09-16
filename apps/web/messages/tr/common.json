@@ -22,7 +22,8 @@
     "restore": "Eski haline getirmek",
     "signIn": "Giriş yap",
     "signOut": "oturumu Kapat",
-    "loading": "Yükleniyor…"
+    "loading": "Yükleniyor…",
+    "more": "Daha fazla işlem"
   },
   "labels": {
     "optional": "isteğe bağlı",

@@ -22,7 +22,8 @@
     "restore": "Wiederherstellen",
     "signIn": "anmelden",
     "signOut": "Abmelden",
-    "loading": "Laden…"
+    "loading": "Laden…",
+    "more": "Weitere Aktionen"
   },
   "labels": {
     "optional": "optional",

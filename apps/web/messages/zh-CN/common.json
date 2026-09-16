@@ -22,7 +22,8 @@
     "restore": "恢复",
     "signIn": "登入",
     "signOut": "登出",
-    "loading": "加载中…"
+    "loading": "加载中…",
+    "more": "更多操作"
   },
   "labels": {
     "optional": "选修的",

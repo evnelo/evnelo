@@ -22,7 +22,8 @@
     "restore": "Restore",
     "signIn": "Sign in",
     "signOut": "Sign out",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "more": "More actions"
   },
   "labels": {
     "optional": "optional",

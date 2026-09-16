@@ -22,7 +22,8 @@
     "restore": "복원하다",
     "signIn": "로그인",
     "signOut": "로그아웃",
-    "loading": "로딩 중…"
+    "loading": "로딩 중…",
+    "more": "추가 작업"
   },
   "labels": {
     "optional": "선택 과목",

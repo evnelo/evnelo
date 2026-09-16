@@ -22,7 +22,8 @@
     "restore": "Ripristinare",
     "signIn": "Registrazione",
     "signOut": "disconnessione",
-    "loading": "Caricamento…"
+    "loading": "Caricamento…",
+    "more": "Altre azioni"
   },
   "labels": {
     "optional": "opzionale",

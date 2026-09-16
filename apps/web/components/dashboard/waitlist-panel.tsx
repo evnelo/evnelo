@@ -3,14 +3,13 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Clock3 } from "lucide-react";
+import { Clock3, Send, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Select } from "@/components/ui/select";
 import { FormMessage } from "@/components/ui/form-field";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { formatMoney } from "@/lib/utils";
 import { EmptyCell, Note, PanelHeader } from "@/components/dashboard/page-chrome";
+import { RowAction, RowActions, RowActionsSeparator } from "@/components/dashboard/row-actions";
 import { promoteWaitlistAction, removeWaitlistEntryAction } from "@/app/dashboard/actions";
 
 export type WaitlistRow = { id: string; name: string | null; email: string; status: "waiting" | "offered" | "registered" | "expired"; ticketTypeName: string | null; createdAt: string; holdExpiresAt: string | null };
@@ -24,11 +23,15 @@ export function WaitlistPanel({ eventId, entries, editable, waitlistEnabled, tic
   const tc = useTranslations("common");
   const locale = useLocale();
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
-  const [choice, setChoice] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState<string | null>(null); // the row whose action is in flight
   const [pending, start] = useTransition();
   const router = useRouter();
   const defaultType = ticketTypes.find((tt) => tt.room == null || tt.room > 0)?.id ?? ticketTypes[0]?.id ?? "";
   const waiting = entries.filter((e) => e.status === "waiting" || e.status === "expired").length;
+  const offer = (entryId: string, ticketTypeId: string) => {
+    setBusy(entryId);
+    start(async () => { const r = await promoteWaitlistAction(eventId, entryId, ticketTypeId); setMsg(r.ok ? { success: r.message } : { error: r.error }); router.refresh(); });
+  };
 
   const optionLabel = (tt: TicketOption) => {
     const price = tt.priceMinor === 0 ? tc("labels.free") : formatMoney(tt.priceMinor, tt.currency, locale);
@@ -68,21 +71,28 @@ export function WaitlistPanel({ eventId, entries, editable, waitlistEnabled, tic
               </TD>
               {editable && (
                 <TD className="text-end">
-                  <div className="flex items-center justify-end gap-1">
-                    {(e.status === "waiting" || e.status === "expired") && ticketTypes.length > 0 && (
-                      <>
-                        {ticketTypes.length > 1 && (
-                          <Select aria-label={t("waitlist.ticketType")} className="h-8 w-40 text-xs" value={choice[e.id] ?? defaultType} onChange={(ev) => setChoice((c) => ({ ...c, [e.id]: ev.target.value }))}>
-                            {ticketTypes.map((tt) => <option key={tt.id} value={tt.id}>{optionLabel(tt)}</option>)}
-                          </Select>
-                        )}
-                        <Button size="sm" disabled={pending} onClick={() => start(async () => { const r = await promoteWaitlistAction(eventId, e.id, choice[e.id] ?? defaultType); setMsg(r.ok ? { success: r.message } : { error: r.error }); router.refresh(); })}>{t("waitlist.offer")}</Button>
-                      </>
-                    )}
-                    {e.status !== "registered" && (
-                      <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(e.status === "offered" ? t("waitlist.confirmRemoveOffered", { email: e.email }) : t("waitlist.confirmRemove", { email: e.email }))) start(async () => { const r = await removeWaitlistEntryAction(eventId, e.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{tc("actions.remove")}</Button>
-                    )}
-                  </div>
+                  {e.status !== "registered" && (
+                    <RowActions label={t("waitlist.columns.actions")} pending={pending && busy === e.id}>
+                      {(e.status === "waiting" || e.status === "expired") && ticketTypes.length > 0 && (
+                        <>
+                          {ticketTypes.length === 1
+                            ? <RowAction icon={<Send />} onSelect={() => offer(e.id, defaultType)}>{t("waitlist.offer")}</RowAction>
+                            : ticketTypes.map((tt) => (
+                              // one entry per ticket type: "Offer a seat · General ($20, 3 left)"
+                              <RowAction key={tt.id} icon={<Send />} disabled={tt.room != null && tt.room <= 0} onSelect={() => offer(e.id, tt.id)}>{t("waitlist.offer")} · {optionLabel(tt)}</RowAction>
+                            ))}
+                          <RowActionsSeparator />
+                        </>
+                      )}
+                      <RowAction
+                        destructive icon={<Trash2 />}
+                        confirm={e.status === "offered" ? t("waitlist.confirmRemoveOffered", { email: e.email }) : t("waitlist.confirmRemove", { email: e.email })}
+                        onSelect={() => { setBusy(e.id); start(async () => { const r = await removeWaitlistEntryAction(eventId, e.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}
+                      >
+                        {tc("actions.remove")}
+                      </RowAction>
+                    </RowActions>
+                  )}
                 </TD>
               )}
             </TR>

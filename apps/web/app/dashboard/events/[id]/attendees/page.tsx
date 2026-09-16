@@ -1,5 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { Download, Search, Users } from "lucide-react";
+import { Ban, Check, Download, Search, Ticket, Trash2, Users, X } from "lucide-react";
 import { countAttendeesByStatus, listAttendees, listRegistrationFields } from "@evnelo/core/services";
 import { can, registrationFileDownloadPath } from "@evnelo/core";
 import type { Attendee } from "@evnelo/db";
@@ -7,11 +7,10 @@ import { db } from "@/lib/db";
 import { requireEvent, statusVariant } from "@/lib/dashboard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { SubmitButton } from "@/components/ui/submit-button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
-import { ConfirmButton } from "@/components/dashboard/confirm-button";
+import { RowAction, RowActions, RowActionsSeparator } from "@/components/dashboard/row-actions";
 import { EmptyCell, Note, Toolbar } from "@/components/dashboard/page-chrome";
 import { approveAttendeesAction, cancelAttendeesAction, eraseAttendeeAction, rejectAttendeesAction } from "../../../actions";
 
@@ -93,26 +92,27 @@ export default async function AttendeesPage({ params, searchParams }: { params: 
               )}
               {manage && (
                 <TD className="text-end">
-                  <div className="flex justify-end gap-1">
-                    {a.status === "pending_approval" && (
-                      <>
-                        <form action={approveAttendeesAction.bind(null, id)}><input type="hidden" name="id" value={a.id} /><SubmitButton size="sm">{t("event.attendees.approve")}</SubmitButton></form>
-                        <form action={rejectAttendeesAction.bind(null, id)}><input type="hidden" name="id" value={a.id} /><SubmitButton size="sm" variant="outline">{t("event.attendees.reject")}</SubmitButton></form>
-                      </>
-                    )}
-                    {a.status === "confirmed" && (
-                      <>
-                        {ticketToken && !ticketRevokedAt && <Button asChild size="sm" variant="ghost"><a href={`/t/${ticketToken}`} target="_blank" rel="noopener noreferrer">{t("event.attendees.ticket")}</a></Button>}
-                        <ConfirmButton action={cancelAttendeesAction.bind(null, id)} fields={{ id: a.id }} size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" confirm={t("event.attendees.cancelConfirm", { name: a.name })}>{tc("actions.cancel")}</ConfirmButton>
-                      </>
-                    )}
-                    {!a.deletedAt && (
-                      <>
-                        <Button asChild size="sm" variant="ghost"><a href={`/dashboard/events/${id}/attendees/${a.id}/export`}>{t("event.attendees.export")}</a></Button>
-                        <ConfirmButton action={eraseAttendeeAction.bind(null, id)} fields={{ id: a.id }} size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" confirm={t("event.attendees.eraseConfirm", { name: a.name })}>{t("event.attendees.erase")}</ConfirmButton>
-                      </>
-                    )}
-                  </div>
+                  {(a.status === "pending_approval" || a.status === "confirmed" || !a.deletedAt) && (
+                    <RowActions label={t("event.attendees.columns.actions")}>
+                      {a.status === "pending_approval" && (
+                        <>
+                          <RowAction action={approveAttendeesAction.bind(null, id)} fields={{ id: a.id }} icon={<Check />}>{t("event.attendees.approve")}</RowAction>
+                          <RowAction action={rejectAttendeesAction.bind(null, id)} fields={{ id: a.id }} icon={<X />}>{t("event.attendees.reject")}</RowAction>
+                        </>
+                      )}
+                      {a.status === "confirmed" && ticketToken && !ticketRevokedAt && (
+                        <RowAction href={`/t/${ticketToken}`} newTab icon={<Ticket />}>{t("event.attendees.ticket")}</RowAction>
+                      )}
+                      {!a.deletedAt && <RowAction href={`/dashboard/events/${id}/attendees/${a.id}/export`} icon={<Download />}>{t("event.attendees.export")}</RowAction>}
+                      {(a.status === "confirmed" || !a.deletedAt) && <RowActionsSeparator />}
+                      {a.status === "confirmed" && (
+                        <RowAction action={cancelAttendeesAction.bind(null, id)} fields={{ id: a.id }} confirm={t("event.attendees.cancelConfirm", { name: a.name })} destructive icon={<Ban />}>{tc("actions.cancel")}</RowAction>
+                      )}
+                      {!a.deletedAt && (
+                        <RowAction action={eraseAttendeeAction.bind(null, id)} fields={{ id: a.id }} confirm={t("event.attendees.eraseConfirm", { name: a.name })} destructive icon={<Trash2 />}>{t("event.attendees.erase")}</RowAction>
+                      )}
+                    </RowActions>
+                  )}
                 </TD>
               )}
             </TR>

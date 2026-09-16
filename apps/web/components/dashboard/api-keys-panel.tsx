@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { FormMessage } from "@/components/ui/form-field";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { EmptyCell, Note } from "@/components/dashboard/page-chrome";
 import { createApiKeyAction, revokeApiKeyAction } from "@/app/dashboard/actions";
@@ -21,11 +22,13 @@ export function ApiKeysPanel({ keys, canManage, docsUrl }: { keys: Key[]; canMan
   const [secret, setSecret] = useState<string>();
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
   const [pending, start] = useTransition();
+  const { confirm, dialog } = useConfirm();
   const router = useRouter();
   const fmt = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString(locale) : t("settings.developer.apiKeys.never"));
 
   return (
     <div className="space-y-4">
+      {dialog}
       <Note>
         {t.rich("settings.developer.apiKeys.note", {
           header: "Authorization: Bearer ev_live_…",
@@ -57,7 +60,7 @@ export function ApiKeysPanel({ keys, canManage, docsUrl }: { keys: Key[]; canMan
               <TD className="space-x-1 rtl:space-x-reverse">{k.scopes.map((s) => <Badge key={s} variant="outline">{s}</Badge>)}</TD>
               <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{fmt(k.lastUsedAt)}</TD>
               <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{fmt(k.createdAt)}</TD>
-              {canManage && <TD className="text-end">{!k.revokedAt && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(t("settings.developer.apiKeys.revokeConfirm", { name: k.name }))) start(async () => { const r = await revokeApiKeyAction(k.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{t("settings.developer.apiKeys.revoke")}</Button>}</TD>}
+              {canManage && <TD className="text-end">{!k.revokedAt && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={async () => { if (await confirm({ title: t("settings.developer.apiKeys.revoke"), description: t("settings.developer.apiKeys.revokeConfirm", { name: k.name }), destructive: true })) start(async () => { const r = await revokeApiKeyAction(k.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{t("settings.developer.apiKeys.revoke")}</Button>}</TD>}
             </TR>
           ))}
         </TBody>

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Field, FormMessage } from "@/components/ui/form-field";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { formatMoney } from "@/lib/utils";
 import { EmptyCell, PanelHeader } from "@/components/dashboard/page-chrome";
@@ -26,6 +27,7 @@ export function DiscountCodesPanel({ eventId, codes, editable, currency }: { eve
   const [draft, setDraft] = useState({ code: "", kind: "percent" as "percent" | "fixed", value: "10", maxUses: "", expiresAt: "" });
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
   const [pending, start] = useTransition();
+  const { confirm, dialog } = useConfirm();
   const router = useRouter();
   const set = <K extends keyof typeof draft>(k: K, v: (typeof draft)[K]) => setDraft((d) => ({ ...d, [k]: v }));
 
@@ -42,6 +44,7 @@ export function DiscountCodesPanel({ eventId, codes, editable, currency }: { eve
 
   return (
     <section className="hairline space-y-4 pt-8">
+      {dialog}
       <PanelHeader
         title={t("discounts.title")}
         description={t("discounts.description")}
@@ -82,7 +85,7 @@ export function DiscountCodesPanel({ eventId, codes, editable, currency }: { eve
                 <TD className="text-end tabular-nums">{c.maxUses != null ? t("discounts.usesOfMax", { uses: c.uses, max: c.maxUses }) : c.uses}</TD>
                 <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{c.expiresAt ? fmt(c.expiresAt, locale) : t("discounts.never")}</TD>
                 <TD><Badge variant={st === "active" ? "success" : "muted"}>{t(`discounts.status.${st}`)}</Badge></TD>
-                {editable && <TD className="text-end"><Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(t("discounts.confirmDelete", { code: c.code }))) start(async () => { const r = await deleteDiscountCodeAction(eventId, c.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{tc("actions.delete")}</Button></TD>}
+                {editable && <TD className="text-end"><Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={async () => { if (await confirm({ title: tc("actions.delete"), description: t("discounts.confirmDelete", { code: c.code }), destructive: true })) start(async () => { const r = await deleteDiscountCodeAction(eventId, c.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{tc("actions.delete")}</Button></TD>}
               </TR>
             );
           })}

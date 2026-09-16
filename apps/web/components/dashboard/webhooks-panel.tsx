@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FormMessage } from "@/components/ui/form-field";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { EmptyCell, Note, Toolbar } from "@/components/dashboard/page-chrome";
 import { createWebhookAction, deleteWebhookAction, rotateWebhookSecretAction, testWebhookAction, updateWebhookAction } from "@/app/dashboard/actions";
@@ -28,12 +29,14 @@ export function WebhooksPanel({ hooks, editable }: { hooks: WebhookRow[]; editab
   const [copied, setCopied] = useState(false);
   const [expanded, setExpanded] = useState<string>();
   const [pending, start] = useTransition();
+  const { confirm, dialog } = useConfirm();
   const router = useRouter();
   const toggle = (e: string) => setEvents((list) => (list.includes(e) ? list.filter((x) => x !== e) : [...list, e]));
   const copy = async (text: string) => { try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch { window.prompt(t("settings.developer.webhooks.copyPrompt"), text); } };
 
   return (
     <div className="space-y-4">
+      {dialog}
       <Note>
         {t.rich("settings.developer.webhooks.note", {
           signature: "evnelo-signature: v1=…",
@@ -100,8 +103,8 @@ export function WebhooksPanel({ hooks, editable }: { hooks: WebhookRow[]; editab
                   <div className="flex flex-wrap justify-end gap-1">
                     <Button size="sm" variant="ghost" disabled={pending} onClick={() => start(async () => { const r = await testWebhookAction(h.id); setMsg(r.ok ? { success: r.message } : { error: r.error }); })}>{t("settings.developer.webhooks.sendTest")}</Button>
                     <Button size="sm" variant="ghost" disabled={pending} onClick={() => start(async () => { const r = await updateWebhookAction(h.id, { active: !h.active }); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); })}>{h.active ? t("settings.developer.webhooks.pause") : t("settings.developer.webhooks.resume")}</Button>
-                    <Button size="sm" variant="ghost" disabled={pending} onClick={() => { if (window.confirm(t("settings.developer.webhooks.rotateConfirm"))) start(async () => { const r = await rotateWebhookSecretAction(h.id); if (r.ok) { setSecret(r.secret); setMsg({ success: r.message }); } else setMsg({ error: r.error }); }); }}>{t("settings.developer.webhooks.rotateSecret")}</Button>
-                    <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(t("settings.developer.webhooks.deleteConfirm"))) start(async () => { const r = await deleteWebhookAction(h.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{tc("actions.delete")}</Button>
+                    <Button size="sm" variant="ghost" disabled={pending} onClick={async () => { if (await confirm({ title: t("settings.developer.webhooks.rotateSecret"), description: t("settings.developer.webhooks.rotateConfirm") })) start(async () => { const r = await rotateWebhookSecretAction(h.id); if (r.ok) { setSecret(r.secret); setMsg({ success: r.message }); } else setMsg({ error: r.error }); }); }}>{t("settings.developer.webhooks.rotateSecret")}</Button>
+                    <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={async () => { if (await confirm({ title: tc("actions.delete"), description: t("settings.developer.webhooks.deleteConfirm"), destructive: true })) start(async () => { const r = await deleteWebhookAction(h.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{tc("actions.delete")}</Button>
                   </div>
                 </TD>
               )}

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { FormMessage } from "@/components/ui/form-field";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { inviteMemberAction, removeMemberAction, revokeInviteAction, setMemberRoleAction } from "@/app/dashboard/actions";
 
@@ -21,6 +22,7 @@ export function MembersPanel({ members, invites, canManage, currentUserId, roleL
   const locale = useLocale();
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
   const [pending, start] = useTransition();
+  const { confirm, dialog } = useConfirm();
   const router = useRouter();
   const run = (fn: () => Promise<{ ok: boolean; error?: string; message?: string } | void>) =>
     start(async () => {
@@ -32,6 +34,7 @@ export function MembersPanel({ members, invites, canManage, currentUserId, roleL
 
   return (
     <div className="space-y-4">
+      {dialog}
       <Table>
         <THead className="[&_th]:uppercase [&_th]:tracking-[0.12em]"><TR><TH>{t("settings.members.columns.member")}</TH><TH>{t("settings.members.columns.role")}</TH><TH>{t("settings.members.columns.since")}</TH>{canManage && <TH className="text-end"></TH>}</TR></THead>
         <TBody>
@@ -44,7 +47,7 @@ export function MembersPanel({ members, invites, canManage, currentUserId, roleL
                 ) : roleLabels[m.role]}
               </TD>
               <TD className="whitespace-nowrap tabular-nums text-muted-foreground">{new Date(m.since).toLocaleDateString(locale)}</TD>
-              {canManage && <TD className="text-end">{m.userId !== currentUserId && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(t("settings.members.removeConfirm", { email: m.email }))) run(() => removeMemberAction(m.userId)); }}>{tc("actions.remove")}</Button>}</TD>}
+              {canManage && <TD className="text-end">{m.userId !== currentUserId && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={async () => { if (await confirm({ title: tc("actions.remove"), description: t("settings.members.removeConfirm", { email: m.email }), destructive: true })) run(() => removeMemberAction(m.userId)); }}>{tc("actions.remove")}</Button>}</TD>}
             </TR>
           ))}
           {invites.map((i) => (

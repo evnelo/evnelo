@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Field, FormMessage } from "@/components/ui/form-field";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { EmptyCell, Note, PanelHeader } from "@/components/dashboard/page-chrome";
 import { createEventInviteAction, deleteEventInviteAction } from "@/app/dashboard/actions";
@@ -26,6 +27,7 @@ export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }:
   const [created, setCreated] = useState<string>();
   const [copied, setCopied] = useState<string>();
   const [pending, start] = useTransition();
+  const { confirm, dialog } = useConfirm();
   const router = useRouter();
 
   const copy = async (url: string) => {
@@ -34,6 +36,7 @@ export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }:
 
   return (
     <div className="space-y-5">
+      {dialog}
       <PanelHeader
         title={t("invites.title")}
         description={t("invites.description")}
@@ -93,7 +96,7 @@ export function InvitesPanel({ eventId, invites, editable, visibility, appUrl }:
                 <TD className="text-end">
                   <div className="flex justify-end gap-1">
                     <Button size="sm" variant="ghost" onClick={() => copy(url)}>{copied === url ? <Check className="size-4" /> : <Copy className="size-4" />} {tc("actions.copy")}</Button>
-                    {editable && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(t("invites.confirmRevoke"))) start(async () => { const r = await deleteEventInviteAction(eventId, i.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{t("invites.revoke")}</Button>}
+                    {editable && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={async () => { if (await confirm({ title: t("invites.revoke"), description: t("invites.confirmRevoke"), destructive: true })) start(async () => { const r = await deleteEventInviteAction(eventId, i.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{t("invites.revoke")}</Button>}
                   </div>
                 </TD>
               </TR>

@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Field, FormMessage } from "@/components/ui/form-field";
+import { useConfirm } from "@/components/ui/confirm-dialog";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { EmptyCell, PanelHeader } from "@/components/dashboard/page-chrome";
 import { deleteTicketTypeAction, saveTicketTypeAction } from "@/app/dashboard/actions";
@@ -37,6 +38,7 @@ export function TicketTypesPanel({ eventId, types, editable, defaultCurrency, gu
   const [open, setOpen] = useState<null | { id?: string; draft: Draft }>(null);
   const [msg, setMsg] = useState<{ error?: string; success?: string }>({});
   const [pending, start] = useTransition();
+  const { confirm, dialog } = useConfirm();
   const router = useRouter();
   const d = open?.draft;
   const setD = <K extends keyof Draft>(k: K, val: Draft[K]) => setOpen((o) => (o ? { ...o, draft: { ...o.draft, [k]: val } } : o));
@@ -64,6 +66,7 @@ export function TicketTypesPanel({ eventId, types, editable, defaultCurrency, gu
 
   return (
     <section className="space-y-4">
+      {dialog}
       <PanelHeader
         title={t("ticketTypes.title")}
         description={types.length === 0 ? t("ticketTypes.descriptionEmpty") : guestsEnabled ? t("ticketTypes.descriptionGuests") : t("ticketTypes.description")}
@@ -95,7 +98,7 @@ export function TicketTypesPanel({ eventId, types, editable, defaultCurrency, gu
               {editable && (
                 <TD className="text-end">
                   <Button size="sm" variant="ghost" onClick={() => { setMsg({}); setOpen({ id: row.id, draft: fromRow(row) }); }}>{tc("actions.edit")}</Button>
-                  {row.sold === 0 && row.held === 0 && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={() => { if (window.confirm(t("ticketTypes.confirmDelete", { name: row.name }))) start(async () => { const r = await deleteTicketTypeAction(eventId, row.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{tc("actions.delete")}</Button>}
+                  {row.sold === 0 && row.held === 0 && <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-destructive" disabled={pending} onClick={async () => { if (await confirm({ title: tc("actions.delete"), description: t("ticketTypes.confirmDelete", { name: row.name }), destructive: true })) start(async () => { const r = await deleteTicketTypeAction(eventId, row.id); setMsg(r.ok ? {} : { error: r.error }); router.refresh(); }); }}>{tc("actions.delete")}</Button>}
                 </TD>
               )}
             </TR>

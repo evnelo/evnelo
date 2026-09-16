@@ -5,24 +5,28 @@ import { useTranslations } from "next-intl";
 import { Ellipsis } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useConfirm, type ConfirmOptions } from "@/components/ui/confirm-dialog";
 
-const CloseContext = React.createContext<() => void>(() => {});
+const RowContext = React.createContext<{ closeLater: () => void; confirm: (o: ConfirmOptions) => Promise<boolean> }>({ closeLater: () => {}, confirm: async () => true });
 
 /**
  * The "Actions" cell of a dashboard table: one ⋯ button, every row action in a menu. Items are
  * links, server-action forms (with an optional confirm) or client handlers; keep the primary
- * action first and destructive ones last, after a separator.
+ * action first and destructive ones last, after a separator. Confirms open the shared
+ * confirmation dialog, never the browser's.
  */
 export function RowActions({ label, children, pending }: { label?: string; children: React.ReactNode; pending?: boolean }) {
   const tc = useTranslations("common");
   const [open, setOpen] = React.useState(false);
+  const { confirm, dialog } = useConfirm();
   // Radix closes on the item's click and React unmounts the item synchronously, before the
   // browser runs the click's default action, so a submit button or link inside would do nothing.
   // Items that rely on that default action prevent Radix's close and call this instead: the
   // menu closes on the next tick, after the form has submitted or the navigation has started.
   const closeLater = React.useCallback(() => { setTimeout(() => setOpen(false), 0); }, []);
+  const ctx = React.useMemo(() => ({ closeLater, confirm }), [closeLater, confirm]);
   return (
-    <CloseContext.Provider value={closeLater}>
+    <RowContext.Provider value={ctx}>
       <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button size="sm" variant="ghost" className="size-8 px-0 text-muted-foreground data-[state=open]:bg-muted data-[state=open]:text-foreground" pending={pending} aria-label={label ?? tc("actions.more")}>
@@ -31,7 +35,8 @@ export function RowActions({ label, children, pending }: { label?: string; child
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">{children}</DropdownMenuContent>
       </DropdownMenu>
-    </CloseContext.Provider>
+      {dialog}
+    </RowContext.Provider>
   );
 }
 
@@ -44,7 +49,7 @@ type ClickItem = Common & { onSelect: () => void; confirm?: string };
 
 export function RowAction(props: LinkItem | FormItem | ClickItem) {
   const { children, icon, destructive, disabled } = props;
-  const closeLater = React.useContext(CloseContext);
+  const { closeLater, confirm } = React.useContext(RowContext);
   const body = <>{icon}<span className="truncate">{children}</span></>;
   const keepOpenThenClose = (e: Event) => { e.preventDefault(); closeLater(); };
 
@@ -57,9 +62,17 @@ export function RowAction(props: LinkItem | FormItem | ClickItem) {
   }
 
   if ("action" in props) {
-    // The confirm runs in onSubmit, before the request, exactly like ConfirmButton.
+    // With a confirm, the submit is held and the dialog asks. By the time the person agrees the
+    // menu, and this form with it, is gone, so the action is called with the captured form data
+    // rather than by submitting the form again.
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      if (!props.confirm) return;
+      e.preventDefault();
+      const data = new FormData(e.currentTarget);
+      if (await confirm({ title: children, description: props.confirm, destructive })) React.startTransition(() => { void props.action(data); });
+    };
     return (
-      <form action={props.action} onSubmit={(e) => { if (props.confirm && !window.confirm(props.confirm)) e.preventDefault(); }}>
+      <form action={props.action} onSubmit={onSubmit}>
         {props.fields && Object.entries(props.fields).map(([k, v]) => <input key={k} type="hidden" name={k} value={v} />)}
         <DropdownMenuItem asChild destructive={destructive} disabled={disabled} onSelect={keepOpenThenClose}>
           <button type="submit">{body}</button>
@@ -72,7 +85,7 @@ export function RowAction(props: LinkItem | FormItem | ClickItem) {
     <DropdownMenuItem
       destructive={destructive}
       disabled={disabled}
-      onSelect={() => { if (props.confirm && !window.confirm(props.confirm)) return; props.onSelect(); }}
+      onSelect={async () => { if (props.confirm && !(await confirm({ title: children, description: props.confirm, destructive }))) return; props.onSelect(); }}
     >
       {body}
     </DropdownMenuItem>

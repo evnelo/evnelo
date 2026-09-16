@@ -399,13 +399,15 @@
 @keyframes fade-out {
   to { opacity: 0; }
 }
+/* Centering is the element's own `translate` (Tailwind's -translate-x-1/2); keyframes only scale and fade,
+   otherwise the two translations stack and the panel lands off-centre. */
 @keyframes panel-in {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(var(--scale-large)); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  from { opacity: 0; transform: scale(var(--scale-large)); }
+  to { opacity: 1; transform: scale(1); }
 }
 @keyframes panel-out {
-  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  to { opacity: 0; transform: translate(-50%, -50%) scale(var(--scale-large)); }
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(var(--scale-large)); }
 }
 @keyframes menu-in {
   from { opacity: 0; transform: scale(var(--scale-medium)); }

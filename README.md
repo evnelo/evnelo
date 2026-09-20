@@ -256,7 +256,16 @@ pnpm --filter @evnelo/web test      # app helpers, routes, OpenAPI contract
 pnpm typecheck
 ```
 
-Core integration tests (`packages/core/src/__tests__/*.integration.test.ts`) run against the local MySQL when it is reachable and skip otherwise; they prove the concurrency properties (rate limits, check-in, capacity) that mocks cannot. CI (`.github/workflows/ci.yml`) runs migrations, typecheck, tests and the production build against MySQL 8.4 on every push and pull request, and checks that the Docker image builds.
+Core integration tests (`packages/core/src/__tests__/*.integration.test.ts`) run against the local MySQL when it is reachable and seeded, and skip otherwise; they prove the concurrency properties (rate limits, check-in, capacity) that mocks cannot. With `CI=true` a suite that cannot run fails instead of skipping.
+
+Browser tests (`apps/web/e2e/`, Playwright) cover the flows that carry the product: the public event page, free registration through to the order page, paid checkout up to the mounted Payment Element, sign-in, onboarding, creating and publishing an event. They drive a running server (`BASE_URL`, default `http://localhost:3000`) with a seeded database and mint the sign-in link straight into `verification_tokens`, so no email is sent:
+
+```bash
+pnpm --filter @evnelo/web exec playwright install chromium   # once
+pnpm --filter @evnelo/web e2e                                # against the dev server; --ui to watch
+```
+
+CI (`.github/workflows/ci.yml`) runs on every push and pull request: migrations and seed against MySQL 8.4, typecheck, translation sync, unit and integration tests; then it builds the production Docker image, boots it against MySQL, waits for `/api/health` and runs the browser suite against the container. The paid checkout test needs the repository secrets `STRIPE_SECRET_KEY` and `STRIPE_PUBLISHABLE_KEY` (Stripe test mode) and fails without them.
 
 To exercise flows by hand: `pnpm db:seed` gives you events with paid and free tickets; Stripe test cards work in the Payment Element; the door scanner can be tested by pasting a ticket link into its manual field.
 
@@ -283,7 +292,13 @@ docker compose --env-file .env -f deploy/docker-compose.prod.yml up -d --build
 docker compose --env-file .env -f deploy/docker-compose.prod.yml logs -f app   # "ready" after migrations
 ```
 
-`SITE_ADDRESS` in `.env` overrides the domain (default `evnelo.com`). Caddy obtains and renews the certificate from Let's Encrypt over port 80, so no certificate is installed by hand; with Cloudflare in front use SSL mode "Full (strict)" and leave "Always Use HTTPS" off (Caddy does that redirect). The stack defaults `API_TRUSTED_PROXY_HEADER` to `x-forwarded-for` because Caddy appends the client address to that header; behind Cloudflare's proxy set it to `cf-connecting-ip` in `.env` and restrict ports 80/443 to Cloudflare's IP ranges. To ship a new version run `./deploy/deploy.sh`: it pulls, builds with the commit hash baked in (Datadog shows the version and links traces to the commit), rebuilds/restarts the app and public MCP service and waits up to 300 seconds for health, force-recreates Caddy so the bind-mounted routing configuration takes effect, then verifies Caddy state and a real public HTTPS MCP initialize response before reporting success and pruning unused images; migrations apply on boot. The host needs `sh`, `git`, Docker Compose supporting `--wait` / `--wait-timeout`, and `curl` with `--retry-connrefused` plus a working system CA trust store. JSON validation runs with Node already in the MCP image; no host Node/jq/Python is required. A readiness/TLS/initialize failure exits nonzero and does not print `deployed`.
+`SITE_ADDRESS` in `.env` overrides the domain (default `evnelo.com`). Caddy obtains and renews the certificate from Let's Encrypt over port 80, so no certificate is installed by hand; with Cloudflare in front use SSL mode "Full (strict)" and leave "Always Use HTTPS" off (Caddy does that redirect). The stack defaults `API_TRUSTED_PROXY_HEADER` to `x-forwarded-for` because Caddy appends the client address to that header; behind Cloudflare's proxy set it to `cf-connecting-ip` in `.env` and restrict ports 80/443 to Cloudflare's IP ranges. Deploys are continuous and pull-based, so the VM needs no inbound access and GitHub holds no credentials for it. When CI passes on `master` its last job fast-forwards the `production` branch to that commit; on the VM, `deploy/auto-deploy.sh` runs from cron every minute, fetches `origin/production` and, when it moved, runs `deploy/deploy.sh`: reset the checkout to that commit, keep the running app and MCP images as `:previous`, build both with the commit baked in (Datadog shows the version and links traces to the commit), restart them and wait up to 300 seconds for their health checks, then force-recreate Caddy so the bind-mounted routing configuration takes effect and require a real TLS-verified public MCP initialize response before reporting success and pruning unused images; migrations apply on boot. If app or MCP never turn healthy the previous images go back, Caddy keeps its old configuration, and the commit is not retried until `production` moves again. The host needs bash, git, flock, Docker Compose supporting `--wait` / `--wait-timeout`, and `curl` with `--retry-connrefused` plus a working system CA trust store; JSON validation runs with Node already in the MCP image. Install it once:
+
+```bash
+(crontab -l 2>/dev/null; echo "* * * * * $HOME/evnelo/deploy/auto-deploy.sh >> $HOME/evnelo-deploy.log 2>&1") | crontab -
+```
+
+`./deploy/deploy.sh` by hand deploys `origin/production` immediately; `./deploy/deploy.sh --local` deploys whatever is checked out (a hotfix copied onto the box). To roll back, force-push `production` to the last good commit (`git push --force origin <sha>:production`) and the VM redeploys it within a minute.
 
 Back up the database from cron. `deploy/backup-db.sh` dumps MySQL into `backups/` (14 days kept) and, when `BACKUP_S3_URI` is set in `.env` (for example `s3://my-backups/evnelo`), copies the dump there with the app's `S3_*` credentials through the `amazon/aws-cli` image, so nothing is installed on the host. Give that bucket a lifecycle rule and keep it separate from the uploads bucket. Install it once:
 

@@ -1,16 +1,17 @@
 /**
  * Development seed: one demo organization with a free event (custom fields +
- * conditional logic), a paid event with two ticket types, a private event and a
- * draft. Idempotent: skips if the demo org already exists.
+ * conditional logic) with one confirmed registration, a paid event with two ticket
+ * types, a private event and a draft. Idempotent: skips if the demo org already exists.
  *
  *   pnpm db:seed
  */
+import { randomBytes } from "node:crypto";
 import { ulid } from "ulid";
 import { eq } from "drizzle-orm";
 import { loadRootEnv } from "./env";
 import { createDb } from "./index";
 import {
-  events, eventHosts, eventSponsors, eventTags, organizations, registrationFields, tags, ticketTypes,
+  attendees, events, eventHosts, eventSponsors, eventTags, orderItems, orders, organizations, registrationFields, tags, ticketTypes, tickets,
 } from "./schema";
 
 loadRootEnv();
@@ -56,7 +57,8 @@ await db.insert(events).values({
   guestsEnabled: true, maxGuests: 2,
   socialLinks: [{ platform: "website", url: "https://example.com/meetup" }, { platform: "discord", url: "https://discord.gg/example" }],
 });
-await db.insert(ticketTypes).values({ id: ulid(), eventId: freeId, name: "General admission", priceMinor: 0, currency: "BRL", quantity: 80 });
+const freeTicketTypeId = ulid();
+await db.insert(ticketTypes).values({ id: freeTicketTypeId, eventId: freeId, name: "General admission", priceMinor: 0, currency: "BRL", quantity: 80 });
 await db.insert(eventHosts).values([
   { id: ulid(), eventId: freeId, name: "Ana Souza", title: "Design lead", position: 0, socialLinks: [{ platform: "linkedin", url: "https://linkedin.com/in/example" }] },
   { id: ulid(), eventId: freeId, name: "Rafael Lima", title: "Frontend engineer", position: 1 },
@@ -78,6 +80,18 @@ await db.insert(registrationFields).values([
     options: [{ value: "veg", label: "Vegetarian" }, { value: "vegan", label: "Vegan" }, { value: "gf", label: "Gluten-free" }] },
   { id: ulid(), eventId: freeId, key: "guest_first_time", label: "First time at the meetup?", type: "checkbox", required: false, scope: "guest", position: 5 },
 ]);
+
+/* ---- one confirmed registration on the free event: the dashboard, the door and the
+   integration tests (listings, check-in) have something to work with ---- */
+const orderId = ulid();
+const attendeeId = ulid();
+await db.insert(orders).values({
+  id: orderId, eventId: freeId, organizationId: orgId, email: "ana.attendee@example.com", status: "free", currency: "BRL",
+  accessToken: randomBytes(24).toString("base64url"), answers: { code_of_conduct: true },
+});
+await db.insert(orderItems).values({ id: ulid(), orderId, ticketTypeId: freeTicketTypeId, quantity: 1, unitPriceMinor: 0 });
+await db.insert(attendees).values({ id: attendeeId, eventId: freeId, orderId, ticketTypeId: freeTicketTypeId, name: "Ana Attendee", email: "ana.attendee@example.com", status: "confirmed", answers: { role: "design" } });
+await db.insert(tickets).values({ id: ulid(), attendeeId, eventId: freeId, token: randomBytes(24).toString("base64url") });
 
 /* ---- paid, public, online, two ticket types ---- */
 const paidId = ulid();
@@ -105,5 +119,5 @@ await db.insert(events).values([
     startsAt: days(40), endsAt: days(40, 20), visibility: "public", status: "draft" },
 ]);
 
-console.log("seed: created org demo with 4 events");
+console.log("seed: created org demo with 4 events and 1 registration");
 process.exit(0);

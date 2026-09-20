@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { expect, it } from "vitest";
+import { describeIntegration } from "./helpers/integration";
 import { createDb } from "@evnelo/db";
 import { consumeRateLimit } from "../services/api";
 
@@ -10,7 +11,7 @@ const url = process.env.DATABASE_URL ?? "mysql://evnelo:evnelo@localhost:3306/ev
 const db = createDb(url);
 const reachable = await db.execute("select 1").then(() => true, () => false);
 
-describe.skipIf(!reachable)("consumeRateLimit against MySQL", () => {
+describeIntegration(reachable, "MySQL unreachable")("consumeRateLimit against MySQL", () => {
   it("admits exactly `limit` of many concurrent calls in one window", async () => {
     const bucket = `t${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`.slice(0, 26);
     const now = new Date();

@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { expect, it } from "vitest";
+import { describeIntegration } from "./helpers/integration";
 import { and, eq, isNull } from "drizzle-orm";
 import { attendees, createDb } from "@evnelo/db";
 import { getAttendeeView, getOrderDetails, getOrganization, getTicketType, listAttendeesPage, listCheckInsPage, listOrdersPage } from "../services";
@@ -8,7 +9,7 @@ const url = process.env.DATABASE_URL ?? "mysql://evnelo:evnelo@localhost:3306/ev
 const db = createDb(url);
 const seed = await db.select().from(attendees).where(and(eq(attendees.status, "confirmed"), isNull(attendees.deletedAt))).limit(1).then((r) => r[0] ?? null, () => null);
 
-describe.skipIf(!seed)("REST listings against MySQL", () => {
+describeIntegration(Boolean(seed), "no confirmed attendee in the database")("REST listings against MySQL", () => {
   it("pages attendees newest first with ticket and check-in state", async () => {
     const s = seed!;
     const first = await listAttendeesPage(db, s.eventId, { limit: 2, offset: 0 });
@@ -31,8 +32,10 @@ describe.skipIf(!seed)("REST listings against MySQL", () => {
 
   it("lists orders with filters and loads one with items and party", async () => {
     const s = seed!;
-    const orders = await listOrdersPage(db, s.eventId, { limit: 5 });
+    // by the seed's own address: the event may hold hundreds of orders on a developer's database
+    const orders = await listOrdersPage(db, s.eventId, { email: s.email, limit: 5 });
     expect(orders.some((o) => o.order.id === s.orderId)).toBe(true);
+    expect((await listOrdersPage(db, s.eventId, { limit: 5 })).length).toBeLessThanOrEqual(5);
     const mine = orders.find((o) => o.order.id === s.orderId)!;
     expect(mine.attendeeCount).toBeGreaterThan(0);
     expect((await listOrdersPage(db, s.eventId, { email: mine.order.email.toUpperCase() })).every((o) => o.order.email === mine.order.email)).toBe(true);

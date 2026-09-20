@@ -3,7 +3,8 @@
  * radius, the price summary subqueries and the visibility rules are all things a fake database
  * cannot prove. Skips itself when the database is unreachable, so `pnpm test` still runs anywhere.
  */
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, expect, it } from "vitest";
+import { describeIntegration } from "./helpers/integration";
 import { inArray } from "drizzle-orm";
 import { createDb, events, eventTags, organizations, tags, ticketTypes } from "@evnelo/db";
 import { ulid } from "ulid";
@@ -31,7 +32,7 @@ const tagId = ulid();
 const names = (rows: readonly { id: string }[]) =>
   Object.entries(ids).filter(([, id]) => rows.some((row) => row.id === id)).map(([name]) => name).sort();
 
-describe.skipIf(!reachable)("public discovery queries", () => {
+describeIntegration(reachable, "MySQL unreachable")("public discovery queries", () => {
 
   beforeAll(async () => {
     await database.insert(organizations).values({ id: orgId, slug: orgSlug, name: `Integration Test Org ${run}` });

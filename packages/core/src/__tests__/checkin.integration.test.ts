@@ -1,4 +1,5 @@
-import { afterAll, describe, expect, it } from "vitest";
+import { afterAll, expect, it } from "vitest";
+import { describeIntegration } from "./helpers/integration";
 import { and, eq, isNull } from "drizzle-orm";
 import { attendees, checkIns, createDb, tickets } from "@evnelo/db";
 import { newId } from "../ids";
@@ -16,7 +17,7 @@ const attendeeId = newId();
 const ticketId = newId();
 const token = newTicketToken();
 
-describe.skipIf(!seed)("checkInTicket against MySQL", () => {
+describeIntegration(Boolean(seed), "no confirmed attendee in the database")("checkInTicket against MySQL", () => {
   afterAll(async () => {
     await db.delete(checkIns).where(eq(checkIns.ticketId, ticketId));
     await db.delete(tickets).where(eq(tickets.id, ticketId));

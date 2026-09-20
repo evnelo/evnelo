@@ -1,4 +1,5 @@
-import { afterAll, describe, expect, it } from "vitest";
+import { afterAll, expect, it } from "vitest";
+import { describeIntegration } from "./helpers/integration";
 import { eq, sql } from "drizzle-orm";
 import { createDb, organizationMembers, organizations } from "@evnelo/db";
 import { newId } from "../ids";
@@ -10,7 +11,7 @@ const orgId = newId();
 const ownerId = newId();
 const memberId = newId();
 
-describe.skipIf(!reachable)("Stripe organization binding against MySQL", () => {
+describeIntegration(reachable, "MySQL unreachable")("Stripe organization binding against MySQL", () => {
   afterAll(async () => {
     await db.delete(organizationMembers).where(eq(organizationMembers.organizationId, orgId));
     await db.delete(organizations).where(eq(organizations.id, orgId));

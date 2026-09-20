@@ -1,17 +1,31 @@
+# Every push and pull request: typecheck, translations, unit and integration tests against MySQL,
+# then the production Docker image is built, booted against MySQL and driven through the browser
+# smoke suite. On master, once everything passed, the `production` branch is fast-forwarded to
+# that commit; the VM polls that branch and deploys it (deploy/auto-deploy.sh). Nothing here can
+# reach the VM, and nothing reaches the branch without the checks.
 name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [master]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # a newer push supersedes an in-flight PR run; master runs finish so the release job is never cut off
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PNPM_VERSION: 9.15.9
+  NODE_VERSION: 22
 
 jobs:
-  test:
-    name: Typecheck, test, build
+  checks:
+    name: Typecheck and tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
     services:
@@ -27,6 +41,7 @@ jobs:
           --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -proot"
           --health-interval 5s --health-timeout 5s --health-retries 20
     env:
+      CI: "true"
       DATABASE_URL: mysql://evnelo:evnelo@127.0.0.1:3306/evnelo
       AUTH_SECRET: ci-only-secret-that-is-at-least-32-characters-long
       APP_URL: http://localhost:3000
@@ -35,38 +50,63 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
-          version: 9.15.9
+          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Apply migrations
-        run: pnpm db:migrate
+      - name: Migrate and seed
+        run: pnpm db:migrate && pnpm db:seed
       - name: Typecheck
         run: pnpm typecheck
       - name: Translations in sync with English
         run: pnpm --filter @evnelo/web translate:check
-      - name: Test
+      - name: Unit and integration tests
+        # CI=true makes an integration suite that cannot reach the seeded database fail, not skip
         run: pnpm test
-      - name: Build
-        run: pnpm build
 
-  docker:
-    name: Docker image builds
+  image:
+    name: Image boots and passes the browser suite
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: evnelo
+          MYSQL_USER: evnelo
+          MYSQL_PASSWORD: evnelo
+          MYSQL_ROOT_PASSWORD: root
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      CI: "true"
+      DATABASE_URL: mysql://evnelo:evnelo@127.0.0.1:3306/evnelo
+      AUTH_SECRET: ci-only-secret-that-is-at-least-32-characters-long
+      APP_URL: http://localhost:3000
+      BASE_URL: http://localhost:3000
+      # Stripe test-mode keys (repository secrets): the paid checkout test fails without them
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
-      - name: Build
+      - name: Build the production image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: false
+          load: true
+          tags: evnelo-app:ci
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+            APP_VERSION=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Build public MCP image
+      - name: Build the public MCP image
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -74,3 +114,60 @@ jobs:
           push: false
           cache-from: type=gha,scope=mcp
           cache-to: type=gha,scope=mcp,mode=max
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Migrate and seed
+        run: pnpm db:migrate && pnpm db:seed
+      - name: Boot the image
+        # host networking: the container reaches the MySQL service on 127.0.0.1 like the runner does
+        run: |
+          docker run -d --name app --network host \
+            -e DATABASE_URL -e AUTH_SECRET -e APP_URL -e STRIPE_SECRET_KEY -e STRIPE_PUBLISHABLE_KEY \
+            -e MIGRATE_ON_START=true -e JOBS_INLINE=true \
+            evnelo-app:ci
+      - name: Wait for /api/health
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:3000/api/health; then echo; exit 0; fi
+            sleep 2
+          done
+          echo "the app never became healthy" >&2
+          docker logs app >&2
+          exit 1
+      - name: Install Chromium
+        run: pnpm --filter @evnelo/web exec playwright install --with-deps chromium
+      - name: Browser suite
+        run: pnpm --filter @evnelo/web e2e
+      - name: App logs
+        if: failure()
+        run: docker logs app
+      - name: Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            apps/web/playwright-report
+            apps/web/e2e/.artifacts
+          retention-days: 7
+
+  release:
+    name: Fast-forward production
+    needs: [checks, image]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Move the production branch to this commit
+        # a plain (non-forced) push: production only ever holds commits from master, so it fast-forwards;
+        # to roll back, force-push production to an older commit and the VM redeploys it
+        run: git push origin "${{ github.sha }}:refs/heads/production"

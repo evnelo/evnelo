@@ -9,3 +9,7 @@ dist
 
 # local agent worktrees and session files
 .claude/
+
+# browser tests
+apps/web/e2e/.artifacts/
+apps/web/playwright-report/

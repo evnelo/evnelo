@@ -258,7 +258,7 @@ export function RegisterCard({ eventId, eventName, ticketTypes, fields, collectP
               {soldOut ? tc("labels.soldOut") : requiresApproval ? t("register.buttonApproval") : t("register.button")}
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-h-[90dvh] overflow-y-auto">
+          <DialogContent fullScreen>
             {paidPossible && !success && <Steps current={payment || resuming ? 2 : 1} />}
             {!success && <DialogTitle>{payment ? t("register.dialogPayTitle") : eventName}</DialogTitle>}
             {!success && <DialogDescription>{payment ? t("register.dialogPayDescription") : t("register.dialogDescription")}</DialogDescription>}

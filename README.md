@@ -195,6 +195,31 @@ Create keys under Dashboard → Settings → API keys (owners and admins). Keys 
 { "mcpServers": { "evnelo": { "command": "pnpm", "args": ["--filter", "@evnelo/mcp", "start"], "env": { "EVNELO_URL": "https://your-instance", "EVNELO_API_KEY": "ev_live_..." } } } }
 ```
 
+### Public HTTP MCP and event cards (local first slice)
+
+A separate anonymous MCP Apps server supports public event discovery and interactive cards, without exposing the organizer stdio API key:
+
+```bash
+# Keep the Evnelo web app running on localhost:3000.
+EVNELO_URL=http://localhost:3000 pnpm --filter @evnelo/mcp start:http
+# Streamable HTTP endpoint: http://127.0.0.1:3001/mcp
+```
+
+HTTP advertises only `search_public_events` and `render_event_cards`, with explicit schemas and read-only safety annotations. Search returns structured public records; render takes the same search filters/page and up to 12 selected `eventIds`, re-fetches the authoritative public page and rejects IDs outside it. It never accepts model-authored card objects. Private, unlisted and draft events stay excluded by the existing public API. `EVNELO_API_KEY` and incoming Authorization are never forwarded by this server. The existing `start` command remains the organizer stdio server shown above.
+
+Cards use the standard MCP Apps bridge and a bundled `text/html;profile=mcp-app` resource (only render declares `_meta.ui.resourceUri`), showing dates/time zones, location and discovery prices. “View event” opens a canonical public event page through the host. Existing catalogues supply all 20 languages, including RTL; host locale/theme and reduced motion are supported. No images/CDNs, dashboard iframe, browser API credentials, ticket/invite/order tokens, private analytics, mutation tools or checkout are included.
+
+`MCP_PORT` defaults to 3001; the listener is always loopback. `MCP_ALLOWED_HOSTS` replaces the default exact `localhost:port` / `127.0.0.1:port` allowlist, and `MCP_ALLOWED_ORIGINS` explicitly permits exact Origin values (present Origin is denied by default). No wildcard CORS. Requests are POST/JSON only, capped at 64 KiB, stateless and cleaned up per response; upstream calls have a five-second deadline and refuse redirects. `EVNELO_URL` must be an HTTPS origin (loopback HTTP allowed), without credentials/path/query/fragment.
+
+```bash
+pnpm --filter @evnelo/mcp test # transport/security/stdio tests; two live tests skip
+# Seeded demo instance + running web app required for all live assertions:
+MCP_LIVE_URL=http://localhost:3000 pnpm --filter @evnelo/mcp test
+MCP_EVIDENCE_DIR=/absolute/path/outside/repo pnpm --filter @evnelo/mcp test:browser
+```
+
+Browser verification uses the actual HTTP MCP resource in an official MCP Apps `AppBridge` harness at phone and desktop widths, not a real ChatGPT installation. It needs Playwright Chromium (or `MCP_CHROMIUM_PATH`). Stop any separately running HTTP MCP on port 3001 before the CLI smoke test. This separate service is not packaged in the web Docker image and has not been deployed or submitted. **OAuth PKCE and live user/organization permissions come next, before hosted private data or organizer mutations.** Implementation boundaries, verification and ordered next phases are in [`docs/chatgpt-plugin-roadmap.md`](docs/chatgpt-plugin-roadmap.md).
+
 ### Outbound webhooks
 
 Add endpoints under Settings → Webhooks and pick events: `registration.created`, `order.paid`, `order.refunded`, `attendee.checked_in`, `event.published`, `event.updated`, `event.cancelled`. Each delivery is a JSON envelope (`id`, `type`, `createdAt`, `organizationId`, `data`) signed with HMAC-SHA256 over `{timestamp}.{body}`, sent as `evnelo-signature: v1=…` with `evnelo-timestamp` and `evnelo-delivery-id`. Verify with the SDK helper and reject timestamps older than five minutes. Deliveries retry with exponential backoff up to eight attempts; the Settings page shows recent deliveries and can send a test ping or rotate the secret.

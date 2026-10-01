@@ -1,10 +1,11 @@
 import { test, expect } from "vitest";
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
-// Execute the actual deployment shell, but NEVER allow git, Docker or curl to reach production.
+// Execute the actual deployment shell, but NEVER allow git, Docker, curl or flock to touch the machine.
+// State and lock files go to the temporary directory, never the developer's home.
 function deploy(scenario: string) {
   const dir = mkdtempSync(join(tmpdir(), "evnelo-deploy-test-"));
   const bin = join(dir, "bin");
@@ -19,7 +20,7 @@ fs.appendFileSync(process.env.TRACE, JSON.stringify({name,args})+'\\n');
 if (name === 'git') {
   if (args[0] === 'rev-parse') console.log('testsha');
 } else if (name === 'docker') {
-  if (args.includes('--build') && process.env.SCENARIO === 'readiness-fail') process.exit(1);
+  if (args.includes('--wait') && process.env.SCENARIO === 'readiness-fail') process.exit(1);
   if (args.includes('ps')) console.log('caddy-test-id');
   if (args[0] === 'inspect') console.log(process.env.SCENARIO === 'proxy-stopped' ? 'exited none' : process.env.SCENARIO === 'proxy-unhealthy' ? 'running unhealthy' : 'running none');
   if (args.includes('exec')) {
@@ -36,13 +37,14 @@ if (name === 'git') {
   else console.log(JSON.stringify({jsonrpc:'2.0',id:1,result:{protocolVersion:'2025-03-26',capabilities:{},serverInfo:{name:'evnelo',version:'1'}}}));
 }
 `;
-  for (const name of ["git", "docker", "curl"]) writeFileSync(join(bin, name), shim, { mode: 0o755 });
+  for (const name of ["git", "docker", "curl", "flock"]) writeFileSync(join(bin, name), shim, { mode: 0o755 });
+  const state = join(dir, "deployed");
   try {
-    const result = spawnSync("/bin/sh", [new URL("../../../deploy/deploy.sh", import.meta.url).pathname], {
-      env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, TRACE: trace, SCENARIO: scenario }, encoding: "utf8", timeout: 10000,
+    const result = spawnSync("bash", [new URL("../../../deploy/deploy.sh", import.meta.url).pathname], {
+      env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, TRACE: trace, SCENARIO: scenario, EVNELO_DEPLOY_STATE: state, EVNELO_DEPLOY_LOCK: join(dir, "lock") }, encoding: "utf8", timeout: 10000,
     });
     const calls = readFileSync(trace, "utf8").trim().split("\n").map(line => JSON.parse(line) as { name: string; args: string[] });
-    return { ...result, calls };
+    return { ...result, calls, deployed: existsSync(state) ? readFileSync(state, "utf8").trim() : null, failed: existsSync(`${state}.failed`) };
   } finally { rmSync(dir, { recursive: true, force: true }); }
 }
 
@@ -51,12 +53,19 @@ test.each(["https-fail", "rpc-error", "invalid-json", "wrong-id", "empty-result"
   expect(result.status).not.toBe(0);
   expect(result.stdout).not.toContain("deployed ");
   expect(result.calls.some(c => c.args.includes("prune"))).toBe(false);
+  expect(result.deployed).toBeNull();
+  expect(result.failed).toBe(true);
 });
 
 test("deployment reports success only after readiness, proxy and validated HTTPS initialize", () => {
   const result = deploy("success");
   expect(result.status).toBe(0);
   expect(result.stdout).toContain("deployed testsha");
+  expect(result.deployed).toBe("testsha");
+  expect(result.failed).toBe(false);
+  // builds before restarting anything, and releases from the production branch
+  expect(result.calls.findIndex(c => c.args.includes("build"))).toBeLessThan(result.calls.findIndex(c => c.args.includes("--wait")));
+  expect(result.calls.some(c => c.name === "git" && c.args.includes("origin/production"))).toBe(true);
   const at = (predicate: (c: {name: string; args: string[]}) => boolean) => result.calls.findIndex(predicate);
   const ready = at(c => c.args.includes("--wait"));
   const proxy = at(c => c.args.includes("--force-recreate"));
@@ -94,12 +103,18 @@ test.each(["proxy-stopped", "proxy-unhealthy"])("deployment rejects %s before re
   expect(result.calls.some(c => c.args.includes("prune"))).toBe(false);
 });
 
-test("deployment stops before proxy recreation when bounded app/MCP readiness fails", () => {
+test("deployment rolls back and stops before proxy recreation when bounded app/MCP readiness fails", () => {
   const result = deploy("readiness-fail");
   expect(result.status).not.toBe(0);
   expect(result.stdout).not.toContain("deployed ");
   expect(result.calls.some(c => c.args.includes("--force-recreate"))).toBe(false);
-  const up = result.calls.find(c => c.args.includes("--build"))!;
+  expect(result.failed).toBe(true);
+  for (const image of ["evnelo-app", "evnelo-mcp"]) {
+    expect(result.calls.some(c => c.args[0] === "tag" && c.args[1] === `${image}:previous` && c.args[2] === `${image}:latest`)).toBe(true);
+  }
+  const wait = result.calls.findIndex(c => c.args.includes("--wait"));
+  expect(result.calls.slice(wait + 1).some(c => c.args.includes("up") && c.args.includes("app") && c.args.includes("mcp"))).toBe(true);
+  const up = result.calls[wait]!;
   expect(up.args).toContain("--wait");
   const timeout = up.args.indexOf("--wait-timeout");
   expect(timeout).toBeGreaterThan(-1);

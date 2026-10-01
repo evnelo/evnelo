@@ -20,7 +20,9 @@ test("production packages an isolated public MCP service behind exact Caddy rout
   expect(caddy).toContain("reverse_proxy app:3000");
   expect(caddy).toContain("www.{$SITE_ADDRESS}");
   const deploy = await read("deploy/deploy.sh");
-  expect(deploy).toContain("up -d --build --wait --wait-timeout 300 app mcp");
+  // images are built first (a failed build restarts nothing), then started with a bounded health wait
+  expect(deploy).toContain("build --quiet app mcp");
+  expect(deploy).toContain("up -d --no-build --wait --wait-timeout 300 app mcp");
   expect(deploy).toContain("up -d --no-deps --force-recreate caddy");
   const image = await read("packages/mcp/Dockerfile");
   expect(image).toContain("USER node");

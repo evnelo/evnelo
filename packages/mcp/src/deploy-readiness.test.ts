@@ -11,11 +11,12 @@ function deploy(scenario: string) {
   const bin = join(dir, "bin");
   mkdirSync(bin);
   const trace = join(dir, "trace");
-  const shim = `#!${process.execPath}
-const fs = require('node:fs');
+  // The stand-ins are shell wrappers that call Node with "--": Node 22 otherwise reads arguments such
+  // as compose's "--env-file .env" as its own options and aborts before the stand-in runs.
+  const shim = `const fs = require('node:fs');
 const { spawnSync } = require('node:child_process');
-const name = require('node:path').basename(process.argv[1]);
-const args = process.argv.slice(2);
+const name = process.argv[2];
+const args = process.argv.slice(3);
 fs.appendFileSync(process.env.TRACE, JSON.stringify({name,args})+'\\n');
 if (name === 'git') {
   if (args[0] === 'rev-parse') console.log('testsha');
@@ -37,7 +38,11 @@ if (name === 'git') {
   else console.log(JSON.stringify({jsonrpc:'2.0',id:1,result:{protocolVersion:'2025-03-26',capabilities:{},serverInfo:{name:'evnelo',version:'1'}}}));
 }
 `;
-  for (const name of ["git", "docker", "curl", "flock"]) writeFileSync(join(bin, name), shim, { mode: 0o755 });
+  const shimFile = join(dir, "shim.cjs");
+  writeFileSync(shimFile, shim);
+  for (const name of ["git", "docker", "curl", "flock"]) {
+    writeFileSync(join(bin, name), `#!/bin/sh\nexec "${process.execPath}" -- "${shimFile}" ${name} "$@"\n`, { mode: 0o755 });
+  }
   const state = join(dir, "deployed");
   try {
     const result = spawnSync("bash", [new URL("../../../deploy/deploy.sh", import.meta.url).pathname], {

@@ -12,7 +12,9 @@
     "start:http": "tsx src/http-server.ts",
     "test": "vitest run",
     "test:browser": "tsx tests/browser.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "plugin:check": "tsx scripts/package-plugin.ts --check",
+    "plugin:package": "tsx scripts/package-plugin.ts"
   },
   "dependencies": {
     "@evnelo/sdk": "workspace:*",
@@ -23,6 +25,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
+    "ajv": "8.20.0",
+    "fflate": "0.8.3",
     "playwright": "^1.63.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",

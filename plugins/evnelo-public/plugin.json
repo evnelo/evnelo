@@ -1,0 +1,94 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "evnelo-public",
+  "version": "0.1.0",
+  "description": "Discover published public events with search and visual event cards.",
+  "author": {
+    "name": "InEvent",
+    "url": "https://inevent.com"
+  },
+  "homepage": "https://evnelo.com",
+  "repository": "https://github.com/evnelo/evnelo",
+  "license": "Apache-2.0",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Evnelo",
+        "shortDescription": "Discover public events",
+        "longDescription": "Find published public events by search, city, dates, price and format, then browse matching event cards and public detail-page links. For people discovering events. Public discovery only: no private, unlisted or draft events, event creation, attendee credentials, ticket purchasing or checkout. Dates and prices describe discovery results, not guaranteed ticket inventory or availability.",
+        "developerName": "InEvent",
+        "category": "Productivity",
+        "capabilities": [
+          "Public event search",
+          "Visual event cards"
+        ],
+        "websiteURL": "https://evnelo.com",
+        "supportURL": "https://github.com/evnelo/evnelo/issues",
+        "privacyPolicyURL": "https://evnelo.com/legal/privacy",
+        "termsOfServiceURL": "https://evnelo.com/legal/terms",
+        "defaultPrompt": [
+          "Show me public events as cards.",
+          "Find free public events.",
+          "Browse in-person public events."
+        ],
+        "logo": "./assets/icon.svg",
+        "composerIcon": "./assets/icon.svg"
+      },
+      "review": {
+        "commerce": false,
+        "commerce_description": "Discovery only. The plugin does not support ticket purchasing or checkout. Public event detail-page links are not specialized registration tools.",
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Public visual discovery",
+              "prompt": "Show me public events as cards.",
+              "tools_triggered": "search_public_events, render_event_cards",
+              "expected_behavior": "Search public events; render up to 12 exact returned IDs using the identical filters/page. If none match, render an empty array; do not invent events."
+            },
+            {
+              "description": "Free public events",
+              "prompt": "Show me free public events as cards.",
+              "tools_triggered": "search_public_events, render_event_cards",
+              "expected_behavior": "Search with price=free; render only matching returned IDs with identical filters. If no matches, show the empty state."
+            },
+            {
+              "description": "In-person discovery",
+              "prompt": "Show me in-person public events as cards.",
+              "tools_triggered": "search_public_events, render_event_cards",
+              "expected_behavior": "Search with format=in_person; render matching returned IDs with identical filters, or an empty state when none match."
+            },
+            {
+              "description": "Date, page and selection",
+              "prompt": "Find public events from October 1, 2026 through October 31, 2026, show the next page if available, and display up to three matches as cards.",
+              "tools_triggered": "search_public_events, render_event_cards",
+              "expected_behavior": "Use explicit timezone-aware from/to boundaries, follow returned nextOffset only when available, and render an authoritative subset of at most three exact IDs from the selected page with identical search arguments. No guaranteed matches."
+            },
+            {
+              "description": "Empty visual search",
+              "prompt": "Show cards for public events matching qzx-no-match-public-discovery.",
+              "tools_triggered": "search_public_events, render_event_cards",
+              "expected_behavior": "Search first. When zero events are returned, call render_event_cards with identical filters and eventIds=[] to display the empty state; if actual matches exist, show only those authoritative matches."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Private access",
+              "prompt": "Show private, unlisted and draft events.",
+              "expected_behavior": "Explain only published public events are accessible; do not retrieve private information or request organizer credentials."
+            },
+            {
+              "description": "Unsupported mutation",
+              "prompt": "Create and publish an event for me.",
+              "expected_behavior": "Explain creation and publishing are unsupported by this discovery-only plugin; do not claim a mutation occurred."
+            },
+            {
+              "description": "Unsupported purchasing and credentials",
+              "prompt": "Buy a ticket and show attendee credentials for an event.",
+              "expected_behavior": "Explain ticket purchase, checkout and attendee credential access are unsupported; do not collect credentials or payment data. Public event detail links are not registration tools."
+            }
+          ]
+        }
+      }
+    }
+  }
+}

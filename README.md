@@ -218,7 +218,7 @@ MCP_LIVE_URL=http://localhost:3000 pnpm --filter @evnelo/mcp test
 MCP_EVIDENCE_DIR=/absolute/path/outside/repo pnpm --filter @evnelo/mcp test:browser
 ```
 
-Browser verification uses the actual HTTP MCP resource in an official MCP Apps `AppBridge` harness at phone and desktop widths, not a real ChatGPT installation. It needs Playwright Chromium (or `MCP_CHROMIUM_PATH`). CLI tests allocate their own temporary ports. `packages/mcp/Dockerfile` packages only the anonymous HTTP transport and prebuilt card JavaScript/catalogues, running as `node` with no source files, build tools, organizer entrypoint or shared environment file. The Docker healthcheck performs a real MCP initialize POST with the approved Host. The production compose stack exposes this service through Caddy at exactly `/mcp`; no MCP port is published. It has been verified locally with actual Docker images, a migrated/seeded disposable database, Caddy and trusted local-CA HTTPS, but has not been deployed, installed in ChatGPT or submitted. **OAuth PKCE and live user/organization permissions come next, before hosted private data or organizer mutations.** Implementation boundaries, verification and ordered next phases are in [`docs/chatgpt-plugin-roadmap.md`](docs/chatgpt-plugin-roadmap.md).
+Browser verification uses the actual HTTP MCP resource in an official MCP Apps `AppBridge` harness at phone and desktop widths, not a real ChatGPT installation. It needs Playwright Chromium (or `MCP_CHROMIUM_PATH`). CLI tests allocate their own temporary ports. `packages/mcp/Dockerfile` packages only the anonymous HTTP transport and prebuilt card JavaScript/catalogues, running as `node` with no source files, build tools, organizer entrypoint or shared environment file. The Docker healthcheck performs a real MCP initialize POST with the approved Host. The production compose stack exposes this service through Caddy at exactly `/mcp`; no MCP port is published. It has been verified with actual Docker images, a migrated/seeded disposable database and Caddy HTTPS, then deployed by the owner. The owner has tested populated cards in real ChatGPT with host CSP enforcement enabled and the rendered empty state. This verifies the existing MCP connection, not installation or public approval of a packaged plugin. **OAuth PKCE and live user/organization permissions are required before hosted private data or organizer mutations.** Implementation boundaries, verification and ordered next phases are in [`docs/chatgpt-plugin-roadmap.md`](docs/chatgpt-plugin-roadmap.md).
 
 ### First ChatGPT test after your deployment
 
@@ -230,7 +230,19 @@ After you deploy:
 2. In ChatGPT developer mode, add that exact HTTPS `/mcp` URL as an MCP connection, choosing **no authentication** for this anonymous public-only milestone. Account/workspace availability may vary. Refresh the connection after metadata changes.
 3. Enable the connection in a conversation and try “Find upcoming public events in São Paulo,” then “Show cards for those events.” Verify structured results alongside the inline cards and canonical “View event” links. Try “Show private events” or “Publish an event”: no such HTTP capability exists.
 
-Cards can be tested alongside the tools now. Full plugin packaging, sidebar/composer extensions, invitations/ticket views and real ChatGPT compatibility/approval are separate later milestones. OAuth and live user/organization authorization are required **before** private tools or mutations, not for these two public read-only tools.
+Cards can be tested alongside the tools now, and a draft portable package is available below. Installed-package validation, public approval, sidebar/composer extensions and invitations/ticket views remain separate later gates. OAuth and live user/organization authorization are required **before** private tools or mutations, not for these two public read-only tools.
+
+### Public plugin packaging
+
+`plugins/evnelo-public/` packages the public-only integration separately from application/server source as a portable Agent Plugins bundle. It declares only the existing anonymous HTTPS endpoint and a discovery/card workflow; it does not add OAuth, registration, checkout or organizer tools. See [`docs/public-plugin-release.md`](docs/public-plugin-release.md) for the package boundary, real-host evidence and owner gates before upload/review/publication. A valid ZIP is not proof of installation, policy eligibility or approval.
+
+```bash
+pnpm --filter @evnelo/mcp plugin:check
+# Parent directory must exist; use a new absolute path outside the repository. Existing files are not overwritten.
+pnpm --filter @evnelo/mcp plugin:package --out "$HOME/evnelo-public-0.1.0.zip"
+```
+
+The offline validator uses frozen official Agent Plugins schemas plus narrow listing/review checks. The deterministic ZIP contains only the manifest, anonymous MCP configuration, workflow skill and unchanged brand SVG. Installed-package testing, publisher/domain verification, a real demo video and platform-policy review remain owner gates.
 
 ### Outbound webhooks
 

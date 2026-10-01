@@ -1,6 +1,6 @@
 # ChatGPT / MCP Apps integration roadmap
 
-Status: public-only HTTP + inline cards + production Docker/Caddy wiring implemented and locally image-verified, 2026-09-30. This is a working MCP Apps integration, **not a released or ChatGPT-installed plugin**. OAuth is the next gate, before any hosted private data or organizer mutation is exposed.
+Status: public-only HTTP, inline cards and production Docker/Caddy wiring implemented, deployed by the owner and tested in real ChatGPT, 2026-10-01. Populated cards passed with host CSP enforcement enabled, and the empty-state widget rendered. A validated portable public plugin package is now available under `plugins/evnelo-public/`; **there is no published or installed full plugin yet**. OAuth remains required before any private data or organizer mutation.
 
 ## Implemented now
 
@@ -42,17 +42,21 @@ RED→GREEN evidence is maintained outside the repository. Verification includes
 - Caddy forwards **exactly** `/mcp` without stripping the path; all other web routes and the existing `www` redirect are preserved. `deploy.sh` rebuilds both app and MCP with bounded health waiting, then force-recreates Caddy so changed bind-mounted configuration is actually loaded. Success requires Caddy readiness and a TLS-verified public HTTPS MCP initialize result; otherwise the script exits nonzero without announcing deployment. MySQL health waits for the TCP listener, not the temporary initialization socket server.
 - Local acceptance used actual built web/MCP images, a disposable migrated and seeded MySQL database and the actual Caddy routing configuration with a local CA. A real SDK client verified initialization, exactly two tools, search/render, resource read, HTTPS canonical links, private/draft denial and HTTP/Origin/body/path guards. The served resource CSP/script was verified without runtime sources. No real provider calls or production deploy were made.
 - After operator deployment, inspect `https://your-instance/mcp` with **Streamable HTTP**, then add that HTTPS URL in ChatGPT developer mode using **no authentication**. Confirm only `search_public_events` and `render_event_cards`. Try “Find upcoming public events in São Paulo,” then “Show cards for those events”; test both model-readable results and inline UI. Try unsupported private/publish requests as negative checks. Absent Origin is accepted; configure `MCP_ALLOWED_ORIGINS` only with exact origins actually required by your host. A browser GET `405` is expected.
-- Cards can be tested now alongside tools; full plugin packaging, richer invitation/ticket cards and sidebar/composer extensions come later. Public discovery does not imply OAuth/private capabilities or plugin review approval. See README's first-test checklist.
+- Cards can be tested now alongside tools, and draft portable packaging is available. Installed-package validation and public approval remain pending; richer invitation/ticket cards and sidebar/composer extensions come later. Public discovery does not imply OAuth/private capabilities or plugin review approval. See README's first-test checklist.
 
 ## Not implemented / release gates
 
 - No OAuth, authenticated HTTP tools, private analytics, drafts, creation, publishing, registrations, attendee exports or ticket credentials. Never reuse the stdio organizer's environment key as hosted authorization.
-- No sidebar/thread/global entrypoint claims, real ChatGPT installation test, developer-mode tunnel, full plugin packaging, review/submission or live deployment. The dedicated MCP image and production Caddy route are ready for the operator to deploy; local CA HTTPS verification is not public certificate/DNS/Cloudflare validation.
+- No sidebar/thread/global entrypoint claims, installed-full-plugin test, developer-mode tunnel, public review/submission or plugin publication. The dedicated MCP service is now deployed with a working public HTTPS endpoint, and the owner has tested its cards in real ChatGPT. That does not certify every host/device/locale, an installed package or directory approval.
 - No paid or embedded checkout. Current OpenAI commerce eligibility must be re-verified before any ticket-selling workflow is proposed; event discovery links are not authorization to implement plugin checkout.
 - No share-artwork generator, personal invitation links, wallet/ticket QR views or broad embedded dashboard.
-- Distributed production edge/DDoS policy, operational failure logs/monitoring, independent source review, native-language review and real-host accessibility/device tests remain release work. The single-service MCP rate ceiling covers metadata as well as tools; the existing REST limits remain authoritative for discovery.
+- Distributed production edge/DDoS policy, operational failure logs/monitoring, independent package/policy review, native-language review and broader real-host accessibility/device tests remain release work. The single-service MCP rate ceiling covers metadata as well as tools; the existing REST limits remain authoritative for discovery.
 
 ## Ordered next phases
+
+### 0. Package the verified public discovery integration
+
+Package only the public HTTPS MCP endpoint, branding and a reusable search/card workflow using the current portable `plugin.json` / `mcp.json` format. Include no app-reference IDs, hooks, secrets or organizer server. Validate the curated archive and actual endpoint wiring, then test the installed package, not only the original MCP connection. Owner/platform gates include publisher/domain verification, a real video walkthrough, review prompts and commerce/privacy eligibility. See [`public-plugin-release.md`](public-plugin-release.md). Packaging does not require OAuth for the existing anonymous public tools.
 
 ### 1. OAuth and authorization, before private HTTP capabilities
 

@@ -1,6 +1,43 @@
 # ChatGPT / MCP Apps integration roadmap
 
-Status: public-only HTTP, inline cards and production Docker/Caddy wiring implemented, deployed by the owner and tested in real ChatGPT, 2026-10-01. Populated cards passed with host CSP enforcement enabled, and the empty-state widget rendered. A validated portable public plugin package is now available under `plugins/evnelo-public/`; **there is no published or installed full plugin yet**. OAuth remains required before any private data or organizer mutation.
+Status: public-only HTTP, inline cards and production Docker/Caddy wiring implemented, deployed by the owner and tested in real ChatGPT, 2026-10-01. Populated cards passed with host CSP enforcement enabled, and the empty-state widget rendered. A validated portable public plugin package is now available under `plugins/evnelo-public/`; **there is no published or installed full plugin yet**. The full-experience program is now approved and starts with delegated OAuth authority; no private HTTP capabilities are enabled yet. OAuth remains required before any private data or organizer mutation.
+
+## Canonical full-experience delivery tracker
+
+This document is the canonical program tracker. Update its detailed queue, state rollups and resume marker on every transition. A broad approval authorizes sequential production flows, not anonymous private access or automatic live deployment.
+
+**Depth:** complete, locally certified user flows—not mock templates. **Scope:** linked account/organization authorization; organizer event/ticket-type management and confirmed publishing; account-bound free registration; attendee-owned ticket retrieval; scoped organizer reports; updated package and host evaluation. Paid checkout remains policy-gated. Existing web functionality is not proof the delegated MCP path is safe.
+
+State legend: `[x]` implemented/verified · `[>]` active · `[ ]` pending · `[!]` external gate. Each item separately records source/push/deploy/enable status; a local commit is not live activation.
+
+| Item | State / delivery evidence | Completion condition |
+| --- | --- | --- |
+| F0 Public discovery + card connection | `[x]` deployed by owner; real ChatGPT populated cards with CSP on and empty widget verified | Anonymous public-only search/render remain compatible. |
+| P0 Public draft packaging | `[x]` local feature commit `ab8908e`; not published/installed | Curated ZIP, offline schemas, deterministic build, live SDK-from-ZIP checks and independent review passed. Public release owner gates remain in `public-plugin-release.md`. |
+| F1A Delegated-authority storage and token engine | `[>]` active; implementation pending; no private endpoints enabled | Additive migration on disposable MySQL; public-client/subject/resource/scopes and optional org bindings; S256 single-use codes, hashed access/refresh families, atomic rotation/reuse revocation; fresh user/org/role checks; adversarial/race/erasure tests. No API-key masquerading or mutations. |
+| F1B OAuth protocol and MCP wire boundary | `[ ]` after F1A | Discovery, issuer response identification, exact redirects/resource, bounded client registration/trusted metadata policy, token/revoke routes, tested SDK descriptor adapter/challenges and one read-only identity proof. Advertise only implemented capabilities. |
+| F1C Existing sign-in + explicit consent | `[ ]` after F1B; translation permission `[!]` unconfirmed | Browser session-bound/CSRF-protected consent, client/redirect identity, precise scopes and explicit optional org selection. Reuse Auth.js; no mutable `ev_org` grant authority. Legitimate attendees with no memberships can link. New static copy translated by approved pipeline; no external translation call until approved. |
+| F1D Complete OAuth certification | `[ ]` after F1A–C | Real browser + SDK + Node22 + Docker/Caddy positive login/link/refresh/revoke and cross-user/org, expiry, replay, concurrency tests; exact-snapshot independent security/implementation reviews. Private surface default-disabled; owner-controlled deployment/activation. |
+| F2 Organizer event management | `[ ]` after F1D | Delegated reads, create/edit drafts, ticket types/registration settings, preview and explicit approval for publishing/cancelling; per-request scope intersected with current `can()` and bound org; atomic idempotent replay and concurrency tests. No broad write key forwarded to `/api/v1`. |
+| F3 Account-bound free registration | `[ ]` after F2 | Documented authoritative registration form/details; OAuth subject supplies ownership, not model email; preserve fields/approval/inventory/quotas/CAPTCHA/invite/offer/discount rules; one transaction and safe uncertain-result retries; real registration-to-order/ticket proof. Paid/checkout not enabled. |
+| F4 Attendee-owned tickets | `[ ]` after F3 | Own-order/own-ticket allowlisted DTOs and login-protected destinations/UI, buyer/attendee/guest boundaries, revoked/refunded denial; no bearer ticket/order/QR/wallet/payment secrets in model content. Historical guest ownership must use a separately approved explicit claim policy, not automatic email matching. |
+| F5 Scoped organizer reports | `[ ]` after F4 | Read-only org/event stats using current grants/roles; richer traffic/email reports separated from basic registration/revenue API; no broad attendee export or cross-org data. |
+| F6 Full package + host release certification | `[ ]` after F5 | Package advertises only verified enabled tools; actual ChatGPT and Claude auth/challenge/consent/confirmation/owned-ticket flows; installed-package and policy/privacy review; owner signs off exact commit/migrations/config. Public publication remains separate. |
+| F7 Paid ticket checkout | `[!]` platform eligibility / owner decision | Confirm current host commerce eligibility before implementing agent purchasing; preserve first-party payment credentials and transaction/refund authority. Technical MCP support is not approval. |
+| F8 Optional share artwork / broader operations | `[ ]` after core full experience | Separate approved slices for public posters, invitations, check-in, messaging/exports/refunds; preserve private credential and per-role boundaries. Not silently included in the initial core release. |
+
+**Resume here → F1A: build and prove delegated-authority persistence/token lifecycle on a disposable database.** F1 is not complete until protocol, consent and deployed-shape certification pass; do not describe token-engine tests alone as working host OAuth.
+
+### Frozen boundaries and prerequisites
+
+- Keep the production anonymous `/mcp` lane and organizer stdio source unchanged until a separately tested activation boundary exists. Public calls must remain credential-free and must never expand visibility after login.
+- Use Auth.js users plus fresh database authority. JWT browser sessions and provider OAuth accounts are not MCP authorization grants; organization API-key scopes do not enforce the linked user's role.
+- Installed SDK `1.30.0` targets an older protocol revision than the current 2026-07-28 MCP authorization guidance. It drops top-level tool `securitySchemes` in ordinary registration; a small tested wire adapter is required. Do not announce latest-spec compliance or upgrade the whole SDK/Zod convention without evidence.
+- OpenAI documents tool-level challenges; Claude documents standard transport 401/WWW-Authenticate enforcement. Mixed single-connection behavior is a real-host acceptance gate, not an assumption.
+- Native/public test client pre-registration can seed local proof. Choose and test trusted CIMD/DCR policy before network exposure; no arbitrary URL fetch or wildcard redirect. DCR is compatibility support in current guidance.
+- New consent UI localization is an external-provider gate. The permission prompt was cancelled without an answer, so **no Google Translation call is authorized**. Backend work can proceed; do not fabricate target-language translations or call consent complete.
+- All implementation remains on a feature branch. `master` CI promotes `production`, so a master push may deploy. No live OAuth activation or real email/payment/provider calls are implied by this program approval.
+- Local safety: dedicated disposable MySQL fixture, known dummy AUTH_SECRET, provider-disabled processes; never print/change root `.env`, repurpose real API/provider keys, stop other projects or overwrite user artifacts.
 
 ## Implemented now
 
@@ -52,7 +89,9 @@ RED→GREEN evidence is maintained outside the repository. Verification includes
 - No share-artwork generator, personal invitation links, wallet/ticket QR views or broad embedded dashboard.
 - Distributed production edge/DDoS policy, operational failure logs/monitoring, independent package/policy review, native-language review and broader real-host accessibility/device tests remain release work. The single-service MCP rate ceiling covers metadata as well as tools; the existing REST limits remain authoritative for discovery.
 
-## Ordered next phases
+## Supporting capability detail
+
+The canonical queue and completion conditions above govern execution. The sections below retain architectural detail; they are not a second independent status tracker.
 
 ### 0. Package the verified public discovery integration
 

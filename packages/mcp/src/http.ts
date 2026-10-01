@@ -1,8 +1,9 @@
 import { createServer, type IncomingMessage } from "node:http";
+import { validatePolicies } from "./http-config.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { createPublicServer, validatePublicOrigin } from "./public-server.js";
+import { createPublicServer, validatePublicOrigin, validateApiOrigin } from "./public-server.js";
 
-type Options = { baseUrl: string; allowedHosts?: string[]; allowedOrigins?: string[] };
+type Options = { baseUrl: string; apiUrl?: string; allowedHosts?: string[]; allowedOrigins?: string[]; rateLimit?: { max: number; windowMs: number } };
 const MAX_BODY = 64 * 1024;
 
 function readBody(req: IncomingMessage): Promise<unknown> {
@@ -27,7 +28,19 @@ function readBody(req: IncomingMessage): Promise<unknown> {
 /** Stateless: a fresh MCP server/transport per POST, no organizer credential or cross-user session. */
 export function createPublicHttpServer(options: Options) {
   const baseUrl = validatePublicOrigin(options.baseUrl);
+  const apiUrl = options.apiUrl === undefined ? undefined : validateApiOrigin(options.apiUrl);
+  validatePolicies(options.allowedHosts, options.allowedOrigins);
+  const rate = options.rateLimit ?? { max: 600, windowMs: 60_000 };
+  let windowStart = Date.now();
+  let requests = 0;
   let active = 0;
+  // Shared by every fresh POST server; transport close is not discovery settlement.
+  let work = 0;
+  const acquireWork = () => {
+    if (work >= 32) throw new Error("Public discovery busy.");
+    work++;
+    return () => { work--; };
+  };
   const http = createServer(async (req, res) => {
     res.setHeader("Cache-Control", "no-store");
     res.setHeader("X-Content-Type-Options", "nosniff");
@@ -40,13 +53,23 @@ export function createPublicHttpServer(options: Options) {
     if (req.method !== "POST") { res.setHeader("Allow", "POST"); return deny(405); }
     if (req.headers["content-type"]?.split(";")[0]?.trim().toLowerCase() !== "application/json") return deny(415);
     if (Number(req.headers["content-length"] ?? 0) > MAX_BODY) return deny(413);
-    if (active >= 32) return deny(503);
+    const now = Date.now();
+    if (now - windowStart >= rate.windowMs) { windowStart = now; requests = 0; }
+    if (++requests > rate.max) {
+      res.setHeader("Retry-After", Math.max(1, Math.ceil((windowStart + rate.windowMs - now) / 1000)));
+      return deny(429);
+    }
+    if (active >= 32 || work >= 32) return deny(503);
     active++;
+    const disconnect = new AbortController();
+    req.once("aborted", () => disconnect.abort());
     let server: Awaited<ReturnType<typeof createPublicServer>> | undefined;
-    res.once("close", () => { active--; void server?.close(); });
+    res.once("close", () => { active--; disconnect.abort(); void server?.close(); });
     try {
       const body = await readBody(req);
-      server = await createPublicServer({ baseUrl });
+      if (Array.isArray(body)) return deny(400);
+      disconnect.signal.throwIfAborted();
+      server = await createPublicServer({ baseUrl, apiUrl, signal: disconnect.signal, acquireWork });
       const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
       await server.connect(transport);
       await transport.handleRequest(req, res, body);

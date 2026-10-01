@@ -1,21 +1,26 @@
 import { expect, test } from "vitest";
+import { createServer } from "node:net";
 import { spawn } from "node:child_process";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
 test("HTTP CLI binds loopback on configured port and serves real SDK requests", async () => {
+  const listener = createServer();
+  await new Promise<void>(resolve => listener.listen(0, "127.0.0.1", resolve));
+  const port = (listener.address() as any).port;
+  await new Promise<void>(resolve => listener.close(() => resolve()));
   const child = spawn(process.execPath, ["--import", "tsx", "src/http-server.ts"], {
-    env: { ...process.env, EVNELO_URL: "http://localhost:3000", EVNELO_API_KEY: "sentinel-organizer-key-not-for-http", MCP_PORT: "3001" }, stdio: ["ignore", "pipe", "pipe"],
+    env: { ...process.env, EVNELO_URL: "http://localhost:3000", EVNELO_API_KEY: "sentinel-organizer-key-not-for-http", MCP_PORT: String(port) }, stdio: ["ignore", "pipe", "pipe"],
   });
   const client = new Client({ name: "cli-http-test", version: "1" });
   try {
     await new Promise<void>((resolve, reject) => {
-      child.stdout.on("data", chunk => { if (chunk.toString().includes("127.0.0.1:3001/mcp")) resolve(); });
+      child.stdout.on("data", chunk => { if (chunk.toString().includes(`127.0.0.1:${port}/mcp`)) resolve(); });
       child.on("exit", code => reject(new Error(`HTTP entrypoint exited ${code}`)));
       child.on("error", reject);
     });
-    await client.connect(new StreamableHTTPClientTransport(new URL("http://127.0.0.1:3001/mcp")));
+    await client.connect(new StreamableHTTPClientTransport(new URL(`http://127.0.0.1:${port}/mcp`)));
     expect((await client.listTools()).tools).toHaveLength(2);
     if (process.env.MCP_LIVE_URL) {
       const result = await client.callTool({ name: "search_public_events", arguments: {} });

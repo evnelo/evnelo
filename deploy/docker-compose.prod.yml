@@ -18,7 +18,9 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data
       - caddy-config:/config
-    depends_on: [app]
+    depends_on:
+      app: { condition: service_healthy }
+      mcp: { condition: service_healthy }
 
   app:
     build:
@@ -49,6 +51,25 @@ services:
     depends_on:
       db: { condition: service_healthy }
 
+  mcp:
+    build:
+      context: ..
+      dockerfile: packages/mcp/Dockerfile
+    restart: unless-stopped
+    # Deliberately no shared environment file: the public service needs no provider, DB or organizer secrets.
+    environment:
+      EVNELO_URL: ${APP_URL:?set APP_URL to the public HTTPS origin}
+      EVNELO_API_URL: http://app:3000
+      MCP_BIND: "0.0.0.0"
+      MCP_PORT: "3001"
+      MCP_ALLOWED_ORIGINS: ${MCP_ALLOWED_ORIGINS:-}
+    expose: ["3001"]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    depends_on:
+      app: { condition: service_healthy }
+
   db:
     image: mysql:8.4
     restart: unless-stopped
@@ -60,7 +81,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
     volumes: ["mysql-data:/var/lib/mysql"]
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p$$MYSQL_ROOT_PASSWORD"]
       interval: 5s
       retries: 20
 

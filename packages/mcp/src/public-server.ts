@@ -32,23 +32,42 @@ export function validatePublicOrigin(value: string): string {
   return url.origin;
 }
 
+/** Operator-only upstream; internal HTTP is allowed, never tool-controlled or returned. */
+export function validateApiOrigin(value: string): string {
+  const url = new URL(value);
+  const host = url.hostname.toLowerCase();
+  if (!/^https?:\/\/[^/?#]+\/?$/i.test(value) || url.username || url.password || url.pathname !== "/" ||
+      url.search || url.hash || !["http:", "https:"].includes(url.protocol) ||
+      host.startsWith("169.254.") || host.startsWith("[fe80:") || host === "metadata.google.internal" || host === "[::ffff:a9fe:a9fe]") {
+    throw new Error("EVNELO_API_URL must be an HTTP(S) origin without credentials, path, query or fragment; metadata endpoints are forbidden.");
+  }
+  return url.origin;
+}
+
 /** Public transport deliberately never reads EVNELO_API_KEY. Only the public REST route is used. */
-export async function createPublicServer({ baseUrl }: { baseUrl: string }) {
+export async function createPublicServer({ baseUrl, apiUrl, signal, acquireWork }: { baseUrl: string; apiUrl?: string; signal?: AbortSignal; acquireWork?: () => () => void }) {
   const origin = validatePublicOrigin(baseUrl);
-  const client = createEvneloClient({ baseUrl: origin, fetch: request => fetch(request, { redirect: "error", signal: AbortSignal.timeout(5_000) }) });
+  const client = createEvneloClient({ baseUrl: apiUrl === undefined ? origin : validateApiOrigin(apiUrl), fetch: request => fetch(request, { redirect: "error", signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(5_000)]) : AbortSignal.timeout(5_000) }) });
   const server = new McpServer({ name: "evnelo-public", version: "0.1.0" });
   async function search(args: z.infer<typeof searchSchema>) {
-    const result = await client.GET("/public/events", { params: { query: args } });
-    if (!result.response.ok || !result.data) throw new Error("Public discovery unavailable. Retry later.");
-    return resultSchema.parse({
-      events: result.data.data.map(e => ({
-        id: e.id, slug: e.slug, name: e.name, orgName: e.orgName,
-        url: `${origin}/${encodeURIComponent(e.orgSlug)}/${encodeURIComponent(e.slug)}`,
-        startsAt: e.startsAt, endsAt: e.endsAt, timezone: e.timezone,
-        locationType: e.locationType, venueName: e.venueName, city: e.city,
-        isFree: e.isFree, minPriceMinor: e.minPriceMinor, currency: e.currency,
-      })), pagination: result.data.pagination,
-    });
+    signal?.throwIfAborted();
+    const release = acquireWork?.();
+    try {
+      const result = await client.GET("/public/events", { params: { query: args } });
+      if (!result.response.ok || !result.data) throw new Error("Public discovery unavailable. Retry later.");
+      return resultSchema.parse({
+        events: result.data.data.map(e => ({
+          id: e.id, slug: e.slug, name: e.name, orgName: e.orgName,
+          url: `${origin}/${encodeURIComponent(e.orgSlug)}/${encodeURIComponent(e.slug)}`,
+          startsAt: e.startsAt, endsAt: e.endsAt, timezone: e.timezone,
+          locationType: e.locationType, venueName: e.venueName, city: e.city,
+          isFree: e.isFree, minPriceMinor: e.minPriceMinor, currency: e.currency,
+        })), pagination: result.data.pagination,
+      });
+    } finally {
+      // Includes SDK body consumption and schema parsing, not only fetch headers.
+      release?.();
+    }
   }
   server.registerTool("search_public_events", {
     title: "Search public events", description: "Find published public events. Data-first search; no private, unlisted or draft events.",

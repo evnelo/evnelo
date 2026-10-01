@@ -59,6 +59,29 @@ liveTest("render re-fetches the public page, rejects unknown IDs, and returns it
   expect(forged.isError).toBe(true);
 });
 
+test("internal upstream is independent of the public canonical links and UI origin", async () => {
+  const upstream = createServer((req, res) => {
+    expect(req.url).toBe("/api/v1/public/events");
+    expect(req.headers.authorization).toBeUndefined();
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ data: [{ id: "01M3SWWQZXZDVAQXS2HBCWFCBK", slug: "meeting", name: "Meeting", orgSlug: "demo", orgName: "Demo", startsAt: "2027-01-01T12:00:00Z", endsAt: "2027-01-01T13:00:00Z", timezone: "UTC", locationType: "online", venueName: null, city: null, isFree: true, minPriceMinor: null, currency: null }], pagination: { limit: 48, offset: 0, nextOffset: null } }));
+  });
+  await new Promise<void>(resolve => upstream.listen(0, "127.0.0.1", resolve));
+  const internal = `http://127.0.0.1:${(upstream.address() as any).port}`;
+  const [c, s] = InMemoryTransport.createLinkedPair();
+  const client = new Client({ name: "split-origin-test", version: "1" });
+  try {
+    const server = await createPublicServer({ baseUrl: "https://tickets.example.test", apiUrl: internal });
+    await server.connect(s); await client.connect(c);
+    const search = await client.callTool({ name: "search_public_events", arguments: {} });
+    expect(search.isError).not.toBe(true);
+    expect((search.structuredContent as any).events[0].url).toBe("https://tickets.example.test/demo/meeting");
+    const resource = await client.readResource({ uri: "ui://evnelo/public-event-cards/v1.html" });
+    expect(JSON.stringify(resource)).toContain("https://tickets.example.test");
+    expect(JSON.stringify([search, resource])).not.toContain(internal);
+  } finally { await client.close(); upstream.closeAllConnections(); upstream.close(); }
+}, 8000);
+
 test("public upstream calls have a five-second deadline", async () => {
   const upstream = createServer((_req, _res) => { /* Deliberately never responds. */ });
   await new Promise<void>(resolve => upstream.listen(0, "127.0.0.1", resolve));

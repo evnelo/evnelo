@@ -66,3 +66,11 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Build public MCP image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: packages/mcp/Dockerfile
+          push: false
+          cache-from: type=gha,scope=mcp
+          cache-to: type=gha,scope=mcp,mode=max

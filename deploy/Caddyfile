@@ -2,7 +2,25 @@
 # SITE_ADDRESS comes from the compose environment (default evnelo.com).
 {$SITE_ADDRESS} {
 	encode zstd gzip
-	reverse_proxy app:3000
+	# Exact path, not handle_path: Streamable HTTP must retain /mcp.
+	handle /mcp {
+		request_body {
+			max_size 64KB
+		}
+		reverse_proxy mcp:3001 {
+			# Preserve approved external Host; MCP validates it against APP_URL.
+			header_up -Authorization
+			header_up -Cookie
+			flush_interval -1
+			transport http {
+				dial_timeout 3s
+				response_header_timeout 15s
+			}
+		}
+	}
+	handle {
+		reverse_proxy app:3000
+	}
 }
 
 www.{$SITE_ADDRESS} {

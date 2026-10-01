@@ -72,7 +72,7 @@ packages/core      Business rules (pure) and the server-only service layer used 
 packages/db        Drizzle schema, migrations, seed
 packages/sdk       Generated TypeScript client (@evnelo/sdk)
 packages/mcp       MCP server over the REST API
-deploy/            Single-VM production stack (Caddy, app, MySQL) and backup script
+deploy/            Single-VM production stack (Caddy, app, public MCP, MySQL) and backup script
 ```
 
 Common commands from the repo root:
@@ -195,7 +195,7 @@ Create keys under Dashboard → Settings → API keys (owners and admins). Keys 
 { "mcpServers": { "evnelo": { "command": "pnpm", "args": ["--filter", "@evnelo/mcp", "start"], "env": { "EVNELO_URL": "https://your-instance", "EVNELO_API_KEY": "ev_live_..." } } } }
 ```
 
-### Public HTTP MCP and event cards (local first slice)
+### Public HTTP MCP and event cards
 
 A separate anonymous MCP Apps server supports public event discovery and interactive cards, without exposing the organizer stdio API key:
 
@@ -209,7 +209,7 @@ HTTP advertises only `search_public_events` and `render_event_cards`, with expli
 
 Cards use the standard MCP Apps bridge and a bundled `text/html;profile=mcp-app` resource (only render declares `_meta.ui.resourceUri`), showing dates/time zones, location and discovery prices. “View event” opens a canonical public event page through the host. Existing catalogues supply all 20 languages, including RTL; host locale/theme and reduced motion are supported. No images/CDNs, dashboard iframe, browser API credentials, ticket/invite/order tokens, private analytics, mutation tools or checkout are included.
 
-`MCP_PORT` defaults to 3001; the listener is always loopback. `MCP_ALLOWED_HOSTS` replaces the default exact `localhost:port` / `127.0.0.1:port` allowlist, and `MCP_ALLOWED_ORIGINS` explicitly permits exact Origin values (present Origin is denied by default). No wildcard CORS. Requests are POST/JSON only, capped at 64 KiB, stateless and cleaned up per response; upstream calls have a five-second deadline and refuse redirects. `EVNELO_URL` must be an HTTPS origin (loopback HTTP allowed), without credentials/path/query/fragment.
+`MCP_PORT` defaults to 3001; `MCP_BIND` defaults to `127.0.0.1` and accepts a literal IP address. Non-loopback binding requires an HTTPS public `EVNELO_URL` behind a reverse proxy; its exact host is then the default Host allowlist. `MCP_ALLOWED_HOSTS` replaces the default exact `localhost:port` / `127.0.0.1:port` allowlist, and `MCP_ALLOWED_ORIGINS` explicitly permits exact Origin values (present Origin is denied by default). No wildcard CORS. Requests are POST/JSON only, capped at 64 KiB, stateless and cleaned up per response; upstream calls have a five-second deadline and refuse redirects. `EVNELO_URL` is the canonical public HTTPS origin (loopback HTTP allowed), without credentials/path/query/fragment. Optional operator-only `EVNELO_API_URL` independently selects an HTTP(S) API origin, including internal service DNS; it never appears in results or cards. Neither URL is tool-controlled. Metadata and tool requests share a 600-request/minute per-process ceiling, with `429` / `Retry-After`, a 32-active-request ceiling and bounded socket/body/upstream timeouts. JSON-RPC array/batch bodies are rejected with `400` before dispatch. Downstream disconnects cancel discovery; a separate shared 32-operation guard retains capacity until upstream response-body consumption and schema validation settle. This is a single-service abuse guard, not distributed edge/DDoS protection.
 
 ```bash
 pnpm --filter @evnelo/mcp test # transport/security/stdio tests; two live tests skip
@@ -218,7 +218,19 @@ MCP_LIVE_URL=http://localhost:3000 pnpm --filter @evnelo/mcp test
 MCP_EVIDENCE_DIR=/absolute/path/outside/repo pnpm --filter @evnelo/mcp test:browser
 ```
 
-Browser verification uses the actual HTTP MCP resource in an official MCP Apps `AppBridge` harness at phone and desktop widths, not a real ChatGPT installation. It needs Playwright Chromium (or `MCP_CHROMIUM_PATH`). Stop any separately running HTTP MCP on port 3001 before the CLI smoke test. This separate service is not packaged in the web Docker image and has not been deployed or submitted. **OAuth PKCE and live user/organization permissions come next, before hosted private data or organizer mutations.** Implementation boundaries, verification and ordered next phases are in [`docs/chatgpt-plugin-roadmap.md`](docs/chatgpt-plugin-roadmap.md).
+Browser verification uses the actual HTTP MCP resource in an official MCP Apps `AppBridge` harness at phone and desktop widths, not a real ChatGPT installation. It needs Playwright Chromium (or `MCP_CHROMIUM_PATH`). CLI tests allocate their own temporary ports. `packages/mcp/Dockerfile` packages only the anonymous HTTP transport and prebuilt card JavaScript/catalogues, running as `node` with no source files, build tools, organizer entrypoint or shared environment file. The Docker healthcheck performs a real MCP initialize POST with the approved Host. The production compose stack exposes this service through Caddy at exactly `/mcp`; no MCP port is published. It has been verified locally with actual Docker images, a migrated/seeded disposable database, Caddy and trusted local-CA HTTPS, but has not been deployed, installed in ChatGPT or submitted. **OAuth PKCE and live user/organization permissions come next, before hosted private data or organizer mutations.** Implementation boundaries, verification and ordered next phases are in [`docs/chatgpt-plugin-roadmap.md`](docs/chatgpt-plugin-roadmap.md).
+
+### First ChatGPT test after your deployment
+
+Set `APP_URL` to the external HTTPS origin matching Caddy's `SITE_ADDRESS` (for example `https://evnelo.com`). Compose gives MCP only `EVNELO_URL=${APP_URL}`, the internal `EVNELO_API_URL=http://app:3000`, bind/port and an optional `MCP_ALLOWED_ORIGINS` list; **do not add a shared `.env` or organizer/provider keys to MCP**. The approved Host comes from the canonical origin, never incoming headers. Absent Origin is accepted; a present Origin is rejected unless exactly listed (for example `MCP_ALLOWED_ORIGINS=https://chatgpt.com` if your host sends it). Caddy preserves Host and strips Authorization/Cookie on the MCP route; all other paths and the `www` redirect remain web routes.
+
+After you deploy:
+
+1. Inspect `https://your-instance/mcp` with MCP Inspector using **Streamable HTTP**. A browser GET returning `405` is expected; initialization is a JSON POST. Confirm exactly `search_public_events` and `render_event_cards`, not organizer/private tools.
+2. In ChatGPT developer mode, add that exact HTTPS `/mcp` URL as an MCP connection, choosing **no authentication** for this anonymous public-only milestone. Account/workspace availability may vary. Refresh the connection after metadata changes.
+3. Enable the connection in a conversation and try “Find upcoming public events in São Paulo,” then “Show cards for those events.” Verify structured results alongside the inline cards and canonical “View event” links. Try “Show private events” or “Publish an event”: no such HTTP capability exists.
+
+Cards can be tested alongside the tools now. Full plugin packaging, sidebar/composer extensions, invitations/ticket views and real ChatGPT compatibility/approval are separate later milestones. OAuth and live user/organization authorization are required **before** private tools or mutations, not for these two public read-only tools.
 
 ### Outbound webhooks
 
@@ -261,7 +273,7 @@ At boot the container applies pending migrations (`MIGRATE_ON_START=true`, seria
 
 ### One VM with Caddy (the evnelo.com setup)
 
-`deploy/docker-compose.prod.yml` runs Caddy (automatic HTTPS from Let's Encrypt, `www` redirect), the app image and MySQL 8.4 on a single box; only Caddy publishes ports. On an Ubuntu VM with Docker installed, from the repository root:
+`deploy/docker-compose.prod.yml` runs Caddy (automatic HTTPS from Let's Encrypt, `www` redirect), the app image, a separate public MCP image and MySQL 8.4 on a single box; only Caddy publishes ports. On an Ubuntu VM with Docker installed, from the repository root:
 
 ```bash
 cp .env.example .env           # fill in APP_URL=https://evnelo.com, AUTH_SECRET, Stripe, Resend, S3…
@@ -271,7 +283,7 @@ docker compose --env-file .env -f deploy/docker-compose.prod.yml up -d --build
 docker compose --env-file .env -f deploy/docker-compose.prod.yml logs -f app   # "ready" after migrations
 ```
 
-`SITE_ADDRESS` in `.env` overrides the domain (default `evnelo.com`). Caddy obtains and renews the certificate from Let's Encrypt over port 80, so no certificate is installed by hand; with Cloudflare in front use SSL mode "Full (strict)" and leave "Always Use HTTPS" off (Caddy does that redirect). The stack defaults `API_TRUSTED_PROXY_HEADER` to `x-forwarded-for` because Caddy appends the client address to that header; behind Cloudflare's proxy set it to `cf-connecting-ip` in `.env` and restrict ports 80/443 to Cloudflare's IP ranges. To ship a new version run `./deploy/deploy.sh`: it pulls, builds with the commit hash baked in (Datadog shows the version and links traces to the commit), restarts the app and removes the previous image; migrations apply on boot.
+`SITE_ADDRESS` in `.env` overrides the domain (default `evnelo.com`). Caddy obtains and renews the certificate from Let's Encrypt over port 80, so no certificate is installed by hand; with Cloudflare in front use SSL mode "Full (strict)" and leave "Always Use HTTPS" off (Caddy does that redirect). The stack defaults `API_TRUSTED_PROXY_HEADER` to `x-forwarded-for` because Caddy appends the client address to that header; behind Cloudflare's proxy set it to `cf-connecting-ip` in `.env` and restrict ports 80/443 to Cloudflare's IP ranges. To ship a new version run `./deploy/deploy.sh`: it pulls, builds with the commit hash baked in (Datadog shows the version and links traces to the commit), rebuilds/restarts the app and public MCP service and waits up to 300 seconds for health, force-recreates Caddy so the bind-mounted routing configuration takes effect, then verifies Caddy state and a real public HTTPS MCP initialize response before reporting success and pruning unused images; migrations apply on boot. The host needs `sh`, `git`, Docker Compose supporting `--wait` / `--wait-timeout`, and `curl` with `--retry-connrefused` plus a working system CA trust store. JSON validation runs with Node already in the MCP image; no host Node/jq/Python is required. A readiness/TLS/initialize failure exits nonzero and does not print `deployed`.
 
 Back up the database from cron. `deploy/backup-db.sh` dumps MySQL into `backups/` (14 days kept) and, when `BACKUP_S3_URI` is set in `.env` (for example `s3://my-backups/evnelo`), copies the dump there with the app's `S3_*` credentials through the `amazon/aws-cli` image, so nothing is installed on the host. Give that bucket a lifecycle rule and keep it separate from the uploads bucket. Install it once:
 

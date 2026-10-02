@@ -27,6 +27,41 @@ const updatedAt = () =>
 const money = (name: string) => bigint(name, { mode: "number" }); // minor units
 const currency = () => char("currency", { length: 3 }).notNull().default("USD");
 
+/* ---------- delegated OAuth public clients ---------- */
+
+export const oauthClients = mysqlTable("oauth_clients", {
+  id: id(),
+  clientId: varchar("client_id", { length: 2048 }).notNull(),
+  clientIdHash: char("client_id_hash", { length: 64 }).notNull(),
+  redirectUris: json("redirect_uris").$type<string[]>().notNull(),
+  scopes: json("scopes").$type<string[]>().notNull(),
+  disabledAt: datetime("disabled_at", { fsp: 3 }),
+  createdAt: createdAt(),
+}, (t) => [uniqueIndex("oauth_client_hash").on(t.clientIdHash)]);
+
+/* Pending consent and approved grants share immutable request bindings. No raw codes. */
+export const oauthGrants = mysqlTable("oauth_grants", {
+  id: id(), clientId: ref("client_id").notNull(), userId: ref("user_id").notNull(),
+  organizationId: ref("organization_id"),
+  issuer: varchar("issuer", { length: 2048 }).notNull(), resource: varchar("resource", { length: 2048 }).notNull(),
+  redirectUri: varchar("redirect_uri", { length: 2048 }).notNull(), scopes: json("scopes").$type<string[]>().notNull(),
+  sessionHash: char("session_hash", { length: 64 }).notNull(), codeChallenge: char("code_challenge", { length: 43 }).notNull(),
+  codeHash: char("code_hash", { length: 64 }), codeUsedAt: datetime("code_used_at", { fsp: 3 }),
+  expiresAt: datetime("expires_at", { fsp: 3 }).notNull(), approvedAt: datetime("approved_at", { fsp: 3 }),
+  revokedAt: datetime("revoked_at", { fsp: 3 }), createdAt: createdAt(),
+}, (t) => [uniqueIndex("oauth_code_hash").on(t.codeHash), index("oauth_grant_user").on(t.userId), index("oauth_grant_org").on(t.organizationId), index("oauth_grant_expiry").on(t.expiresAt), index("oauth_grant_client").on(t.clientId)]);
+
+export const oauthFamilies = mysqlTable("oauth_families", {
+  id: id(), grantId: ref("grant_id").notNull(), expiresAt: datetime("expires_at", { fsp: 3 }).notNull(),
+  revokedAt: datetime("revoked_at", { fsp: 3 }), createdAt: createdAt(),
+}, (t) => [index("oauth_family_grant").on(t.grantId), index("oauth_family_expiry").on(t.expiresAt)]);
+
+export const oauthTokens = mysqlTable("oauth_tokens", {
+  id: id(), familyId: ref("family_id").notNull(), tokenHash: char("token_hash", { length: 64 }).notNull(),
+  kind: mysqlEnum("kind", ["access", "refresh"]).notNull(), scopes: json("scopes").$type<string[]>().notNull(),
+  expiresAt: datetime("expires_at", { fsp: 3 }).notNull(), usedAt: datetime("used_at", { fsp: 3 }), createdAt: createdAt(),
+}, (t) => [uniqueIndex("oauth_token_hash").on(t.tokenHash), index("oauth_token_family").on(t.familyId), index("oauth_token_expiry").on(t.expiresAt)]);
+
 /* ---------- users & organizations ---------- */
 
 export const users = mysqlTable("users", {

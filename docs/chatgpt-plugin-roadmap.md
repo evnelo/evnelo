@@ -14,7 +14,7 @@ State legend: `[x]` implemented/verified · `[>]` active · `[ ]` pending · `[!
 | --- | --- | --- |
 | F0 Public discovery + card connection | `[x]` deployed by owner; real ChatGPT populated cards with CSP on and empty widget verified | Anonymous public-only search/render remain compatible. |
 | P0 Public draft packaging | `[x]` verified commit `ab8908e`, now included in the pushed `feat/mcp-full-experience` checkpoint; not published/installed | Curated ZIP, offline schemas, deterministic build, live SDK-from-ZIP checks and independent review passed. Public release owner gates remain in `public-plugin-release.md`. |
-| F1A Delegated-authority storage and token engine | `[>]` backend implementation in progress on disposable MySQL `127.0.0.1:3311`; no private endpoints enabled | Additive migration on disposable MySQL; public-client/subject/resource/scopes and optional org bindings; S256 single-use codes, hashed access/refresh families, atomic rotation/reuse revocation; fresh user/org/role checks; adversarial/race/erasure tests. No API-key masquerading or mutations. |
+| F1A Delegated-authority storage and token engine | `[>]` review blockers fixed with deterministic DB regressions; parent reran 194 core tests including 63 OAuth cases and all forced typechecks; fresh Node22/image and two-review certification pending; no private endpoints enabled | Additive migration on disposable MySQL; public-client/subject/resource/scopes and optional org bindings; S256 single-use codes, hashed access/refresh families, atomic rotation/reuse revocation; fresh user/org/role checks; adversarial/race/erasure tests. No API-key masquerading or mutations. |
 | F1B OAuth protocol and MCP wire boundary | `[ ]` after F1A | Discovery, issuer response identification, exact redirects/resource, bounded client registration/trusted metadata policy, token/revoke routes, tested SDK descriptor adapter/challenges and one read-only identity proof. Advertise only implemented capabilities. |
 | F1C Existing sign-in + explicit consent | `[ ]` after F1B; translation permission `[!]` unconfirmed | Browser session-bound/CSRF-protected consent, client/redirect identity, precise scopes and explicit optional org selection. Reuse Auth.js; no mutable `ev_org` grant authority. Legitimate attendees with no memberships can link. New static copy translated by approved pipeline; no external translation call until approved. |
 | F1D Complete OAuth certification | `[ ]` after F1A–C | Real browser + SDK + Node22 + Docker/Caddy positive login/link/refresh/revoke and cross-user/org, expiry, replay, concurrency tests; exact-snapshot independent security/implementation reviews. Private surface default-disabled; owner-controlled deployment/activation. |
@@ -26,7 +26,7 @@ State legend: `[x]` implemented/verified · `[>]` active · `[ ]` pending · `[!
 | F7 Paid ticket checkout | `[!]` platform eligibility / owner decision | Confirm current host commerce eligibility before implementing agent purchasing; preserve first-party payment credentials and transaction/refund authority. Technical MCP support is not approval. |
 | F8 Optional share artwork / broader operations | `[ ]` after core full experience | Separate approved slices for public posters, invitations, check-in, messaging/exports/refunds; preserve private credential and per-role boundaries. Not silently included in the initial core release. |
 
-**Resume here → F1A: build and prove delegated-authority persistence/token lifecycle on a disposable database.** F1 is not complete until protocol, consent and deployed-shape certification pass; do not describe token-engine tests alone as working host OAuth.
+**Resume here → F1A: certify the fixed candidate with fresh Node22/image checks and two matching exact-snapshot PASS reviews before commit/push and F1B.** F1 is not complete until protocol, consent and deployed-shape certification pass; do not describe token-engine tests alone as working host OAuth.
 
 ### Frozen boundaries and prerequisites
 
@@ -38,6 +38,7 @@ State legend: `[x]` implemented/verified · `[>]` active · `[ ]` pending · `[!
 - New consent UI localization is an external-provider gate. The permission prompt was cancelled without an answer, so **no Google Translation call is authorized**. Backend work can proceed; do not fabricate target-language translations or call consent complete.
 - All implementation remains on a feature branch. `master` CI promotes `production`, so a master push may deploy. No live OAuth activation or real email/payment/provider calls are implied by this program approval.
 - Local safety: dedicated disposable MySQL fixture, known dummy AUTH_SECRET, provider-disabled processes; never print/change root `.env`, repurpose real API/provider keys, stop other projects or overwrite user artifacts.
+- Account deletion cleanup has bounded rows/queries/batches and a time-based admission budget; it does not cancel an in-flight SQL/pool/network wait or certify a hard wall-clock deadline. Remaining material has explicit resume state. Background scheduling and transport/DB timeout policy are still pending integration gates.
 
 ## Implemented now
 

@@ -2,6 +2,7 @@ import { and, eq } from "drizzle-orm";
 import type { Adapter, AdapterAccount, AdapterSession, AdapterUser, VerificationToken } from "next-auth/adapters";
 import { accounts, sessions, users, verificationTokens, type Database } from "@evnelo/db";
 import { newId } from "@evnelo/core";
+import { deleteOAuthUser } from "@evnelo/core/services";
 
 /** Auth.js adapter over our own users/accounts/sessions/verification_tokens tables. */
 export function drizzleAdapter(db: Database): Adapter {
@@ -32,7 +33,7 @@ export function drizzleAdapter(db: Database): Adapter {
       }).where(eq(users.id, user.id));
       return (await findUser(user.id))!;
     },
-    async deleteUser(id) { await db.delete(users).where(eq(users.id, id)); },
+    async deleteUser(id) { await deleteOAuthUser(db, id); },
     async linkAccount(a) {
       await db.insert(accounts).values({
         id: newId(), userId: a.userId, type: a.type, provider: a.provider, providerAccountId: a.providerAccountId,

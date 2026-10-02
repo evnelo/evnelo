@@ -1,11 +1,12 @@
 import { and, eq, inArray, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 import {
-  apiKeys, attendees, checkIns, discountCodes, eventInvites, eventReports, events, notifications, orderItems, orders, organizationMembers, organizations,
+  apiKeys, oauthGrants, attendees, checkIns, discountCodes, eventInvites, eventReports, events, notifications, orderItems, orders, organizationMembers, organizations,
   registrationFields, ticketTypes, tickets, waitlistEntries, webhooks, type Database,
 } from "@evnelo/db";
 import { newId } from "../ids";
 import type { DbOrTx } from "./db";
+import { oauthAuthorityProjection } from "./oauth-lifecycle";
 
 /**
  * Privacy workflows(GDPR/LGPD): data-subject export, hard erasure of personal data,
@@ -82,8 +83,9 @@ export async function exportOrganizationData(db: Database, orgId: string) {
     db.select({ id: apiKeys.id, name: apiKeys.name, prefix: apiKeys.prefix, scopes: apiKeys.scopes, createdAt: apiKeys.createdAt, revokedAt: apiKeys.revokedAt, lastUsedAt: apiKeys.lastUsedAt }).from(apiKeys).where(eq(apiKeys.organizationId, orgId)),
     eventIds.length ? db.select().from(eventReports).where(inArray(eventReports.eventId, eventIds)) : [],
   ]);
+  const delegatedGrants = await db.select(oauthAuthorityProjection).from(oauthGrants).where(eq(oauthGrants.organizationId, orgId));
   return {
-    exportedAt: new Date().toISOString(), organization: org, members, events: evs, ticketTypes: inEvents(types), registrationFields: inEvents(fields), orders: ords, orderItems: items,
+    exportedAt: new Date().toISOString(), organization: org, delegatedGrants, members, events: evs, ticketTypes: inEvents(types), registrationFields: inEvents(fields), orders: ords, orderItems: items,
     attendees: atts, tickets: tks.map((t) => ({ ...t, token: undefined })), checkIns: cis, waitlist: wl, discountCodes: dcs, invites: invs, webhooks: hooks, apiKeys: keys, reports,
   };
 }
@@ -114,6 +116,17 @@ export async function deleteOrganization(db: Database, orgId: string, now = new 
       await tx.update(notifications).set({ recipient: "erased@anonymized.invalid", data: null }).where(eq(notifications.organizationId, orgId));
       await tx.delete(waitlistEntries).where(inArray(waitlistEntries.eventId, eventIds));
       await tx.delete(eventInvites).where(inArray(eventInvites.eventId, eventIds));
+    }
+    // Locate by organization without locks, then acquire current primary-key grant locks.
+    // Locking the organization secondary index first can deadlock with account erasure
+    // holding a grant row and deleting its index entries. Issuance holds the org lock,
+    // so no new organization grant can appear behind this deletion transaction.
+    const grantHints = await tx.select({ id: oauthGrants.id }).from(oauthGrants).where(eq(oauthGrants.organizationId, orgId));
+    if (grantHints.length) {
+      const grants = await tx.select({ id: oauthGrants.id, organizationId: oauthGrants.organizationId, revokedAt: oauthGrants.revokedAt }).from(oauthGrants)
+        .where(inArray(oauthGrants.id, grantHints.map((g) => g.id))).orderBy(oauthGrants.id).for("update");
+      const ids = grants.filter((g) => g.organizationId === orgId && !g.revokedAt).map((g) => g.id);
+      if (ids.length) await tx.update(oauthGrants).set({ revokedAt: now }).where(inArray(oauthGrants.id, ids));
     }
     await tx.update(apiKeys).set({ revokedAt: now }).where(and(eq(apiKeys.organizationId, orgId), isNull(apiKeys.revokedAt)));
     await tx.update(webhooks).set({ active: false }).where(eq(webhooks.organizationId, orgId));

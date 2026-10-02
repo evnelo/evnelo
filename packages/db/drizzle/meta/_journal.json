@@ -134,6 +134,27 @@
       "when": 1789357288178,
       "tag": "0018_disputes_and_upload_tracking",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1790890674807,
+      "tag": "0019_mcp_oauth_clients",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1790890801152,
+      "tag": "0020_mcp_oauth_grants",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1790890905551,
+      "tag": "0021_mcp_oauth_tokens",
+      "breakpoints": true
     }
   ]
 }

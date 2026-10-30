@@ -7,11 +7,16 @@ import { Button } from "@/components/ui/button";
 import { EventCard } from "@/components/discover/event-card";
 import { Hero } from "@/components/marketing/hero";
 import { GITHUB_REPO_URL } from "@/components/marketing/github-badge";
+import { currentEdition } from "@evnelo/core";
+import { env } from "@/lib/env";
+import { siteStructuredData } from "@/lib/seo";
+import { serializeJsonLd } from "@/lib/urls";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("public");
   return {
-    title: t("home.meta.title"),
+    // absolute: the brand already leads the title, so the "| Evnelo" template would repeat it
+    title: { absolute: t("home.meta.title") },
     description: t("home.meta.description"),
     alternates: { canonical: "/" },
   };
@@ -42,6 +47,8 @@ export default async function HomePage() {
   ]);
   return (
     <div className="overflow-x-clip">
+      {/* describes evnelo.com itself, so a self-hosted instance does not claim to be it */}
+      {currentEdition() === "cloud" && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(siteStructuredData(env.APP_URL, [GITHUB_REPO_URL])) }} />}
       <Hero />
 
       {/* Pricing band */}

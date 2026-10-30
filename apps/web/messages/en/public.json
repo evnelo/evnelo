@@ -87,8 +87,8 @@
   },
   "home": {
     "meta": {
-      "title": "Evnelo: events, in motion",
-      "description": "Open event infrastructure. Publish events, register attendees, sell or give away tickets, message your community and check people in. 0.99% on paid tickets, free events are free, or self-host for nothing."
+      "title": "Evnelo: open-source event ticketing, 0.99% fees",
+      "description": "Sell tickets and register attendees for 0.99% on paid tickets and nothing on free events. Open source, payouts to your own Stripe, QR check-in, waitlists."
     },
     "pricing": {
       "eyebrow": "Pricing",

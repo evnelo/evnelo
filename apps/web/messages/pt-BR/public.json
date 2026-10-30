@@ -87,8 +87,8 @@
   },
   "home": {
     "meta": {
-      "title": "Evnelo: eventos, em movimento",
-      "description": "Infraestrutura aberta para eventos. Publique eventos, registre participantes, venda ou distribua ingressos, envie mensagens para sua comunidade e faça o check-in das pessoas. 0,99% sobre ingressos pagos, eventos gratuitos são gratuitos ou você pode hospedar seus próprios eventos sem custo algum."
+      "title": "Evnelo: sistema de ingressos para eventos de código aberto, taxas de 0,99%",
+      "description": "Venda ingressos e registre participantes por 0,99% em ingressos pagos e nada em eventos gratuitos. Código aberto, pagamentos para sua própria Stripe, check-in por QR Code, listas de espera."
     },
     "pricing": {
       "eyebrow": "Preços",

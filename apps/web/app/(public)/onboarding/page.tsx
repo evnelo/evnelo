@@ -34,7 +34,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
     const org = await createOrganization(db, { ...parsed.data, ownerUserId: u.id });
     track(EVENTS.organizationCreated, { distinctId: u.id, organizationId: org.id });
     (await cookies()).set(ORG_COOKIE, org.id, { path: "/", httpOnly: true, sameSite: "lax", maxAge: 365 * 86400 });
-    redirect("/dashboard");
+    redirect("/dashboard?welcome=1"); // the sign-up conversion (components/google-tag.tsx) fires on this flag
   }
 
   const suggested = slugify(user.name ?? user.email.split("@")[0] ?? "my-org", 60);

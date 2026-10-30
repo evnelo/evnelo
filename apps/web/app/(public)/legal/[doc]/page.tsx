@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ doc: stri
   const { doc } = await params;
   if (!isDoc(doc)) return {};
   const t = await getTranslations("public.legal");
-  return { title: t(`docs.${doc}`) };
+  return { title: t(`docs.${doc}`), alternates: { canonical: `/legal/${doc}` } };
 }
 
 /** /legal/terms, /legal/privacy, /legal/refunds. English text, translated labels; the documents live in components/legal. */

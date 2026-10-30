@@ -10,6 +10,7 @@ import { SocialLinks } from "@/components/event/social-links";
 import { EventCard, type CardEvent } from "@/components/discover/event-card";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { organizationPath } from "@/lib/urls";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -27,7 +28,7 @@ async function load(slug: string) {
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const [data, t] = await Promise.all([params.then((p) => load(p.slug)), getTranslations("public.org")]);
-  return data ? { title: data.org.name, description: t("meta.description", { name: data.org.name }) } : {};
+  return data ? { title: data.org.name, description: t("meta.description", { name: data.org.name }), alternates: { canonical: organizationPath(data.org.slug) } } : {};
 }
 
 const stagger = (index: number) => ({ ["--stagger" as string]: Math.min(index, 12) }) as React.CSSProperties;

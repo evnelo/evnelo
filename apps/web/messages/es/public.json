@@ -87,8 +87,8 @@
   },
   "home": {
     "meta": {
-      "title": "Evnelo: eventos en movimiento",
-      "description": "Infraestructura abierta para eventos. Publica eventos, registra asistentes, vende o regala entradas, comunícate con tu comunidad y gestiona la asistencia. Comisión del 0,99 % en entradas de pago, eventos gratuitos o autoorganiza tu evento sin coste alguno."
+      "title": "Evnelo: sistema de venta de entradas para eventos de código abierto, con una comisión del 0,99%.",
+      "description": "Vende entradas y registra a los asistentes con una comisión del 0,99 % en las entradas de pago y sin comisión en los eventos gratuitos. Código abierto, pagos a tu cuenta Stripe, registro mediante código QR, listas de espera."
     },
     "pricing": {
       "eyebrow": "Precios",

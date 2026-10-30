@@ -87,8 +87,8 @@
   },
   "home": {
     "meta": {
-      "title": "Evnelo: Hareket Halindeki Olaylar",
-      "description": "Açık etkinlik altyapısı. Etkinlikler yayınlayın, katılımcıları kaydedin, bilet satın veya ücretsiz dağıtın, topluluğunuza mesaj gönderin ve kişilerin giriş çıkışlarını kontrol edin. Ücretli biletlerde %0,99 komisyon, ücretsiz etkinlikler ücretsizdir veya kendi etkinliğinizi hiçbir ücret ödemeden kendiniz düzenleyebilirsiniz."
+      "title": "Evnelo: açık kaynaklı etkinlik biletleme, %0,99 komisyon",
+      "description": "Ücretli biletlerde %0,99 komisyon, ücretsiz etkinliklerde ise komisyon alınmaz. Açık kaynak kodlu, ödemeler kendi Stripe yapılır, QR kodlu giriş, bekleme listeleri mevcuttur."
     },
     "pricing": {
       "eyebrow": "Fiyatlandırma",

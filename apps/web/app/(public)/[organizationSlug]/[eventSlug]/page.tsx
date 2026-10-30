@@ -5,6 +5,7 @@ import { ArrowUpRight, Flag, Lock, MapPin, Video } from "lucide-react";
 import { canView, robotsFor, currentEdition } from "@evnelo/core";
 import { getPublicEvent, getPublicEventByLegacySlug } from "@/lib/queries/events";
 import { cn, formatDateRange } from "@/lib/utils";
+import { eventStructuredData, metaDescription } from "@/lib/seo";
 import { organizationPath, publicEventPath, serializeJsonLd } from "@/lib/urls";
 import { SocialLinks } from "@/components/event/social-links";
 import { RegisterCard } from "@/components/event/register-card";
@@ -27,15 +28,16 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!canView(data.event, { isMember: access.isMember, hasInvite: Boolean(access.invite) })) return {};
   const { event, org } = data;
   const canonical = `${env.APP_URL}${publicEventPath(org.slug, event.slug)}`;
+  const description = metaDescription(event.descriptionMd);
   return {
     title: event.name,
-    description: event.descriptionMd?.slice(0, 160),
+    description,
     robots: robotsFor(event),
     referrer: "no-referrer",
     alternates: { canonical },
     // the share image comes from opengraph-image.tsx next to this page (cover + date + title), so no explicit images here
     openGraph: { title: event.name, url: canonical, siteName: org.name, type: "website" },
-    twitter: { card: "summary_large_image", title: event.name, description: event.descriptionMd?.slice(0, 160) },
+    twitter: { card: "summary_large_image", title: event.name, description },
   };
 }
 
@@ -77,13 +79,11 @@ export default async function EventPage({ params }: Params) {
   const offeredTypes = offer ? ticketTypes.filter((t) => t.id === offer.ticketTypeId).map((t) => ({ ...t, held: Math.max(t.held - 1, 0) })) : ticketTypes;
 
   const eventPath = publicEventPath(org.slug, event.slug);
-  const jsonLd = {
-    "@context": "https://schema.org", "@type": "Event", name: event.name, startDate: event.startsAt.toISOString(), endDate: event.endsAt.toISOString(),
-    image: event.coverImageUrl, url: `${env.APP_URL}${eventPath}`, organizer: { "@type": "Organization", name: org.name },
-    eventAttendanceMode: event.locationType === "online" ? "https://schema.org/OnlineEventAttendanceMode" : "https://schema.org/OfflineEventAttendanceMode",
-    location: event.locationType === "online" ? { "@type": "VirtualLocation", url: `${env.APP_URL}${eventPath}` } : { "@type": "Place", name: event.venueName, address: event.address },
-    offers: ticketTypes.map((t) => ({ "@type": "Offer", price: (t.priceMinor / 100).toFixed(2), priceCurrency: t.currency, availability: "https://schema.org/InStock" })),
-  };
+  const eventUrl = `${env.APP_URL}${eventPath}`;
+  const jsonLd = eventStructuredData({
+    event, ticketTypes, soldOut, url: eventUrl, imageUrl: `${eventUrl}/opengraph-image`,
+    organizer: { name: org.name, url: `${env.APP_URL}${organizationPath(org.slug)}` },
+  });
 
   const online = event.locationType === "online";
   const format = t(`page.format.${event.locationType}`);
@@ -94,7 +94,7 @@ export default async function EventPage({ params }: Params) {
 
   return (
     <article>
-      {event.visibility === "public" && event.status === "published" && (
+      {event.visibility === "public" && event.status !== "draft" && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />
       )}
 

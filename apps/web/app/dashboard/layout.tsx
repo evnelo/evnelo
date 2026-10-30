@@ -10,6 +10,9 @@ import { Select } from "@/components/ui/select";
 import { SidebarNav, type SidebarItem } from "@/components/dashboard/sidebar-nav";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { IdentifyUser } from "@/components/analytics";
+import { Suspense } from "react";
+import { GoogleSignupConversion } from "@/components/google-tag";
+import { googleTag } from "@/lib/env";
 
 export async function generateMetadata() {
   const t = await getTranslations("dashboard");
@@ -27,6 +30,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[16rem_1fr]">
       <IdentifyUser userId={user.id} organizationId={org.id} organizationName={org.name} role={role} />
+      {googleTag && <Suspense fallback={null}><GoogleSignupConversion ids={googleTag.ids} sendTo={googleTag.signupConversion} /></Suspense>}
       <aside className="flex flex-col border-b border-border/70 bg-muted/40 lg:sticky lg:top-0 lg:h-dvh lg:border-b-0 lg:border-e">
         <div className="flex items-center justify-between gap-3 px-4 py-3 lg:block lg:px-5 lg:py-5">
           {/* a plain link: the public site runs analytics cookieless, the dashboard identified, so the two never share a page load */}

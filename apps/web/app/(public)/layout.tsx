@@ -6,6 +6,9 @@ import { Brand } from "@/components/brand";
 import { buttonVariants } from "@/components/ui/button";
 import { GithubBadge } from "@/components/marketing/github-badge";
 import { cn } from "@/lib/utils";
+import { Suspense } from "react";
+import { GoogleTag } from "@/components/google-tag";
+import { googleTag } from "@/lib/env";
 
 /** Public chrome: a sticky translucent header and a quiet footer. The dashboard has its own shell. */
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -36,6 +39,7 @@ export default async function PublicLayout({ children }: { children: React.React
           </div>
         </nav>
       </header>
+      {googleTag && <Suspense fallback={null}><GoogleTag ids={googleTag.ids} /></Suspense>}
       <main className="flex-1">{children}</main>
       <footer className="print-hide mt-16 border-t border-border/70 py-10 text-sm text-muted-foreground">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { apiDocsContentSecurityPolicy, captchaOrigins, contentSecurityPolicy, securityHeaders, uploadOrigins } from "./security-headers";
+import { apiDocsContentSecurityPolicy, captchaOrigins, contentSecurityPolicy, securityHeadersFromProcessEnv, securityHeaders, uploadOrigins } from "./security-headers";
 
 describe("security headers", () => {
   it("allows Stripe scripts, frames and API calls and forbids framing", () => {
@@ -38,6 +38,19 @@ describe("security headers", () => {
     expect(recaptcha).toContain("https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/");
     expect(recaptcha).toContain("https://recaptcha.google.com/recaptcha/");
     expect(captchaOrigins({ captchaProvider: "bogus" })).toEqual({ scripts: [], frames: [] });
+  });
+
+  it("opens the policy to the Google tag only when a Google id is configured", () => {
+    const closed = contentSecurityPolicy({ nodeEnv: "production" });
+    expect(closed).not.toContain("googletagmanager");
+    expect(closed).not.toContain("google-analytics");
+    const open = contentSecurityPolicy({ nodeEnv: "production", googleTag: true });
+    expect(open).toMatch(/script-src [^;]*https:\/\/\*\.googletagmanager\.com/);
+    expect(open).toMatch(/connect-src [^;]*https:\/\/\*\.google-analytics\.com [^;]*https:\/\/\*\.analytics\.google\.com/);
+    expect(open).toMatch(/connect-src [^;]*https:\/\/ad\.doubleclick\.net/); // carries the gclid back for Ads conversion linking
+    expect(open).toMatch(/frame-src [^;]*https:\/\/td\.doubleclick\.net/);
+    expect(securityHeadersFromProcessEnv({ NODE_ENV: "production", GOOGLE_ADS_ID: "AW-1" }).googleTag).toBe(true);
+    expect(securityHeadersFromProcessEnv({ NODE_ENV: "production", GOOGLE_ANALYTICS_ID: " " }).googleTag).toBe(false);
   });
 
   it("sends HSTS only when the app is served over https", () => {

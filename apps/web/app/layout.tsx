@@ -6,6 +6,7 @@ import { dirFor, type Locale } from "@/i18n/locales";
 import { CaptchaProvider } from "@/components/captcha";
 import { NavigationProgress } from "@/components/navigation-progress";
 import { captchaPublicConfig } from "@/lib/captcha";
+import { env } from "@/lib/env";
 import "@fontsource-variable/instrument-sans/index.css"; // self-hosted: no Google Fonts dependency
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
@@ -15,9 +16,12 @@ import "./globals.css";
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("public.meta");
   return {
+    // read per request: the Docker image is built without APP_URL, and without this every share-card URL says localhost
+    metadataBase: new URL(env.APP_URL),
     title: { default: "Evnelo", template: "%s | Evnelo" },
     description: t("description"),
     applicationName: "Evnelo",
+    openGraph: { siteName: "Evnelo", type: "website" },
   };
 }
 

@@ -87,8 +87,8 @@
   },
   "home": {
     "meta": {
-      "title": "Evnelo: các sự kiện, đang chuyển động",
-      "description": "Mở rộng cơ sở hạ tầng sự kiện. Đăng tải sự kiện, đăng ký người tham dự, bán hoặc tặng vé, gửi thông điệp đến cộng đồng và điểm danh người tham dự. Phí 0,99% cho vé trả phí, sự kiện miễn phí hoặc tự tổ chức hoàn toàn miễn phí."
+      "title": "Evnelo: hệ thống bán vé sự kiện mã nguồn mở, phí 0,99%",
+      "description": "Bán vé và đăng ký người tham dự với mức phí 0,99% cho vé trả phí và 0% cho các sự kiện miễn phí. Mã nguồn mở, thanh toán vào Stripe của riêng bạn, check-in bằng mã QR, danh sách chờ."
     },
     "pricing": {
       "eyebrow": "Giá cả",

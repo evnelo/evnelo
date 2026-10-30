@@ -87,8 +87,8 @@
   },
   "home": {
     "meta": {
-      "title": "Evnelo: peristiwa, dalam gerakan",
-      "description": "Buka infrastruktur acara. Publikasikan acara, daftarkan peserta, jual atau berikan tiket gratis, kirim pesan ke komunitas Anda, dan lakukan check-in. 0,99% untuk tiket berbayar, acara gratis tetap gratis, atau selenggarakan sendiri tanpa biaya."
+      "title": "Evnelo: penjualan tiket acara sumber terbuka, biaya 0,99%",
+      "description": "Jual tiket dan daftarkan peserta dengan komisi 0,99% untuk tiket berbayar dan gratis untuk acara gratis. Sumber terbuka, pembayaran ke rekening Anda sendiri Stripe, check-in QR, daftar tunggu."
     },
     "pricing": {
       "eyebrow": "Harga",

@@ -87,8 +87,8 @@
   },
   "home": {
     "meta": {
-      "title": "Evnelo: événements, en mouvement",
-      "description": "Infrastructure événementielle ouverte. Publiez vos événements, inscrivez les participants, vendez ou offrez des billets, communiquez avec votre communauté et gérez l'accueil. Commission de 0,99 % sur les billets payants, événements gratuits ou organisation entièrement autonome."
+      "title": "Evnelo: billetterie événementielle open source, frais de 0,99 %",
+      "description": "Vendez des billets et inscrivez les participants: commission de 0,99 % sur les billets payants et rien sur les événements gratuits. Logiciel libre, paiements à votre propre Stripe, enregistrement par QR code, listes d'attente."
     },
     "pricing": {
       "eyebrow": "Tarification",

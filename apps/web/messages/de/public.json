@@ -87,8 +87,8 @@
   },
   "home": {
     "meta": {
-      "title": "Evnelo: Ereignisse in Bewegung",
-      "description": "Offene Event-Infrastruktur. Veranstaltungen veröffentlichen, Teilnehmer registrieren, Tickets verkaufen oder verschenken, die Community informieren und den Einlass verwalten. 0,99 % Provision auf kostenpflichtige Tickets, kostenlose Veranstaltungen sind kostenlos, oder Sie veranstalten Ihr Event selbst – völlig kostenlos."
+      "title": "Evnelo: Open-Source-Event-Ticketing, 0,99 % Gebühren",
+      "description": "Verkaufe Tickets und registriere Teilnehmer für 0,99 % Provision auf kostenpflichtige Tickets und kostenlos auf kostenlose Veranstaltungen. Open Source, Auszahlungen an dein eigenes Stripe, QR-Code-Check-in, Wartelisten."
     },
     "pricing": {
       "eyebrow": "Preisgestaltung",

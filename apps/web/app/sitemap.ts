@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { listIndexableEvents, listIndexableOrganizations } from "@evnelo/core/services";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
+import { LEGAL_DOCS } from "@/lib/legal";
 import { organizationPath, publicEventPath } from "@/lib/urls";
 
 /** Built per request: the event list changes constantly and the build must not need a database. */
@@ -19,6 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: `${env.APP_URL}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${env.APP_URL}/discover`, lastModified: now, changeFrequency: "hourly", priority: 0.9 },
+    ...LEGAL_DOCS.map((doc) => ({ url: `${env.APP_URL}/legal/${doc}`, changeFrequency: "yearly" as const, priority: 0.2 })),
     ...organizations.map((org) => ({
       url: `${env.APP_URL}${organizationPath(org.slug)}`,
       lastModified: org.updatedAt,

@@ -14,6 +14,7 @@ Brought to you by [InEvent](https://inevent.com). Conventions for contributors a
 - Tickets with a QR code at `/t/{token}`, a calendar file whose entry links back to the ticket, Apple Wallet and Google Wallet passes, and the join link for online events once confirmed. After checkout, an order page at `/orders/{token}` with every ticket in the party and a printable receipt (items, discount, tax, service fee, card used); the same receipt goes out with the ticket email.
 - Waitlist when an event sells out, with timed offers when a seat frees up. Private events by invitation link.
 - Discovery at `/discover`: search, city, tag, date, price and format filters, a calendar view, near-me, and a sitemap for public events only.
+- Search-ready pages: schema.org `Event` data on public event pages (status, address, offers with real availability), Organization/WebSite data on the Cloud home page, canonicals, absolute share-card URLs and a per-request `robots.txt`.
 - Transactional email (React Email) and SMS: confirmation, approval, refund, reminders at 24h and 1h, event changes and cancellations, with STOP handling and an unsubscribe link.
 
 **For everyone**
@@ -111,6 +112,7 @@ Everything is read from the environment (the root `.env` in development). Empty 
 | `JOBS_INLINE` | no | `true` (default) runs the job loop inside the web process; `false` for serverless, then call `POST /api/jobs/run` with `Authorization: Bearer $AUTH_SECRET` every minute. |
 | `MIGRATE_ON_START` | no | Apply migrations at boot (the Docker image sets it). |
 | `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, `POSTHOG_KEY`, `POSTHOG_ENVIRONMENT` | no | PostHog: error tracking, product analytics, logs and traces. The browser token is inlined at build time (Docker build arg); the server falls back to it when `POSTHOG_KEY` is unset. Enable cookieless server hash mode in the PostHog project: public pages track without cookies, the dashboard identifies signed-in users by id. |
+| `GOOGLE_ANALYTICS_ID`, `GOOGLE_ADS_ID`, `GOOGLE_ADS_SIGNUP_LABEL` | no | Google tag (GA4 `G-…`, Google Ads `AW-…`), read at runtime. Loads only on the home page, Discover, sign-in and legal pages, never on event, ticket or order pages; query strings are cut to campaign parameters. Consent Mode v2 denies storage in the EEA, UK and Switzerland and grants it elsewhere (no banner); Global Privacy Control turns ads storage off. The label is the Ads conversion fired when a new host creates their organization (GA4 gets `sign_up`). The CSP admits Google's origins only when an id is set. |
 | `POSTHOG_API_KEY`, `POSTHOG_PROJECT_ID` | build only | Personal API key and project id for uploading source maps during `next build`. |
 | `GOOGLE_TRANSLATE_API_KEY` | maintainers only | Used by `pnpm --filter @evnelo/web translate` to regenerate the 19 non-English message files from `messages/en`. The running app never needs it. |
 | `ABUSE_EMAIL` | no | Where "Report this event" submissions are emailed. They are always stored. |

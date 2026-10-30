@@ -10,7 +10,7 @@
  */
 
 /**
- * @typedef {{ appUrl?: string; nodeEnv?: string; s3Endpoint?: string; s3Bucket?: string; s3Region?: string; captchaProvider?: string }} SecurityHeaderEnv
+ * @typedef {{ appUrl?: string; nodeEnv?: string; s3Endpoint?: string; s3Bucket?: string; s3Region?: string; captchaProvider?: string; googleTag?: boolean }} SecurityHeaderEnv
  */
 
 const STRIPE_SCRIPTS = ["https://js.stripe.com", "https://*.js.stripe.com"];
@@ -21,6 +21,24 @@ const CAPTCHA_ORIGINS = {
   turnstile: { scripts: ["https://challenges.cloudflare.com"], frames: ["https://challenges.cloudflare.com"] },
   recaptcha: { scripts: ["https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/"], frames: ["https://www.google.com/recaptcha/", "https://recaptcha.google.com/recaptcha/"] },
 };
+
+/**
+ * The Google tag (GA4 + Google Ads conversions, components/google-tag.tsx), per Google's CSP guide.
+ * Images are already open to any https origin. Regional google.<tld> beacons are not listed and fall back to google.com.
+ */
+const GOOGLE_TAG_ORIGINS = {
+  scripts: ["https://*.googletagmanager.com", "https://www.googleadservices.com", "https://googleads.g.doubleclick.net", "https://www.google.com"],
+  connect: ["https://*.google-analytics.com", "https://*.analytics.google.com", "https://*.googletagmanager.com", "https://*.g.doubleclick.net", "https://ad.doubleclick.net", "https://*.google.com", "https://www.googleadservices.com", "https://pagead2.googlesyndication.com"],
+  frames: ["https://td.doubleclick.net", "https://www.googletagmanager.com"],
+};
+
+/**
+ * @param {SecurityHeaderEnv} env
+ * @returns {{ scripts: string[]; connect: string[]; frames: string[] }}
+ */
+function googleTagOrigins(env) {
+  return env.googleTag ? GOOGLE_TAG_ORIGINS : { scripts: [], connect: [], frames: [] };
+}
 
 /**
  * @param {SecurityHeaderEnv} env
@@ -54,12 +72,12 @@ function contentSecurityPolicy(env) {
   /** @type {Record<string, string[]>} */
   const directives = {
     "default-src": ["'self'"],
-    "script-src": ["'self'", "'unsafe-inline'", ...(dev ? ["'unsafe-eval'"] : []), ...STRIPE_SCRIPTS, ...captchaOrigins(env).scripts],
+    "script-src": ["'self'", "'unsafe-inline'", ...(dev ? ["'unsafe-eval'"] : []), ...STRIPE_SCRIPTS, ...captchaOrigins(env).scripts, ...googleTagOrigins(env).scripts],
     "style-src": ["'self'", "'unsafe-inline'"],
     "img-src": ["'self'", "data:", "blob:", "https:"],
     "font-src": ["'self'", "data:"],
-    "connect-src": ["'self'", ...(dev ? ["ws:", "wss:"] : []), ...STRIPE_CONNECT, ...uploadOrigins(env)],
-    "frame-src": [...STRIPE_FRAMES, ...captchaOrigins(env).frames],
+    "connect-src": ["'self'", ...(dev ? ["ws:", "wss:"] : []), ...STRIPE_CONNECT, ...uploadOrigins(env), ...googleTagOrigins(env).connect],
+    "frame-src": [...STRIPE_FRAMES, ...captchaOrigins(env).frames, ...googleTagOrigins(env).frames],
     "worker-src": ["'self'", "blob:"],
     "media-src": ["'self'", "blob:"],
     "object-src": ["'none'"],
@@ -114,7 +132,7 @@ function securityHeaders(env) {
 function securityHeadersFromProcessEnv(processEnv = process.env) {
   /** @param {string} k */
   const v = (k) => (processEnv[k]?.trim() ? processEnv[k]?.trim() : undefined);
-  return { appUrl: v("APP_URL"), nodeEnv: processEnv.NODE_ENV, s3Endpoint: v("S3_ENDPOINT"), s3Bucket: v("S3_BUCKET"), s3Region: v("S3_REGION") ?? v("AWS_REGION"), captchaProvider: v("CAPTCHA_PROVIDER") };
+  return { appUrl: v("APP_URL"), nodeEnv: processEnv.NODE_ENV, s3Endpoint: v("S3_ENDPOINT"), s3Bucket: v("S3_BUCKET"), s3Region: v("S3_REGION") ?? v("AWS_REGION"), captchaProvider: v("CAPTCHA_PROVIDER"), googleTag: Boolean(v("GOOGLE_ANALYTICS_ID") || v("GOOGLE_ADS_ID")) };
 }
 
-module.exports = { uploadOrigins, captchaOrigins, contentSecurityPolicy, apiDocsContentSecurityPolicy, securityHeaders, securityHeadersFromProcessEnv };
+module.exports = { uploadOrigins, captchaOrigins, googleTagOrigins, contentSecurityPolicy, apiDocsContentSecurityPolicy, securityHeaders, securityHeadersFromProcessEnv };

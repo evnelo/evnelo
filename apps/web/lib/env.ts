@@ -55,6 +55,11 @@ const schema = z.object({
   POSTHOG_KEY: z.string().optional(),
   POSTHOG_HOST: z.string().url().default("https://us.i.posthog.com"),
   POSTHOG_ENVIRONMENT: z.string().optional(),
+  // Google tag (optional): GA4 and/or Google Ads, loaded on marketing pages only (components/google-tag.tsx).
+  // GOOGLE_ADS_SIGNUP_LABEL is the conversion label sent when a new host creates their organization.
+  GOOGLE_ANALYTICS_ID: z.string().regex(/^G-[A-Z0-9]+$/, "GOOGLE_ANALYTICS_ID looks like G-XXXXXXX").optional(),
+  GOOGLE_ADS_ID: z.string().regex(/^AW-\d+$/, "GOOGLE_ADS_ID looks like AW-123456789").optional(),
+  GOOGLE_ADS_SIGNUP_LABEL: z.string().regex(/^[\w-]+$/).optional(),
   // Google sign-in (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
@@ -85,3 +90,10 @@ export const emailConfigured = Boolean(env.RESEND_API_KEY);
 export const posthogConfigured = Boolean(env.POSTHOG_KEY);
 export const appleWalletConfigured = Boolean(env.APPLE_PASS_TYPE_ID && env.APPLE_TEAM_ID && env.APPLE_PASS_CERT && env.APPLE_PASS_KEY && env.APPLE_WWDR_CERT);
 export const googleWalletConfigured = Boolean(env.GOOGLE_WALLET_ISSUER_ID && env.GOOGLE_WALLET_SERVICE_ACCOUNT);
+/** The Google tag's destinations, or null when neither id is set (the tag then never loads and the CSP stays closed to Google). */
+export const googleTag = env.GOOGLE_ANALYTICS_ID || env.GOOGLE_ADS_ID
+  ? {
+      ids: [env.GOOGLE_ANALYTICS_ID, env.GOOGLE_ADS_ID].filter((id): id is string => Boolean(id)),
+      signupConversion: env.GOOGLE_ADS_ID && env.GOOGLE_ADS_SIGNUP_LABEL ? `${env.GOOGLE_ADS_ID}/${env.GOOGLE_ADS_SIGNUP_LABEL}` : null,
+    }
+  : null;

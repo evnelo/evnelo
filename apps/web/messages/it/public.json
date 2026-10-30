@@ -87,8 +87,8 @@
   },
   "home": {
     "meta": {
-      "title": "Evnelo: eventi in movimento",
-      "description": "Infrastruttura aperta per eventi. Pubblica eventi, registra i partecipanti, vendi o regala biglietti, comunica con la tua community e gestisci il check-in. 0,99% sui biglietti a pagamento, gli eventi gratuiti sono gratuiti oppure organizza il tuo evento in autonomia senza spendere nulla."
+      "title": "Evnelo: sistema di biglietteria per eventi open-source, commissioni dello 0,99%",
+      "description": "Vendi biglietti e registra i partecipanti con una commissione dello 0,99% sui biglietti a pagamento e nulla sugli eventi gratuiti. Open source, pagamenti al tuo Stripe, check-in tramite QR code, liste d'attesa."
     },
     "pricing": {
       "eyebrow": "Prezzi",

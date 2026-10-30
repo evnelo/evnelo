@@ -110,7 +110,8 @@
           "price": "$0",
           "note": "Mã nguồn mở. Một container duy nhất, MySQL của bạn, khóa Stripe của riêng bạn. Không bao giờ phải trả phí nền tảng."
         }
-      }
+      },
+      "more": "Bảng giá đầy đủ và công cụ tính toán"
     },
     "flow": {
       "eyebrow": "Cách nó chảy",
@@ -386,6 +387,363 @@
       "terms": "Các điều khoản mà người tổ chức và người tham dự đồng ý, phí, phương thức thanh toán và trách nhiệm pháp lý.",
       "privacy": "Chúng tôi thu thập những gì, tại sao, ai được xem thông tin đó và quyền của bạn.",
       "refunds": "Ai là người quyết định việc hoàn tiền, cách thức thanh toán và số tiền phải trả sẽ được xử lý như thế nào?"
+    }
+  },
+  "calculator": {
+    "price": "Giá vé",
+    "quantity": "Vé đã bán",
+    "currency": "Tiền tệ",
+    "presets": "Giá thông thường",
+    "perTicket": "{amount} mỗi vé",
+    "onTickets": "{count, plural, one {trên vé #} other {trên vé #}}",
+    "plusMonthly": "được lập hóa đơn hàng năm",
+    "keepMore": "Với Evnelo bạn giữ lại <em>{amount}</em> nhiều hơn so với {platform}.",
+    "chartLabel": "Phí nền tảng trên {count, plural, one {vé #} other {# vé}}, theo nền tảng",
+    "platforms": {
+      "evnelo": "Evnelo",
+      "eventbrite": "Eventbrite",
+      "lumaFree": "Luma Miễn phí",
+      "lumaPlus": "Luma Plus",
+      "sympla": "Sympla"
+    },
+    "whoPays": "Ai trả khoản phí 0,99%?",
+    "absorb": "Bạn làm vậy",
+    "passOn": "Người mua làm",
+    "buyerPays": "Người mua thanh toán theo từng vé.",
+    "evneloFee": "Phí của Evnelo",
+    "youReceive": "Bạn nhận được",
+    "beforeStripe": "Trước khi trừ phí xử lý của Stripe, phí Stripe được tính vào tài khoản của bạn theo tỷ lệ mà họ đưa ra.",
+    "plusPerMonth": "+ {amount} một tháng"
+  },
+  "features": {
+    "title": "Mọi tính năng trên mọi sự kiện",
+    "body": "Không có sự phân cấp nào cả. Một buổi gặp gỡ cộng đồng miễn phí cũng được trang bị những công cụ tương tự như một hội nghị đã bán hết vé.",
+    "items": {
+      "tiers": {
+        "title": "Các hạng vé và mã giảm giá",
+        "text": "Giá ưu đãi sớm, giá VIP, giá dành cho thành viên, mã giảm giá có giới hạn và ngày hết hạn."
+      },
+      "questions": {
+        "title": "Câu hỏi của riêng bạn",
+        "text": "Hãy hỏi bất cứ điều gì khi đăng ký, kể cả những câu hỏi chỉ xuất hiện cho một số câu trả lời nhất định."
+      },
+      "guests": {
+        "title": "Khách có vé riêng",
+        "text": "Cho phép mọi người mời thêm người thân. Mỗi khách mời sẽ nhận được một vé và được tính vào số lượng khách tại cửa."
+      },
+      "waitlist": {
+        "title": "Danh sách chờ",
+        "text": "Khi hết chỗ, người tiếp theo trong danh sách chờ sẽ nhận được lời mời ngay khi có chỗ trống."
+      },
+      "private": {
+        "title": "Sự kiện riêng tư",
+        "text": "Các sự kiện chỉ dành cho người được mời với các liên kết do bạn kiểm soát, hoặc các trang không được liệt kê mà chỉ những người có liên kết mới có thể truy cập."
+      },
+      "checkin": {
+        "title": "Mã QR dùng để check-in, hoạt động cả khi ngoại tuyến.",
+        "text": "Quét vé trên bất kỳ trình duyệt nào trên điện thoại. Ứng dụng vẫn hoạt động ngay cả khi không có tín hiệu."
+      },
+      "messages": {
+        "title": "Nhắc nhở qua email và tin nhắn",
+        "text": "Thư xác nhận, vé và thông báo sẽ được gửi tự động bằng ngôn ngữ của người tham dự."
+      },
+      "api": {
+        "title": "API và webhook",
+        "text": "Một API REST với đặc tả OpenAPI, SDK TypeScript và webhook đã được ký."
+      }
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Mức phí: 0,99% cho vé trả phí, 0$ cho các sự kiện miễn phí.",
+      "description": "Evnelo tính phí 0,99% cho vé trả phí và không tính phí cho các sự kiện miễn phí. Không có gói hàng tháng và không có phí cố định cho mỗi vé. Hãy tính toán số tiền bạn nhận được bằng công cụ tính toán."
+    },
+    "eyebrow": "Giá cả",
+    "title": "Giảm giá 0,99% cho vé trả phí. Miễn phí cho vé miễn phí.",
+    "body": "Một mức giá cho mọi tính năng. Không có gói hàng tháng, không có phí cố định cho mỗi vé, không có phí thiết lập. Tiền vé sẽ được chuyển vào tài khoản Stripe của bạn, và Stripe sẽ tính phí xử lý theo mức giá thông thường.",
+    "start": "Bắt đầu lưu trữ",
+    "compare": "So sánh với Eventbrite",
+    "plans": {
+      "free": {
+        "attendees": "Số lượng người tham dự không giới hạn",
+        "questions": "Câu hỏi và phê duyệt đăng ký",
+        "messages": "Vé QR, xác nhận và nhắc nhở qua email.",
+        "sms": "Tin nhắn văn bản với phí một lần là 5 đô la cho mỗi sự kiện, nếu bạn muốn sử dụng."
+      },
+      "paid": {
+        "everything": "Tất cả các sự kiện miễn phí đều có",
+        "methods": "Các thẻ Apple Pay, Google Pay và Pix đến Stripe",
+        "sms": "Bao gồm tin nhắn văn bản",
+        "passOn": "Chuyển phí cho người mua hoặc tự chịu phí đó."
+      },
+      "selfHosted": {
+        "license": "Cùng một sản phẩm, dưới Apache 2.0",
+        "stack": "Một container Docker và một cơ sở dữ liệu MySQL",
+        "keys": "Các phím Stripe, Resend và Vonage của riêng bạn",
+        "noFee": "Không mất phí nền tảng và không cần tài khoản Evnelo"
+      }
+    },
+    "planCta": {
+      "free": "Tạo sự kiện miễn phí",
+      "paid": "Bắt đầu bán hàng",
+      "selfHosted": "Lấy mã"
+    },
+    "calculator": {
+      "eyebrow": "Máy tính",
+      "title": "Những gì bạn giữ lại",
+      "body": "Nhập giá vé và số lượng vé bạn dự kiến bán."
+    },
+    "money": {
+      "eyebrow": "Thanh toán",
+      "title": "Tiền đi về đâu?",
+      "steps": {
+        "pay": {
+          "title": "Người mua thanh toán trên trang sự kiện của bạn.",
+          "text": "Thanh toán bằng thẻ Apple Pay, Google Pay hoặc Pix. Khoản phí sẽ được trừ vào tài khoản Stripe của bạn."
+        },
+        "stripe": {
+          "title": "Stripe lấy phí xử lý của nó",
+          "text": "Theo tỷ giá trong tài khoản Stripe của bạn. Evnelo không bao giờ nhìn thấy nó và không bao giờ tính thêm phí."
+        },
+        "evnelo": {
+          "title": "Evnelo chiếm 0,99%",
+          "text": "Tính phí chung cho vé đã thanh toán."
+        },
+        "payout": {
+          "title": "Stripe trả tiền cho bạn",
+          "text": "Theo lịch thanh toán Stripe của bạn. Evnelo không bao giờ giữ tiền của bạn."
+        }
+      }
+    },
+    "comparisons": {
+      "eyebrow": "So sánh",
+      "title": "So sánh như thế nào",
+      "eventbrite": {
+        "title": "Evnelo so với Eventbrite",
+        "text": "3,7% cộng thêm 1,79 đô la mỗi vé, so với 0,99%."
+      },
+      "luma": {
+        "title": "Evnelo so với Luma",
+        "text": "Giảm giá 5% cho mỗi vé hoặc gói hàng tháng 59 đô la, so với mức 0,99%."
+      },
+      "brazil": {
+        "title": "Bán hàng tại Brazil",
+        "text": "Pix khi thanh toán và phí 0,99%, bằng tiếng Bồ Đào Nha."
+      }
+    },
+    "faq": {
+      "title": "Câu hỏi",
+      "items": {
+        "monthly": {
+          "q": "Có phí hàng tháng không?",
+          "a": "Không. Dịch vụ lưu trữ không có phí thuê bao. Bạn chỉ phải trả 0,99% khi bán vé có trả phí và không phải trả thêm phí nào khác."
+        },
+        "stripe": {
+          "q": "Ai trả phí xử lý của Stripe?",
+          "a": "Bạn làm điều đó, theo cách Stripe của bạn, với mức giá mà Stripe nhận được. Evnelo không thêm gì vào đó cả."
+        },
+        "passOn": {
+          "q": "Người mua có thể trả khoản phí 0,99% thay cho tôi được không?",
+          "a": "Đúng vậy. Hãy bật phí dịch vụ cho sự kiện và khi thanh toán, phí đó sẽ hiển thị dưới dạng một dòng riêng. Người mua sẽ thanh toán phí này và bạn sẽ nhận được toàn bộ giá vé."
+        },
+        "free": {
+          "q": "Các sự kiện miễn phí có thực sự miễn phí không?",
+          "a": "Có, với bất kỳ quy mô nào. Bao gồm cả email xác nhận và nhắc nhở. Tin nhắn văn bản cho sự kiện miễn phí có giá 5 đô la một lần cho sự kiện đó; đối với các sự kiện trả phí, tin nhắn đã được bao gồm."
+        },
+        "refunds": {
+          "q": "Phí hoàn tiền sẽ được xử lý như thế nào?",
+          "a": "0,99% sẽ không được hoàn trả khi bạn hoàn tiền cho đơn hàng, và Stripe cũng giữ lại phí xử lý của nó. Nếu người mua đã trả phí dịch vụ, phí đó sẽ được hoàn trả lại cho họ cùng với đơn hàng."
+        },
+        "currencies": {
+          "q": "Tôi có thể giao dịch bằng những loại tiền tệ nào?",
+          "a": "Bất kỳ loại tiền tệ nào mà tài khoản Stripe của bạn chấp nhận. Phí là 0,99% giá vé bằng loại tiền tệ đó."
+        },
+        "selfHost": {
+          "q": "Chi phí tự lưu trữ (self-hosting) là bao nhiêu?",
+          "a": "Không có gì cho Evnelo. Bạn tự trả tiền cho máy chủ, cơ sở dữ liệu và nhà cung cấp dịch vụ email và SMS. Mã nguồn nằm trên GitHub theo giấy phép Apache 2.0."
+        }
+      }
+    },
+    "cta": {
+      "title": "Đăng tải sự kiện đầu tiên của bạn",
+      "body": "Đăng ký bằng email của bạn. Không cần thẻ, không cần chọn gói cước.",
+      "button": "Bắt đầu lưu trữ"
+    }
+  },
+  "compare": {
+    "eventbrite": {
+      "meta": {
+        "title": "Phương án thay thế Eventbrite với phí 0,99%",
+        "description": "Eventbrite tính phí 3,7% cộng thêm 1,79 đô la cho mỗi vé đã thanh toán tại Mỹ. Evnelo tính phí 0,99% và không có phí cố định. Hãy so sánh phí cho sự kiện của riêng bạn."
+      },
+      "eyebrow": "Evnelo so với Eventbrite",
+      "title": "Một lựa chọn thay thế Eventbrite với mức phí 0,99%.",
+      "body": "Tại Mỹ, phí dịch vụ của Eventbrite là 3,7% cộng thêm 1,79 đô la cho mỗi vé đã thanh toán. Evnelo tính phí 0,99% và không có mức phí cố định, vì vậy sự chênh lệch lớn nhất là ở các vé rẻ hơn.",
+      "rows": {
+        "fee": "3.7%",
+        "fixed": "$1.79",
+        "free": "Không mất phí",
+        "processing": "2,9% mỗi đơn hàng",
+        "subscription": "Không có",
+        "openSource": "KHÔNG"
+      }
+    },
+    "luma": {
+      "meta": {
+        "title": "Một lựa chọn thay thế Luma với phí 0,99% và không cần đăng ký.",
+        "description": "Luma thu 5% phí vé đã thanh toán, hoặc 0% với Luma Plus với giá 59 đô la một tháng. Evnelo thu 0,99% nếu không đăng ký. Hãy so sánh phí cho sự kiện của riêng bạn."
+      },
+      "eyebrow": "Evnelo so với Luma",
+      "title": "Một lựa chọn thay thế Luma tính phí 0,99% mà không cần đăng ký.",
+      "body": "Luma lấy 5% phí vé trả tiền ở gói miễn phí, hoặc 0% nếu bạn trả 59 đô la một tháng cho Luma Plus. Evnelo lấy 0,99% và không có phí đăng ký, vì vậy bạn chỉ trả tiền khi bán được hàng.",
+      "rows": {
+        "fee": "Giảm 5% cho gói miễn phí, 0% cho Luma Plus",
+        "fixed": "Không có",
+        "free": "Không mất phí",
+        "processing": "Stripe, 2.9% + 30¢",
+        "subscription": "Luma Plus: 59 đô la một tháng, thanh toán hàng năm",
+        "openSource": "KHÔNG"
+      }
+    },
+    "evneloRows": {
+      "fee": "0.99%",
+      "fixed": "Không có",
+      "free": "Không mất phí",
+      "processing": "Stripe, theo tỷ giá tài khoản của bạn",
+      "subscription": "Không có",
+      "openSource": "Vâng, Apache 2.0"
+    },
+    "rowLabels": {
+      "fee": "Phí nền tảng đối với vé đã thanh toán",
+      "fixed": "Phí cố định cho mỗi vé",
+      "free": "Sự kiện miễn phí",
+      "processing": "Xử lý thẻ",
+      "subscription": "Đăng ký",
+      "openSource": "Mã nguồn mở"
+    },
+    "start": "Bắt đầu lưu trữ",
+    "seePricing": "Xem giá",
+    "calculator": {
+      "body": "Chỉ bao gồm phí nền tảng. Phí xử lý thẻ được tính thêm trên mọi nền tảng."
+    },
+    "table": {
+      "title": "Cạnh nhau",
+      "feature": "Số tiền bạn phải trả"
+    },
+    "switching": {
+      "title": "Dời sự kiện tiếp theo của bạn",
+      "steps": {
+        "signup": "Đăng ký bằng email của bạn và nêu tên tổ chức của bạn.",
+        "stripe": "Kết nối tài khoản Stripe của bạn trong Cài đặt, mục Thanh toán.",
+        "event": "Tạo sự kiện: ngày, địa điểm, loại vé và câu hỏi.",
+        "share": "Hãy đăng tải và chia sẻ liên kết mới."
+      },
+      "note": "Hiện chưa có trình nhập dữ liệu, vì vậy các đăng ký bạn đã thực hiện vẫn được giữ nguyên. Hãy bắt đầu với sự kiện tiếp theo của bạn."
+    },
+    "source": "{competitor} phí từ<link>{url}</link>, đã kiểm tra vào ngày {date}. Tỷ giá tại Mỹ; các quốc gia khác có thể khác nhau. {competitor} là nhãn hiệu của chủ sở hữu và Evnelo không liên kết với chủ sở hữu đó.",
+    "cta": {
+      "title": "Hãy tổ chức sự kiện tiếp theo của bạn vào ngày Evnelo",
+      "body": "Đăng ký bằng email của bạn. Không cần thẻ, không cần chọn gói cước."
+    }
+  },
+  "brazil": {
+    "meta": {
+      "title": "Bán vé tại Brazil với Pix và phí 0,99%.",
+      "description": "Evnelo lấy 0,99% phí vé trả tiền và không lấy gì đối với các sự kiện miễn phí. Pix, thẻ, Apple Pay và Google Pay thông qua tài khoản Stripe của riêng bạn. So sánh với Sympla."
+    },
+    "eyebrow": "Evnelo ở Brazil",
+    "title": "Bán vé với Pix và trả 0,99%.",
+    "body": "Evnelo lấy 0,99% của mỗi vé trả phí và không lấy gì đối với các sự kiện miễn phí. Người mua thanh toán bằng Pix, thẻ, Apple Pay hoặc Google Pay, và tiền sẽ được chuyển thẳng vào tài khoản Stripe của bạn.",
+    "start": "Bắt đầu miễn phí",
+    "seePricing": "Hãy xem cách nó hoạt động",
+    "calculator": {
+      "body": "Phí dịch vụ của Sympla là 10% trên mỗi vé, tối thiểu là R$3.99. Chỉ bao gồm phí nền tảng; phí xử lý thẻ và Pix sẽ được tính thêm vào cả hai."
+    },
+    "highlights": {
+      "title": "Được sản xuất để bán bằng real.",
+      "items": {
+        "pix": {
+          "title": "Pix khi thanh toán",
+          "text": "Người mua thanh toán bằng mã QR Pix, thẻ, Apple Pay hoặc Google Pay, tất cả thông qua Stripe."
+        },
+        "payouts": {
+          "title": "Tiền trong tài khoản của bạn",
+          "text": "Doanh số bán hàng được ghi nợ vào tài khoản Stripe của bạn và được thanh toán theo lịch trình của Stripe. Evnelo không bao giờ giữ tiền của bạn."
+        },
+        "free": {
+          "title": "Các sự kiện miễn phí không tốn phí.",
+          "text": "Không mất phí đối với các đăng ký miễn phí, bất kể có bao nhiêu người đăng ký."
+        },
+        "tiers": {
+          "title": "Các hạng vé, phiếu giảm giá và danh sách chờ",
+          "text": "Các hạng vé, mã giảm giá, danh sách chờ khi hết vé và các câu hỏi đăng ký riêng của bạn."
+        },
+        "checkin": {
+          "title": "Nhận phòng trên bất kỳ điện thoại nào.",
+          "text": "Quét mã QR vé trực tiếp trên trình duyệt. Ứng dụng vẫn hoạt động ngay cả khi không có tín hiệu và sẽ cập nhật thông tin khi kết nối lại."
+        },
+        "open": {
+          "title": "Mã nguồn mở",
+          "text": "Mã Apache 2.0. Sử dụng evnelo.com hoặc chạy trên máy chủ riêng của bạn mà không mất phí nền tảng."
+        }
+      }
+    },
+    "table": {
+      "title": "Evnelo và Sympla cạnh nhau",
+      "feature": "Số tiền bạn phải trả"
+    },
+    "rows": {
+      "labels": {
+        "fee": "Phí trên vé đã thanh toán",
+        "minimum": "Số tiền tối thiểu mỗi vé",
+        "free": "Sự kiện miễn phí",
+        "processing": "Xử lý thẻ và Pix",
+        "openSource": "Mã nguồn mở"
+      },
+      "evnelo": {
+        "fee": "0.99%",
+        "minimum": "Không có",
+        "free": "Không mất phí",
+        "processing": "Stripe, theo tỷ giá tài khoản của bạn",
+        "openSource": "Vâng, Apache 2.0"
+      },
+      "sympla": {
+        "fee": "10%",
+        "minimum": "Giá vé lên đến R$3.99 áp dụng cho vé có giá dưới R$39.90.",
+        "free": "Không mất phí",
+        "processing": "Từ 2% đến 2,5% mỗi vé",
+        "openSource": "KHÔNG"
+      }
+    },
+    "payments": {
+      "title": "Cách thức thanh toán hoạt động",
+      "body": "Bạn kết nối tài khoản Stripe của riêng mình. Stripe xử lý các khoản thanh toán Pix và thẻ, sau đó thanh toán cho bạn, tính phí xử lý vào tài khoản của bạn theo tỷ lệ mà họ quy định. Evnelo lấy 0,99% số vé đã thanh toán như một phần của khoản phí tương tự."
+    },
+    "faq": {
+      "title": "Câu hỏi",
+      "items": {
+        "passOn": {
+          "q": "Người mua có thể thanh toán phí không?",
+          "a": "Đúng vậy. Hãy bật phí dịch vụ cho sự kiện và khi thanh toán, phí đó sẽ hiển thị thành một dòng riêng, vì vậy bạn sẽ nhận được giá vé đầy đủ."
+        },
+        "pix": {
+          "q": "Khi nào Pix xuất hiện tại trang thanh toán?",
+          "a": "Khi Pix được bật trong tài khoản Stripe của bạn và giá vé được tính bằng real."
+        },
+        "language": {
+          "q": "Mọi thứ đều bằng tiếng Bồ Đào Nha à?",
+          "a": "Trang sự kiện, trang thanh toán, email và vé đều hiển thị bằng tiếng Bồ Đào Nha đối với bất kỳ ai cài đặt trình duyệt bằng ngôn ngữ này."
+        },
+        "free": {
+          "q": "Các sự kiện miễn phí có thực sự miễn phí không?",
+          "a": "Có, với bất kỳ kích thước nào. Bao gồm cả email xác nhận và nhắc nhở."
+        }
+      }
+    },
+    "source": "Sympla phí từ<link>{url}</link>, đã kiểm tra vào {date}. Sympla là nhãn hiệu của chủ sở hữu và Evnelo không liên kết với chủ sở hữu đó.",
+    "cta": {
+      "title": "Tạo sự kiện đầu tiên của bạn",
+      "body": "Đăng ký bằng email của bạn. Không cần thẻ, không cần chọn gói cước."
     }
   }
 }

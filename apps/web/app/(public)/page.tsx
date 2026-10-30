@@ -59,6 +59,7 @@ export default async function HomePage() {
               <p className="eyebrow text-paper/60">{t("home.pricing.eyebrow")}</p>
               <h2 className="display mt-3 text-4xl sm:text-5xl">{t("home.pricing.title")}</h2>
               <p className="mt-5 max-w-md text-paper/75">{t("home.pricing.body")}</p>
+              <Link href="/pricing" className="press mt-6 inline-flex items-center gap-1 text-sm font-semibold text-paper underline-offset-4 hover:underline">{t("home.pricing.more")} <ArrowRight className="size-4 rtl:-scale-x-100" /></Link>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {PLANS.map((p) => (

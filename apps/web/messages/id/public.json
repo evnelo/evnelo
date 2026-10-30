@@ -110,7 +110,8 @@
           "price": "$0",
           "note": "Sumber terbuka. Satu kontainer, MySQL Anda, kunci Stripe Anda sendiri. Tidak ada biaya platform, selamanya."
         }
-      }
+      },
+      "more": "Harga lengkap dan kalkulator"
     },
     "flow": {
       "eyebrow": "Bagaimana alurnya",
@@ -386,6 +387,363 @@
       "terms": "Apa yang disepakati oleh penyelenggara dan peserta, biaya, pembayaran, dan tanggung jawab.",
       "privacy": "Apa yang kami kumpulkan, mengapa, siapa yang melihatnya, dan hak-hak Anda.",
       "refunds": "Siapa yang memutuskan pengembalian dana, bagaimana cara pembayarannya, dan apa yang terjadi dengan biaya-biaya tersebut."
+    }
+  },
+  "calculator": {
+    "price": "Harga tiket",
+    "quantity": "Tiket terjual",
+    "currency": "Mata uang",
+    "presets": "Harga umum",
+    "perTicket": "{amount} per tiket",
+    "onTickets": "{count, plural, one {pada tiket #} other {pada # tiket}}",
+    "plusMonthly": "ditagih setiap tahun",
+    "keepMore": "Dengan Evnelo Anda menyimpan <em>{amount}</em> lebih banyak daripada dengan {platform}.",
+    "chartLabel": "Biaya platform pada {count, plural, one {tiket #} other {# tiket}}, oleh platform",
+    "platforms": {
+      "evnelo": "Evnelo",
+      "eventbrite": "Eventbrite",
+      "lumaFree": "Luma Gratis",
+      "lumaPlus": "Luma Plus",
+      "sympla": "Sympla"
+    },
+    "whoPays": "Siapa yang membayar 0,99%?",
+    "absorb": "Anda melakukannya",
+    "passOn": "Pembeli melakukan",
+    "buyerPays": "Pembeli membayar per tiket.",
+    "evneloFee": "Biaya Evnelo",
+    "youReceive": "Anda menerima",
+    "beforeStripe": "Sebelum biaya pemrosesan Stripe, yang dibebankan Stripe ke akun Anda dengan tarif yang diberikannya kepada Anda.",
+    "plusPerMonth": "+ {amount} per bulan"
+  },
+  "features": {
+    "title": "Setiap fitur di setiap acara",
+    "body": "Tidak ada tingkatan. Pertemuan komunitas gratis mendapatkan fasilitas yang sama dengan konferensi yang tiketnya sudah terjual habis.",
+    "items": {
+      "tiers": {
+        "title": "Kategori tiket dan kode diskon",
+        "text": "Harga khusus early bird, VIP, dan anggota, beserta kode dengan batasan dan tanggal berakhir."
+      },
+      "questions": {
+        "title": "Pertanyaan Anda sendiri",
+        "text": "Ajukan pertanyaan apa pun saat pendaftaran, termasuk pertanyaan yang hanya muncul untuk beberapa jawaban."
+      },
+      "guests": {
+        "title": "Tamu yang memiliki tiket sendiri",
+        "text": "Perbolehkan orang-orang membawa seseorang. Setiap tamu mendapatkan tiket dan dihitung di pintu masuk."
+      },
+      "waitlist": {
+        "title": "Daftar Tunggu",
+        "text": "Saat tiket terjual habis, orang berikutnya dalam antrean akan mendapatkan penawaran segera setelah ada kursi yang kosong."
+      },
+      "private": {
+        "title": "Acara pribadi",
+        "text": "Acara khusus undangan dengan tautan yang Anda kendalikan, atau halaman yang tidak terdaftar yang hanya dapat ditemukan oleh orang-orang yang memiliki tautan tersebut."
+      },
+      "checkin": {
+        "title": "Kode QR untuk check-in yang berfungsi offline.",
+        "text": "Pindai tiket di browser ponsel apa pun. Fitur ini tetap berfungsi meskipun tanpa sinyal."
+      },
+      "messages": {
+        "title": "Pengingat melalui email dan SMS",
+        "text": "Konfirmasi, tiket, dan pengingat akan dikirimkan secara otomatis dalam bahasa peserta."
+      },
+      "api": {
+        "title": "API dan webhook",
+        "text": "API REST dengan spesifikasi OpenAPI, SDK TypeScript, dan webhook yang ditandatangani."
+      }
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Harga: 0,99% untuk tiket berbayar, $0 untuk acara gratis",
+      "description": "Evnelo mengenakan biaya 0,99% untuk tiket berbayar dan tidak mengenakan biaya untuk acara gratis. Tidak ada paket bulanan dan tidak ada biaya tetap per tiket. Hitung berapa yang Anda dapatkan dengan kalkulator."
+    },
+    "eyebrow": "Harga",
+    "title": "0,99% untuk tiket berbayar. Gratis untuk tiket gratis.",
+    "body": "Satu harga untuk setiap fitur. Tidak ada paket bulanan, tidak ada biaya tetap per tiket, tidak ada biaya pengaturan. Uang tiket masuk ke akun Stripe Anda sendiri, dan Stripe mengenakan biaya pemrosesannya di sana dengan tarif biasa.",
+    "start": "Mulai menjadi tuan rumah",
+    "compare": "Bandingkan dengan Eventbrite",
+    "plans": {
+      "free": {
+        "attendees": "Jumlah peserta tidak terbatas",
+        "questions": "Pertanyaan dan persetujuan pendaftaran",
+        "messages": "Tiket QR, konfirmasi, dan pengingat melalui email.",
+        "sms": "Pesan teks dengan biaya sekali bayar $5 per acara, jika Anda menginginkannya."
+      },
+      "paid": {
+        "everything": "Semua acara gratis tersedia",
+        "methods": "Kartu Apple Pay, Google Pay dan Pix sampai Stripe",
+        "sms": "Pesan teks disertakan",
+        "passOn": "Bebankan biaya tersebut kepada pembeli atau tanggung sendiri."
+      },
+      "selfHosted": {
+        "license": "Produk yang sama, di bawah Apache 2.0",
+        "stack": "Satu kontainer Docker dan satu basis data MySQL",
+        "keys": "Tombol Stripe, Resend dan Vonage Anda sendiri",
+        "noFee": "Tidak ada biaya platform dan tidak ada akun Evnelo"
+      }
+    },
+    "planCta": {
+      "free": "Buat acara gratis",
+      "paid": "Mulai berjualan",
+      "selfHosted": "Dapatkan kodenya"
+    },
+    "calculator": {
+      "eyebrow": "Kalkulator",
+      "title": "Apa yang kamu simpan",
+      "body": "Masukkan harga tiket dan jumlah tiket yang Anda perkirakan akan terjual."
+    },
+    "money": {
+      "eyebrow": "Pembayaran",
+      "title": "Ke mana uang itu pergi?",
+      "steps": {
+        "pay": {
+          "title": "Pembeli melakukan pembayaran di halaman acara Anda.",
+          "text": "Dengan kartu, Apple Pay, Google Pay atau Pix. Biaya akan dibebankan ke akun Stripe Anda sendiri."
+        },
+        "stripe": {
+          "title": "Stripe mengambil biaya pemrosesannya",
+          "text": "Dengan kurs yang tertera di akun Stripe Anda. Evnelo tidak pernah melihatnya dan tidak pernah menaikkan kursnya."
+        },
+        "evnelo": {
+          "title": "Evnelo mengambil 0,99%",
+          "text": "Sebagai bagian dari biaya yang sama, hanya untuk tiket berbayar."
+        },
+        "payout": {
+          "title": "Stripe membayar Anda",
+          "text": "Pada jadwal pembayaran Stripe Anda. Evnelo tidak pernah menahan uang Anda."
+        }
+      }
+    },
+    "comparisons": {
+      "eyebrow": "Perbandingan",
+      "title": "Bagaimana perbandingannya",
+      "eventbrite": {
+        "title": "Evnelo vs Eventbrite",
+        "text": "3,7% ditambah $1,79 per tiket, dibandingkan dengan 0,99%."
+      },
+      "luma": {
+        "title": "Evnelo vs Luma",
+        "text": "5% per tiket atau paket bulanan $59, dibandingkan dengan 0,99%."
+      },
+      "brazil": {
+        "title": "Menjual di Brasil",
+        "text": "Pix saat pembayaran dan biaya 0,99%, dalam bahasa Portugis."
+      }
+    },
+    "faq": {
+      "title": "Pertanyaan",
+      "items": {
+        "monthly": {
+          "q": "Apakah ada biaya bulanan?",
+          "a": "Tidak. Layanan yang dihosting tidak memiliki biaya berlangganan. Anda membayar 0,99% saat menjual tiket berbayar dan tidak ada biaya lain."
+        },
+        "stripe": {
+          "q": "Siapa yang membayar biaya pemrosesan Stripe?",
+          "a": "Anda melakukannya atas Stripe Anda sendiri, dengan tarif yang diberikan oleh Stripe. Evnelo tidak menambahkan apa pun."
+        },
+        "passOn": {
+          "q": "Bisakah pembeli membayar 0,99% tersebut sebagai pengganti saya?",
+          "a": "Ya. Aktifkan biaya layanan untuk suatu acara dan saat pembayaran akan menampilkannya sebagai baris tersendiri. Pembeli membayarnya dan Anda menerima harga tiket penuh."
+        },
+        "free": {
+          "q": "Apakah acara gratis benar-benar gratis?",
+          "a": "Ya, untuk ukuran apa pun. Konfirmasi dan pengingat melalui email sudah termasuk. Pesan teks untuk acara gratis dikenakan biaya sekali bayar sebesar $5 untuk acara tersebut; untuk acara berbayar, pesan teks sudah termasuk."
+        },
+        "refunds": {
+          "q": "Apa yang terjadi dengan biaya tersebut jika dilakukan pengembalian dana?",
+          "a": "0,99% tidak dikembalikan saat Anda mengembalikan dana pesanan, dan Stripe juga tetap menyimpan biaya pemrosesannya. Jika pembeli membayar biaya layanan, biaya tersebut akan dikembalikan kepada mereka bersama dengan pesanan."
+        },
+        "currencies": {
+          "q": "Mata uang apa saja yang bisa saya gunakan untuk berjualan?",
+          "a": "Mata uang apa pun yang diterima akun Stripe Anda. Biayanya adalah 0,99% dari harga tiket dalam mata uang tersebut."
+        },
+        "selfHost": {
+          "q": "Berapa biaya self-hosting?",
+          "a": "Tidak ada yang perlu Evnelo. Anda membayar sendiri untuk server, basis data, dan penyedia email serta SMS. Kode tersebut ada di GitHub di bawah lisensi Apache 2.0."
+        }
+      }
+    },
+    "cta": {
+      "title": "Publikasikan acara pertama Anda",
+      "body": "Daftar dengan email Anda. Tanpa kartu, tidak ada paket yang bisa dipilih.",
+      "button": "Mulai menjadi tuan rumah"
+    }
+  },
+  "compare": {
+    "eventbrite": {
+      "meta": {
+        "title": "Eventbrite alternatif dengan biaya 0,99%",
+        "description": "Eventbrite mengenakan biaya 3,7% ditambah $1,79 per tiket berbayar di AS. Evnelo mengenakan biaya 0,99% dan tidak ada biaya tetap. Bandingkan biaya tersebut untuk acara Anda sendiri."
+      },
+      "eyebrow": "Evnelo vs Eventbrite",
+      "title": "Alternatif Eventbrite yang mengenakan biaya 0,99%",
+      "body": "Di AS, biaya layanan Eventbrite adalah 3,7% ditambah $1,79 untuk setiap tiket berbayar. Evnelo mengenakan biaya 0,99% dan tidak ada jumlah tetap, sehingga selisihnya paling besar pada tiket yang lebih murah.",
+      "rows": {
+        "fee": "3.7%",
+        "fixed": "$1.79",
+        "free": "Tidak ada biaya",
+        "processing": "2,9% per pesanan",
+        "subscription": "Tidak ada",
+        "openSource": "TIDAK"
+      }
+    },
+    "luma": {
+      "meta": {
+        "title": "Alternatif Luma dengan biaya 0,99% dan tanpa berlangganan",
+        "description": "Luma mengambil 5% dari tiket berbayar, atau 0% dengan Luma Plus seharga $59 per bulan. Evnelo mengambil 0,99% tanpa biaya berlangganan. Bandingkan biaya tersebut untuk acara Anda sendiri."
+      },
+      "eyebrow": "Evnelo vs Luma",
+      "title": "Alternatif Luma yang mengenakan biaya 0,99% tanpa berlangganan",
+      "body": "Luma mengambil 5% dari tiket berbayar pada paket gratisnya, atau 0% jika Anda membayar $59 per bulan untuk Luma Plus. Evnelo mengambil 0,99% dan tidak memiliki langganan, jadi Anda hanya membayar saat menjual.",
+      "rows": {
+        "fee": "Diskon 5% untuk paket gratis, 0% untuk Luma Plus",
+        "fixed": "Tidak ada",
+        "free": "Tidak ada biaya",
+        "processing": "Stripe, 2.9% + 30¢",
+        "subscription": "Luma Plus: $59 per bulan, ditagih setiap tahun",
+        "openSource": "TIDAK"
+      }
+    },
+    "evneloRows": {
+      "fee": "0.99%",
+      "fixed": "Tidak ada",
+      "free": "Tidak ada biaya",
+      "processing": "Stripe, dengan tarif akun Anda",
+      "subscription": "Tidak ada",
+      "openSource": "Ya, Apache 2.0"
+    },
+    "rowLabels": {
+      "fee": "Biaya platform pada tiket berbayar",
+      "fixed": "Harga tetap per tiket",
+      "free": "Acara gratis",
+      "processing": "Pemrosesan kartu",
+      "subscription": "Langganan",
+      "openSource": "Sumber terbuka"
+    },
+    "start": "Mulai menjadi tuan rumah",
+    "seePricing": "Lihat harga",
+    "calculator": {
+      "body": "Hanya biaya platform. Biaya pemrosesan kartu dikenakan di atas biaya lainnya di setiap platform."
+    },
+    "table": {
+      "title": "Berdampingan",
+      "feature": "Apa yang Anda bayar"
+    },
+    "switching": {
+      "title": "Memindahkan acara Anda berikutnya ke tanggal yang lebih baru",
+      "steps": {
+        "signup": "Daftar dengan alamat email Anda dan sebutkan nama organisasi Anda.",
+        "stripe": "Hubungkan akun Stripe Anda di Pengaturan, di bawah Pembayaran.",
+        "event": "Buat acara: tanggal, tempat, jenis tiket, dan pertanyaan.",
+        "share": "Publikasikan dan bagikan tautan baru tersebut."
+      },
+      "note": "Belum ada importir, jadi pendaftaran yang sudah Anda terima tetap di tempatnya. Mulailah dengan acara Anda berikutnya."
+    },
+    "source": "{competitor} biaya dari<link>{url}</link>, diperiksa pada {date}. Tarif AS; negara lain berbeda. {competitor} adalah merek dagang dari pemiliknya, dan Evnelo tidak berafiliasi dengannya.",
+    "cta": {
+      "title": "Selenggarakan acara Anda berikutnya di Evnelo",
+      "body": "Daftar dengan email Anda. Tanpa kartu, tidak ada paket yang bisa dipilih."
+    }
+  },
+  "brazil": {
+    "meta": {
+      "title": "Jual tiket di Brasil dengan Pix dan biaya 0,99%.",
+      "description": "Evnelo mengambil 0,99% dari tiket berbayar dan tidak mengambil apa pun dari acara gratis. Pix, kartu, Apple Pay dan Google Pay melalui akun Stripe Anda sendiri. Bandingkan dengan Sympla."
+    },
+    "eyebrow": "Evnelo di Brasil",
+    "title": "Jual tiket dengan Pix dan bayar 0,99%.",
+    "body": "Evnelo mengambil 0,99% dari setiap tiket berbayar dan tidak mengambil apa pun untuk acara gratis. Pembeli membayar dengan Pix, kartu, Apple Pay atau Google Pay, dan uangnya langsung masuk ke akun Stripe Anda.",
+    "start": "Mulai secara gratis",
+    "seePricing": "Lihat cara kerjanya",
+    "calculator": {
+      "body": "Biaya layanan Sympla adalah 10% per tiket, minimal R$3,99. Hanya biaya platform; biaya pemrosesan kartu dan Pix ditambahkan di atas keduanya."
+    },
+    "highlights": {
+      "title": "Dibuat untuk dijual dalam mata uang real India.",
+      "items": {
+        "pix": {
+          "title": "Pix saat pembayaran",
+          "text": "Pembeli membayar dengan kode QR Pix, kartu, Apple Pay atau Google Pay, semuanya melalui Stripe."
+        },
+        "payouts": {
+          "title": "Uang di rekening Anda sendiri",
+          "text": "Penjualan dibebankan ke akun Stripe Anda dan dibayarkan sesuai jadwal Stripe. Evnelo tidak pernah menahan uang Anda."
+        },
+        "free": {
+          "title": "Acara gratis tidak dikenakan biaya apa pun.",
+          "text": "Tidak ada biaya untuk pendaftaran gratis, berapa pun jumlah orang yang mendaftar."
+        },
+        "tiers": {
+          "title": "Kategori tiket, kupon, dan daftar tunggu",
+          "text": "Tingkatan tiket, kode diskon, daftar tunggu jika tiket habis terjual, dan pertanyaan pendaftaran khusus untuk Anda."
+        },
+        "checkin": {
+          "title": "Lakukan check-in melalui ponsel apa pun.",
+          "text": "Pindai tiket QR di browser. Fitur ini tetap berfungsi meskipun tanpa sinyal dan akan memperbarui data saat terhubung kembali."
+        },
+        "open": {
+          "title": "Sumber terbuka",
+          "text": "Kode Apache 2.0. Gunakan evnelo.com atau jalankan di server Anda sendiri tanpa biaya platform."
+        }
+      }
+    },
+    "table": {
+      "title": "Evnelo dan Sympla berdampingan",
+      "feature": "Apa yang Anda bayar"
+    },
+    "rows": {
+      "labels": {
+        "fee": "Biaya tambahan untuk tiket berbayar",
+        "minimum": "Minimum per tiket",
+        "free": "Acara gratis",
+        "processing": "Pemrosesan kartu dan Pix",
+        "openSource": "Sumber terbuka"
+      },
+      "evnelo": {
+        "fee": "0.99%",
+        "minimum": "Tidak ada",
+        "free": "Tidak ada biaya",
+        "processing": "Stripe, dengan tarif akun Anda",
+        "openSource": "Ya, Apache 2.0"
+      },
+      "sympla": {
+        "fee": "10%",
+        "minimum": "R$3,99 untuk tiket hingga R$39,90",
+        "free": "Tidak ada biaya",
+        "processing": "2% hingga 2,5% per tiket",
+        "openSource": "TIDAK"
+      }
+    },
+    "payments": {
+      "title": "Cara kerja pembayaran",
+      "body": "Anda menghubungkan akun Stripe Anda sendiri. Stripe menangani pembayaran Pix dan kartu serta membayarkan kepada Anda, dengan membebankan biaya pemrosesan ke akun Anda dengan tarif yang telah ditentukan. Evnelo mengambil 0,99% dari tiket yang dibayar sebagai bagian dari biaya yang sama."
+    },
+    "faq": {
+      "title": "Pertanyaan",
+      "items": {
+        "passOn": {
+          "q": "Apakah pembeli mampu membayar biaya tersebut?",
+          "a": "Ya. Aktifkan biaya layanan untuk suatu acara dan saat pembayaran akan menampilkannya sebagai baris tersendiri, sehingga Anda menerima harga tiket penuh."
+        },
+        "pix": {
+          "q": "Kapan Pix muncul saat pembayaran?",
+          "a": "Saat Pix diaktifkan di akun Stripe Anda dan harga tiket dalam reais."
+        },
+        "language": {
+          "q": "Apakah semuanya dalam bahasa Portugis?",
+          "a": "Halaman acara, proses pembayaran, email, dan tiket akan ditampilkan dalam bahasa Portugis bagi siapa pun yang mengatur browser mereka ke bahasa tersebut."
+        },
+        "free": {
+          "q": "Apakah acara gratis benar-benar gratis?",
+          "a": "Ya, untuk ukuran apa pun. Konfirmasi dan pengingat melalui email sudah termasuk."
+        }
+      }
+    },
+    "source": "Sympla biaya dari<link>{url}</link>, diperiksa pada {date}. Sympla adalah merek dagang dari pemiliknya, dan Evnelo tidak berafiliasi dengannya.",
+    "cta": {
+      "title": "Buat acara pertama Anda",
+      "body": "Daftar dengan email Anda. Tanpa kartu, tidak ada paket yang bisa dipilih."
     }
   }
 }

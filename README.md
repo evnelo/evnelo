@@ -14,6 +14,7 @@ Brought to you by [InEvent](https://inevent.com). Conventions for contributors a
 - Tickets with a QR code at `/t/{token}`, a calendar file whose entry links back to the ticket, Apple Wallet and Google Wallet passes, and the join link for online events once confirmed. After checkout, an order page at `/orders/{token}` with every ticket in the party and a printable receipt (items, discount, tax, service fee, card used); the same receipt goes out with the ticket email.
 - Waitlist when an event sells out, with timed offers when a seat frees up. Private events by invitation link.
 - Discovery at `/discover`: search, city, tag, date, price and format filters, a calendar view, near-me, and a sitemap for public events only.
+- Landing pages for ads and search: `/pricing` with a fee calculator, `/compare/eventbrite` and `/compare/luma` (fees on the visitor's own ticket price, with the competitor's pricing page cited and dated), and `/brasil`, in Portuguese, comparing with Sympla.
 - Search-ready pages: schema.org `Event` data on public event pages (status, address, offers with real availability), Organization/WebSite data on the Cloud home page, canonicals, absolute share-card URLs and a per-request `robots.txt`.
 - Transactional email (React Email) and SMS: confirmation, approval, refund, reminders at 24h and 1h, event changes and cancellations, with STOP handling and an unsubscribe link.
 

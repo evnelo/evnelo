@@ -3,8 +3,8 @@ import { CONSENT_DENIED_REGIONS, googleTagAllowed, sanitizedLocation, sanitizedR
 
 describe("google tag rules", () => {
   it("tracks marketing pages and nothing that belongs to hosts, attendees or tokens", () => {
-    for (const path of ["/", "/discover", "/login", "/legal", "/legal/privacy"]) expect(googleTagAllowed(path)).toBe(true);
-    for (const path of ["/acme/launch", "/o/acme", "/t/tok", "/orders/tok", "/i/tok", "/w/tok", "/invite/tok", "/unsubscribe/tok", "/onboarding", "/dashboard", "/legalese"]) {
+    for (const path of ["/", "/discover", "/login", "/legal", "/legal/privacy", "/pricing", "/brasil", "/compare/eventbrite"]) expect(googleTagAllowed(path)).toBe(true);
+    for (const path of ["/acme/launch", "/o/acme", "/t/tok", "/orders/tok", "/i/tok", "/w/tok", "/invite/tok", "/unsubscribe/tok", "/onboarding", "/dashboard", "/legalese", "/pricing/x", "/compare"]) {
       expect(googleTagAllowed(path)).toBe(false);
     }
   });

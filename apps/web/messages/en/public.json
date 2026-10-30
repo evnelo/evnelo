@@ -110,7 +110,8 @@
           "price": "$0",
           "note": "Open source. One container, your MySQL, your own Stripe keys. No platform fee, ever."
         }
-      }
+      },
+      "more": "Full pricing and calculator"
     },
     "flow": {
       "eyebrow": "How it flows",
@@ -386,6 +387,363 @@
       "terms": "What hosts and attendees agree to, fees, payments and liability.",
       "privacy": "What we collect, why, who sees it and your rights.",
       "refunds": "Who decides refunds, how they are paid and what happens to fees."
+    }
+  },
+  "calculator": {
+    "price": "Ticket price",
+    "quantity": "Tickets sold",
+    "currency": "Currency",
+    "presets": "Common prices",
+    "perTicket": "{amount} per ticket",
+    "onTickets": "{count, plural, one {on # ticket} other {on # tickets}}",
+    "plusMonthly": "billed annually",
+    "keepMore": "With Evnelo you keep <em>{amount}</em> more than with {platform}.",
+    "chartLabel": "Platform fee on {count, plural, one {# ticket} other {# tickets}}, by platform",
+    "platforms": {
+      "evnelo": "Evnelo",
+      "eventbrite": "Eventbrite",
+      "lumaFree": "Luma Free",
+      "lumaPlus": "Luma Plus",
+      "sympla": "Sympla"
+    },
+    "whoPays": "Who pays the 0.99%",
+    "absorb": "You do",
+    "passOn": "The buyer does",
+    "buyerPays": "Buyer pays per ticket",
+    "evneloFee": "Evnelo’s fee",
+    "youReceive": "You receive",
+    "beforeStripe": "Before Stripe’s processing fee, which Stripe charges on your account at the rate it gives you.",
+    "plusPerMonth": "+ {amount} a month"
+  },
+  "features": {
+    "title": "Every feature on every event",
+    "body": "There are no tiers. A free community meetup gets the same tools as a sold-out conference.",
+    "items": {
+      "tiers": {
+        "title": "Ticket tiers and discount codes",
+        "text": "Early bird, VIP, member prices, codes with limits and end dates."
+      },
+      "questions": {
+        "title": "Your own questions",
+        "text": "Ask anything at registration, including questions that only appear for some answers."
+      },
+      "guests": {
+        "title": "Guests with their own tickets",
+        "text": "Let people bring someone. Each guest gets a ticket and counts at the door."
+      },
+      "waitlist": {
+        "title": "Waitlist",
+        "text": "When you sell out, the next person in line gets an offer as soon as a seat frees up."
+      },
+      "private": {
+        "title": "Private events",
+        "text": "Invite-only events with links you control, or unlisted pages only people with the link can find."
+      },
+      "checkin": {
+        "title": "QR check-in that works offline",
+        "text": "Scan tickets in any phone browser. It keeps working without signal."
+      },
+      "messages": {
+        "title": "Email and text reminders",
+        "text": "Confirmations, tickets and reminders go out on their own, in the attendee’s language."
+      },
+      "api": {
+        "title": "API and webhooks",
+        "text": "A REST API with an OpenAPI spec, a TypeScript SDK and signed webhooks."
+      }
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Pricing: 0.99% on paid tickets, $0 on free events",
+      "description": "Evnelo charges 0.99% on paid tickets and nothing on free events. No monthly plan and no fixed fee per ticket. Work out what you keep with the calculator."
+    },
+    "eyebrow": "Pricing",
+    "title": "0.99% on paid tickets. Nothing on free ones.",
+    "body": "One price for every feature. No monthly plan, no fixed fee per ticket, no setup fee. Ticket money goes to your own Stripe account, and Stripe charges its processing fee there at its usual rate.",
+    "start": "Start hosting",
+    "compare": "Compare with Eventbrite",
+    "plans": {
+      "free": {
+        "attendees": "Unlimited attendees",
+        "questions": "Registration questions and approvals",
+        "messages": "QR tickets, confirmations and reminders by email",
+        "sms": "Text messages for a one-time $5 per event, if you want them"
+      },
+      "paid": {
+        "everything": "Everything free events get",
+        "methods": "Cards, Apple Pay, Google Pay and Pix through Stripe",
+        "sms": "Text messages included",
+        "passOn": "Pass the fee to buyers or absorb it"
+      },
+      "selfHosted": {
+        "license": "The same product, under Apache 2.0",
+        "stack": "One Docker container and a MySQL database",
+        "keys": "Your own Stripe, Resend and Vonage keys",
+        "noFee": "No platform fee and no Evnelo account"
+      }
+    },
+    "planCta": {
+      "free": "Create a free event",
+      "paid": "Start selling",
+      "selfHosted": "Get the code"
+    },
+    "calculator": {
+      "eyebrow": "Calculator",
+      "title": "What you keep",
+      "body": "Type a ticket price and how many you expect to sell."
+    },
+    "money": {
+      "eyebrow": "Payments",
+      "title": "Where the money goes",
+      "steps": {
+        "pay": {
+          "title": "The buyer pays on your event page",
+          "text": "By card, Apple Pay, Google Pay or Pix. The charge runs on your own Stripe account."
+        },
+        "stripe": {
+          "title": "Stripe takes its processing fee",
+          "text": "At the rate in your Stripe account. Evnelo never sees it and never marks it up."
+        },
+        "evnelo": {
+          "title": "Evnelo takes 0.99%",
+          "text": "As part of the same charge, on paid tickets only."
+        },
+        "payout": {
+          "title": "Stripe pays you out",
+          "text": "On your Stripe payout schedule. Evnelo never holds your money."
+        }
+      }
+    },
+    "comparisons": {
+      "eyebrow": "Comparisons",
+      "title": "How it compares",
+      "eventbrite": {
+        "title": "Evnelo vs Eventbrite",
+        "text": "3.7% plus $1.79 per ticket, against 0.99%."
+      },
+      "luma": {
+        "title": "Evnelo vs Luma",
+        "text": "5% per ticket or a $59 monthly plan, against 0.99%."
+      },
+      "brazil": {
+        "title": "Selling in Brazil",
+        "text": "Pix at checkout and a 0.99% fee, in Portuguese."
+      }
+    },
+    "faq": {
+      "title": "Questions",
+      "items": {
+        "monthly": {
+          "q": "Is there a monthly fee?",
+          "a": "No. The hosted service has no subscription. You pay 0.99% when you sell a paid ticket and nothing otherwise."
+        },
+        "stripe": {
+          "q": "Who pays Stripe’s processing fee?",
+          "a": "You do, on your own Stripe account, at the rate Stripe gives you. Evnelo adds nothing to it."
+        },
+        "passOn": {
+          "q": "Can buyers pay the 0.99% instead of me?",
+          "a": "Yes. Turn on the service fee for an event and checkout shows it as its own line. The buyer pays it and you receive the full ticket price."
+        },
+        "free": {
+          "q": "Are free events really free?",
+          "a": "Yes, at any size. Email confirmations and reminders are included. Text messages on a free event cost a one-time $5 for that event; on paid events they are included."
+        },
+        "refunds": {
+          "q": "What happens to the fee on a refund?",
+          "a": "The 0.99% is not returned when you refund an order, and Stripe keeps its processing fee too. If the buyer paid the service fee, it goes back to them with the order."
+        },
+        "currencies": {
+          "q": "Which currencies can I sell in?",
+          "a": "Any currency your Stripe account accepts. The fee is 0.99% of the ticket price in that currency."
+        },
+        "selfHost": {
+          "q": "What does self-hosting cost?",
+          "a": "Nothing to Evnelo. You pay for your own server, database and email and SMS providers. The code is on GitHub under the Apache 2.0 license."
+        }
+      }
+    },
+    "cta": {
+      "title": "Publish your first event",
+      "body": "Sign up with your email. No card, no plan to pick.",
+      "button": "Start hosting"
+    }
+  },
+  "compare": {
+    "eventbrite": {
+      "meta": {
+        "title": "Eventbrite alternative with a 0.99% fee",
+        "description": "Eventbrite charges 3.7% plus $1.79 per paid ticket in the US. Evnelo charges 0.99% and no fixed fee. Compare the fees on your own event."
+      },
+      "eyebrow": "Evnelo vs Eventbrite",
+      "title": "An Eventbrite alternative that charges 0.99%",
+      "body": "In the US, Eventbrite’s service fee is 3.7% plus $1.79 on every paid ticket. Evnelo charges 0.99% and no fixed amount, so the gap is widest on cheaper tickets.",
+      "rows": {
+        "fee": "3.7%",
+        "fixed": "$1.79",
+        "free": "No fee",
+        "processing": "2.9% per order",
+        "subscription": "None",
+        "openSource": "No"
+      }
+    },
+    "luma": {
+      "meta": {
+        "title": "Luma alternative with a 0.99% fee and no subscription",
+        "description": "Luma takes 5% of paid tickets, or 0% with Luma Plus at $59 a month. Evnelo takes 0.99% with no subscription. Compare the fees on your own event."
+      },
+      "eyebrow": "Evnelo vs Luma",
+      "title": "A Luma alternative that charges 0.99% with no subscription",
+      "body": "Luma takes 5% of paid tickets on its free plan, or 0% if you pay $59 a month for Luma Plus. Evnelo takes 0.99% and has no subscription, so you pay only when you sell.",
+      "rows": {
+        "fee": "5% on the free plan, 0% on Luma Plus",
+        "fixed": "None",
+        "free": "No fee",
+        "processing": "Stripe, 2.9% + 30¢",
+        "subscription": "Luma Plus: $59 a month, billed annually",
+        "openSource": "No"
+      }
+    },
+    "evneloRows": {
+      "fee": "0.99%",
+      "fixed": "None",
+      "free": "No fee",
+      "processing": "Stripe, at your account’s rate",
+      "subscription": "None",
+      "openSource": "Yes, Apache 2.0"
+    },
+    "rowLabels": {
+      "fee": "Platform fee on paid tickets",
+      "fixed": "Fixed fee per ticket",
+      "free": "Free events",
+      "processing": "Card processing",
+      "subscription": "Subscription",
+      "openSource": "Open source"
+    },
+    "start": "Start hosting",
+    "seePricing": "See pricing",
+    "calculator": {
+      "body": "Platform fees only. Card processing comes on top on every platform."
+    },
+    "table": {
+      "title": "Side by side",
+      "feature": "What you pay"
+    },
+    "switching": {
+      "title": "Moving your next event over",
+      "steps": {
+        "signup": "Sign up with your email and name your organization.",
+        "stripe": "Connect your Stripe account in Settings, under Payments.",
+        "event": "Create the event: date, venue, ticket types and questions.",
+        "share": "Publish it and share the new link."
+      },
+      "note": "There is no importer yet, so registrations you already took stay where they are. Start with your next event."
+    },
+    "source": "{competitor} fees from <link>{url}</link>, checked on {date}. US rates; other countries differ. {competitor} is a trademark of its owner, and Evnelo is not affiliated with it.",
+    "cta": {
+      "title": "Run your next event on Evnelo",
+      "body": "Sign up with your email. No card, no plan to pick."
+    }
+  },
+  "brazil": {
+    "meta": {
+      "title": "Sell tickets in Brazil with Pix and a 0.99% fee",
+      "description": "Evnelo takes 0.99% of paid tickets and nothing on free events. Pix, cards, Apple Pay and Google Pay through your own Stripe account. Compare with Sympla."
+    },
+    "eyebrow": "Evnelo in Brazil",
+    "title": "Sell tickets with Pix and pay 0.99%.",
+    "body": "Evnelo takes 0.99% of each paid ticket and nothing on free events. Buyers pay with Pix, card, Apple Pay or Google Pay, and the money goes straight to your Stripe account.",
+    "start": "Start for free",
+    "seePricing": "See how it works",
+    "calculator": {
+      "body": "Sympla’s service fee is 10% per ticket, at least R$3.99. Platform fees only; card and Pix processing come on top on both."
+    },
+    "highlights": {
+      "title": "Made for selling in reais",
+      "items": {
+        "pix": {
+          "title": "Pix at checkout",
+          "text": "Buyers pay with a Pix QR code, a card, Apple Pay or Google Pay, all through Stripe."
+        },
+        "payouts": {
+          "title": "Money in your own account",
+          "text": "Sales are charged on your Stripe account and paid out on Stripe’s schedule. Evnelo never holds your money."
+        },
+        "free": {
+          "title": "Free events cost nothing",
+          "text": "No fee on free registrations, however many people sign up."
+        },
+        "tiers": {
+          "title": "Ticket tiers, coupons and a waitlist",
+          "text": "Ticket tiers, discount codes, a waitlist when you sell out and your own registration questions."
+        },
+        "checkin": {
+          "title": "Check-in on any phone",
+          "text": "Scan QR tickets in the browser. It keeps working without signal and catches up when it reconnects."
+        },
+        "open": {
+          "title": "Open source",
+          "text": "Apache 2.0 code. Use evnelo.com or run it on your own server with no platform fee."
+        }
+      }
+    },
+    "table": {
+      "title": "Evnelo and Sympla side by side",
+      "feature": "What you pay"
+    },
+    "rows": {
+      "labels": {
+        "fee": "Fee on paid tickets",
+        "minimum": "Minimum per ticket",
+        "free": "Free events",
+        "processing": "Card and Pix processing",
+        "openSource": "Open source"
+      },
+      "evnelo": {
+        "fee": "0.99%",
+        "minimum": "None",
+        "free": "No fee",
+        "processing": "Stripe, at your account’s rate",
+        "openSource": "Yes, Apache 2.0"
+      },
+      "sympla": {
+        "fee": "10%",
+        "minimum": "R$3.99 for tickets up to R$39.90",
+        "free": "No fee",
+        "processing": "2% to 2.5% per ticket",
+        "openSource": "No"
+      }
+    },
+    "payments": {
+      "title": "How payments work",
+      "body": "You connect your own Stripe account. Stripe handles the Pix and card payments and pays you out, charging its processing fee on your account at the rate it gives you. Evnelo takes 0.99% of paid tickets as part of the same charge."
+    },
+    "faq": {
+      "title": "Questions",
+      "items": {
+        "passOn": {
+          "q": "Can the buyer pay the fee?",
+          "a": "Yes. Turn on the service fee for an event and checkout shows it as its own line, so you receive the full ticket price."
+        },
+        "pix": {
+          "q": "When does Pix show up at checkout?",
+          "a": "When Pix is turned on in your Stripe account and the tickets are priced in reais."
+        },
+        "language": {
+          "q": "Is everything in Portuguese?",
+          "a": "Event pages, checkout, emails and tickets appear in Portuguese for anyone whose browser is set to it."
+        },
+        "free": {
+          "q": "Are free events really free?",
+          "a": "Yes, at any size. Email confirmations and reminders are included."
+        }
+      }
+    },
+    "source": "Sympla fees from <link>{url}</link>, checked on {date}. Sympla is a trademark of its owner, and Evnelo is not affiliated with it.",
+    "cta": {
+      "title": "Create your first event",
+      "body": "Sign up with your email. No card, no plan to pick."
     }
   }
 }

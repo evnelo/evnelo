@@ -1,16 +1,18 @@
 /**
  * What the Google tag (GA4 + Google Ads) may see. Browser-safe and pure, so the rules are unit tested.
  *
- * The tag runs on marketing pages only. Event pages belong to hosts and their attendees, and ticket,
- * order, invite, waitlist and unsubscribe URLs carry bearer tokens, so none of them is ever reported.
+ * The tag runs on marketing pages only (home, Discover, sign-in, legal, pricing, the comparisons and
+ * /brasil). Event pages belong to hosts and their attendees, and ticket, order, invite, waitlist and
+ * unsubscribe URLs carry bearer tokens, so none of them is ever reported.
  * Query strings are reduced to campaign parameters and Discover facets: the login page carries the
  * visitor's email in `?email=` after a failed attempt, and Google's terms forbid sending PII.
  */
 
-const TRACKED_PATHS = ["/", "/discover", "/login", "/legal"];
+const TRACKED_PATHS = ["/", "/discover", "/login", "/legal", "/pricing", "/brasil"];
+const TRACKED_PREFIXES = ["/legal/", "/compare/"];
 
 export function googleTagAllowed(pathname: string): boolean {
-  return TRACKED_PATHS.includes(pathname) || pathname.startsWith("/legal/");
+  return TRACKED_PATHS.includes(pathname) || TRACKED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
 
 const KEPT_PARAMS = new Set([

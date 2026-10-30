@@ -20,7 +20,7 @@ export default async function PublicLayout({ children }: { children: React.React
           <Link href="/" className="press col-start-1 row-start-1 w-fit shrink-0 rounded-md md:me-auto"><Brand /></Link>
           <div className="col-start-1 row-start-2 flex items-center gap-1 text-sm sm:gap-2">
             <Link href="/discover" className="press rounded-full px-3 py-2 hover:bg-muted/80">{t("nav.discover")}</Link>
-            <Link href="/#pricing" className="press hidden rounded-full px-3 py-2 hover:bg-muted/80 sm:inline-flex">{t("nav.pricing")}</Link>
+            <Link href="/pricing" className="press hidden rounded-full px-3 py-2 hover:bg-muted/80 sm:inline-flex">{t("nav.pricing")}</Link>
           </div>
           <div className="col-start-2 row-start-1 flex items-center justify-self-end gap-1">
             <LocaleSwitcher />
@@ -50,6 +50,7 @@ export default async function PublicLayout({ children }: { children: React.React
           </div>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             <Link href="/discover" className="hover:text-foreground">{t("nav.discover")}</Link>
+            <Link href="/pricing" className="hover:text-foreground">{t("nav.pricing")}</Link>
             <Link href="/login" className="hover:text-foreground">{t("nav.host")}</Link>
             <a href="/api/v1/docs" className="hover:text-foreground">{t("nav.api")}</a>
             <Link href="/legal/terms" className="hover:text-foreground">{t("nav.terms")}</Link>

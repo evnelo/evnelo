@@ -110,7 +110,8 @@
           "price": "0 dolar",
           "note": "Açık kaynak kodlu. Tek bir konteyner, MySQL veritabanınız, kendi Stripe anahtarlarınız. Hiçbir zaman platform ücreti yok."
         }
-      }
+      },
+      "more": "Tam fiyatlandırma ve hesap makinesi"
     },
     "flow": {
       "eyebrow": "Akış şekli",
@@ -386,6 +387,363 @@
       "terms": "Ev sahipleri ve katılımcıların üzerinde anlaştığı hususlar, ücretler, ödemeler ve sorumluluklar.",
       "privacy": "Neleri topluyoruz, neden, kimler görüyor ve haklarınız neler?",
       "refunds": "Geri ödemelere kim karar veriyor, nasıl ödeniyor ve ücretlere ne oluyor?"
+    }
+  },
+  "calculator": {
+    "price": "Bilet fiyatı",
+    "quantity": "Biletler satıldı",
+    "currency": "Para birimi",
+    "presets": "Ortak fiyatlar",
+    "perTicket": "bilet başına {amount}",
+    "onTickets": "{count, plural, one {# bilette} other {# bilette}}",
+    "plusMonthly": "yıllık olarak faturalandırılır",
+    "keepMore": "Evnelo ile {platform} ye göre <em>{amount}</em> daha fazla tasarruf edersiniz.",
+    "chartLabel": "Platform ücreti {count, plural, one {# bilet} other {# bilet}}platforma göre",
+    "platforms": {
+      "evnelo": "Evnelo",
+      "eventbrite": "Eventbrite",
+      "lumaFree": "Luma Ücretsiz",
+      "lumaPlus": "Luma Plus",
+      "sympla": "Sympla"
+    },
+    "whoPays": "%0,99'luk vergiyi kim ödüyor?",
+    "absorb": "Siz yapıyorsunuz",
+    "passOn": "Alıcı yapar",
+    "buyerPays": "Alıcı bilet başına ödeme yapar.",
+    "evneloFee": "Evnelo 'ın ücreti",
+    "youReceive": "Aldınız",
+    "beforeStripe": "Stripe 'ın işlem ücretinden önce, Stripe bu ücreti size verdiği oranda hesabınızdan tahsil eder.",
+    "plusPerMonth": "+ {amount} ayda"
+  },
+  "features": {
+    "title": "Her etkinlikteki her özellik",
+    "body": "Herhangi bir kademe ayrımı yok. Ücretsiz bir topluluk buluşması, biletleri tükenmiş bir konferansla aynı imkanlara sahip.",
+    "items": {
+      "tiers": {
+        "title": "Bilet kategorileri ve indirim kodları",
+        "text": "Erken kayıt indirimi, VIP indirimi, üye indirimleri, limitli ve son kullanma tarihli kodlar."
+      },
+      "questions": {
+        "title": "Kendi sorularınız",
+        "text": "Kayıt sırasında, yalnızca belirli durumlarda cevaplanacak sorular da dahil olmak üzere, her türlü soruyu sorabilirsiniz."
+      },
+      "guests": {
+        "title": "Kendi biletleri olan misafirler",
+        "text": "Herkesin yanında birini getirmesine izin verilsin. Her misafir bir bilet alır ve girişte sayılır."
+      },
+      "waitlist": {
+        "title": "Bekleme listesi",
+        "text": "Yerler dolduğunda, sırada bekleyen bir sonraki kişiye, yer boşaldığı anda teklif sunulur."
+      },
+      "private": {
+        "title": "Özel etkinlikler",
+        "text": "Sadece davetle girilebilen, bağlantılarını sizin kontrol edebileceğiniz etkinlikler veya yalnızca bağlantıya sahip kişilerin bulabileceği gizli sayfalar."
+      },
+      "checkin": {
+        "title": "Çevrimdışı çalışan QR kodlu giriş işlemi",
+        "text": "Biletleri herhangi bir telefon tarayıcısından tarayın. Sinyal olmasa bile çalışmaya devam eder."
+      },
+      "messages": {
+        "title": "E-posta ve kısa mesaj hatırlatıcıları",
+        "text": "Onaylar, biletler ve hatırlatmalar katılımcının dilinde otomatik olarak gönderilir."
+      },
+      "api": {
+        "title": "API and webhooks",
+        "text": "A REST API with an OpenAPI spec, a TypeScript SDK and signed webhooks."
+      }
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Fiyatlandırma: Ücretli biletlerde %0,99, ücretsiz etkinliklerde 0$",
+      "description": "Evnelo ücretli biletlerde %0,99 komisyon alıyor, ücretsiz etkinliklerde ise komisyon almıyor. Aylık plan yok, bilet başına sabit ücret yok. Hesap makinesiyle ne kadar paranızın kalacağını hesaplayın."
+    },
+    "eyebrow": "Fiyatlandırma",
+    "title": "Ücretli biletlerde %0,99 indirim. Ücretsiz biletlerde indirim yok.",
+    "body": "Her özellik için tek fiyat. Aylık plan yok, bilet başına sabit ücret yok, kurulum ücreti yok. Bilet parası kendi Stripe hesabınıza gider ve Stripe işlem ücretini her zamanki oranında buradan tahsil eder.",
+    "start": "Hosting'e başlayın",
+    "compare": "Eventbrite ile karşılaştırın",
+    "plans": {
+      "free": {
+        "attendees": "Sınırsız katılımcı",
+        "questions": "Kayıt soruları ve onayları",
+        "messages": "QR kodlu biletler, onaylar ve e-posta ile hatırlatmalar.",
+        "sms": "İsterseniz etkinlik başına bir defaya mahsus 5$ karşılığında SMS gönderebilirsiniz."
+      },
+      "paid": {
+        "everything": "Ücretsiz etkinliklerin tümü...",
+        "methods": "Kartlar, Apple Pay, Google Pay ve Pix ile Stripe arası",
+        "sms": "Metin mesajları dahil",
+        "passOn": "Komisyonu alıcılara yansıtın veya kendiniz karşılayın."
+      },
+      "selfHosted": {
+        "license": "Aynı ürün, Apache 2.0 altında",
+        "stack": "Bir Docker konteyner ve bir MySQL veritabanı",
+        "keys": "Kendi Stripe, Resend ve Vonage tuşlarınız",
+        "noFee": "Platform ücreti yok ve Evnelo hesap gerekmiyor."
+      }
+    },
+    "planCta": {
+      "free": "Ücretsiz bir etkinlik oluşturun",
+      "paid": "Satışa başlayın",
+      "selfHosted": "Kodu al"
+    },
+    "calculator": {
+      "eyebrow": "Hesap Makinesi",
+      "title": "Sakladığınız şeyler",
+      "body": "Bilet fiyatını ve kaç adet satmayı beklediğinizi belirtin."
+    },
+    "money": {
+      "eyebrow": "Ödemeler",
+      "title": "Paranın nereye gittiği",
+      "steps": {
+        "pay": {
+          "title": "Alıcı ödemeyi etkinlik sayfanız üzerinden yapar.",
+          "text": "Kartla, Apple Pay, Google Pay veya Pix. Ücret kendi Stripe hesabınızdan çekilir."
+        },
+        "stripe": {
+          "title": "Stripe işlem ücretini alır",
+          "text": "Stripe kur üzerinden. Evnelo bunu asla görmez ve asla fiyat artışı yapmaz."
+        },
+        "evnelo": {
+          "title": "Evnelo %0,99 oranında pay alıyor",
+          "text": "Aynı ücretlendirme kapsamında, yalnızca ücretli biletler için geçerlidir."
+        },
+        "payout": {
+          "title": "Stripe size ödeme yapar",
+          "text": "Ödeme planınızda Stripe yer almaktadır. Evnelo asla paranızı tutmaz."
+        }
+      }
+    },
+    "comparisons": {
+      "eyebrow": "Karşılaştırmalar",
+      "title": "Karşılaştırma",
+      "eventbrite": {
+        "title": "Evnelo karşı Eventbrite",
+        "text": "Bilet başına %3,7 artı 1,79 dolar, %0,99'a karşı."
+      },
+      "luma": {
+        "title": "Evnelo ile Luma",
+        "text": "Bilet başına %5 veya aylık 59 dolarlık plan, %0,99'a karşılık."
+      },
+      "brazil": {
+        "title": "Brezilya'da satış yapmak",
+        "text": "Ödeme sırasında Pix ve %0,99 komisyon ücreti, Portekizce olarak belirtilmiştir."
+      }
+    },
+    "faq": {
+      "title": "Sorular",
+      "items": {
+        "monthly": {
+          "q": "Aylık ücret var mı?",
+          "a": "Hayır. Sunulan hizmetin abonelik ücreti yok. Ücretli bilet sattığınızda %0,99 ödüyorsunuz, bunun dışında hiçbir ücret ödemiyorsunuz."
+        },
+        "stripe": {
+          "q": "Stripe 'ın işlem ücretini kim ödüyor?",
+          "a": "Bunu kendi Stripe hesabınızda, Stripe size verdiği oranda yaparsınız. Evnelo buna hiçbir şey katmaz."
+        },
+        "passOn": {
+          "q": "Alıcılar %0,99'luk komisyonu benim yerime ödeyebilir mi?",
+          "a": "Evet. Bir etkinlik için hizmet bedelini etkinleştirin ve ödeme sırasında ayrı bir satır olarak görünmesini sağlayın. Alıcı bu bedeli öder ve siz de biletin tam fiyatını alırsınız."
+        },
+        "free": {
+          "q": "Ücretsiz etkinlikler gerçekten ücretsiz mi?",
+          "a": "Evet, her boyutta. E-posta onayları ve hatırlatıcılar dahildir. Ücretsiz etkinliklerde SMS mesajı göndermek için o etkinlik için bir defaya mahsus 5$ ücret alınır; ücretli etkinliklerde ise SMS mesajı ücretsizdir."
+        },
+        "refunds": {
+          "q": "Geri ödeme yapıldığında işlem ücretine ne olur?",
+          "a": "Sipariş iade edildiğinde %0,99'luk komisyon iade edilmez ve Stripe işlem ücretini de alır. Alıcı hizmet bedelini ödediyse, bu tutar siparişle birlikte kendisine geri döner."
+        },
+        "currencies": {
+          "q": "Hangi para birimleriyle satış yapabilirim?",
+          "a": "Stripe kabul ettiği herhangi bir para birimi. Ücret, bilet fiyatının o para birimindeki %0,99'udur."
+        },
+        "selfHost": {
+          "q": "Kendi sunucunuzda barındırmanın maliyeti nedir?",
+          "a": "Evnelo a gerek yok. Kendi sunucunuz, veritabanınız, e-posta ve SMS sağlayıcılarınız için ödeme yaparsınız. Kod, GitHub adresinde Apache 2.0 lisansı altında bulunmaktadır."
+        }
+      }
+    },
+    "cta": {
+      "title": "İlk etkinliğinizi yayınlayın",
+      "body": "E-posta adresinizle kayıt olun. Kart yoksa, seçme planı da yok.",
+      "button": "Hosting'e başlayın"
+    }
+  },
+  "compare": {
+    "eventbrite": {
+      "meta": {
+        "title": "%0,99 komisyonlu Eventbrite alternatifi",
+        "description": "Eventbrite ABD'de ödenen her bilet için %3,7 artı 1,79$ ücret almaktadır. Evnelo %0,99 ücret almaktadır ve sabit bir ücreti yoktur. Kendi etkinliğinizdeki ücretleri karşılaştırın."
+      },
+      "eyebrow": "Evnelo karşı Eventbrite",
+      "title": "%0,99 oranında ücret alan bir Eventbrite alternatifi",
+      "body": "ABD'de, Eventbrite 'ın hizmet bedeli, ödenen her bilet için %3,7 artı 1,79 dolardır. Evnelo ise %0,99 oranında ücret alıyor ve sabit bir tutar belirlemiyor, bu nedenle fark en çok daha ucuz biletlerde görülüyor.",
+      "rows": {
+        "fee": "3.7%",
+        "fixed": "$1.79",
+        "free": "Ücret yok",
+        "processing": "Sipariş başına %2,9",
+        "subscription": "Hiçbiri",
+        "openSource": "HAYIR"
+      }
+    },
+    "luma": {
+      "meta": {
+        "title": "%0,99 komisyon ve abonelik gerektirmeyen Luma alternatifi",
+        "description": "Luma, ödenen biletlerin %5'ini alır veya Luma Plus ile ayda 59$ karşılığında %0 alır. Evnelo abonelik gerektirmeden %0,99 alır. Kendi etkinliğinizdeki ücretleri karşılaştırın."
+      },
+      "eyebrow": "Evnelo karşı Luma",
+      "title": "Abonelik gerektirmeyen ve %0,99 komisyon alan bir Luma alternatifi",
+      "body": "Luma ücretsiz planında ücretli biletlerin %5'ini, Luma Plus için aylık 59$ öderseniz ise %0'ını alır. Evnelo %0,99'unu alır ve abonelik gerektirmez, bu nedenle yalnızca satış yaptığınızda ödeme yaparsınız.",
+      "rows": {
+        "fee": "Ücretsiz planda %5, Luma Plus planında %0",
+        "fixed": "Hiçbiri",
+        "free": "Ücret yok",
+        "processing": "Stripe, 2.9% + 30¢",
+        "subscription": "Luma Plus: Aylık 59 dolar, yıllık faturalandırılır",
+        "openSource": "HAYIR"
+      }
+    },
+    "evneloRows": {
+      "fee": "0.99%",
+      "fixed": "Hiçbiri",
+      "free": "Ücret yok",
+      "processing": "Stripe, hesabınızın faiz oranında",
+      "subscription": "Hiçbiri",
+      "openSource": "Evet, Apache 2.0"
+    },
+    "rowLabels": {
+      "fee": "Ücretli biletlerde platform ücreti",
+      "fixed": "Bilet başına sabit ücret",
+      "free": "Ücretsiz etkinlikler",
+      "processing": "Kart işlemleri",
+      "subscription": "Abonelik",
+      "openSource": "Açık kaynak"
+    },
+    "start": "Hosting'e başlayın",
+    "seePricing": "Fiyatları görün",
+    "calculator": {
+      "body": "Sadece platform ücretleri. Her platformda kart işlem ücreti ayrıca eklenir."
+    },
+    "table": {
+      "title": "Yan yana",
+      "feature": "Ne kadar ödersiniz?"
+    },
+    "switching": {
+      "title": "Bir sonraki etkinliğinizi şu tarihe taşıyoruz",
+      "steps": {
+        "signup": "E-posta adresinizi ve kuruluşunuzun adını girerek kayıt olun.",
+        "stripe": "Ayarlar bölümündeki Ödemeler kısmından Stripe hesabınızı bağlayın.",
+        "event": "Etkinliği oluşturun: tarih, mekan, bilet türleri ve sorular.",
+        "share": "Yayınlayın ve yeni bağlantıyı paylaşın."
+      },
+      "note": "Henüz bir ithalatçı yok, bu nedenle daha önce yaptığınız kayıtlar oldukları yerde kalacak. Bir sonraki etkinliğinizle başlayın."
+    },
+    "source": "{competitor} ücretten<link>{url}</link> {date} tarihinde kontrol edildi. ABD fiyatları; diğer ülkeler farklılık gösterir. {competitor}, sahibinin ticari markasıdır ve Evnelo ile hiçbir bağlantısı yoktur.",
+    "cta": {
+      "title": "Bir sonraki etkinliğinizi Evnelo tarihinde gerçekleştirin.",
+      "body": "E-posta adresinizle kayıt olun. Kart yoksa, seçme planı da yok."
+    }
+  },
+  "brazil": {
+    "meta": {
+      "title": "Brezilya'da Pix ve %0,99 komisyonla bilet satışı yapın.",
+      "description": "Evnelo ücretli biletlerin %0,99'unu alır ve ücretsiz etkinliklerden hiçbir ücret almaz. Pix, kartlar, Apple Pay ve Google Pay kendi Stripe hesabınız üzerinden. Sympla ile karşılaştırın."
+    },
+    "eyebrow": "Brezilya'da Evnelo",
+    "title": "Pix ile bilet satarsanız %0,99 komisyon ödersiniz.",
+    "body": "Evnelo ücretli her biletin %0,99'unu alır ve ücretsiz etkinliklerden hiçbir ücret almaz. Alıcılar Pix, kart, Apple Pay veya Google Pay ile ödeme yaparlar ve para doğrudan Stripe hesabınıza gider.",
+    "start": "Ücretsiz başlayın",
+    "seePricing": "Nasıl çalıştığını görün.",
+    "calculator": {
+      "body": "Sympla 'ın hizmet bedeli bilet başına %10'dur, en az 3,99 R$. Sadece platform ücretleri; kart ve Pix işlem ücretleri ayrıca eklenir."
+    },
+    "highlights": {
+      "title": "Brezilya reali cinsinden satış için üretilmiştir.",
+      "items": {
+        "pix": {
+          "title": "Pix ödeme sırasında",
+          "text": "Alıcılar Pix QR kodu, kart, Apple Pay veya Google Pay ile Stripe üzerinden ödeme yaparlar."
+        },
+        "payouts": {
+          "title": "Kendi hesabınızdaki para",
+          "text": "Satışlar Stripe hesabınıza kaydedilir ve Stripe 'in programına göre ödenir. Evnelo asla paranızı tutmaz."
+        },
+        "free": {
+          "title": "Ücretsiz etkinlikler hiçbir ücret gerektirmez.",
+          "text": "Ücretsiz kayıtlar için herhangi bir ücret alınmaz, kaç kişi kayıt olursa olsun fark etmez."
+        },
+        "tiers": {
+          "title": "Bilet kategorileri, kuponlar ve bekleme listesi",
+          "text": "Bilet kademeleri, indirim kodları, biletler tükendiğinde bekleme listesi ve kendi kayıt sorularınız."
+        },
+        "checkin": {
+          "title": "Herhangi bir telefondan giriş yapın.",
+          "text": "QR kodlu biletleri tarayıcıda tarayın. Sinyal olmasa bile çalışmaya devam eder ve bağlantı yeniden kurulduğunda kaldığı yerden devam eder."
+        },
+        "open": {
+          "title": "Açık kaynak",
+          "text": "Apache 2.0 kodu. evnelo.com'u kullanın veya platform ücreti ödemeden kendi sunucunuzda çalıştırın."
+        }
+      }
+    },
+    "table": {
+      "title": "Evnelo ve Sympla yan yana",
+      "feature": "Ne kadar ödersiniz?"
+    },
+    "rows": {
+      "labels": {
+        "fee": "Ücretli biletlerdeki komisyon",
+        "minimum": "Bilet başına minimum tutar",
+        "free": "Ücretsiz etkinlikler",
+        "processing": "Kart ve Pix işleme",
+        "openSource": "Açık kaynak"
+      },
+      "evnelo": {
+        "fee": "0.99%",
+        "minimum": "Hiçbiri",
+        "free": "Ücret yok",
+        "processing": "Stripe, hesabınızın faiz oranından",
+        "openSource": "Evet, Apache 2.0"
+      },
+      "sympla": {
+        "fee": "10%",
+        "minimum": "39,90 R$'a kadar olan biletler için 3,99 R$.",
+        "free": "Ücret yok",
+        "processing": "Bilet başına %2 ila %2,5",
+        "openSource": "HAYIR"
+      }
+    },
+    "payments": {
+      "title": "Ödemeler nasıl işler?",
+      "body": "Kendi Stripe hesabınızı bağlıyorsunuz. Stripe, Pix ve kart ödemelerini yönetir ve size ödeme yapar; işlem ücretini size verdiği oranda hesabınızdan tahsil eder. Evnelo aynı ücretin bir parçası olarak ödenen biletlerin %0,99'unu alır."
+    },
+    "faq": {
+      "title": "Sorular",
+      "items": {
+        "passOn": {
+          "q": "Alıcı ücreti ödeyebilir mi?",
+          "a": "Evet. Bir etkinlik için hizmet bedelini etkinleştirdiğinizde, ödeme sırasında ayrı bir satır olarak görünür, böylece biletin tam fiyatını ödersiniz."
+        },
+        "pix": {
+          "q": "Pix ödeme ekranında ne zaman görünecek?",
+          "a": "Stripe hesabınızda Pix etkinleştirildiğinde ve bilet fiyatları real cinsinden belirlendiğinde."
+        },
+        "language": {
+          "q": "Her şey Portekizce mi?",
+          "a": "Etkinlik sayfaları, ödeme işlemleri, e-postalar ve biletler, tarayıcı ayarları Portekizce olan herkes için Portekizce olarak görüntülenir."
+        },
+        "free": {
+          "q": "Ücretsiz etkinlikler gerçekten ücretsiz mi?",
+          "a": "Evet, her boyutta. E-posta onayları ve hatırlatmalar dahildir."
+        }
+      }
+    },
+    "source": "Sympla ücretten<link>{url}</link> {date} üzerinde kontrol edildi. Sympla, sahibinin ticari markasıdır ve Evnelo ile hiçbir bağlantısı yoktur.",
+    "cta": {
+      "title": "İlk etkinliğinizi oluşturun",
+      "body": "E-posta adresinizle kayıt olun. Kart yoksa, seçme planı da yok."
     }
   }
 }

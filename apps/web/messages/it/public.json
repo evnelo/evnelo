@@ -110,7 +110,8 @@
           "price": "$0",
           "note": "Open source. Un unico container, il tuo MySQL, le tue chiavi Stripe. Nessun costo di piattaforma, mai."
         }
-      }
+      },
+      "more": "Prezzi completi e calcolatore"
     },
     "flow": {
       "eyebrow": "Come scorre",
@@ -386,6 +387,363 @@
       "terms": "A cosa si accordano gli organizzatori e i partecipanti, tariffe, pagamenti e responsabilità.",
       "privacy": "Quali dati raccogliamo, perché, chi li visualizza e i tuoi diritti.",
       "refunds": "Chi decide sui rimborsi, come vengono erogati e che fine fanno le commissioni."
+    }
+  },
+  "calculator": {
+    "price": "Prezzo del biglietto",
+    "quantity": "Biglietti venduti",
+    "currency": "Valuta",
+    "presets": "Prezzi comuni",
+    "perTicket": "{amount} per biglietto",
+    "onTickets": "{count, plural, one {sul biglietto #} other {su # biglietti}}",
+    "plusMonthly": "fatturata annualmente",
+    "keepMore": "Con Evnelo conservi <em>{amount}</em> più che con {platform}.",
+    "chartLabel": "Commissione della piattaforma su {count, plural, one {biglietto #} other {# biglietti}}, per piattaforma",
+    "platforms": {
+      "evnelo": "Evnelo",
+      "eventbrite": "Eventbrite",
+      "lumaFree": "Luma Gratuito",
+      "lumaPlus": "Luma Plus",
+      "sympla": "Sympla"
+    },
+    "whoPays": "Chi paga lo 0,99%?",
+    "absorb": "Fate",
+    "passOn": "L'acquirente fa",
+    "buyerPays": "L'acquirente paga per biglietto",
+    "evneloFee": "Evnelo tariffa",
+    "youReceive": "Tu ricevi",
+    "beforeStripe": "Prima della commissione di elaborazione di Stripe, che Stripe addebita sul tuo conto alla tariffa che ti viene indicata.",
+    "plusPerMonth": "+ {amount} al mese"
+  },
+  "features": {
+    "title": "Ogni caratteristica di ogni evento",
+    "body": "Non ci sono livelli di appartenenza. Un incontro gratuito della comunità offre gli stessi strumenti di una conferenza a posti esauriti.",
+    "items": {
+      "tiers": {
+        "title": "Categorie di biglietti e codici sconto",
+        "text": "Prezzi Early Bird, VIP, per soci, codici sconto con limiti e date di scadenza."
+      },
+      "questions": {
+        "title": "Le tue domande",
+        "text": "Al momento dell'iscrizione, non esitate a chiedere qualsiasi cosa, incluse le domande per le quali sono disponibili solo alcune risposte."
+      },
+      "guests": {
+        "title": "Ospiti muniti di biglietto proprio",
+        "text": "Ognuno può portare un accompagnatore. Ogni ospite riceve un biglietto e viene contato all'ingresso."
+      },
+      "waitlist": {
+        "title": "Lista d'attesa",
+        "text": "Quando i posti si esauriscono, la persona successiva in lista riceve un'offerta non appena si libera un posto."
+      },
+      "private": {
+        "title": "Eventi privati",
+        "text": "Eventi su invito con link controllati da te, oppure pagine non in elenco accessibili solo a chi possiede il link."
+      },
+      "checkin": {
+        "title": "Check-in tramite codice QR che funziona offline",
+        "text": "Scansiona i biglietti con qualsiasi browser del telefono. Funziona anche senza segnale."
+      },
+      "messages": {
+        "title": "Promemoria via email e SMS",
+        "text": "Le conferme, i biglietti e i promemoria vengono inviati automaticamente, nella lingua del partecipante."
+      },
+      "api": {
+        "title": "API e webhook",
+        "text": "Un'API REST con una specifica OpenAPI, un SDK TypeScript e webhook firmati."
+      }
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Prezzi: 0,99% sui biglietti a pagamento, 0 $ sugli eventi gratuiti",
+      "description": "Evnelo applica una commissione dello 0,99% sui biglietti a pagamento e nulla sugli eventi gratuiti. Nessun abbonamento mensile e nessuna tariffa fissa per biglietto. Calcola quanto ti rimane con il calcolatore."
+    },
+    "eyebrow": "Prezzi",
+    "title": "0,99% sui biglietti a pagamento. Nessuna commissione sui biglietti gratuiti.",
+    "body": "Un unico prezzo per ogni funzionalità. Nessun abbonamento mensile, nessun costo fisso per biglietto, nessuna spesa di attivazione. Il denaro dei biglietti viene accreditato sul tuo conto Stripe e Stripe addebita la sua commissione di elaborazione al tasso usuale.",
+    "start": "Inizia a ospitare",
+    "compare": "Confronta con Eventbrite",
+    "plans": {
+      "free": {
+        "attendees": "Partecipanti illimitati",
+        "questions": "Domande e approvazioni relative alla registrazione",
+        "messages": "Biglietti con codice QR, conferme e promemoria via e-mail",
+        "sms": "Messaggi di testo al costo di 5 dollari una tantum per evento, se li desideri"
+      },
+      "paid": {
+        "everything": "Tutto ciò che è gratuito gli eventi ottengono",
+        "methods": "Carte, Apple Pay, Google Pay e Pix fino a Stripe",
+        "sms": "Messaggi di testo inclusi",
+        "passOn": "Trasferire la commissione agli acquirenti o assorbirla"
+      },
+      "selfHosted": {
+        "license": "Lo stesso prodotto, sotto Apache 2.0",
+        "stack": "Un contenitore Docker e un database MySQL",
+        "keys": "Le tue chiavi Stripe, Resend e Vonage",
+        "noFee": "Nessuna commissione di piattaforma e nessun account Evnelo"
+      }
+    },
+    "planCta": {
+      "free": "Crea un evento gratuito",
+      "paid": "Inizia a vendere",
+      "selfHosted": "Ottieni il codice"
+    },
+    "calculator": {
+      "eyebrow": "Calcolatrice",
+      "title": "Ciò che conservi",
+      "body": "Inserisci il prezzo del biglietto e il numero di biglietti che prevedi di vendere."
+    },
+    "money": {
+      "eyebrow": "Pagamenti",
+      "title": "Dove vanno i soldi",
+      "steps": {
+        "pay": {
+          "title": "L'acquirente effettua il pagamento sulla pagina del tuo evento.",
+          "text": "Tramite carta, Apple Pay, Google Pay o Pix. L'addebito viene effettuato sul tuo conto Stripe."
+        },
+        "stripe": {
+          "title": "Stripe preleva la sua commissione di elaborazione",
+          "text": "Al tasso del tuo conto Stripe. Evnelo non lo vede mai e non lo aumenta mai."
+        },
+        "evnelo": {
+          "title": "Evnelo prende lo 0,99%",
+          "text": "Come parte dello stesso addebito, solo sui biglietti a pagamento."
+        },
+        "payout": {
+          "title": "Stripe ti paga",
+          "text": "Secondo il tuo piano di pagamento Stripe. Evnelo non trattiene mai i tuoi soldi."
+        }
+      }
+    },
+    "comparisons": {
+      "eyebrow": "Confronti",
+      "title": "Come si confronta",
+      "eventbrite": {
+        "title": "Evnelo contro Eventbrite",
+        "text": "3,7% più 1,79 dollari a biglietto, contro lo 0,99%."
+      },
+      "luma": {
+        "title": "Evnelo contro Luma",
+        "text": "5% per biglietto o un piano mensile da 59 dollari, contro lo 0,99%."
+      },
+      "brazil": {
+        "title": "Vendita in Brasile",
+        "text": "Pix al momento del pagamento e una commissione dello 0,99%, in portoghese."
+      }
+    },
+    "faq": {
+      "title": "Domande",
+      "items": {
+        "monthly": {
+          "q": "È previsto un canone mensile?",
+          "a": "No. Il servizio ospitato non prevede abbonamento. Paghi lo 0,99% quando vendi un biglietto a pagamento e nient'altro."
+        },
+        "stripe": {
+          "q": "Chi paga la commissione di elaborazione di Stripe?",
+          "a": "Lo fai, per conto Stripe, al tasso che ti dà Stripe. Evnelo non aggiunge nulla."
+        },
+        "passOn": {
+          "q": "Possono gli acquirenti pagare lo 0,99% al posto mio?",
+          "a": "Sì. Attiva la commissione di servizio per un evento e al momento del pagamento verrà visualizzata come riga separata. L'acquirente la paga e tu ricevi l'intero prezzo del biglietto."
+        },
+        "free": {
+          "q": "Gli eventi gratuiti sono davvero gratuiti?",
+          "a": "Sì, per qualsiasi dimensione. Le conferme e i promemoria via e-mail sono inclusi. Gli SMS per gli eventi gratuiti hanno un costo una tantum di 5 dollari per quell'evento; per gli eventi a pagamento sono inclusi."
+        },
+        "refunds": {
+          "q": "Che fine fa la commissione in caso di rimborso?",
+          "a": "Lo 0,99% non viene restituito quando si rimborsa un ordine e Stripe trattiene anche la sua commissione di elaborazione. Se l'acquirente ha pagato la commissione di servizio, questa gli viene restituita insieme all'ordine."
+        },
+        "currencies": {
+          "q": "In quali valute posso vendere?",
+          "a": "Qualsiasi valuta accettata dal tuo conto Stripe. La commissione è pari allo 0,99% del prezzo del biglietto in quella valuta."
+        },
+        "selfHost": {
+          "q": "Quanto costa l'hosting in proprio?",
+          "a": "Niente da Evnelo. Paghi tu il tuo server, il database e i fornitori di email e SMS. Il codice è su GitHub sotto licenza Apache 2.0."
+        }
+      }
+    },
+    "cta": {
+      "title": "Pubblica il tuo primo evento",
+      "body": "Registrati con la tua email. Senza carta di credito, non potrai scegliere il tuo piano tariffario.",
+      "button": "Inizia a ospitare"
+    }
+  },
+  "compare": {
+    "eventbrite": {
+      "meta": {
+        "title": "Eventbrite alternativa con una commissione dello 0,99%",
+        "description": "Eventbrite applica una commissione del 3,7% più 1,79 $ per biglietto pagato negli Stati Uniti. Evnelo applica una commissione dello 0,99% e nessuna commissione fissa. Confronta le commissioni per il tuo evento."
+      },
+      "eyebrow": "Evnelo contro Eventbrite",
+      "title": "Un'alternativa Eventbrite che applica una commissione dello 0,99%",
+      "body": "Negli Stati Uniti, la commissione di servizio di Eventbrite è del 3,7% più 1,79 dollari per ogni biglietto acquistato. Evnelo addebita lo 0,99% e non ha un importo fisso, quindi la differenza è maggiore per i biglietti più economici.",
+      "rows": {
+        "fee": "3.7%",
+        "fixed": "$1.79",
+        "free": "Nessun costo",
+        "processing": "2,9% per ordine",
+        "subscription": "Nessuno",
+        "openSource": "NO"
+      }
+    },
+    "luma": {
+      "meta": {
+        "title": "Luma alternativa con una commissione dello 0,99% e senza abbonamento",
+        "description": "Luma trattiene il 5% dei biglietti acquistati, oppure lo 0% con Luma Plus a 59 dollari al mese. Evnelo trattiene lo 0,99% senza abbonamento. Confronta le commissioni per il tuo evento."
+      },
+      "eyebrow": "Evnelo contro Luma",
+      "title": "Un'alternativa Luma che applica una commissione dello 0,99% senza abbonamento",
+      "body": "Luma trattiene il 5% dei biglietti a pagamento sul suo piano gratuito, oppure lo 0% se paghi 59 dollari al mese per Luma Plus. Evnelo trattiene lo 0,99% e non prevede abbonamento, quindi paghi solo quando vendi.",
+      "rows": {
+        "fee": "5% sul piano gratuito, 0% su Luma Plus",
+        "fixed": "Nessuno",
+        "free": "Nessun costo",
+        "processing": "Stripe, 2.9% + 30¢",
+        "subscription": "Luma Plus: 59 dollari al mese, fatturati annualmente",
+        "openSource": "NO"
+      }
+    },
+    "evneloRows": {
+      "fee": "0.99%",
+      "fixed": "Nessuno",
+      "free": "Nessun costo",
+      "processing": "Stripe, alla tariffa del tuo conto",
+      "subscription": "Nessuno",
+      "openSource": "Sì, Apache 2.0"
+    },
+    "rowLabels": {
+      "fee": "Commissione di accesso al sito sui biglietti a pagamento",
+      "fixed": "Tariffa fissa per biglietto",
+      "free": "Eventi gratuiti",
+      "processing": "Elaborazione delle carte",
+      "subscription": "Sottoscrizione",
+      "openSource": "Open source"
+    },
+    "start": "Inizia a ospitare",
+    "seePricing": "Vedi i prezzi",
+    "calculator": {
+      "body": "Solo commissioni di piattaforma. L'elaborazione dei pagamenti con carta si aggiunge a tutte le commissioni di piattaforma."
+    },
+    "table": {
+      "title": "Fianco a fianco",
+      "feature": "Ciò che paghi"
+    },
+    "switching": {
+      "title": "Spostare il tuo prossimo evento",
+      "steps": {
+        "signup": "Registrati con il tuo indirizzo email e indica il nome della tua organizzazione.",
+        "stripe": "Collega il tuo account Stripe nelle Impostazioni, alla voce Pagamenti.",
+        "event": "Crea l'evento: data, luogo, tipologie di biglietto e domande.",
+        "share": "Pubblicalo e condividi il nuovo link."
+      },
+      "note": "Non è ancora disponibile una funzione di importazione, quindi le registrazioni già effettuate rimarranno dove sono. Iniziate con il vostro prossimo evento."
+    },
+    "source": "{competitor} commissioni da<link>{url}</link>, verificato il {date}. Tariffe statunitensi; le tariffe variano in altri paesi. {competitor} è un marchio registrato del suo proprietario e Evnelo non è affiliato ad esso.",
+    "cta": {
+      "title": "Organizza il tuo prossimo evento su Evnelo",
+      "body": "Registrati con la tua email. Senza carta di credito, non potrai scegliere il tuo piano tariffario."
+    }
+  },
+  "brazil": {
+    "meta": {
+      "title": "Vendi biglietti in Brasile con Pix e una commissione dello 0,99%",
+      "description": "Evnelo trattiene lo 0,99% sui biglietti a pagamento e nulla sugli eventi gratuiti. Pix, carte, Apple Pay e Google Pay tramite il tuo conto Stripe. Confronta con Sympla."
+    },
+    "eyebrow": "Evnelo in Brasile",
+    "title": "Vendi i biglietti con Pix e paga lo 0,99%.",
+    "body": "Evnelo trattiene lo 0,99% su ogni biglietto a pagamento e nulla sugli eventi gratuiti. Gli acquirenti pagano con Pix, carta, Apple Pay o Google Pay, e il denaro va direttamente sul tuo conto Stripe.",
+    "start": "Inizia gratuitamente",
+    "seePricing": "Scopri come funziona",
+    "calculator": {
+      "body": "La commissione di servizio di Sympla è del 10% per biglietto, con un minimo di R$3,99. Solo commissioni di piattaforma; le commissioni di elaborazione della carta e Pix si aggiungono a entrambe."
+    },
+    "highlights": {
+      "title": "Prodotto per la vendita in real",
+      "items": {
+        "pix": {
+          "title": "Pix al momento del pagamento",
+          "text": "Gli acquirenti pagano con un codice QR Pix, una carta, Apple Pay o Google Pay, il tutto tramite Stripe."
+        },
+        "payouts": {
+          "title": "Denaro sul tuo conto personale",
+          "text": "Le vendite vengono addebitate sul tuo conto Stripe e pagate secondo il programma di Stripe. Evnelo non trattiene mai i tuoi soldi."
+        },
+        "free": {
+          "title": "Gli eventi gratuiti non costano nulla",
+          "text": "Le iscrizioni gratuite sono gratuite, indipendentemente dal numero di partecipanti."
+        },
+        "tiers": {
+          "title": "Categorie di biglietti, coupon e lista d'attesa",
+          "text": "Diverse tipologie di biglietti, codici sconto, una lista d'attesa in caso di esaurimento dei posti e domande personalizzate per la registrazione."
+        },
+        "checkin": {
+          "title": "Effettua il check-in da qualsiasi telefono",
+          "text": "Scansiona i biglietti QR nel browser. Funziona anche senza segnale e si sincronizza automaticamente non appena viene ripristinata la connessione."
+        },
+        "open": {
+          "title": "Open source",
+          "text": "Codice Apache 2.0. Utilizza evnelo.com o eseguilo sul tuo server senza costi di piattaforma."
+        }
+      }
+    },
+    "table": {
+      "title": "Evnelo e Sympla fianco a fianco",
+      "feature": "Ciò che paghi"
+    },
+    "rows": {
+      "labels": {
+        "fee": "Commissione sui biglietti a pagamento",
+        "minimum": "Minimo per biglietto",
+        "free": "Eventi gratuiti",
+        "processing": "Elaborazione della carta e Pix",
+        "openSource": "Open source"
+      },
+      "evnelo": {
+        "fee": "0.99%",
+        "minimum": "Nessuno",
+        "free": "Nessun costo",
+        "processing": "Stripe, alla tariffa del tuo conto",
+        "openSource": "Sì, Apache 2.0"
+      },
+      "sympla": {
+        "fee": "10%",
+        "minimum": "R$ 3,99 per biglietti fino a R$ 39,90",
+        "free": "Nessun costo",
+        "processing": "Dal 2% al 2,5% per biglietto",
+        "openSource": "NO"
+      }
+    },
+    "payments": {
+      "title": "Come funzionano i pagamenti",
+      "body": "Colleghi il tuo conto Stripe. Stripe gestisce i pagamenti Pix e con carta e ti paga, addebitando la sua commissione di elaborazione sul tuo conto alla tariffa che ti comunica. Evnelo trattiene lo 0,99% dei biglietti pagati come parte della stessa commissione."
+    },
+    "faq": {
+      "title": "Domande",
+      "items": {
+        "passOn": {
+          "q": "L'acquirente può pagare la commissione?",
+          "a": "Sì. Attiva la commissione di servizio per un evento e al momento del pagamento verrà visualizzata come riga separata, quindi riceverai il prezzo intero del biglietto."
+        },
+        "pix": {
+          "q": "Quando viene visualizzato Pix al momento del pagamento?",
+          "a": "Quando Pix è attivato nel tuo account Stripe e i biglietti sono prezzati in reais."
+        },
+        "language": {
+          "q": "È tutto in portoghese?",
+          "a": "Le pagine degli eventi, la procedura di pagamento, le email e i biglietti vengono visualizzati in portoghese per chiunque abbia il browser impostato su questa lingua."
+        },
+        "free": {
+          "q": "Gli eventi gratuiti sono davvero gratuiti?",
+          "a": "Sì, di qualsiasi dimensione. Sono incluse le conferme e i promemoria via e-mail."
+        }
+      }
+    },
+    "source": "Sympla commissioni da<link>{url}</link>, verificato il {date}. Sympla è un marchio registrato del suo proprietario e Evnelo non è affiliato ad esso.",
+    "cta": {
+      "title": "Crea il tuo primo evento",
+      "body": "Registrati con la tua email. Senza carta di credito, non potrai scegliere il tuo piano tariffario."
     }
   }
 }

@@ -30,7 +30,7 @@ export const DO_NOT_TRANSLATE = [
   "Evnelo", "InEvent", "Stripe", "Resend", "Vonage", "MySQL", "Apache", "Docker", "GitHub",
   "Cloudflare", "Turnstile", "reCAPTCHA", "PostHog", "CloudFront", "Zapier", "OpenAPI", "Scalar",
   "TypeScript", "JavaScript", "Drizzle", "Tailwind", "Photon", "Mapbox", "Telnyx", "Luma",
-  "Eventbrite", "PostHog", "Slack", "Webhook", "webhook",
+  "Eventbrite", "PostHog", "Slack", "Sympla", "Luma Plus", "Apple Pay", "Google Pay", "Pix", "Webhook", "webhook",
 ].sort((a, b) => b.length - a.length);
 
 export function flatten(obj: Record<string, unknown>, prefix = ""): Record<string, string> {

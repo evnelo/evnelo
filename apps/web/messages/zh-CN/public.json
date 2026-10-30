@@ -110,7 +110,8 @@
           "price": "0美元",
           "note": "开源。一个容器，你的 MySQL，你自己的 Stripe 密钥。永远没有平台费用。"
         }
-      }
+      },
+      "more": "完整定价和计算器"
     },
     "flow": {
       "eyebrow": "它如何流动",
@@ -386,6 +387,363 @@
       "terms": "主办方和与会者同意的事项、费用、付款和责任。",
       "privacy": "我们收集哪些信息、为什么收集这些信息、谁可以看到这些信息以及您的权利。",
       "refunds": "谁决定退款、如何退款以及手续费如何处理。"
+    }
+  },
+  "calculator": {
+    "price": "票价",
+    "quantity": "已售门票",
+    "currency": "货币",
+    "presets": "普通价格",
+    "perTicket": "每张票{amount}",
+    "onTickets": "{count, plural, one {在#票上} other {在#张票上}}",
+    "plusMonthly": "按年计费",
+    "keepMore": "使用Evnelo ，你保留的<em>{amount}</em>比使用{platform}多。",
+    "chartLabel": "平台费 {count, plural, one {#票} other {#张票}}平台",
+    "platforms": {
+      "evnelo": "Evnelo",
+      "eventbrite": "Eventbrite",
+      "lumaFree": "Luma免费",
+      "lumaPlus": "Luma Plus",
+      "sympla": "Sympla"
+    },
+    "whoPays": "谁来支付这0.99%的费用？",
+    "absorb": "你做",
+    "passOn": "买家确实",
+    "buyerPays": "买家按票付费",
+    "evneloFee": "Evnelo的费用",
+    "youReceive": "您将收到",
+    "beforeStripe": "在Stripe的手续费之前， Stripe会按其提供的费率向您的账户收取手续费。",
+    "plusPerMonth": "每月 + {amount}"
+  },
+  "features": {
+    "title": "每个活动的每个特点",
+    "body": "没有等级之分。免费的社区聚会和售罄的会议享有相同的资源。",
+    "items": {
+      "tiers": {
+        "title": "票价等级和折扣码",
+        "text": "早鸟价、VIP价、会员价，优惠码数量有限，有效期有限。"
+      },
+      "questions": {
+        "title": "您自己的问题",
+        "text": "注册时可以提出任何问题，包括只有部分答案才会显示的问题。"
+      },
+      "guests": {
+        "title": "持票游客",
+        "text": "允许客人携带一位同伴。每位客人都会拿到一张票，并在门口进行人数统计。"
+      },
+      "waitlist": {
+        "title": "候补名单",
+        "text": "当门票售罄时，一旦有空位，下一位排队的人就能立即获得座位。"
+      },
+      "private": {
+        "title": "私人活动",
+        "text": "仅限受邀者参加的活动，您可以控制链接；或者创建只有拥有链接的人才能找到的非公开页面。"
+      },
+      "checkin": {
+        "title": "支持离线二维码办理入住",
+        "text": "在任何手机浏览器中扫描车票。即使没有信号也能正常工作。"
+      },
+      "messages": {
+        "title": "电子邮件和短信提醒",
+        "text": "确认函、门票和提醒函将以与会者的语言自动发送。"
+      },
+      "api": {
+        "title": "API and webhooks",
+        "text": "具有OpenAPI规范、 TypeScript SDK和签名webhook的REST API。"
+      }
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "收费标准：付费门票收取 0.99% 的费用，免费活动收取 0 美元费用",
+      "description": "Evnelo对付费门票收取 0.99% 的手续费，免费活动不收取任何费用。没有月费计划，也没有固定的门票费用。使用计算器计算一下您实际能拿到多少钱。"
+    },
+    "eyebrow": "定价",
+    "title": "付费门票收取0.99%的费用。免费门票不收取任何费用。",
+    "body": "所有功能统一定价。无月费，无单张票固定费用，无设置费。票款将直接存入您的Stripe账户， Stripe将按其通常费率在该账户收取手续费。",
+    "start": "开始托管",
+    "compare": "与Eventbrite比较",
+    "plans": {
+      "free": {
+        "attendees": "参与人数不限",
+        "questions": "注册问题和审批",
+        "messages": "二维码门票、确认函和提醒将通过电子邮件发送",
+        "sms": "短信服务，每次活动一次性收费 5 美元（如果您需要的话）。"
+      },
+      "paid": {
+        "everything": "所有免费活动",
+        "methods": "卡片， Apple Pay 、 Google Pay和Pix至Stripe",
+        "sms": "短信内容包括",
+        "passOn": "将费用转嫁给买家还是自行承担"
+      },
+      "selfHosted": {
+        "license": "同一产品，在Apache 2.0 下",
+        "stack": "一个Docker容器和一个MySQL数据库",
+        "keys": "您自己的Stripe 、 Resend和Vonage键",
+        "noFee": "无平台费，也无Evnelo账户"
+      }
+    },
+    "planCta": {
+      "free": "创建免费活动",
+      "paid": "开始销售",
+      "selfHosted": "获取代码"
+    },
+    "calculator": {
+      "eyebrow": "计算器",
+      "title": "你保留",
+      "body": "输入票价和预计销量。"
+    },
+    "money": {
+      "eyebrow": "付款",
+      "title": "钱都花到哪儿去了",
+      "steps": {
+        "pay": {
+          "title": "买家在您的活动页面上付款。",
+          "text": "通过银行卡支付， Apple Pay 、 Google Pay或Pix 。费用将从您自己的Stripe账户中扣除。"
+        },
+        "stripe": {
+          "title": "Stripe收取手续费",
+          "text": "按您Stripe账户中的汇率计算。__ Evnelo永远不会看到它，也不会加价。"
+        },
+        "evnelo": {
+          "title": "Evnelo占 0.99%",
+          "text": "仅限付费门票，且包含在同一项费用中。"
+        },
+        "payout": {
+          "title": "Stripe支付你",
+          "text": "按照您的Stripe付款计划。__ Evnelo从不扣留您的资金。"
+        }
+      }
+    },
+    "comparisons": {
+      "eyebrow": "比较",
+      "title": "对比情况",
+      "eventbrite": {
+        "title": "Evnelo vs Eventbrite",
+        "text": "每张票 3.7% 加 1.79 美元，而其他票为 0.99%。"
+      },
+      "luma": {
+        "title": "Evnelo vs Luma",
+        "text": "每张票 5% 或每月 59 美元的套餐，而 0.99% 则为 0.99%。"
+      },
+      "brazil": {
+        "title": "在巴西销售",
+        "text": "结账时支付Pix ，另加 0.99% 的手续费（葡萄牙语）。"
+      }
+    },
+    "faq": {
+      "title": "问题",
+      "items": {
+        "monthly": {
+          "q": "是否有月费？",
+          "a": "不，这项托管服务没有订阅费。只有在您售出付费门票时才需要支付 0.99% 的费用，其他情况下无需支付任何费用。"
+        },
+        "stripe": {
+          "q": "谁支付Stripe的手续费？",
+          "a": "您自行Stripe风险，按Stripe给出的利率进行。__ Evnelo不会增加任何费用。"
+        },
+        "passOn": {
+          "q": "买家可以代替我支付这0.99%的费用吗？",
+          "a": "是的。启用活动服务费后，结账时会单独显示这一项。买家支付服务费后，您即可收到全额票款。"
+        },
+        "free": {
+          "q": "免费活动真的免费吗？",
+          "a": "是的，任何规模的活动都包含。电子邮件确认和提醒服务均包含在内。免费活动的短信服务需一次性支付 5 美元；付费活动的短信服务则包含在内。"
+        },
+        "refunds": {
+          "q": "退款时手续费会如何处理？",
+          "a": "退款时，0.99% 的手续费不予退还， Stripe也保留其处理费。如果买家支付了服务费，该费用将随订单一起退还给买家。"
+        },
+        "currencies": {
+          "q": "我可以用哪些货币进行交易？",
+          "a": "您的Stripe账户接受任何货币。手续费为该货币票价的0.99%。"
+        },
+        "selfHost": {
+          "q": "自托管费用是多少？",
+          "a": "您无需支付任何Evnelo 。您需要自行支付服务器、数据库以及电子邮件和短信服务提供商的费用。代码位于[此处应GitHub代码所在地]，并遵循[ Apache 2.0许可协议]。"
+        }
+      }
+    },
+    "cta": {
+      "title": "发布您的第一个活动",
+      "body": "使用邮箱注册。无需银行卡，无需预订。",
+      "button": "开始托管"
+    }
+  },
+  "compare": {
+    "eventbrite": {
+      "meta": {
+        "title": "另一种选择是收取 0.99% 的费用，费用为 0.00% Eventbrite",
+        "description": "Eventbrite在美国对每张付费门票收取 3.7% 的手续费外加 1.79 美元。__ Evnelo收取 0.99% 的手续费，且不收取固定费用。请将您活动的收费情况进行比较。"
+      },
+      "eyebrow": "Evnelo vs Eventbrite",
+      "title": "一个收费为 0.99% 的Eventbrite方案",
+      "body": "在美国， Eventbrite的服务费为每张付费机票的 3.7% 外加 1.79 美元。__ Evnelo服务费为 0.99%，且没有固定金额，因此在价格较低的机票上，两者的差距最大。",
+      "rows": {
+        "fee": "3.7%",
+        "fixed": "$1.79",
+        "free": "免费",
+        "processing": "每笔订单 2.9%",
+        "subscription": "没有任何",
+        "openSource": "不"
+      }
+    },
+    "luma": {
+      "meta": {
+        "title": "Luma替代方案，手续费 0.99%，无需订阅",
+        "description": "Luma收取 5% 的付费门票费用，或者选择Luma Plus （每月 59 美元）则无需支付任何费用。__ Evnelo收取 0.99% 的费用，无需订阅。请将您活动的各项费用进行比较。"
+      },
+      "eyebrow": "Evnelo vs Luma",
+      "title": "一个收费 0.99% 且无需订阅的Luma方案",
+      "body": "免费计划中， Luma会收取 5% 的付费门票佣金；如果您每月支付 59 美元使用Luma Plus计划，则佣金为 0%。__ Evnelo收取 0.99% 的佣金，且无需订阅，因此您只需在售票时付费。",
+      "rows": {
+        "fee": "免费计划享5%折扣，0% Luma Plus",
+        "fixed": "没有任何",
+        "free": "免费",
+        "processing": "Stripe, 2.9% + 30¢",
+        "subscription": "Luma Plus ：每月 59 美元，按年计费",
+        "openSource": "不"
+      }
+    },
+    "evneloRows": {
+      "fee": "0.99%",
+      "fixed": "没有任何",
+      "free": "免费",
+      "processing": "Stripe ，按您账户的费率计算。",
+      "subscription": "没有任何",
+      "openSource": "是的， Apache 2.0"
+    },
+    "rowLabels": {
+      "fee": "付费机票需支付平台费",
+      "fixed": "每张票固定费用",
+      "free": "免费活动",
+      "processing": "卡片处理",
+      "subscription": "订阅",
+      "openSource": "开源"
+    },
+    "start": "开始托管",
+    "seePricing": "查看价格",
+    "calculator": {
+      "body": "仅收取平台费用。所有平台均需额外收取信用卡手续费。"
+    },
+    "table": {
+      "title": "并排",
+      "feature": "你的付款"
+    },
+    "switching": {
+      "title": "将您的下一个活动移至",
+      "steps": {
+        "signup": "使用您的电子邮件地址注册，并注明您的组织名称。",
+        "stripe": "在“设置”>“付款”中连接您的Stripe帐户。",
+        "event": "创建活动：日期、地点、门票类型和问题。",
+        "share": "发布并分享新链接。"
+      },
+      "note": "目前还没有导入器，所以您之前收到的注册信息将保持不变。请从您的下一个活动开始。"
+    },
+    "source": "{competitor}费用<link>{url}</link>已于{date}核实。美国费率；其他国家/地区费率不同。__ {competitor}是其所有者的商标， Evnelo与其无任何关联。",
+    "cta": {
+      "title": "下次活动请定于Evnelo举行",
+      "body": "使用邮箱注册。无需银行卡，无需预订。"
+    }
+  },
+  "brazil": {
+    "meta": {
+      "title": "在巴西售票，手续费为Pix %，价格为 0 美元。",
+      "description": "Evnelo收取付费门票的 0.99%，免费活动不收取任何费用。__ Pix 、卡、 Apple Pay和Google Pay通过您自己的Stripe帐户进行支付。与Sympla进行比较。"
+    },
+    "eyebrow": "巴西的Evnelo",
+    "title": "以Pix出售门票，支付0.99%。",
+    "body": "Evnelo会从每张付费门票中抽取 0.99% 的佣金，免费活动则不收取任何费用。购票者可以使用Pix 、信用卡、 Apple Pay或Google Pay付款，款项将直接存入您的Stripe账户。",
+    "start": "免费开始",
+    "seePricing": "看看它是如何运作的",
+    "calculator": {
+      "body": "Sympla的服务费为每张票 10%，最低 3.99 雷亚尔。仅平台费；信用卡和Pix手续费另计。"
+    },
+    "highlights": {
+      "title": "专为在房地产市场销售而打造",
+      "items": {
+        "pix": {
+          "title": "结账时为Pix",
+          "text": "买家可以通过Pix二维码、银行卡、 Apple Pay或Google Pay付款，全部通过Stripe完成。"
+        },
+        "payouts": {
+          "title": "您账户中的资金",
+          "text": "销售款项记入您的Stripe账户，并按照Stripe的付款计划支付。__ Evnelo绝不会扣留您的资金。"
+        },
+        "free": {
+          "title": "免费活动无需任何费用",
+          "text": "免费注册不收取任何费用，无论注册人数多少。"
+        },
+        "tiers": {
+          "title": "票价等级、优惠券和候补名单",
+          "text": "门票等级、折扣码、售罄时的候补名单以及您自己的注册问题。"
+        },
+        "checkin": {
+          "title": "用任何手机办理入住",
+          "text": "在浏览器中扫描二维码门票。即使没有信号也能继续工作，重新连接后即可恢复正常。"
+        },
+        "open": {
+          "title": "开源",
+          "text": "Apache 2.0 代码。使用 evnelo.com 或在您自己的服务器上运行，无需支付平台费用。"
+        }
+      }
+    },
+    "table": {
+      "title": "Evnelo和Sympla并排",
+      "feature": "你的付款"
+    },
+    "rows": {
+      "labels": {
+        "fee": "已付费门票的手续费",
+        "minimum": "每张票最低消费",
+        "free": "免费活动",
+        "processing": "卡片和Pix处理",
+        "openSource": "开源"
+      },
+      "evnelo": {
+        "fee": "0.99%",
+        "minimum": "没有任何",
+        "free": "免费",
+        "processing": "Stripe ，按您账户的费率计算。",
+        "openSource": "是的， Apache 2.0"
+      },
+      "sympla": {
+        "fee": "10%",
+        "minimum": "票价最高为 39.90 雷亚尔的门票，票价为 3.99 雷亚尔。",
+        "free": "免费",
+        "processing": "每张票 2% 至 2.5%。",
+        "openSource": "不"
+      }
+    },
+    "payments": {
+      "title": "支付方式",
+      "body": "您关联自己的Stripe账户。__ Stripe处理Pix和信用卡支付，并向您支付款项，同时按其提供的费率从您的账户中收取手续费。__ Evnelo会从已支付的票款中抽取0.99%作为上述费用的一部分。"
+    },
+    "faq": {
+      "title": "问题",
+      "items": {
+        "passOn": {
+          "q": "买家能支付这笔费用吗？",
+          "a": "是的。开启活动的收费服务费后，结账时会单独列出这一项，这样您就能收到全额票价。"
+        },
+        "pix": {
+          "q": "结账时何时会显示Pix ？",
+          "a": "当您的Stripe帐户中启用Pix且门票以雷亚尔定价时。"
+        },
+        "language": {
+          "q": "所有内容都是葡萄牙语吗？",
+          "a": "活动页面、结账页面、电子邮件和门票将以葡萄牙语显示，任何浏览器设置为葡萄牙语的用户都会看到这些内容。"
+        },
+        "free": {
+          "q": "免费活动真的免费吗？",
+          "a": "是的，任何尺寸都可以。包含电子邮件确认和提醒。"
+        }
+      }
+    },
+    "source": "Sympla费用<link>{url}</link>已于{date}进行检查。__ Sympla是其所有者的商标， Evnelo与其无关。",
+    "cta": {
+      "title": "创建您的第一个活动",
+      "body": "使用邮箱注册。无需银行卡，无需预订。"
     }
   }
 }

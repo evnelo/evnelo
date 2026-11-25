@@ -167,6 +167,10 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          # a shallow clone lacks the commit production points at, so git refuses the push ("fetch first")
+          # instead of recognising it as a fast-forward
+          fetch-depth: 0
       - name: Move the production branch to this commit
         # a plain (non-forced) push: production only ever holds commits from master, so it fast-forwards;
         # to roll back, force-push production to an older commit and the VM redeploys it

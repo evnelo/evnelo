@@ -303,11 +303,19 @@ docker compose --env-file .env -f deploy/docker-compose.prod.yml logs -f app   #
 
 `./deploy/deploy.sh` by hand deploys `origin/production` immediately; `./deploy/deploy.sh --local` deploys whatever is checked out (a hotfix copied onto the box). To roll back, force-push `production` to the last good commit (`git push --force origin <sha>:production`) and the VM redeploys it within a minute.
 
-Back up the database from cron. `deploy/backup-db.sh` dumps MySQL into `backups/` (14 days kept) and, when `BACKUP_S3_URI` is set in `.env` (for example `s3://my-backups/evnelo`), copies the dump there with the app's `S3_*` credentials through the `amazon/aws-cli` image, so nothing is installed on the host. Give that bucket a lifecycle rule and keep it separate from the uploads bucket. Install it once:
+Back up the database from cron. `deploy/backup-db.sh` dumps MySQL into `backups/` (14 days kept) and, when `BACKUP_S3_URI` is set in `.env` (for example `s3://my-backups/evnelo`), copies the dump there through the `amazon/aws-cli` image, so nothing is installed on the host. The dumps hold every attendee's personal data: use a private bucket of its own (block public access, default encryption, a lifecycle rule that expires old dumps) and give the script its own key in `BACKUP_S3_ACCESS_KEY_ID` / `BACKUP_S3_SECRET_ACCESS_KEY` / `BACKUP_S3_REGION` that can only `s3:PutObject` under that prefix, so a compromised server cannot read or delete the copies. Without that key the script falls back to the app's `S3_*` credentials. A failed upload exits non-zero and logs `FAILED`. Install it once:
 
 ```bash
 (crontab -l 2>/dev/null; echo "15 3 * * * cd $HOME/evnelo && ./deploy/backup-db.sh >> $HOME/evnelo-backup.log 2>&1") | crontab -
 ./deploy/backup-db.sh     # run one now and check the file exists
+```
+
+To restore, stop the app so nothing writes meanwhile, load a dump, and start it again (for an off-box copy, `aws s3 cp` it down first with credentials that can read the bucket):
+
+```bash
+docker compose --env-file .env -f deploy/docker-compose.prod.yml stop app
+gunzip -c backups/evnelo-YYYYMMDDTHHMMSSZ.sql.gz | docker compose --env-file .env -f deploy/docker-compose.prod.yml exec -T db sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" evnelo'
+docker compose --env-file .env -f deploy/docker-compose.prod.yml start app
 ```
 
 Production checklist:

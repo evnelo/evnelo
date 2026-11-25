@@ -528,5 +528,103 @@
       "title": "ابھی تک کوئی ایونٹس نہیں ہیں۔",
       "description": "آپ کا پہلا ایونٹ شائع ہونے کے بعد تجزیات پُر کریں۔"
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "پلیٹ فارم ایڈمن"
+    },
+    "shell": {
+      "eyebrow": "پلیٹ فارم ایڈمن",
+      "backToDashboard": "آپ کا ڈیش بورڈ"
+    },
+    "overview": {
+      "title": "تنظیمیں",
+      "description": "اس تنصیب پر ہر تنظیم، اس کے ایونٹس اور فروخت کے ساتھ۔",
+      "stats": {
+        "organizations": "تنظیمیں",
+        "users": "صارفین",
+        "published": "شائع شدہ ایونٹس",
+        "registrations": "رجسٹریشنز",
+        "netSales": "خالص فروخت",
+        "netSalesSub": "چارج شدہ مائنس ریفنڈز",
+        "fees": "پلیٹ فارم فیس",
+        "feesSub": "{orders, plural, one {# ادا شدہ آرڈر سے} other {# ادا شدہ آرڈرز سے}}"
+      },
+      "search": {
+        "label": "تنظیمیں تلاش کریں۔",
+        "placeholder": "نام، URL یا مالک کا ای میل",
+        "submit": "تلاش کریں۔",
+        "clear": "صاف"
+      },
+      "columns": {
+        "organization": "تنظیم",
+        "owner": "مالک",
+        "created": "بنایا",
+        "events": "ایونٹس",
+        "registrations": "رجسٹریشنز",
+        "netSales": "خالص فروخت",
+        "fees": "فیس",
+        "payments": "ادائیگیاں"
+      },
+      "eventsCell": "{published} از {total} شائع ہوا۔",
+      "deleted": "حذف کر دیا گیا۔",
+      "noOwner": "کوئی مالک نہیں۔",
+      "payments": {
+        "ready": "ادائیگیاں قبول کرنا",
+        "notReady": "Stripe تیار نہیں",
+        "none": "منسلک نہیں"
+      },
+      "openPublic": "{name} کا عوامی صفحہ کھولیں",
+      "emptySearch": "کوئی تنظیم \"{q}\" سے مماثل نہیں ہے۔",
+      "empty": "ابھی تک کوئی تنظیم نہیں۔"
+    },
+    "organization": {
+      "back": "تمام تنظیمیں۔",
+      "created": "تخلیق کیا گیا {date}",
+      "deletedOn": "حذف شدہ {date}",
+      "publicPage": "عوامی صفحہ",
+      "website": "ویب سائٹ",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "ایونٹس",
+        "registrations": "رجسٹریشنز",
+        "netSales": "خالص فروخت",
+        "refunded": "رقم کی واپسی",
+        "fees": "پلیٹ فارم فیس"
+      },
+      "members": {
+        "title": "ممبران",
+        "empty": "اس تنظیم کا کوئی رکن نہیں ہے۔",
+        "columns": {
+          "name": "نام",
+          "email": "ای میل",
+          "role": "کردار",
+          "joined": "شامل ہو گئے۔"
+        }
+      },
+      "events": {
+        "title": "ایونٹس",
+        "empty": "ابھی تک کوئی ایونٹس نہیں ہیں۔",
+        "columns": {
+          "event": "ایونٹ",
+          "status": "حیثیت",
+          "starts": "شروع ہوتا ہے۔",
+          "registrations": "رجسٹریشنز",
+          "checkedIn": "چیک ان کیا۔",
+          "visitors": "زائرین",
+          "netSales": "خالص فروخت",
+          "refunded": "رقم کی واپسی",
+          "fees": "فیس"
+        },
+        "capacity": "{count} از {capacity}",
+        "openPublic": "{name} کا عوامی صفحہ کھولیں"
+      }
+    },
+    "visibility": {
+      "public": "عوامی",
+      "unlisted": "غیر فہرست شدہ",
+      "private": "نجی"
+    },
+    "none": "—"
   }
 }

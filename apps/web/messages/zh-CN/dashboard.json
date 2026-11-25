@@ -528,5 +528,103 @@
       "title": "目前还没有活动",
       "description": "您的第一个活动发布后，分析数据就会开始填充。"
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "平台管理员"
+    },
+    "shell": {
+      "eyebrow": "平台管理员",
+      "backToDashboard": "您的仪表盘"
+    },
+    "overview": {
+      "title": "组织",
+      "description": "该设施内的每个组织，以及它们的活动和销售。",
+      "stats": {
+        "organizations": "组织",
+        "users": "用户",
+        "published": "已发布活动",
+        "registrations": "注册",
+        "netSales": "净销售额",
+        "netSalesSub": "已收费减去退款",
+        "fees": "平台费用",
+        "feesSub": "{orders, plural, one {来自#已付款订单} other {来自#已付款订单}}"
+      },
+      "search": {
+        "label": "搜索组织",
+        "placeholder": "姓名、网址或所有者邮箱",
+        "submit": "搜索",
+        "clear": "清除"
+      },
+      "columns": {
+        "organization": "组织",
+        "owner": "所有者",
+        "created": "创建",
+        "events": "活动",
+        "registrations": "注册",
+        "netSales": "净销售额",
+        "fees": "费用",
+        "payments": "付款"
+      },
+      "eventsCell": "已发布{published} / {total}",
+      "deleted": "已删除",
+      "noOwner": "无所有者",
+      "payments": {
+        "ready": "接受付款",
+        "notReady": "Stripe未准备就绪",
+        "none": "未连接"
+      },
+      "openPublic": "打开{name}的公共页面",
+      "emptySearch": "没有组织与“{q}”匹配。",
+      "empty": "目前还没有组织。"
+    },
+    "organization": {
+      "back": "所有组织",
+      "created": "创建于{date}",
+      "deletedOn": "已删除{date}",
+      "publicPage": "公共页面",
+      "website": "网站",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "活动",
+        "registrations": "注册",
+        "netSales": "净销售额",
+        "refunded": "已退款",
+        "fees": "平台费用"
+      },
+      "members": {
+        "title": "成员",
+        "empty": "该组织没有成员。",
+        "columns": {
+          "name": "姓名",
+          "email": "电子邮件",
+          "role": "角色",
+          "joined": "加入"
+        }
+      },
+      "events": {
+        "title": "活动",
+        "empty": "目前还没有活动。",
+        "columns": {
+          "event": "活动",
+          "status": "地位",
+          "starts": "开始",
+          "registrations": "注册",
+          "checkedIn": "已办理入住",
+          "visitors": "访客",
+          "netSales": "净销售额",
+          "refunded": "已退款",
+          "fees": "费用"
+        },
+        "capacity": "{count}的{capacity}",
+        "openPublic": "打开{name}的公共页面"
+      }
+    },
+    "visibility": {
+      "public": "民众",
+      "unlisted": "未公开",
+      "private": "私人的"
+    },
+    "none": "—"
   }
 }

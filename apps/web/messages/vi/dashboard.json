@@ -528,5 +528,103 @@
       "title": "Chưa có sự kiện nào",
       "description": "Dữ liệu phân tích sẽ được cập nhật sau khi sự kiện đầu tiên của bạn được đăng tải."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "Quản trị viên nền tảng"
+    },
+    "shell": {
+      "eyebrow": "Quản trị viên nền tảng",
+      "backToDashboard": "Bảng điều khiển của bạn"
+    },
+    "overview": {
+      "title": "Các tổ chức",
+      "description": "Mọi tổ chức tại cơ sở này đều có mặt, với các sự kiện và hoạt động bán hàng của mình.",
+      "stats": {
+        "organizations": "Các tổ chức",
+        "users": "Người dùng",
+        "published": "Sự kiện đã được công bố",
+        "registrations": "Đăng ký",
+        "netSales": "Doanh thu thuần",
+        "netSalesSub": "Số tiền đã tính phí trừ đi số tiền hoàn trả",
+        "fees": "Phí nền tảng",
+        "feesSub": "{orders, plural, one {Từ đơn hàng đã thanh toán #} other {Từ # đơn hàng đã thanh toán}}"
+      },
+      "search": {
+        "label": "Tìm kiếm các tổ chức",
+        "placeholder": "Tên, URL hoặc email chủ sở hữu",
+        "submit": "Tìm kiếm",
+        "clear": "Thông thoáng"
+      },
+      "columns": {
+        "organization": "Tổ chức",
+        "owner": "Người sở hữu",
+        "created": "Tạo",
+        "events": "Sự kiện",
+        "registrations": "Đăng ký",
+        "netSales": "Doanh thu thuần",
+        "fees": "Phí",
+        "payments": "Thanh toán"
+      },
+      "eventsCell": "{published} trong số {total} đã xuất bản",
+      "deleted": "Đã xóa",
+      "noOwner": "Không có chủ sở hữu",
+      "payments": {
+        "ready": "Chấp nhận thanh toán",
+        "notReady": "Stripe chưa sẵn sàng",
+        "none": "Không kết nối"
+      },
+      "openPublic": "Mở trang công khai của {name}",
+      "emptySearch": "Không có tổ chức nào khớp với “{q}”.",
+      "empty": "Hiện chưa có tổ chức nào."
+    },
+    "organization": {
+      "back": "Tất cả các tổ chức",
+      "created": "Được tạo vào {date}",
+      "deletedOn": "Đã xóa {date}",
+      "publicPage": "Trang công khai",
+      "website": "Trang web",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "Sự kiện",
+        "registrations": "Đăng ký",
+        "netSales": "Doanh thu thuần",
+        "refunded": "Đã hoàn tiền",
+        "fees": "Phí nền tảng"
+      },
+      "members": {
+        "title": "Thành viên",
+        "empty": "Tổ chức này không có thành viên.",
+        "columns": {
+          "name": "Tên",
+          "email": "E-mail",
+          "role": "Vai trò",
+          "joined": "Đã tham gia"
+        }
+      },
+      "events": {
+        "title": "Sự kiện",
+        "empty": "Chưa có sự kiện nào.",
+        "columns": {
+          "event": "Sự kiện",
+          "status": "Trạng thái",
+          "starts": "Bắt đầu",
+          "registrations": "Đăng ký",
+          "checkedIn": "Đã nhận phòng",
+          "visitors": "Khách tham quan",
+          "netSales": "Doanh thu thuần",
+          "refunded": "Đã hoàn tiền",
+          "fees": "Phí"
+        },
+        "capacity": "{count} trong số {capacity}",
+        "openPublic": "Mở trang công khai của {name}"
+      }
+    },
+    "visibility": {
+      "public": "Công cộng",
+      "unlisted": "Chưa được liệt kê",
+      "private": "Riêng tư"
+    },
+    "none": "—"
   }
 }

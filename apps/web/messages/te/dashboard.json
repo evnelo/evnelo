@@ -528,5 +528,103 @@
       "title": "ఇంకా ఈవెంట్‌లు ఏవీ లేవు",
       "description": "మీ మొదటి ఈవెంట్ ప్రచురించబడిన తర్వాత అనలిటిక్స్ పూరించబడతాయి."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "ప్లాట్‌ఫారమ్ నిర్వాహకుడు"
+    },
+    "shell": {
+      "eyebrow": "ప్లాట్‌ఫారమ్ నిర్వాహకుడు",
+      "backToDashboard": "మీ డాష్‌బోర్డ్"
+    },
+    "overview": {
+      "title": "సంస్థలు",
+      "description": "ఈ ప్రాంగణంలోని ప్రతి సంస్థ, దాని కార్యక్రమాలు మరియు అమ్మకాలతో.",
+      "stats": {
+        "organizations": "సంస్థలు",
+        "users": "వినియోగదారులు",
+        "published": "ప్రచురించబడిన ఈవెంట్‌లు",
+        "registrations": "రిజిస్ట్రేషన్లు",
+        "netSales": "నికర అమ్మకాలు",
+        "netSalesSub": "వాపసుల తర్వాత వసూలు చేయబడింది",
+        "fees": "ప్లాట్‌ఫారమ్ ఫీజులు",
+        "feesSub": "{orders, plural, one {# నుండి చెల్లించిన ఆర్డర్} other {# చెల్లించిన ఆర్డర్‌ల నుండి}}"
+      },
+      "search": {
+        "label": "శోధన సంస్థలు",
+        "placeholder": "పేరు, URL లేదా యజమాని ఇమెయిల్",
+        "submit": "శోధన",
+        "clear": "స్పష్టం"
+      },
+      "columns": {
+        "organization": "సంస్థ",
+        "owner": "యజమాని",
+        "created": "సృష్టించబడింది",
+        "events": "ఈవెంట్లు",
+        "registrations": "రిజిస్ట్రేషన్లు",
+        "netSales": "నికర అమ్మకాలు",
+        "fees": "ఫీజులు",
+        "payments": "చెల్లింపులు"
+      },
+      "eventsCell": "{total} {published} ప్రచురించబడ్డాయి",
+      "deleted": "తొలగించబడింది",
+      "noOwner": "యజమాని లేరు",
+      "payments": {
+        "ready": "చెల్లింపులను స్వీకరించడం",
+        "notReady": "Stripe సిద్ధంగా లేదు",
+        "none": "కనెక్ట్ కాలేదు"
+      },
+      "openPublic": "{name} యొక్క పబ్లిక్ పేజీని తెరవండి",
+      "emptySearch": "“{q}”తో సరిపోలే సంస్థలు ఏవీ లేవు.",
+      "empty": "ఇంకా ఏ సంస్థలూ లేవు."
+    },
+    "organization": {
+      "back": "అన్ని సంస్థలు",
+      "created": "సృష్టించబడింది {date}",
+      "deletedOn": "{date} తొలగించబడింది",
+      "publicPage": "ప్రజా పేజీ",
+      "website": "వెబ్‌సైట్",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "ఈవెంట్లు",
+        "registrations": "రిజిస్ట్రేషన్లు",
+        "netSales": "నికర అమ్మకాలు",
+        "refunded": "వాపసు చేయబడింది",
+        "fees": "ప్లాట్‌ఫారమ్ ఫీజులు"
+      },
+      "members": {
+        "title": "సభ్యులు",
+        "empty": "ఈ సంస్థకు సభ్యులు లేరు.",
+        "columns": {
+          "name": "పేరు",
+          "email": "ఇమెయిల్",
+          "role": "పాత్ర",
+          "joined": "చేరారు"
+        }
+      },
+      "events": {
+        "title": "ఈవెంట్లు",
+        "empty": "ఇంకా ఎలాంటి కార్యక్రమాలు లేవు.",
+        "columns": {
+          "event": "ఈవెంట్",
+          "status": "స్థితి",
+          "starts": "ప్రారంభమవుతుంది",
+          "registrations": "రిజిస్ట్రేషన్లు",
+          "checkedIn": "చెక్ ఇన్ చేసారు",
+          "visitors": "సందర్శకులు",
+          "netSales": "నికర అమ్మకాలు",
+          "refunded": "వాపసు చేయబడింది",
+          "fees": "ఫీజులు"
+        },
+        "capacity": "{count} of {capacity}",
+        "openPublic": "{name} యొక్క పబ్లిక్ పేజీని తెరవండి"
+      }
+    },
+    "visibility": {
+      "public": "ప్రజలు",
+      "unlisted": "జాబితాలో లేదు",
+      "private": "ప్రైవేట్"
+    },
+    "none": "—"
   }
 }

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { parseAdminEmails } from "./admin-emails";
 
 const schema = z.object({
   EDITION: z.enum(["self_hosted", "cloud"]).default("self_hosted"),
@@ -60,6 +61,8 @@ const schema = z.object({
   GOOGLE_ANALYTICS_ID: z.string().regex(/^G-[A-Z0-9]+$/, "GOOGLE_ANALYTICS_ID looks like G-XXXXXXX").optional(),
   GOOGLE_ADS_ID: z.string().regex(/^AW-\d+$/, "GOOGLE_ADS_ID looks like AW-123456789").optional(),
   GOOGLE_ADS_SIGNUP_LABEL: z.string().regex(/^[\w-]+$/).optional(),
+  // platform operators: comma-separated sign-in emails that may open /admin (every organization's data); unset = nobody
+  ADMIN_EMAILS: z.string().optional(),
   // Google sign-in (optional)
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
@@ -88,6 +91,7 @@ export const smsAuthMode: "application" | "basic" | null =
 export const smsConfigured = smsAuthMode !== null;
 export const emailConfigured = Boolean(env.RESEND_API_KEY);
 export const posthogConfigured = Boolean(env.POSTHOG_KEY);
+export const adminEmails = parseAdminEmails(env.ADMIN_EMAILS);
 export const appleWalletConfigured = Boolean(env.APPLE_PASS_TYPE_ID && env.APPLE_TEAM_ID && env.APPLE_PASS_CERT && env.APPLE_PASS_KEY && env.APPLE_WWDR_CERT);
 export const googleWalletConfigured = Boolean(env.GOOGLE_WALLET_ISSUER_ID && env.GOOGLE_WALLET_SERVICE_ACCOUNT);
 /** The Google tag's destinations, or null when neither id is set (the tag then never loads and the CSP stays closed to Google). */

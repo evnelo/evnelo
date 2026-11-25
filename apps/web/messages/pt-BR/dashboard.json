@@ -528,5 +528,103 @@
       "title": "Ainda não há eventos.",
       "description": "As análises serão preenchidas assim que seu primeiro evento for publicado."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "Administrador da plataforma"
+    },
+    "shell": {
+      "eyebrow": "Administrador da plataforma",
+      "backToDashboard": "Seu painel de controle"
+    },
+    "overview": {
+      "title": "Organizações",
+      "description": "Todas as organizações nesta instalação, com seus eventos e vendas.",
+      "stats": {
+        "organizations": "Organizações",
+        "users": "Usuários",
+        "published": "Eventos publicados",
+        "registrations": "Inscrições",
+        "netSales": "Vendas líquidas",
+        "netSalesSub": "Cobrança menos reembolsos",
+        "fees": "Taxas da plataforma",
+        "feesSub": "{orders, plural, one {De # pedido pago} other {De # pedidos pagos}}"
+      },
+      "search": {
+        "label": "Organizações de busca",
+        "placeholder": "Nome, URL ou e-mail do proprietário",
+        "submit": "Procurar",
+        "clear": "Claro"
+      },
+      "columns": {
+        "organization": "Organização",
+        "owner": "Proprietário",
+        "created": "Criado",
+        "events": "Eventos",
+        "registrations": "Inscrições",
+        "netSales": "Vendas líquidas",
+        "fees": "Tarifas",
+        "payments": "Pagamentos"
+      },
+      "eventsCell": "{published} de {total} publicado",
+      "deleted": "Excluído",
+      "noOwner": "Sem proprietário",
+      "payments": {
+        "ready": "Aceitar pagamentos",
+        "notReady": "Stripe não está pronto",
+        "none": "Não conectado"
+      },
+      "openPublic": "Abra a página pública de {name}",
+      "emptySearch": "Nenhuma organização corresponde a “{q}”.",
+      "empty": "Ainda não há organizações."
+    },
+    "organization": {
+      "back": "Todas as organizações",
+      "created": "Criado em {date}",
+      "deletedOn": "Excluído {date}",
+      "publicPage": "Página pública",
+      "website": "Site",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "Eventos",
+        "registrations": "Inscrições",
+        "netSales": "Vendas líquidas",
+        "refunded": "Reembolsado",
+        "fees": "Taxas da plataforma"
+      },
+      "members": {
+        "title": "Membros",
+        "empty": "Esta organização não possui membros.",
+        "columns": {
+          "name": "Nome",
+          "email": "E-mail",
+          "role": "Papel",
+          "joined": "Ingressou"
+        }
+      },
+      "events": {
+        "title": "Eventos",
+        "empty": "Ainda não há eventos.",
+        "columns": {
+          "event": "Evento",
+          "status": "Status",
+          "starts": "Começa",
+          "registrations": "Inscrições",
+          "checkedIn": "Check-in realizado",
+          "visitors": "Visitantes",
+          "netSales": "Vendas líquidas",
+          "refunded": "Reembolsado",
+          "fees": "Tarifas"
+        },
+        "capacity": "{count} de {capacity}",
+        "openPublic": "Abra a página pública de {name}"
+      }
+    },
+    "visibility": {
+      "public": "Público",
+      "unlisted": "Não listado",
+      "private": "Privado"
+    },
+    "none": "—"
   }
 }

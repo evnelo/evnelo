@@ -528,5 +528,103 @@
       "title": "لا توجد فعاليات حتى الآن",
       "description": "ستظهر الإحصائيات بمجرد نشر أول حدث لك."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "مسؤول المنصة"
+    },
+    "shell": {
+      "eyebrow": "مسؤول المنصة",
+      "backToDashboard": "لوحة التحكم الخاصة بك"
+    },
+    "overview": {
+      "title": "المنظمات",
+      "description": "كل منظمة في هذا الموقع، بفعالياتها ومبيعاتها.",
+      "stats": {
+        "organizations": "المنظمات",
+        "users": "المستخدمون",
+        "published": "الأحداث المنشورة",
+        "registrations": "التسجيلات",
+        "netSales": "صافي المبيعات",
+        "netSalesSub": "المبلغ المدفوع مطروحًا منه المبالغ المستردة",
+        "fees": "رسوم المنصة",
+        "feesSub": "{orders, plural, one {من # طلب مدفوع} other {من # طلبات مدفوعة}}"
+      },
+      "search": {
+        "label": "ابحث عن النساء",
+        "placeholder": "الاسم أو عنوان الموقع الإلكتروني أو البريد الإلكتروني للمالك",
+        "submit": "يبحث",
+        "clear": "واضح"
+      },
+      "columns": {
+        "organization": "منظمة",
+        "owner": "مالك",
+        "created": "مخلوق",
+        "events": "الفعاليات",
+        "registrations": "التسجيلات",
+        "netSales": "صافي المبيعات",
+        "fees": "مصاريف",
+        "payments": "المدفوعات"
+      },
+      "eventsCell": "{published} من {total} تم نشره",
+      "deleted": "تم الحذف",
+      "noOwner": "لا يوجد مالك",
+      "payments": {
+        "ready": "قبول المدفوعات",
+        "notReady": "Stripe غير جاهز",
+        "none": "غير متصل"
+      },
+      "openPublic": "افتح الصفحة العامة لـ {name}",
+      "emptySearch": "لا توجد منظمات مطابقة لـ \"{q}\".",
+      "empty": "لا توجد منظمات حتى الآن."
+    },
+    "organization": {
+      "back": "جميع المنظمات",
+      "created": "تم الإنشاء {date}",
+      "deletedOn": "تم الحذف {date}",
+      "publicPage": "صفحة عامة",
+      "website": "موقع إلكتروني",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "الفعاليات",
+        "registrations": "التسجيلات",
+        "netSales": "صافي المبيعات",
+        "refunded": "تم استرداد المبلغ",
+        "fees": "رسوم المنصة"
+      },
+      "members": {
+        "title": "أعضاء",
+        "empty": "هذه المنظمة ليس لديها أعضاء.",
+        "columns": {
+          "name": "اسم",
+          "email": "بريد إلكتروني",
+          "role": "دور",
+          "joined": "انضم"
+        }
+      },
+      "events": {
+        "title": "الفعاليات",
+        "empty": "لا توجد فعاليات حتى الآن.",
+        "columns": {
+          "event": "حدث",
+          "status": "حالة",
+          "starts": "يبدأ",
+          "registrations": "التسجيلات",
+          "checkedIn": "تم تسجيل الوصول",
+          "visitors": "الزوار",
+          "netSales": "صافي المبيعات",
+          "refunded": "تم استرداد المبلغ",
+          "fees": "مصاريف"
+        },
+        "capacity": "{count} من {capacity}",
+        "openPublic": "افتح الصفحة العامة لـ {name}"
+      }
+    },
+    "visibility": {
+      "public": "عام",
+      "unlisted": "غير مدرج",
+      "private": "خاص"
+    },
+    "none": "—"
   }
 }

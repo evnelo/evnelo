@@ -129,7 +129,7 @@ jobs:
         run: |
           docker run -d --name app --network host \
             -e DATABASE_URL -e AUTH_SECRET -e APP_URL -e STRIPE_SECRET_KEY -e STRIPE_PUBLISHABLE_KEY \
-            -e MIGRATE_ON_START=true -e JOBS_INLINE=true \
+            -e MIGRATE_ON_START=true -e JOBS_INLINE=true -e ADMIN_EMAILS=admin@e2e.evnelo.test \
             evnelo-app:ci
       - name: Wait for /api/health
         run: |

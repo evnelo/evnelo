@@ -528,5 +528,103 @@
       "title": "এখনো কোনো অনুষ্ঠান নেই",
       "description": "আপনার প্রথম ইভেন্টটি প্রকাশিত হলে অ্যানালিটিক্স পূরণ হয়ে যাবে।"
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "প্ল্যাটফর্ম অ্যাডমিন"
+    },
+    "shell": {
+      "eyebrow": "প্ল্যাটফর্ম অ্যাডমিন",
+      "backToDashboard": "আপনার ড্যাশবোর্ড"
+    },
+    "overview": {
+      "title": "সংগঠনগুলি",
+      "description": "এই স্থাপনার প্রতিটি সংস্থা, তাদের নিজস্ব অনুষ্ঠান ও বিক্রয় কার্যক্রম নিয়ে।",
+      "stats": {
+        "organizations": "সংগঠনগুলি",
+        "users": "ব্যবহারকারীরা",
+        "published": "প্রকাশিত ইভেন্টগুলি",
+        "registrations": "নিবন্ধন",
+        "netSales": "নেট বিক্রয়",
+        "netSalesSub": "ফেরত বাদ দিয়ে চার্জ করা হয়েছে",
+        "fees": "প্ল্যাটফর্ম ফি",
+        "feesSub": "{orders, plural, one {# পরিশোধিত অর্ডার থেকে} other {# পরিশোধিত অর্ডার থেকে}}"
+      },
+      "search": {
+        "label": "সংস্থাগুলি অনুসন্ধান করুন",
+        "placeholder": "নাম, ইউআরএল বা মালিকের ইমেল",
+        "submit": "অনুসন্ধান",
+        "clear": "পরিষ্কার"
+      },
+      "columns": {
+        "organization": "সংগঠন",
+        "owner": "মালিক",
+        "created": "তৈরি করা হয়েছে",
+        "events": "ইভেন্টগুলি",
+        "registrations": "নিবন্ধন",
+        "netSales": "নেট বিক্রয়",
+        "fees": "ফি",
+        "payments": "পেমেন্ট"
+      },
+      "eventsCell": "{total} এর মধ্যে {published} প্রকাশিত হয়েছে",
+      "deleted": "মুছে ফেলা হয়েছে",
+      "noOwner": "কোন মালিক নেই",
+      "payments": {
+        "ready": "পেমেন্ট গ্রহণ করা হচ্ছে",
+        "notReady": "Stripe প্রস্তুত নয়",
+        "none": "সংযুক্ত নয়"
+      },
+      "openPublic": "{name} এর পাবলিক পেজটি খুলুন",
+      "emptySearch": "“{q}”-এর সাথে কোনো সংস্থাই মেলে না।",
+      "empty": "এখনো কোনো সংগঠন নেই।"
+    },
+    "organization": {
+      "back": "সকল সংস্থা",
+      "created": "তৈরি করা হয়েছে {date}",
+      "deletedOn": "মুছে ফেলা হয়েছে {date}",
+      "publicPage": "পাবলিক পেজ",
+      "website": "ওয়েবসাইট",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "ইভেন্টগুলি",
+        "registrations": "নিবন্ধন",
+        "netSales": "নেট বিক্রয়",
+        "refunded": "ফেরত দেওয়া হয়েছে",
+        "fees": "প্ল্যাটফর্ম ফি"
+      },
+      "members": {
+        "title": "সদস্যরা",
+        "empty": "এই সংগঠনের কোনো সদস্য নেই।",
+        "columns": {
+          "name": "নাম",
+          "email": "ইমেল",
+          "role": "ভূমিকা",
+          "joined": "যোগদান করেছেন"
+        }
+      },
+      "events": {
+        "title": "ইভেন্টগুলি",
+        "empty": "এখনো কোনো ইভেন্ট নেই।",
+        "columns": {
+          "event": "অনুষ্ঠান",
+          "status": "অবস্থা",
+          "starts": "শুরু",
+          "registrations": "নিবন্ধন",
+          "checkedIn": "চেক ইন করা হয়েছে",
+          "visitors": "দর্শনার্থীদের",
+          "netSales": "নেট বিক্রয়",
+          "refunded": "ফেরত দেওয়া হয়েছে",
+          "fees": "ফি"
+        },
+        "capacity": "{capacity} এর মধ্যে {count} ।",
+        "openPublic": "{name} এর পাবলিক পেজটি খুলুন"
+      }
+    },
+    "visibility": {
+      "public": "জনসাধারণের",
+      "unlisted": "তালিকাভুক্ত নয়",
+      "private": "ব্যক্তিগত"
+    },
+    "none": "—"
   }
 }

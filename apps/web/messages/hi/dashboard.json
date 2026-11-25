@@ -528,5 +528,103 @@
       "title": "अभी तक कोई कार्यक्रम नहीं",
       "description": "पहला इवेंट प्रकाशित होने के बाद एनालिटिक्स अपने आप भर जाएंगे।"
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "प्लेटफ़ॉर्म व्यवस्थापक"
+    },
+    "shell": {
+      "eyebrow": "प्लेटफ़ॉर्म व्यवस्थापक",
+      "backToDashboard": "आपका डैशबोर्ड"
+    },
+    "overview": {
+      "title": "संगठनों",
+      "description": "इस परिसर में मौजूद प्रत्येक संगठन, अपने कार्यक्रमों और बिक्री गतिविधियों के साथ।",
+      "stats": {
+        "organizations": "संगठनों",
+        "users": "उपयोगकर्ताओं",
+        "published": "प्रकाशित घटनाएँ",
+        "registrations": "पंजीकरण",
+        "netSales": "कुल बिक्री",
+        "netSalesSub": "शुल्क में से धनवापसी घटाकर",
+        "fees": "प्लेटफ़ॉर्म शुल्क",
+        "feesSub": "{orders, plural, one {# भुगतान आदेश से} other {# भुगतान किए गए ऑर्डर से}}"
+      },
+      "search": {
+        "label": "खोज संगठन",
+        "placeholder": "नाम, यूआरएल या स्वामी का ईमेल",
+        "submit": "खोज",
+        "clear": "स्पष्ट"
+      },
+      "columns": {
+        "organization": "संगठन",
+        "owner": "मालिक",
+        "created": "बनाया था",
+        "events": "कार्यक्रम",
+        "registrations": "पंजीकरण",
+        "netSales": "कुल बिक्री",
+        "fees": "फीस",
+        "payments": "भुगतान"
+      },
+      "eventsCell": "{total} में से {published} प्रकाशित हुए",
+      "deleted": "हटाए गए",
+      "noOwner": "कोई मालिक नहीं",
+      "payments": {
+        "ready": "भुगतान स्वीकार करना",
+        "notReady": "Stripe तैयार नहीं है",
+        "none": "जुड़े नहीं हैं"
+      },
+      "openPublic": "{name} का सार्वजनिक पृष्ठ खोलें",
+      "emptySearch": "कोई भी संगठन “{q}” से मेल नहीं खाता।",
+      "empty": "अभी तक कोई संगठन नहीं।"
+    },
+    "organization": {
+      "back": "सभी संगठनों",
+      "created": "बनाया गया {date}",
+      "deletedOn": "हटा दिया गया {date}",
+      "publicPage": "सार्वजनिक पृष्ठ",
+      "website": "वेबसाइट",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "कार्यक्रम",
+        "registrations": "पंजीकरण",
+        "netSales": "कुल बिक्री",
+        "refunded": "वापसी की गई है",
+        "fees": "प्लेटफ़ॉर्म शुल्क"
+      },
+      "members": {
+        "title": "सदस्यों",
+        "empty": "इस संगठन में कोई सदस्य नहीं है।",
+        "columns": {
+          "name": "नाम",
+          "email": "ईमेल",
+          "role": "भूमिका",
+          "joined": "शामिल हुए"
+        }
+      },
+      "events": {
+        "title": "कार्यक्रम",
+        "empty": "अभी तक कोई कार्यक्रम नहीं है।",
+        "columns": {
+          "event": "आयोजन",
+          "status": "स्थिति",
+          "starts": "प्रारंभ होगा",
+          "registrations": "पंजीकरण",
+          "checkedIn": "आगमन की सूचना दिया",
+          "visitors": "आगंतुकों",
+          "netSales": "कुल बिक्री",
+          "refunded": "वापसी की गई है",
+          "fees": "फीस"
+        },
+        "capacity": "{count} में से {capacity}",
+        "openPublic": "{name} का सार्वजनिक पृष्ठ खोलें"
+      }
+    },
+    "visibility": {
+      "public": "जनता",
+      "unlisted": "गैर-सूचीबद्ध",
+      "private": "निजी"
+    },
+    "none": "—"
   }
 }

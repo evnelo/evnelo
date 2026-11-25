@@ -528,5 +528,103 @@
       "title": "イベントはまだありません",
       "description": "最初のイベントが公開されると、分析データが自動的に入力されます。"
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "プラットフォーム管理者"
+    },
+    "shell": {
+      "eyebrow": "プラットフォーム管理者",
+      "backToDashboard": "ダッシュボード"
+    },
+    "overview": {
+      "title": "組織",
+      "description": "この施設内のすべての組織、およびそれらのイベントと販売活動。",
+      "stats": {
+        "organizations": "組織",
+        "users": "ユーザー",
+        "published": "公開されたイベント",
+        "registrations": "登録",
+        "netSales": "純売上高",
+        "netSalesSub": "返金分を差し引いた金額",
+        "fees": "プラットフォーム手数料",
+        "feesSub": "{orders, plural, one {#支払い済みの注文から} other {#の有料注文から}}"
+      },
+      "search": {
+        "label": "検索組織",
+        "placeholder": "名前、URL、または所有者のメールアドレス",
+        "submit": "検索",
+        "clear": "クリア"
+      },
+      "columns": {
+        "organization": "組織",
+        "owner": "所有者",
+        "created": "作成済み",
+        "events": "イベント",
+        "registrations": "登録",
+        "netSales": "純売上高",
+        "fees": "料金",
+        "payments": "支払い"
+      },
+      "eventsCell": "{published} {total}公開済み",
+      "deleted": "削除済み",
+      "noOwner": "所有者なし",
+      "payments": {
+        "ready": "支払いを受け付ける",
+        "notReady": "Stripe準備ができていません",
+        "none": "接続されていません"
+      },
+      "openPublic": "{name}の公開ページを開く",
+      "emptySearch": "「{q}」に一致する組織はありません。",
+      "empty": "まだ組織は登録されていません。"
+    },
+    "organization": {
+      "back": "すべての組織",
+      "created": "作成日時{date}",
+      "deletedOn": "削除済み{date}",
+      "publicPage": "公開ページ",
+      "website": "Webサイト",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "イベント",
+        "registrations": "登録",
+        "netSales": "純売上高",
+        "refunded": "返金済み",
+        "fees": "プラットフォーム手数料"
+      },
+      "members": {
+        "title": "メンバー",
+        "empty": "この組織には会員がいません。",
+        "columns": {
+          "name": "名前",
+          "email": "メール",
+          "role": "役割",
+          "joined": "参加しました"
+        }
+      },
+      "events": {
+        "title": "イベント",
+        "empty": "まだイベントはありません。",
+        "columns": {
+          "event": "イベント",
+          "status": "状態",
+          "starts": "開始",
+          "registrations": "登録",
+          "checkedIn": "チェックインしました",
+          "visitors": "訪問者",
+          "netSales": "純売上高",
+          "refunded": "返金済み",
+          "fees": "料金"
+        },
+        "capacity": "{count} / {capacity}",
+        "openPublic": "{name}の公開ページを開く"
+      }
+    },
+    "visibility": {
+      "public": "公共",
+      "unlisted": "非公開",
+      "private": "プライベート"
+    },
+    "none": "—"
   }
 }

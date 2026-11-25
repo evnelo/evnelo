@@ -528,5 +528,103 @@
       "title": "Noch keine Veranstaltungen",
       "description": "Die Analysedaten werden nach Veröffentlichung Ihres ersten Events ausgefüllt."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "Plattformadministrator"
+    },
+    "shell": {
+      "eyebrow": "Plattformadministrator",
+      "backToDashboard": "Ihr Dashboard"
+    },
+    "overview": {
+      "title": "Organisationen",
+      "description": "Jede Organisation auf diesem Gelände, mit ihren Veranstaltungen und Verkäufen.",
+      "stats": {
+        "organizations": "Organisationen",
+        "users": "Benutzer",
+        "published": "Veröffentlichte Veranstaltungen",
+        "registrations": "Anmeldungen",
+        "netSales": "Nettoerlöse",
+        "netSalesSub": "Berechnet abzüglich Rückerstattungen",
+        "fees": "Plattformgebühren",
+        "feesSub": "{orders, plural, one {Ab # bezahlter Bestellung} other {Von # bezahlten Bestellungen}}"
+      },
+      "search": {
+        "label": "Suchorganisationen",
+        "placeholder": "Name, URL oder E-Mail-Adresse des Inhabers",
+        "submit": "Suchen",
+        "clear": "Klar"
+      },
+      "columns": {
+        "organization": "Organisation",
+        "owner": "Eigentümer",
+        "created": "Erstellt",
+        "events": "Veranstaltungen",
+        "registrations": "Anmeldungen",
+        "netSales": "Nettoerlöse",
+        "fees": "Gebühren",
+        "payments": "Zahlungen"
+      },
+      "eventsCell": "{published} von {total} veröffentlicht",
+      "deleted": "Gelöscht",
+      "noOwner": "Kein Eigentümer",
+      "payments": {
+        "ready": "Zahlungsannahme",
+        "notReady": "Stripe nicht bereit",
+        "none": "Nicht verbunden"
+      },
+      "openPublic": "Öffne die öffentliche Seite von {name}",
+      "emptySearch": "Keine Organisationen entsprechen „{q}“.",
+      "empty": "Noch keine Organisationen."
+    },
+    "organization": {
+      "back": "Alle Organisationen",
+      "created": "Erstellt {date}",
+      "deletedOn": "Gelöscht {date}",
+      "publicPage": "Öffentliche Seite",
+      "website": "Webseite",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "Veranstaltungen",
+        "registrations": "Anmeldungen",
+        "netSales": "Nettoerlöse",
+        "refunded": "Rückerstattung",
+        "fees": "Plattformgebühren"
+      },
+      "members": {
+        "title": "Mitglieder",
+        "empty": "Diese Organisation hat keine Mitglieder.",
+        "columns": {
+          "name": "Name",
+          "email": "E-Mail",
+          "role": "Rolle",
+          "joined": "Beigetreten"
+        }
+      },
+      "events": {
+        "title": "Veranstaltungen",
+        "empty": "Bisher keine Veranstaltungen.",
+        "columns": {
+          "event": "Ereignis",
+          "status": "Status",
+          "starts": "Beginnt",
+          "registrations": "Anmeldungen",
+          "checkedIn": "Eingecheckt",
+          "visitors": "Besucher",
+          "netSales": "Nettoerlöse",
+          "refunded": "Rückerstattung",
+          "fees": "Gebühren"
+        },
+        "capacity": "{count} von {capacity}",
+        "openPublic": "Öffne die öffentliche Seite von {name}"
+      }
+    },
+    "visibility": {
+      "public": "Öffentlich",
+      "unlisted": "Nicht gelistet",
+      "private": "Privat"
+    },
+    "none": "—"
   }
 }

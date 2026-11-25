@@ -528,5 +528,103 @@
       "title": "No events yet",
       "description": "Analytics fill in once your first event is published."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "Platform admin"
+    },
+    "shell": {
+      "eyebrow": "Platform admin",
+      "backToDashboard": "Your dashboard"
+    },
+    "overview": {
+      "title": "Organizations",
+      "description": "Every organization on this installation, with its events and sales.",
+      "stats": {
+        "organizations": "Organizations",
+        "users": "Users",
+        "published": "Published events",
+        "registrations": "Registrations",
+        "netSales": "Net sales",
+        "netSalesSub": "Charged minus refunds",
+        "fees": "Platform fees",
+        "feesSub": "{orders, plural, one {From # paid order} other {From # paid orders}}"
+      },
+      "search": {
+        "label": "Search organizations",
+        "placeholder": "Name, URL or owner email",
+        "submit": "Search",
+        "clear": "Clear"
+      },
+      "columns": {
+        "organization": "Organization",
+        "owner": "Owner",
+        "created": "Created",
+        "events": "Events",
+        "registrations": "Registrations",
+        "netSales": "Net sales",
+        "fees": "Fees",
+        "payments": "Payments"
+      },
+      "eventsCell": "{published} of {total} published",
+      "deleted": "Deleted",
+      "noOwner": "No owner",
+      "payments": {
+        "ready": "Accepting payments",
+        "notReady": "Stripe not ready",
+        "none": "Not connected"
+      },
+      "openPublic": "Open the public page of {name}",
+      "emptySearch": "No organizations match “{q}”.",
+      "empty": "No organizations yet."
+    },
+    "organization": {
+      "back": "All organizations",
+      "created": "Created {date}",
+      "deletedOn": "Deleted {date}",
+      "publicPage": "Public page",
+      "website": "Website",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "Events",
+        "registrations": "Registrations",
+        "netSales": "Net sales",
+        "refunded": "Refunded",
+        "fees": "Platform fees"
+      },
+      "members": {
+        "title": "Members",
+        "empty": "This organization has no members.",
+        "columns": {
+          "name": "Name",
+          "email": "Email",
+          "role": "Role",
+          "joined": "Joined"
+        }
+      },
+      "events": {
+        "title": "Events",
+        "empty": "No events yet.",
+        "columns": {
+          "event": "Event",
+          "status": "Status",
+          "starts": "Starts",
+          "registrations": "Registrations",
+          "checkedIn": "Checked in",
+          "visitors": "Visitors",
+          "netSales": "Net sales",
+          "refunded": "Refunded",
+          "fees": "Fees"
+        },
+        "capacity": "{count} of {capacity}",
+        "openPublic": "Open the public page of {name}"
+      }
+    },
+    "visibility": {
+      "public": "Public",
+      "unlisted": "Unlisted",
+      "private": "Private"
+    },
+    "none": "—"
   }
 }

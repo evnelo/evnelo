@@ -528,5 +528,103 @@
       "title": "Belum ada acara yang berlangsung",
       "description": "Data analitik akan terisi setelah acara pertama Anda dipublikasikan."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "Admin platform"
+    },
+    "shell": {
+      "eyebrow": "Admin platform",
+      "backToDashboard": "Dasbor Anda"
+    },
+    "overview": {
+      "title": "Organisasi",
+      "description": "Setiap organisasi di instalasi ini, dengan acara dan penjualannya.",
+      "stats": {
+        "organizations": "Organisasi",
+        "users": "Pengguna",
+        "published": "Peristiwa yang dipublikasikan",
+        "registrations": "Pendaftaran",
+        "netSales": "Penjualan bersih",
+        "netSalesSub": "Dikenakan biaya dikurangi pengembalian dana",
+        "fees": "Biaya platform",
+        "feesSub": "{orders, plural, one {Dari # pesanan berbayar} other {Dari # pesanan berbayar}}"
+      },
+      "search": {
+        "label": "Cari organisasi",
+        "placeholder": "Nama, URL, atau email pemilik",
+        "submit": "Mencari",
+        "clear": "Jernih"
+      },
+      "columns": {
+        "organization": "Organisasi",
+        "owner": "Pemilik",
+        "created": "Dibuat",
+        "events": "Acara",
+        "registrations": "Pendaftaran",
+        "netSales": "Penjualan bersih",
+        "fees": "Biaya",
+        "payments": "Pembayaran"
+      },
+      "eventsCell": "{published} dari {total} diterbitkan",
+      "deleted": "Dihapus",
+      "noOwner": "Tidak ada pemilik",
+      "payments": {
+        "ready": "Menerima pembayaran",
+        "notReady": "Stripe belum siap",
+        "none": "Tidak terhubung"
+      },
+      "openPublic": "Buka halaman publik {name}",
+      "emptySearch": "Tidak ada organisasi yang cocok dengan “{q}”.",
+      "empty": "Belum ada organisasi."
+    },
+    "organization": {
+      "back": "Semua organisasi",
+      "created": "Dibuat {date}",
+      "deletedOn": "Dihapus {date}",
+      "publicPage": "Halaman publik",
+      "website": "Situs web",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "Acara",
+        "registrations": "Pendaftaran",
+        "netSales": "Penjualan bersih",
+        "refunded": "Dikembalikan",
+        "fees": "Biaya platform"
+      },
+      "members": {
+        "title": "Anggota",
+        "empty": "Organisasi ini tidak memiliki anggota.",
+        "columns": {
+          "name": "Nama",
+          "email": "E-mail",
+          "role": "Peran",
+          "joined": "Bergabung"
+        }
+      },
+      "events": {
+        "title": "Acara",
+        "empty": "Belum ada acara.",
+        "columns": {
+          "event": "Peristiwa",
+          "status": "Status",
+          "starts": "Mulai",
+          "registrations": "Pendaftaran",
+          "checkedIn": "Sudah check-in",
+          "visitors": "Pengunjung",
+          "netSales": "Penjualan bersih",
+          "refunded": "Dikembalikan",
+          "fees": "Biaya"
+        },
+        "capacity": "{count} dari {capacity}",
+        "openPublic": "Buka halaman publik {name}"
+      }
+    },
+    "visibility": {
+      "public": "Publik",
+      "unlisted": "Tidak terdaftar",
+      "private": "Pribadi"
+    },
+    "none": "—"
   }
 }

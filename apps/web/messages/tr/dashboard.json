@@ -528,5 +528,103 @@
       "title": "Henüz hiçbir etkinlik yok.",
       "description": "İlk etkinliğiniz yayınlandıktan sonra analiz verileri doldurulacaktır."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "Platform yöneticisi"
+    },
+    "shell": {
+      "eyebrow": "Platform yöneticisi",
+      "backToDashboard": "Kontrol paneliniz"
+    },
+    "overview": {
+      "title": "Organizasyonlar",
+      "description": "Bu tesisteki her kuruluş, kendi etkinlikleri ve satışlarıyla birlikte.",
+      "stats": {
+        "organizations": "Organizasyonlar",
+        "users": "Kullanıcılar",
+        "published": "Yayınlanan etkinlikler",
+        "registrations": "Kayıtlar",
+        "netSales": "Net satışlar",
+        "netSalesSub": "Geri ödemeler düşüldükten sonra tahsil edilen tutar",
+        "fees": "Platform ücretleri",
+        "feesSub": "{orders, plural, one {# adet ödenmiş siparişten itibaren} other {# adet ödenmiş siparişten}}"
+      },
+      "search": {
+        "label": "Kuruluşları ara",
+        "placeholder": "İsim, URL veya sahip e-postası",
+        "submit": "Aramak",
+        "clear": "Temizlemek"
+      },
+      "columns": {
+        "organization": "Organizasyon",
+        "owner": "Mal sahibi",
+        "created": "Oluşturuldu",
+        "events": "Olaylar",
+        "registrations": "Kayıtlar",
+        "netSales": "Net satışlar",
+        "fees": "Ücretler",
+        "payments": "Ödemeler"
+      },
+      "eventsCell": "{published} / {total} yayınlandı",
+      "deleted": "Silindi",
+      "noOwner": "Sahibi yok",
+      "payments": {
+        "ready": "Ödemeleri kabul etmek",
+        "notReady": "Stripe hazır değil",
+        "none": "Bağlı değil"
+      },
+      "openPublic": "{name} adlı kullanıcının herkese açık sayfasını açın.",
+      "emptySearch": "“{q}” ile eşleşen kuruluş bulunamadı.",
+      "empty": "Henüz hiçbir kuruluş yok."
+    },
+    "organization": {
+      "back": "Tüm kuruluşlar",
+      "created": "Oluşturuldu {date}",
+      "deletedOn": "Silindi {date}",
+      "publicPage": "Herkese açık sayfa",
+      "website": "Web sitesi",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "Olaylar",
+        "registrations": "Kayıtlar",
+        "netSales": "Net satışlar",
+        "refunded": "Para iadesi yapıldı",
+        "fees": "Platform ücretleri"
+      },
+      "members": {
+        "title": "Üyeler",
+        "empty": "Bu kuruluşun hiç üyesi yok.",
+        "columns": {
+          "name": "İsim",
+          "email": "E-posta",
+          "role": "Rol",
+          "joined": "Katıldı"
+        }
+      },
+      "events": {
+        "title": "Olaylar",
+        "empty": "Henüz hiçbir etkinlik yok.",
+        "columns": {
+          "event": "Etkinlik",
+          "status": "Durum",
+          "starts": "Başlıyor",
+          "registrations": "Kayıtlar",
+          "checkedIn": "Giriş yapıldı.",
+          "visitors": "Ziyaretçiler",
+          "netSales": "Net satışlar",
+          "refunded": "Para iadesi yapıldı",
+          "fees": "Ücretler"
+        },
+        "capacity": "{count} / {capacity}",
+        "openPublic": "{name} adlı kullanıcının herkese açık sayfasını açın."
+      }
+    },
+    "visibility": {
+      "public": "Halk",
+      "unlisted": "Listelenmemiş",
+      "private": "Özel"
+    },
+    "none": "—"
   }
 }

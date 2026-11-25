@@ -528,5 +528,103 @@
       "title": "अद्याप कोणतेही कार्यक्रम नाहीत",
       "description": "तुमचा पहिला इव्हेंट प्रकाशित झाल्यावर विश्लेषण माहिती भरली जाते."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "प्लॅटफॉर्म प्रशासक"
+    },
+    "shell": {
+      "eyebrow": "प्लॅटफॉर्म प्रशासक",
+      "backToDashboard": "तुमचे डॅशबोर्ड"
+    },
+    "overview": {
+      "title": "संस्था",
+      "description": "या आस्थापनावरील प्रत्येक संस्था, तिच्या कार्यक्रमांसह आणि विक्रीसह.",
+      "stats": {
+        "organizations": "संस्था",
+        "users": "वापरकर्ते",
+        "published": "प्रकाशित कार्यक्रम",
+        "registrations": "नोंदणी",
+        "netSales": "निव्वळ विक्री",
+        "netSalesSub": "आकारलेली रक्कम वजा परतावा",
+        "fees": "प्लॅटफॉर्म शुल्क",
+        "feesSub": "{orders, plural, one {# कडून सशुल्क ऑर्डर} other {# सशुल्क ऑर्डर पासून}}"
+      },
+      "search": {
+        "label": "संस्था शोधा",
+        "placeholder": "नाव, URL किंवा मालकाचा ईमेल",
+        "submit": "शोध",
+        "clear": "स्पष्ट"
+      },
+      "columns": {
+        "organization": "संघटना",
+        "owner": "मालक",
+        "created": "तयार केले",
+        "events": "कार्यक्रम",
+        "registrations": "नोंदणी",
+        "netSales": "निव्वळ विक्री",
+        "fees": "शुल्क",
+        "payments": "पेमेंट"
+      },
+      "eventsCell": "{total} पैकी {published} प्रकाशित",
+      "deleted": "हटवले",
+      "noOwner": "मालक नाही",
+      "payments": {
+        "ready": "पेमेंट स्वीकारणे",
+        "notReady": "तयार Stripe",
+        "none": "जोडलेले नाही"
+      },
+      "openPublic": "{name} चे सार्वजनिक पृष्ठ उघडा",
+      "emptySearch": "“{q}” शी जुळणारी कोणतीही संस्था नाही.",
+      "empty": "अद्याप कोणतीही संघटना नाही."
+    },
+    "organization": {
+      "back": "सर्व संस्था",
+      "created": "तयार केले {date}",
+      "deletedOn": "हटवले {date}",
+      "publicPage": "सार्वजनिक पृष्ठ",
+      "website": "वेबसाइट",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "कार्यक्रम",
+        "registrations": "नोंदणी",
+        "netSales": "निव्वळ विक्री",
+        "refunded": "परतावा दिला",
+        "fees": "प्लॅटफॉर्म शुल्क"
+      },
+      "members": {
+        "title": "सदस्य",
+        "empty": "या संस्थेचे एकही सदस्य नाही.",
+        "columns": {
+          "name": "नाव",
+          "email": "ईमेल",
+          "role": "भूमिका",
+          "joined": "सामील झाले"
+        }
+      },
+      "events": {
+        "title": "कार्यक्रम",
+        "empty": "अद्याप कोणतेही कार्यक्रम नाहीत.",
+        "columns": {
+          "event": "कार्यक्रम",
+          "status": "स्थिती",
+          "starts": "सुरुवात होते",
+          "registrations": "नोंदणी",
+          "checkedIn": "चेक इन केले",
+          "visitors": "अभ्यागत",
+          "netSales": "निव्वळ विक्री",
+          "refunded": "परतावा दिला",
+          "fees": "शुल्क"
+        },
+        "capacity": "{count} पैकी {capacity}",
+        "openPublic": "{name} चे सार्वजनिक पृष्ठ उघडा"
+      }
+    },
+    "visibility": {
+      "public": "सार्वजनिक",
+      "unlisted": "सूचीबद्ध नसलेले",
+      "private": "खाजगी"
+    },
+    "none": "—"
   }
 }

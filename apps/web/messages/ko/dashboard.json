@@ -528,5 +528,103 @@
       "title": "아직 이벤트가 없습니다.",
       "description": "첫 번째 이벤트가 게시되면 분석 데이터가 자동으로 채워집니다."
     }
+  },
+  "admin": {
+    "meta": {
+      "title": "플랫폼 관리자"
+    },
+    "shell": {
+      "eyebrow": "플랫폼 관리자",
+      "backToDashboard": "대시보드"
+    },
+    "overview": {
+      "title": "조직",
+      "description": "이 시설에 있는 모든 조직은 자체 행사 및 판매 활동을 진행합니다.",
+      "stats": {
+        "organizations": "조직",
+        "users": "사용자",
+        "published": "게시된 이벤트",
+        "registrations": "등록",
+        "netSales": "순매출액",
+        "netSalesSub": "청구 금액에서 환불 금액을 뺀 금액",
+        "fees": "플랫폼 수수료",
+        "feesSub": "{orders, plural, one {# 부터 유료 주문} other {# 건의 유료 주문부터}}"
+      },
+      "search": {
+        "label": "검색 조직",
+        "placeholder": "이름, URL 또는 소유자 이메일",
+        "submit": "찾다",
+        "clear": "분명한"
+      },
+      "columns": {
+        "organization": "조직",
+        "owner": "소유자",
+        "created": "생성됨",
+        "events": "이벤트",
+        "registrations": "등록",
+        "netSales": "순매출액",
+        "fees": "수수료",
+        "payments": "결제"
+      },
+      "eventsCell": "{published} {total} 게시됨",
+      "deleted": "삭제됨",
+      "noOwner": "소유자 없음",
+      "payments": {
+        "ready": "결제 수락",
+        "notReady": "Stripe 준비되지 않음",
+        "none": "연결되지 않음"
+      },
+      "openPublic": "{name} 의 공개 페이지를 엽니다.",
+      "emptySearch": "“{q}”와 일치하는 조직이 없습니다.",
+      "empty": "아직 조직이 없습니다."
+    },
+    "organization": {
+      "back": "모든 조직",
+      "created": "생성일: {date}",
+      "deletedOn": "삭제됨 {date}",
+      "publicPage": "공개 페이지",
+      "website": "웹사이트",
+      "stripeAccount": "Stripe {id}",
+      "stats": {
+        "events": "이벤트",
+        "registrations": "등록",
+        "netSales": "순매출액",
+        "refunded": "환불됨",
+        "fees": "플랫폼 수수료"
+      },
+      "members": {
+        "title": "회원들",
+        "empty": "이 단체에는 회원이 없습니다.",
+        "columns": {
+          "name": "이름",
+          "email": "이메일",
+          "role": "역할",
+          "joined": "가입함"
+        }
+      },
+      "events": {
+        "title": "이벤트",
+        "empty": "아직 이벤트가 없습니다.",
+        "columns": {
+          "event": "이벤트",
+          "status": "상태",
+          "starts": "시작",
+          "registrations": "등록",
+          "checkedIn": "체크인 완료",
+          "visitors": "방문객들",
+          "netSales": "순매출액",
+          "refunded": "환불됨",
+          "fees": "수수료"
+        },
+        "capacity": "{count} 개 중 {capacity} 개",
+        "openPublic": "{name} 의 공개 페이지를 엽니다."
+      }
+    },
+    "visibility": {
+      "public": "공공의",
+      "unlisted": "비공개",
+      "private": "사적인"
+    },
+    "none": "—"
   }
 }
